@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BinaryStudio.PhotoGallery.Data.Test")]
+[assembly: AssemblyTitle("BinaryStudio.PhotoGallery.Web.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BinaryStudio.PhotoGallery.Data.Test")]
+[assembly: AssemblyProduct("BinaryStudio.PhotoGallery.Web.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("60b30521-4102-49e1-96ba-8eedb02d6509")]
+[assembly: Guid("4ddc92fa-619f-4f40-8d02-93d34f7419c7")]
 
 // Version information for an assembly consists of the following four values:
 //

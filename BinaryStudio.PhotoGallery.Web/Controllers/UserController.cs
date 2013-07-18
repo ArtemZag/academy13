@@ -1,11 +1,11 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.Filters;
+using BinaryStudio.PhotoGallery.Web.Models;
+using BinaryStudio.PhotoGallery.Web.Utils;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -24,25 +24,25 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <summary>
         /// Registrates user. POST api/registration
         /// </summary>
-        [ValidateModel]
-        public HttpResponseMessage PostRegistration(AuthInfoModel user)
+        public HttpResponseMessage PostRegistration(AuthInfoViewModel authViewModel)
         {
-            // ViewModel to Model convertation with check params? 
-            // todo: IUserService using
+            UserModel userModel = ModelConverter.ToModel(authViewModel);
 
-            throw new NotImplementedException();
+            userService.RegisterUser(userModel);
+
+            return new HttpResponseMessage(HttpStatusCode.Created);
         }
 
         /// <summary>
         /// Updates user. PUT api/updateuser
         /// </summary>
-        [ValidateModel]        
-        public HttpResponseMessage PutUpdateUser(AuthInfoModel user)
+        public HttpResponseMessage PutUpdateUser(AuthInfoViewModel authViewModel)
         {
-            // ViewModel to Model convertation with check params? 
-            // todo: IUserService using
+            UserModel userModel = ModelConverter.ToModel(authViewModel);
 
-            throw new NotImplementedException();
+            userService.UpdateUser(userModel);
+
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }
 }

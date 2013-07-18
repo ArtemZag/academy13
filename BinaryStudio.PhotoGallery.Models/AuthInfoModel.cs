@@ -9,9 +9,22 @@ namespace BinaryStudio.PhotoGallery.Models
     public class AuthInfoModel
     {
         /// <summary>
+        /// Strings that represents type of auth.
+        /// </summary>
+        public const string LOCAL_PROFILE = "local";
+        public const string GOOGLE_PROFILE = "google";
+
+        public AuthInfoModel(string authName, string userEmail, string userPassword)
+        {
+            AuthName = authName;
+            UserEmail = userEmail;
+            UserPassword = userPassword;
+        }
+
+        /// <summary>
         /// Gets or sets the name of the user.
         /// </summary>
-        public int  ID { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the authentication.
@@ -21,6 +34,13 @@ namespace BinaryStudio.PhotoGallery.Models
         public string AuthName { get; set; }
 
         /// <summary>
+        /// Gets or sets the user's E-mail.
+        /// </summary>
+        [Required(ErrorMessage = "E-mail is required")]
+        [DataType(DataType.EmailAddress)]
+        public string UserEmail { get; set; }
+
+        /// <summary>
         /// Gets or sets the user's password.
         /// </summary>
         [Required(ErrorMessage = "Password is required")]
@@ -28,12 +48,6 @@ namespace BinaryStudio.PhotoGallery.Models
         [DataType(DataType.Password)]
         public string UserPassword { get; set; }
 
-        /// <summary>
-        /// Gets or sets the user's E-mail.
-        /// </summary>
-        [Required(ErrorMessage = "E-mail is required")]
-        public string UserEmail { get; set; }
-
-        public virtual int  UserModelID { get; set; }
+        public virtual int UserModelID { get; set; }
     }
 }

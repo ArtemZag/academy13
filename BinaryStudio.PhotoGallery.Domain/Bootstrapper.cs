@@ -7,7 +7,7 @@ namespace BinaryStudio.PhotoGallery.Domain
     {
         public static void RegisterTypes(IUnityContainer container)
         {
-            container.RegisterType(typeof (IUserService), typeof (Service));
+            container.RegisterType(typeof (IUserService), typeof (TestService));
         }
     }
 }

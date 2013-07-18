@@ -51,6 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\Service.cs" />
+    <Compile Include="Services\TestService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.PhotoGallery.Core\BinaryStudio.PhotoGallery.Core.csproj">

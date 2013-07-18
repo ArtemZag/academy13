@@ -9,6 +9,15 @@ namespace BinaryStudio.PhotoGallery.Models
     public class UserModel
     {
         /// <summary>
+        /// Simple user creation.
+        /// </summary>
+        public UserModel(string firstName, string lastName)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+        }
+
+        /// <summary>
         /// Gets or sets the user id.
         /// </summary>
         public int ID { get; set; }
