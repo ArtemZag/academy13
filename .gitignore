@@ -8,10 +8,13 @@
 /BinaryStudio.PhotoGallery.Models/obj
 /BinaryStudio.PhotoGallery.Web/bin
 /BinaryStudio.PhotoGallery.Web/obj
-/Tests/BinaryStudio.PhotoGalery.Core.Tests/bin
-/Tests/BinaryStudio.PhotoGalery.Core.Tests/obj
 /Tests/BinaryStudio.PhotoGallery.Domain.Tests/bin
 /Tests/BinaryStudio.PhotoGallery.Domain.Tests/obj
+/Tests/BinaryStudio.PhotoGallery.Core.Tests/bin
+/Tests/BinaryStudio.PhotoGallery.Core.Tests/obj
+/Tests/BinaryStudio.PhotoGallery.Web.Tests/bin
+/Tests/BinaryStudio.PhotoGallery.Web.Tests/obj
+packages/FluentAssertions.2.0.1/
 packages/Microsoft.AspNet.Mvc.4.0.30506.0/
 packages/Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.1/
 packages/Microsoft.AspNet.Razor.2.0.30506.0/
