@@ -1,6 +1,6 @@
 ﻿using System;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.Models;
 
 namespace BinaryStudio.PhotoGallery.Web.Utils
 {
