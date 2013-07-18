@@ -1,0 +1,121 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web;
+
+namespace BinaryStudio.PhotoGallery.Web.ViewModels
+{
+    public class RegistrationFormViewModel:IDataErrorInfo
+    {
+        public string Login { get; set; }
+        public string Password { get; set; }
+        public string PasswordConfirmation { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Country { get; set; }
+        public string City { get; set; }
+
+        public string[] ColorsForFirlds = {"Black", "Black", "Black", "Black", "Black", "Black", "Black"};
+        public string this[string propName]
+        {
+            get
+            {
+                int i = -1;
+                switch (propName)
+                {
+                    case "Login":
+                        //логин не должен быть пустым
+                        if (string.IsNullOrEmpty(Login))
+                        {
+                            ColorsForFirlds[0] = "red";
+                            return "Do not enter your login";
+                        }
+                        break;
+                    case "Password":
+                        //пароль не должен быть пустым
+                        if (string.IsNullOrEmpty(Password) || Password!=PasswordConfirmation)
+                        {
+                            ColorsForFirlds[1] = "red";
+                            return "Do not enter your password";
+                        }
+                        break;
+                    case "PasswordConfirmation":
+                        //подтверждение пароля не должено быть пустым и должно совпадать с паролем
+                        if (Password != PasswordConfirmation || string.IsNullOrEmpty(PasswordConfirmation))
+                        {
+                            ColorsForFirlds[2] = "red";
+                            return "Confirm password is incorrect";
+                        }
+                        break;
+                    case "Email":
+                        //проверка Мыла
+                        if (string.IsNullOrEmpty(Email) || !Regex.IsMatch(Email, ".+\\@.+\\..+"))
+                        {
+                            ColorsForFirlds[3] = "red";
+                            return "Please enter a valid email address";
+                        }
+                        break;
+                    case "Phone":
+                        //Необязательное поле.
+                        //Если чтото ввели то проверка телефона, телефон не должен содержать ничего кроме цифр
+                        if (!string.IsNullOrEmpty(Phone))
+                        {
+                            if (!validString(Phone, char.IsDigit))
+                            {
+                                ColorsForFirlds[4] = "red";
+                                return "Enter valid phone number or do not enter any thing";
+                            }
+                        }
+                        break;
+                    case "Country":
+                        //Необязательное поле.
+                        //Если чтото ввели то проверка страны, страна может содержать буквы и пробелы
+                        if (!string.IsNullOrEmpty(Country))
+                        {
+                            if (!validString(Country, char.IsLetter, char.IsWhiteSpace))
+                            {
+                                ColorsForFirlds[5] = "red";
+                                return "Enter valid country name or do not enter any thing";
+                            }
+                        }
+                            
+                        break;
+                    case "City":
+                        //Необязательное поле.
+                        //Если чтото ввели то проверка города, город может содержать буквы и пробелы
+                        if (!string.IsNullOrEmpty(City))
+                        {
+                            if (!validString(City, char.IsLetter, char.IsWhiteSpace))
+                            {
+                                ColorsForFirlds[6] = "red";
+                                return "Enter valid city name or do not enter any thing";
+                            }
+                        }
+                        break;
+                }
+                return null;
+            }
+        }
+        //метод проверки строки
+        private bool validString(string s, params isValid[] valid)
+        {
+            bool pr = true;
+            for (int i = 0; i < s.Length; i++)
+            {
+                bool z = false;
+                for (int j = 0; j < valid.Length; j++)
+                    z |= valid[j](s[i]);
+                
+                if (!z)
+                {
+                    pr = false;
+                    break;
+                }
+            }
+            return pr;
+        }
+        public string Error { get; private set; }
+    }
+}
