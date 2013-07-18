@@ -1,7 +1,12 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using System.Web.Mvc;
+using BinaryGalleryApp.Models;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.Filters;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -20,17 +25,25 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <summary>
         /// Registrates user. POST api/registration
         /// </summary>
-        public void PostRegistration(UserModel user)
+        [ValidateModel]
+        public HttpResponseMessage PostRegistration(AuthInfoModel user)
         {
-            // todo: IUserService use
+            // ViewModel to Model convertation with check params? 
+            // todo: IUserService using
+
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Updates user. PUT api/updateuser
         /// </summary>
-        public void PutUpdateUser(UserModel user)
+        [ValidateModel]        
+        public HttpResponseMessage PutUpdateUser(AuthInfoModel user)
         {
-            // todo: IUserService use
+            // ViewModel to Model convertation with check params? 
+            // todo: IUserService using
+
+            throw new NotImplementedException();
         }
     }
 }

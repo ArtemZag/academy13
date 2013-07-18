@@ -141,10 +141,13 @@
     <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\ModelConverter.cs" />
+    <Compile Include="ViewModels\AuthInfoViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />

@@ -31,6 +31,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the type of user account.
         /// </summary>
+        [Required(ErrorMessage = "Role is required")]
         public bool IsAdmin { get; set; }
 
         /// <summary>

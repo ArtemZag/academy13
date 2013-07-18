@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
+using BinaryStudio.PhotoGallery.Web.Filters;
 
 namespace BinaryStudio.PhotoGallery.Web
 {
@@ -14,6 +12,8 @@ namespace BinaryStudio.PhotoGallery.Web
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Filters.Add(new ValidateModelAttribute());
         }
     }
 }
