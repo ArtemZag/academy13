@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BinaryGalleryApp.Models
+namespace BinaryStudio.PhotoGallery.Models
 {
     /// <summary>
     /// The class that represents photo.

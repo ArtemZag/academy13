@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
-namespace BinaryGalleryApp.Models
+
+namespace BinaryStudio.PhotoGallery.Models
 {
     /// <summary>
     /// The class that represents album
@@ -40,7 +39,7 @@ namespace BinaryGalleryApp.Models
 
         public virtual int UserModelID { get; set; }
         public virtual ICollection<PhotoModel> Photos { get; set; }
-        public virtual ICollection<AvaibleGroupModel> AvaibleGroups { get; set; }
+        public virtual ICollection<AvailableGroupModel> AvaibleGroups { get; set; }
 
     }
 }

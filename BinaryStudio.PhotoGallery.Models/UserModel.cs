@@ -27,7 +27,6 @@ namespace BinaryStudio.PhotoGallery.Models
         [Required(ErrorMessage = "LastName is required")]
         [StringLength(50, ErrorMessage = "LastName must contain at least 2 characters.", MinimumLength = 2)]
         public string LastName { get; set; }
-        [Required(ErrorMessage = "Role is required")]
 
         /// <summary>
         /// Gets or sets the type of user account.

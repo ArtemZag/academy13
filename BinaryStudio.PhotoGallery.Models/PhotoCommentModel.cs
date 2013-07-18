@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace BinaryGalleryApp.Models
+namespace BinaryStudio.PhotoGallery.Models
 {
     /// <summary>
     /// The class that represents photo comment.
@@ -35,7 +35,7 @@ namespace BinaryGalleryApp.Models
         /// Gets or sets if user reply in other comment.
         /// </summary>
         public PhotoCommentModel Reply { get; set; }
-        public int PhotoModelId  { get; set; }
-        public int UserModelId { get; set; }
+        public int PhotoModelID  { get; set; }
+        public int UserModelID { get; set; }
     }
 }

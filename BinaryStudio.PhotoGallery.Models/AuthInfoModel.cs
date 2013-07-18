@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BinaryGalleryApp.Models
+
+namespace BinaryStudio.PhotoGallery.Models
 {
     /// <summary>
     /// The class that represents types of user's authentications.

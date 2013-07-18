@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using BinaryStudio.PhotoGallery.Models;
 
-namespace BinaryGalleryApp.Models
+
+namespace BinaryStudio.PhotoGallery.Models
 {
     /// <summary>
     /// The class that represents group of users.
