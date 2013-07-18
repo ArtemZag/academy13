@@ -1,74 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using BinaryStudio.PhotoGallery.Database.Model_Interfaces;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    internal class Repository<TObject> : IRepository<TObject> where TObject : class
+    class Repository : IRepository
     {
-        public Repository(IDataBaseContext dataBaseContext)
-        {
-
-        }
-
         public void Dispose()
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<TObject> All()
+        public int SaveChanges()
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<TObject> Filter(Expression<Func<TObject, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<TObject> Filter<TKey>(Expression<Func<TObject, bool>> filter, out int total, int index = 0, int size = 50)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(Expression<Func<TObject, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TObject Find(params object[] keys)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TObject Find(Expression<Func<TObject, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TObject Create(TObject item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(TObject item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Delete(Expression<Func<TObject, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Update(TObject item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Count { get; private set; }
+        public IUserRepository Users { get; private set; }
+        public IGroupRepository Groups { get; private set; }
+        public IAvailableGroupRepository AvailableGroups { get; private set; }
+        public IAuthInfoRepository AuthInfos { get; private set; }
+        public IPhotoRepository Photos { get; private set; }
+        public IPhotoCommentRepository PhotoComments { get; private set; }
+        public IAlbumRepository Albums { get; private set; }
     }
 }

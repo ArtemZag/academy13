@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
-using BinaryGalleryApp.Models;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Filters;

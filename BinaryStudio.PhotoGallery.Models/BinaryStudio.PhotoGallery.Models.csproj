@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="AlbumModel.cs" />
     <Compile Include="AuthInfoModel.cs" />
-    <Compile Include="AvaibleGroupModel.cs" />
+    <Compile Include="AvailableGroupModel.cs" />
     <Compile Include="GroupModel.cs" />
     <Compile Include="PhotoModel.cs" />
     <Compile Include="PhotoCommentModel.cs" />

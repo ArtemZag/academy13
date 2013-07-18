@@ -1,8 +1,9 @@
-﻿
+﻿using System.Data.Entity;
+
 namespace BinaryStudio.PhotoGallery.Database
 {
-    interface IDataBaseContext
+    interface IDatabaseContext
     {
-
+        
     }
 }
