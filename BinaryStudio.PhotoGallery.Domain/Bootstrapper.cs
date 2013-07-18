@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using BinaryStudio.PhotoGallery.Domain.Services;
+using Microsoft.Practices.Unity;
 
 namespace BinaryStudio.PhotoGallery.Domain
 {
@@ -6,7 +7,7 @@ namespace BinaryStudio.PhotoGallery.Domain
     {
         public static void RegisterTypes(IUnityContainer container)
         {
-            // todo: register types
+            container.RegisterType(typeof (IUserService), typeof (Service));
         }
     }
 }

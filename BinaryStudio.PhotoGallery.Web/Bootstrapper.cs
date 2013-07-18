@@ -10,6 +10,15 @@ namespace BinaryStudio.PhotoGallery.Web
         {
             var container = BuildUnityContainer();
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
+
+            return container;
+        }
+
+        private static IUnityContainer BuildUnityContainer()
+        {
+            var container = new UnityContainer();
+            RegisterTypes(container);
+
             return container;
         }
 
@@ -20,13 +29,6 @@ namespace BinaryStudio.PhotoGallery.Web
 
             // e.g. container.RegisterType<ITestService, TestService>();    
             Domain.Bootstrapper.RegisterTypes(container);
-        }
-
-        private static IUnityContainer BuildUnityContainer()
-        {
-            var container = new UnityContainer();
-            RegisterTypes(container);
-            return container;
         }
     }
 }
