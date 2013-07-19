@@ -18,8 +18,6 @@ namespace BinaryStudio.PhotoGallery.Web
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Account", action = "Signin", id = UrlParameter.Optional }
             );
-
-            AttributeRoutingConfig.Start();
         }
     }
 }
