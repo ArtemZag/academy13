@@ -14,6 +14,11 @@ namespace BinaryStudio.PhotoGallery.Database
             throw new NotImplementedException();
         }
 
+        public int SaveChanges()
+        {
+            throw new NotImplementedException();
+        }
+
         public IUserRepository Users { get; set; }
         public IGroupRepository Groups { get; set; }
         public IAvailableGroupRepository AvailableGroups { get; set; }

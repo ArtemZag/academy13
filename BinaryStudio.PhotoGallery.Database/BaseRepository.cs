@@ -9,16 +9,15 @@ using System.Threading.Tasks;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    internal class BaseRepository<TItem> : IBaseRepository<TItem> where TItem : class
+    abstract class BaseRepository<TItem> : IBaseRepository<TItem> where TItem : class
     {
 
         protected DatabaseContext Context = null;
 
 
-
-        public BaseRepository(DatabaseContext dataBaseContext)
+        protected BaseRepository(IDatabaseContext dataBaseContext)
         {
-            Context = dataBaseContext;
+            Context = dataBaseContext as DatabaseContext;
         }
 
 
