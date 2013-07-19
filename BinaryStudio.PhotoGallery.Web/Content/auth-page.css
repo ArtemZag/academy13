@@ -1,0 +1,123 @@
+﻿body {
+    background-image: url(images/test.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.full-screen-shadow {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    opacity: 0.82;
+    z-index: -1;
+    background-image: radial-gradient(farthest-side at center center, rgba(222, 224, 228, 0.476) -5%, rgba(0, 0, 0, 0.841) 100%);
+}
+
+.login-panel {
+    margin: 0 auto;
+    width: 260px;
+    min-height: 230px;
+    height: auto;
+    margin-top: 10%;
+}
+
+.login-panel .site-name {
+    text-shadow: 5px 3px 7px rgba(152, 168, 238, 1);
+    color: #001aff;
+    text-align: center;
+}
+
+
+.login-panel input[type=text] {
+    height: 30px!important;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    width: 100%;
+}
+
+.login-panel .form-signin {
+    padding: 1px;
+    border: 2px solid #03417d;
+    border-radius: 8px;
+    box-shadow: 0 0 20px 2px rgba(3, 65, 125, 0.7);
+}
+
+.login-panel .checkbox {
+    float: right;
+    margin-top: 15px;
+    margin-right: 10px;
+}
+
+.login-panel button[type=submit] {
+    margin-top: 8px;
+    margin-left: 10px;
+    width: 44%;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.login-panel hr {
+    border: 0;
+    border-top: 1px solid #03417d;
+    margin: 10px 0;
+}
+
+.login-panel .control-group {
+    margin-bottom: 0px;
+}
+
+.login-panel .alert {
+    margin: 10px 2px 5px 2px;
+}
+
+.login-panel .social {
+    display: block;
+    margin: 0 5px 5px 5px;
+    margin-right: 5px;
+    width: 100%;
+}
+
+.login-panel .social img {
+    width: 32px;
+    height: 32px;
+}
+ 
+.login-panel .social img:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.login-panel .btn-link {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    float: right;
+    margin-right: 5px;
+    padding: 0;
+    font-size: 14px!important;
+}
+
+.change-panel {
+    border: 2px solid #03417d;
+    border-top: 0;
+    padding: 5px;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 0 30px 2px rgba(3, 65, 125, 0.7);
+    margin: 0 auto;
+    width: 380px;
+    background: rgba(245, 245, 245, 0.6);
+}
+
+.change-panel strong {
+    font-size: 20px;
+    color: white;
+}
+
+.change-panel button {
+    width: 180px;
+}
