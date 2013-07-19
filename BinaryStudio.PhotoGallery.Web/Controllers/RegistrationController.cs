@@ -30,16 +30,27 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 ViewBag.Colors = registration.ColorsForFirlds;
                 /* запись в базу данных .*/
                 // todo: How can i access to users repository?
+                //здесь нужно, наверное, проверить существуют ли другие пользователи с таким логином или паролем?
+                //Если таковых нет то Insert, иначе вежливо просим ввести что-то другое.
+                //нужен флажок
+                bool isUserSuccessInsertedIntoDataBase = false;
+                /*using (var db = new DatabaseContext())
+                {
+                    
+                    var newAccount = db.Users.Create();
+                    newAccount.UserEmail = registration.Email;
+                    newAccount.UserPassword = registration.Password;
+                    newAccount.AuthName = registration.Login;
+                    db.SaveChanges();
+                    
+                }    */
 
-                //using (var db = new DatabaseContext())
-                //{
-                //    var newAccount = db.Users.Create();
-                //    newAccount.UserEmail = registration.Email;
-                //    newAccount.UserPassword = registration.Password;
-                //    newAccount.AuthName = registration.Login;
-                //    db.SaveChanges();
-                //    return View("RegistrationResult", registration);
-                //}    
+                //
+                if (isUserSuccessInsertedIntoDataBase)
+                {
+                    
+                }
+                return View("RegistrationResult", registration);
             }
             else
             {
