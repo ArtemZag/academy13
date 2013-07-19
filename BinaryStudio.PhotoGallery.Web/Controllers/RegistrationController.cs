@@ -11,24 +11,24 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     public class RegistrationController : Controller
     {
-        //
+        /*//
         // GET: /Registration/
 
         [HttpGet]
         public ViewResult RegistrationForm()
         {
-            /*Это выполняется если мы перешли на страницу регистрации*/
+            /*Это выполняется если мы перешли на страницу регистрации#1#
             ViewBag.Colors = new string[] { "Black", "Black", "Black", "Black", "Black", "Black", "Black" };
             return View();
         }
 
         [HttpPost]
-        public ViewResult RegistrationForm(RegistrationFormViewModel registration)
+        public ViewResult RegistrationForm(RegistrationViewModel registration)
         {
             if (ModelState.IsValid)
             {
                 ViewBag.Colors = registration.ColorsForFirlds;
-                /* запись в базу данных .*/
+                /* запись в базу данных .#1#
                 // todo: How can i access to users repository?
                 //здесь нужно, наверное, проверить существуют ли другие пользователи с таким логином или паролем?
                 //Если таковых нет то Insert, иначе вежливо просим ввести что-то другое.
@@ -57,9 +57,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 ModelState.AddModelError("", "Data is not correct");
             }
 
-            /*Это выполняется если мы ввели чтото неудачно*/
+            /*Это выполняется если мы ввели чтото неудачно#1#
             ViewBag.Colors = registration.ColorsForFirlds;
             return View();
-        }
+        }*/
     }
 }

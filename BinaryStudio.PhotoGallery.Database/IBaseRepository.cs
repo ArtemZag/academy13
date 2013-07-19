@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    internal interface IBaseRepository<T> : IDisposable where T : class
+    public interface IBaseRepository<T> : IDisposable where T : class
     {
         /// <summary>
         /// Gets all objects from database

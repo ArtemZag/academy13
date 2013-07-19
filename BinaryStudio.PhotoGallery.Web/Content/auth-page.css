@@ -34,10 +34,8 @@
 
 
 .login-panel input[type=text],[type=password] {
-    height: 30px!important;
     margin-top: 1px;
     margin-bottom: 1px;
-    width: 100%;
 }
 
 .login-panel .form-signin {

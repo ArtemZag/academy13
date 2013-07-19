@@ -161,7 +161,7 @@
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\IndexController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="charValidater.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -171,9 +171,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
-    <Compile Include="Models\AuthInfoViewModel.cs" />
-    <Compile Include="Models\AuthorizationViewModel.cs" />
-    <Compile Include="Models\RegistrationFormViewModel.cs" />
+    <Compile Include="ViewModels\AuthInfoViewModel.cs" />
+    <Compile Include="ViewModels\RegistrationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -181,10 +180,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\auth-page.css" />
     <Content Include="Content\images\big_logo.png" />
-    <Content Include="Content\bootstrap-responsive.css" />
-    <Content Include="Content\bootstrap-responsive.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\main-layput.css" />
+    <Content Include="Content\style-libs\bootstrap-responsive.css" />
+    <Content Include="Content\style-libs\bootstrap-responsive.min.css" />
+    <Content Include="Content\style-libs\bootstrap.css" />
+    <Content Include="Content\style-libs\bootstrap.min.css" />
     <Content Include="Content\images\facebook_logo.png" />
     <Content Include="Content\images\github_logo.png" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
@@ -192,10 +192,10 @@
     <Content Include="Content\images\test.png" />
     <Content Include="Content\images\twitter_logo.png" />
     <Content Include="Content\images\vkontakte_logo.png" />
-    <Content Include="Content\jasny-bootstrap-responsive.css" />
-    <Content Include="Content\jasny-bootstrap-responsive.min.css" />
-    <Content Include="Content\jasny-bootstrap.css" />
-    <Content Include="Content\jasny-bootstrap.min.css" />
+    <Content Include="Content\style-libs\jasny-bootstrap-responsive.css" />
+    <Content Include="Content\style-libs\jasny-bootstrap-responsive.min.css" />
+    <Content Include="Content\style-libs\jasny-bootstrap.css" />
+    <Content Include="Content\style-libs\jasny-bootstrap.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -219,10 +219,13 @@
     <Content Include="Scripts\jquery-2.0.3.min.map" />
     <Content Include="Views\Account\Signin.cshtml" />
     <Content Include="Views\Account\Signup.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_MainLayout.cshtml" />
+    <Content Include="Views\Shared\_LoginLayout.cshtml" />
+    <Content Include="Views\Account\RemindPass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

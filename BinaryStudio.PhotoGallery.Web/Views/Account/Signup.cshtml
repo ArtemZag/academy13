@@ -1,45 +1,37 @@
-﻿@{
-    ViewBag.Title = "SignIn";
-    Layout = null;
+﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.RegistrationViewModel
+
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewBag.Title = "Registration | Bingally";
 }
 
-<!DOCTYPE>
-<html>
-<head>
-    <title>Login | Bingally</title>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet"/>
-    <link href="~/Content/auth-page.css" rel="stylesheet" />
-</head>
-    <body>
-        <div class="full-screen-shadow"></div>
-        <div class="change-panel well">
-            <strong>Already registered?</strong>
-            <button type="submit" class="btn btn-primary">Sign in</button>
-        </div>
-        <div class="login-panel">
-            <img src="~/Content/images/big_logo.png"/>
-            <form class="form-horizontal form-signin well">
-                <div class="control-group">
-                    <input type="text" id="user-email" placeholder="E-mail address">
-                    <input type="password" id="user-pass" placeholder="Password">
-                    <input type="password" id="user-pass-repeat" placeholder="Repeat password">
+<div class="change-panel well">
+    <strong>Already registered?</strong>
+    <a href="/Account/Signin">
+        <button type="submit" class="btn btn-primary">Sign in</button>
+    </a>
+</div>
+<div class="login-panel">
+    <img src="~/Content/images/big_logo.png"/>
+    <form class="form-horizontal form-signin well" method="POST">
+        <div class="control-group">
+            <input type="email" id="Email" name="Email" class="input-block-level" placeholder="E-mail address">
+            <input type="password" id="Password" name="Password" class="input-block-level" placeholder="Password">
+            <input type="password" id="PasswordConfirmation" class="input-block-level" name="PasswordConfirmation" placeholder="Repeat password">
                     
-                    <label class="checkbox">
-                        <input type="checkbox" id="optionsCheckbox" checked>Remember me
-                    </label>
-                    <button type="submit" class="btn btn-success">Sign up</button>
-                </div>
-                <hr/>
-                <div class="social">
-                    <img src="~/Content/images/vkontakte_logo.png"/>
-                    <img src="~/Content/images/facebook_logo.png"/>
-                    <img src="~/Content/images/twitter_logo.png" />
-                    <img src="~/Content/images/github_logo.png" />
-                </div>
-            </form>	
+            <label class="checkbox">
+                <input type="checkbox" id="RememberMe" name="RemberMe" checked>Remember me
+            </label>
+            <a href="/Account/Signup">
+                <button type="submit" class="btn btn-success">Sign up</button>
+            </a>
         </div>
-        
-    </body>
-    <script src="~/Scripts/jquery-2.0.3.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-</html>
+        <hr/>
+        <div class="social">
+            <img src="~/Content/images/vkontakte_logo.png"/>
+            <img src="~/Content/images/facebook_logo.png"/>
+            <img src="~/Content/images/twitter_logo.png" />
+            <img src="~/Content/images/github_logo.png" />
+        </div>
+    </form>	
+</div>

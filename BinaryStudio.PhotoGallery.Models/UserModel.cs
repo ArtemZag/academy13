@@ -11,8 +11,9 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Simple user creation.
         /// </summary>
-        public UserModel(string firstName, string lastName)
+        public UserModel(string nickName, string firstName, string lastName)
         {
+            NickName = nickName;
             FirstName = firstName;
             LastName = lastName;
         }
@@ -21,6 +22,13 @@ namespace BinaryStudio.PhotoGallery.Models
         /// Gets or sets the user id.
         /// </summary>
         public int ID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the nick name of the user
+        /// </summary>
+        [Required(ErrorMessage = "NickName is required")]
+        [StringLength(50, ErrorMessage = "NickName must contain at least 3 characters.", MinimumLength = 3)]
+        public string NickName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the user.

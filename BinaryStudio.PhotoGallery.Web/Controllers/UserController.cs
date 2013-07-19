@@ -4,8 +4,8 @@ using System.Web.Http;
 using System.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.Models;
 using BinaryStudio.PhotoGallery.Web.Utils;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -24,9 +24,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <summary>
         /// Registrates user. POST api/registration
         /// </summary>
-        public HttpResponseMessage PostRegistration(AuthInfoViewModel authViewModel)
+        public HttpResponseMessage PostRegistration(RegistrationViewModel registrationViewModel)
         {
-            UserModel userModel = ModelConverter.ToModel(authViewModel);
+            UserModel userModel = ModelConverter.ToModel(registrationViewModel);
 
             userService.RegisterUser(userModel);
 
@@ -36,9 +36,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <summary>
         /// Updates user. PUT api/updateuser
         /// </summary>
-        public HttpResponseMessage PutUpdateUser(AuthInfoViewModel authViewModel)
+        public HttpResponseMessage PutUpdateUser(RegistrationViewModel registrationViewModel)
         {
-            UserModel userModel = ModelConverter.ToModel(authViewModel);
+            UserModel userModel = ModelConverter.ToModel(registrationViewModel);
 
             userService.UpdateUser(userModel);
 
