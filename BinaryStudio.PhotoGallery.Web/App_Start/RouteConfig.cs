@@ -16,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Web
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Account", action = "Signin", id = UrlParameter.Optional }
+                defaults: new { controller = "Account", action = "Signup", id = UrlParameter.Optional }
             );
         }
     }

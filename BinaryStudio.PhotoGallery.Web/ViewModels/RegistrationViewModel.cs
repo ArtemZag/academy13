@@ -25,6 +25,9 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         [DataType(DataType.Password)]
         public string PasswordConfirmation { get; set; }
 
+        [Required]
+        public bool RememberMe { get; set; }
+
         /*public string[] ColorsForFirlds = {"Black", "Black", "Black", "Black", "Black", "Black", "Black"};
         public string this[string propName]
         {

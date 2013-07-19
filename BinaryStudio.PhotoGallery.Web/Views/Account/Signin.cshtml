@@ -1,24 +1,32 @@
-﻿@{
+﻿@model BinaryStudio.PhotoGallery.Web.Models.AuthInfoViewModel
+
+@{
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
     ViewBag.Title = "Login | Bingally";
 }
 
 <div class="change-panel well">
     <strong>First time here?</strong>
-    <button type="submit" class="btn btn-success">Sign up</button>
+    <a href="/Account/Signup">
+        <button type="submit" class="btn btn-success">Sign up</button>
+    </a>
 </div>
 <div class="login-panel">
     <img src="~/Content/images/big_logo.png"/>
-    <form class="form-horizontal form-signin well">
+    <form class="form-horizontal form-signin well" method="POST">
         <div class="control-group">
-            <input type="text" id="user-email" placeholder="E-mail address">
-            <input type="password" id="user-pass" placeholder="Password">
-                    
+            <input id="Email" name="Email" type="email" class="input-block-level" placeholder="E-mail address" />
+            <input id="Password" name="Password" type="password" class="input-block-level" placeholder="Password" />
+
             <label class="checkbox">
-                <input type="checkbox" id="optionsCheckbox" checked>Remember me
+                <input type="checkbox" id="RememberMe" name="RememberMe" checked>Remember me
             </label>
-            <button type="submit" class="btn btn-primary">Sign In</button>
-            <button class="btn btn-link">Forgot password?</button>
+            <a href="/Account/Signin">
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </a>
+            <a href="/Account/RemindPass">
+                <button class="btn btn-link">Forgot password?</button>
+            </a>
         </div>
         <hr/>
         <div class="social">

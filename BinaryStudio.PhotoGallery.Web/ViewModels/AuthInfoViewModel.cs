@@ -12,5 +12,8 @@ namespace BinaryStudio.PhotoGallery.Web.Models
         [StringLength(20, MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        [Required]
+        public bool RememberMe { get; set; }
     }
 }
