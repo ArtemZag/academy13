@@ -183,6 +183,7 @@
     <Content Include="Content\main-layput.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.min.css" />
+    <Content Include="Content\style-libs\bootstrap-tags.css" />
     <Content Include="Content\style-libs\bootstrap.css" />
     <Content Include="Content\style-libs\bootstrap.min.css" />
     <Content Include="Content\images\facebook_logo.png" />
@@ -197,6 +198,7 @@
     <Content Include="Content\style-libs\jasny-bootstrap.css" />
     <Content Include="Content\style-libs\jasny-bootstrap.min.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="CodeTemplates\AddController\ControllerWithContext.tt" />
