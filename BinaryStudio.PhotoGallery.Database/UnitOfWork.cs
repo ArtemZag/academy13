@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
+using BinaryStudio.PhotoGallery.Database.ModelRepositories;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    using BinaryStudio.PhotoGallery.Database.ModelRepositories;
-
     public class UnitOfWork : IUnitOfWork
     {
-        private Lazy<IUserRepository> _usersLazy = new Lazy<IUserRepository>(() => new UserRepository(_dbContext));
-
         private static DatabaseContext _dbContext;
 
+        private readonly Lazy<IUserRepository> _usersLazy =
+            new Lazy<IUserRepository>(() => new UserRepository(_dbContext));
 
 
         public void Dispose()
@@ -27,10 +22,11 @@ namespace BinaryStudio.PhotoGallery.Database
             return _dbContext.SaveChanges();
         }
 
-        public IUserRepository Users { get
+        public IUserRepository Users
         {
-            return _usersLazy.Value;
-        } }
+            get { return _usersLazy.Value; }
+        }
+
         public IGroupRepository Groups { get; set; }
         public IAvailableGroupRepository AvailableGroups { get; set; }
         public IAuthInfoRepository AuthInfos { get; set; }
