@@ -1,66 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Security;
-using AttributeRouting;
 using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Web.Models;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
+using AttributeRouting;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-
+    [RoutePrefix("Account")]
     public class AccountController : Controller
     {
+        private readonly IUserService userService;
 
-        [HttpPost]
-        public ActionResult SignIn(AuthInfoModel account)
+        public AccountController(IUserService userService)
         {
+            this.userService = userService;
+        }
 
-            if (IsValid(account.AuthName, account.UserPassword))
+        [GET]
+        public ActionResult SignIn()
+        {
+            return View();
+        }
+
+        [POST]
+        public ActionResult SignIn(AuthInfoViewModel authInfo)
+        {
+//            userService.CheckUser() TODO how can I known user name or last name to check user email ? WTF?
+            if (true)
             {
-                FormsAuthentication.SetAuthCookie(account.UserEmail, false);
-                return RedirectToAction("Index", "Index");
+//                FormsAuthentication.SetAuthCookie(authInfo.Email, false);
+                return RedirectToAction("Index", "Home");
             }
             else
             {
                 ModelState.AddModelError("", "Login details are wrong.");
             }
-            return View(account);
 
+            return View(authInfo);
         }
 
+        [GET]
         public ActionResult SingOut()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Index");
+            return RedirectToAction("Signin", "Account");
         }
 
-        [GET("")]
-        public ActionResult Signup()
+        [POST]
+        public ActionResult Signup(RegistrationViewModel registrationViewModel)
         {
             return View();
-        }
-
-        private bool IsValid(string name, string password)
-        {
-            bool IsValid = false;
-            // todo: How can i access to users repository?
-            /*
-            using (var db = new DatabaseContext())
-            {
-                var user = db.Users.FirstOrDefault(u => u.AuthName == name);
-                if (user != null)
-                {
-                    if (user.UserPassword == password)
-                    {
-                        IsValid = true;
-                    }
-                }
-            }
-            */
-            return IsValid;
         }
     }
 }

@@ -161,7 +161,7 @@
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\IndexController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="charValidater.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -171,9 +171,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
-    <Compile Include="Models\AuthInfoViewModel.cs" />
-    <Compile Include="Models\AuthorizationViewModel.cs" />
-    <Compile Include="Models\RegistrationFormViewModel.cs" />
+    <Compile Include="ViewModels\AuthInfoViewModel.cs" />
+    <Compile Include="ViewModels\RegistrationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -219,10 +218,10 @@
     <Content Include="Scripts\jquery-2.0.3.min.map" />
     <Content Include="Views\Account\Signin.cshtml" />
     <Content Include="Views\Account\Signup.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

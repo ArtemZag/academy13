@@ -7,17 +7,25 @@ using System.Web;
 
 namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
-    public class RegistrationFormViewModel:IDataErrorInfo
-    {
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public string PasswordConfirmation { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Country { get; set; }
-        public string City { get; set; }
+    using System.ComponentModel.DataAnnotations;
 
-        public string[] ColorsForFirlds = {"Black", "Black", "Black", "Black", "Black", "Black", "Black"};
+    public class RegistrationViewModel
+    {
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(20, MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [Required]
+        [StringLength(20, MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        public string PasswordConfirmation { get; set; }
+
+        /*public string[] ColorsForFirlds = {"Black", "Black", "Black", "Black", "Black", "Black", "Black"};
         public string this[string propName]
         {
             get
@@ -104,6 +112,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
             return s.Select(t => valid.Aggregate(false, (current, t1) => current | t1(t))).All(z => z);
         }
 
-        public string Error { get; private set; }
+        public string Error { get; private set; }*/
     }
 }

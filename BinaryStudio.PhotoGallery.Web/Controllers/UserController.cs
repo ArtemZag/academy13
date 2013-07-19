@@ -11,7 +11,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     public class UserController : ApiController
     {
-        private IUserService userService;
+        /*private IUserService userService;
 
         /// <summary>
         /// Resolves IUserService.
@@ -43,6 +43,6 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             userService.UpdateUser(userModel);
 
             return new HttpResponseMessage(HttpStatusCode.OK);
-        }
+        }*/
     }
 }
