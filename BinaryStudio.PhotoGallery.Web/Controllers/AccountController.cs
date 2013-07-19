@@ -59,5 +59,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             return View();
         }
+
+        [GET]
+        public ActionResult RemindPass()
+        {
+            return View();
+        }
     }
 }
