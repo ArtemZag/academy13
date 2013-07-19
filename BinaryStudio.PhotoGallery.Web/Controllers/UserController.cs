@@ -16,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <summary>
         /// Resolves IUserService.
         /// </summary>
-        public UserController()
+        public UserController(IUserService userService)
         {
             userService = DependencyResolver.Current.GetService<IUserService>();
         }
@@ -24,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <summary>
         /// Registrates user. POST api/registration
         /// </summary>
-        public HttpResponseMessage PostRegistration(RegistrationViewModel registrationViewModel)
+        public HttpResponseMessage PostRegistration([FromBody]RegistrationViewModel registrationViewModel)
         {
             UserModel userModel = ModelConverter.ToModel(registrationViewModel);
 

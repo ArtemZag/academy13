@@ -11,7 +11,7 @@ namespace BinaryStudio.PhotoGallery.Database
     {
         int SaveChanges();
 
-        IUserRepository Users { get; set; }
+        IUserRepository Users { get; }
         IGroupRepository Groups { get; set; }
         IAvailableGroupRepository AvailableGroups { get; set; }
         IAuthInfoRepository AuthInfos { get; set; }

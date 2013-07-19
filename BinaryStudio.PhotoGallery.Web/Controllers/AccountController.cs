@@ -14,6 +14,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         private readonly IUserService userService;
 
         public AccountController(IUserService userService)
+
         {
             this.userService = userService;
         }

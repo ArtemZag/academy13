@@ -7,8 +7,16 @@ using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
+    using BinaryStudio.PhotoGallery.Database.ModelRepositories;
+
     public class UnitOfWork : IUnitOfWork
     {
+        private Lazy<IUserRepository> _usersLazy = new Lazy<IUserRepository>(() => new UserRepository(_dbContext));
+
+        private static DatabaseContext _dbContext;
+
+
+
         public void Dispose()
         {
             throw new NotImplementedException();
@@ -16,10 +24,13 @@ namespace BinaryStudio.PhotoGallery.Database
 
         public int SaveChanges()
         {
-            throw new NotImplementedException();
+            return _dbContext.SaveChanges();
         }
 
-        public IUserRepository Users { get; set; }
+        public IUserRepository Users { get
+        {
+            return _usersLazy.Value;
+        } }
         public IGroupRepository Groups { get; set; }
         public IAvailableGroupRepository AvailableGroups { get; set; }
         public IAuthInfoRepository AuthInfos { get; set; }

@@ -8,10 +8,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class HomeController : Controller
     {
         /// <summary>
-        /// Is it user page (flow of his pictures)
+        /// It's user page (flow of his pictures)
         /// </summary>
         /// <returns></returns>
-		[GET("")]
+		[GET]
         public ActionResult Index()
         {
             return View();

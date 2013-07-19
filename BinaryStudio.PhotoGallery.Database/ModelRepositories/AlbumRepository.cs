@@ -5,7 +5,7 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
 {
     class AlbumRepository : BaseRepository<AlbumModel>, IAlbumRepository
     {
-        public AlbumRepository(DatabaseContext dataBaseContext) : base(dataBaseContext)
+        public AlbumRepository(IDatabaseContext dataBaseContext) : base(dataBaseContext)
         {
         }
     }
