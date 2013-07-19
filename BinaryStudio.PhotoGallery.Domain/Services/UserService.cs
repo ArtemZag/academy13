@@ -1,6 +1,6 @@
 ﻿using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Models;
+using System;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -10,33 +10,62 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
-        public void RegisterUser(UserModel user)
+        public bool RegisterUser(UserModel user)
         {
-            using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
+            try
             {
-                IUserRepository userRepository = unitOfWork.Users;
-
-                userRepository.Create(user);
-                //todo: it needs some exceptions checking
+                using (var unitOfWork = this.WorkFactory.GetUnitOfWork())
+                {
+                    unitOfWork.Users.Create(user);
+                }
             }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        public void UpdateUser(UserModel user)
+        public bool UpdateUser(UserModel user)
         {
-            using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
+            try
             {
-                IUserRepository userRepository = unitOfWork.Users;
-
-                userRepository.Update(user);
-                //todo: it needs some exceptions checking
+                using (var unitOfWork = this.WorkFactory.GetUnitOfWork())
+                {
+                    unitOfWork.Users.Update(user);
+                }
             }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool DeleteUser(UserModel user)
+        {
+            try
+            {
+                using (var unitOfWork = this.WorkFactory.GetUnitOfWork())
+                {
+                    unitOfWork.Users.Delete(user);
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public bool CheckUser(UserModel user)
         {
-            using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
+            using (var unitOfWork = this.WorkFactory.GetUnitOfWork())
             {
-                IUserRepository userRepository = unitOfWork.Users;
+                var userRepository = unitOfWork.Users;
 
                 return userRepository.Contains(model => model.Equals(user));
             }

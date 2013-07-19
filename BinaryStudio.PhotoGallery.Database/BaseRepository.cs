@@ -8,16 +8,16 @@ namespace BinaryStudio.PhotoGallery.Database
 {
     abstract class BaseRepository<TItem> : IBaseRepository<TItem> where TItem : class
     {
-        protected DatabaseContext context = null;
+        protected DatabaseContext Context = null;
 
-        protected BaseRepository(IDatabaseContext dataBaseContext)
+        protected BaseRepository(DatabaseContext dataBaseContext)
         {
-            context = dataBaseContext as DatabaseContext;
+            this.Context = dataBaseContext;
         }
 
         protected DbSet<TItem> DbSet
         {
-            get { return context.Set<TItem>(); }
+            get { return this.Context.Set<TItem>(); }
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace BinaryStudio.PhotoGallery.Database
         /// </summary>
         public virtual int Update(TItem item)
         {
-            var entry = context.Entry(item);
+            var entry = this.Context.Entry(item);
             DbSet.Attach(item);
             entry.State = EntityState.Modified;
 
@@ -115,8 +115,8 @@ namespace BinaryStudio.PhotoGallery.Database
 
         public void Dispose()
         {
-            if (context != null)
-                context.Dispose();
+            if (this.Context != null)
+                this.Context.Dispose();
         }
     }
 }

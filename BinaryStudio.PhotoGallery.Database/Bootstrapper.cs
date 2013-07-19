@@ -6,10 +6,7 @@ namespace BinaryStudio.PhotoGallery.Database
     {
         public static void RegisterTypes(IUnityContainer container)
         {
-            // todo: register repositories
             container.RegisterType<IUnitOfWorkFactory, UnitOfWorkFactory>(new ContainerControlledLifetimeManager());
-
-//            container.RegisterInstance(typeof (IUnitOfWorkFactory), "IUnitOfWorkFactory", UnitOfWorkFactory.Instance);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Database
     {
         private static DatabaseContext _dbContext;
 
-        private readonly Lazy<IUserRepository> _usersLazy =
+        private readonly Lazy<IUserRepository> usersLazy =
             new Lazy<IUserRepository>(() => new UserRepository(_dbContext));
 
 
@@ -24,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
         public IUserRepository Users
         {
-            get { return _usersLazy.Value; }
+            get { return this.usersLazy.Value; }
         }
 
         public IGroupRepository Groups { get; set; }

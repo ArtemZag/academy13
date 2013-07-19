@@ -4,11 +4,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     abstract internal class Service
     {
-        protected readonly IUnitOfWorkFactory workFactory;
+        protected readonly IUnitOfWorkFactory WorkFactory;
 
         protected Service(IUnitOfWorkFactory workFactory)
         {
-            this.workFactory = workFactory;
+            this.WorkFactory = workFactory;
         }
     }
 }
