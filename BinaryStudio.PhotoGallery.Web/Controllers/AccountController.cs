@@ -48,6 +48,12 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return RedirectToAction("Signin", "Account");
         }
 
+        [GET]
+        public ActionResult Signup()
+        {
+            return View();
+        }
+
         [POST]
         public ActionResult Signup(RegistrationViewModel registrationViewModel)
         {

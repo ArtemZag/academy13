@@ -1,44 +1,31 @@
 ﻿@{
-    ViewBag.Title = "SignIn";
-    Layout = null;
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewBag.Title = "Login | Bingally";
 }
 
-<!DOCTYPE>
-<html>
-<head>
-    <title>Login | Bingally</title>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet"/>
-    <link href="~/Content/auth-page.css" rel="stylesheet" />
-</head>
-    <body>
-        <div class="full-screen-shadow"></div>
-        <div class="change-panel well">
-            <strong>First time here?</strong>
-            <button type="submit" class="btn btn-success">Sign up</button>
-        </div>
-        <div class="login-panel">
-            <img src="~/Content/images/big_logo.png"/>
-            <form class="form-horizontal form-signin well">
-                <div class="control-group">
-                    <input type="text" id="user-email" placeholder="E-mail address">
-                    <input type="password" id="user-pass" placeholder="Password">
+<div class="change-panel well">
+    <strong>First time here?</strong>
+    <button type="submit" class="btn btn-success">Sign up</button>
+</div>
+<div class="login-panel">
+    <img src="~/Content/images/big_logo.png"/>
+    <form class="form-horizontal form-signin well">
+        <div class="control-group">
+            <input type="text" id="user-email" placeholder="E-mail address">
+            <input type="password" id="user-pass" placeholder="Password">
                     
-                    <label class="checkbox">
-                        <input type="checkbox" id="optionsCheckbox" checked>Remember me
-                    </label>
-                    <button type="submit" class="btn btn-primary">Sign In</button>
-                    <button class="btn btn-link">Forgot password?</button>
-                </div>
-                <hr/>
-                <div class="social">
-                    <img src="~/Content/images/vkontakte_logo.png"/>
-                    <img src="~/Content/images/facebook_logo.png"/>
-                    <img src="~/Content/images/twitter_logo.png" />
-                    <img src="~/Content/images/github_logo.png" />
-                </div>
-            </form>	
+            <label class="checkbox">
+                <input type="checkbox" id="optionsCheckbox" checked>Remember me
+            </label>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+            <button class="btn btn-link">Forgot password?</button>
         </div>
-    </body>
-    <script src="~/Scripts/jquery-2.0.3.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-</html>
+        <hr/>
+        <div class="social">
+            <img src="~/Content/images/vkontakte_logo.png"/>
+            <img src="~/Content/images/facebook_logo.png"/>
+            <img src="~/Content/images/twitter_logo.png" />
+            <img src="~/Content/images/github_logo.png" />
+        </div>
+    </form>	
+</div>
