@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Utils;
@@ -16,9 +15,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <summary>
         /// Resolves IUserService.
         /// </summary>
-        public UserController()
+        public UserController(IUserService userService)
         {
-            userService = DependencyResolver.Current.GetService<IUserService>();
+            this.userService = userService;
         }
 
         /// <summary>

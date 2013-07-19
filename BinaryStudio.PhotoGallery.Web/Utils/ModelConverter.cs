@@ -7,8 +7,17 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
     {
         public static UserModel ToModel(RegistrationViewModel viewModel)
         {
-            var userModel = new UserModel(viewModel.Nickname, viewModel.FirstName, viewModel.LastName);
-            var authInfo = new AuthInfoModel(viewModel.AuthName, viewModel.Email, viewModel.Password);
+            var userModel = new UserModel()
+                {
+                    NickName = viewModel.Nickname
+                };
+
+            var authInfo = new AuthInfoModel()
+                {
+                    AuthName = viewModel.AuthName,
+                    UserEmail = viewModel.Email,
+                    UserPassword = viewModel.Password,
+                };
 
             userModel.Authinfos.Add(authInfo);
 

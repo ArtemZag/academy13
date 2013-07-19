@@ -14,13 +14,6 @@ namespace BinaryStudio.PhotoGallery.Models
         public const string LOCAL_PROFILE = "local";
         public const string GOOGLE_PROFILE = "google";
 
-        public AuthInfoModel(string authName, string userEmail, string userPassword)
-        {
-            AuthName = authName;
-            UserEmail = userEmail;
-            UserPassword = userPassword;
-        }
-
         /// <summary>
         /// Gets or sets the name of the user.
         /// </summary>
