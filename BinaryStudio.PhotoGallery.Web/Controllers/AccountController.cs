@@ -28,15 +28,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [POST]
         public ActionResult SignIn(AuthInfoViewModel authInfo)
         {
-//            userService.CheckUser() TODO how can I known user name or last name to check user email ? WTF?
             if (true)
             {
 //                FormsAuthentication.SetAuthCookie(authInfo.Email, false);
                 return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                ModelState.AddModelError("", "Login details are wrong.");
             }
 
             return View(authInfo);

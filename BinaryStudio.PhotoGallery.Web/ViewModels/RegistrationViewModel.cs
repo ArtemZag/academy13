@@ -14,11 +14,15 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         public string Password { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 3)]
-        public string Nickname { get; set; }
+        [StringLength(20, MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        public string PasswordConfirmation { get; set; }
 
         [Required]
-        [StringLength(50, MinimumLength = 3)]
-        public string AuthName { get; set; }
+        public bool RememberMe { get; set; }
+
+        [Required]
+        [StringLength(20, MinimumLength = 3)]
+        public string AuthProvider { get; set; }
     }
 }
