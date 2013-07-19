@@ -11,8 +11,9 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Simple user creation.
         /// </summary>
-        public UserModel(string firstName, string lastName)
+        public UserModel(string nickName, string firstName, string lastName)
         {
+            NickName = nickName;
             FirstName = firstName;
             LastName = lastName;
         }
