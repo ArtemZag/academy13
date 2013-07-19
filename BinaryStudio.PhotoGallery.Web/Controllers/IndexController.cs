@@ -19,16 +19,5 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return View();
         }
 
-		[GET("")]
-        public ActionResult Signin()
-        {
-            return View();
-        }
-
-        [GET("")]
-        public ActionResult Signup()
-        {
-            return View();
-        }
     }
 }
