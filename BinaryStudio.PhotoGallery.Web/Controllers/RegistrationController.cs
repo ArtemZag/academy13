@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                     var newAccount = db.Users.Create();
                     newAccount.UserEmail = registration.Email;
                     newAccount.UserPassword = registration.Password;
-                    newAccount.AuthName = registration.Login;
+                    newAccount.AuthProvider = registration.Login;
                     db.SaveChanges();
                     
                 }    */
