@@ -9,13 +9,12 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             var userModel = new UserModel()
                 {
-                    NickName = viewModel.Nickname
+                    Email = viewModel.Email
                 };
 
             var authInfo = new AuthInfoModel()
                 {
                     AuthName = viewModel.AuthProvider,
-                    UserEmail = viewModel.Email,
                     UserPassword = viewModel.Password,
                 };
 
