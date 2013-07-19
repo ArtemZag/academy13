@@ -1,29 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
     abstract class BaseRepository<TItem> : IBaseRepository<TItem> where TItem : class
     {
-
-        protected DatabaseContext Context = null;
-
+        protected DatabaseContext context = null;
 
         protected BaseRepository(IDatabaseContext dataBaseContext)
         {
-            Context = dataBaseContext as DatabaseContext;
+            context = dataBaseContext as DatabaseContext;
         }
-
 
         protected DbSet<TItem> DbSet
         {
-            get { return Context.Set<TItem>(); }
+            get { return context.Set<TItem>(); }
         }
 
         /// <summary>
@@ -74,7 +68,6 @@ namespace BinaryStudio.PhotoGallery.Database
             return DbSet.FirstOrDefault(predicate);
         }
 
-
         /// <summary>
         /// Counts all items in database
         /// </summary>
@@ -101,7 +94,7 @@ namespace BinaryStudio.PhotoGallery.Database
         /// </summary>
         public virtual int Update(TItem item)
         {
-            var entry = Context.Entry(item);
+            var entry = context.Entry(item);
             DbSet.Attach(item);
             entry.State = EntityState.Modified;
 
@@ -120,11 +113,10 @@ namespace BinaryStudio.PhotoGallery.Database
             return 0;
         }
 
-
         public void Dispose()
         {
-            if (Context != null)
-                Context.Dispose();
+            if (context != null)
+                context.Dispose();
         }
     }
 }
