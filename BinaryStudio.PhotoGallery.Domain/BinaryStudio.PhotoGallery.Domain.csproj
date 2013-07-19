@@ -49,9 +49,11 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AlbumService.cs" />
     <Compile Include="Services\IAlbumService.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\Service.cs" />
+    <Compile Include="Services\UserService.cs" />
     <Compile Include="TestServiceClass.cs" />
   </ItemGroup>
   <ItemGroup>
