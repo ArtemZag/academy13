@@ -11,6 +11,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 	[RoutePrefix("Index")]
     public class IndexController : Controller
     {
+        [GET("")]
+        public ViewResult Index()
+        {
+            int hour = DateTime.Now.Hour;
+            ViewBag.PartOfDay = hour < 12 ? "Good morning" : "Good afternoon";
+            return View();
+        }
+
 		[GET("")]
         public ActionResult Signin()
         {

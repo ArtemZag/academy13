@@ -101,21 +101,9 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         //метод проверки строки
         private bool validString(string s, params isValid[] valid)
         {
-            bool pr = true;
-            for (int i = 0; i < s.Length; i++)
-            {
-                bool z = false;
-                for (int j = 0; j < valid.Length; j++)
-                    z |= valid[j](s[i]);
-                
-                if (!z)
-                {
-                    pr = false;
-                    break;
-                }
-            }
-            return pr;
+            return s.Select(t => valid.Aggregate(false, (current, t1) => current | t1(t))).All(z => z);
         }
+
         public string Error { get; private set; }
     }
 }
