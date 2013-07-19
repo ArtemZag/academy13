@@ -4,8 +4,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     public interface IAlbumService
     {
-        void AddAlbum(AlbumModel albumModel);
+        bool CreateAlbum(AlbumModel album);
 
-        void DeleteAlbum(AlbumModel albumModel);
+        bool UpdateAlbum(AlbumModel album);
+
+        bool DeleteAlbum(AlbumModel album);
     }
 }

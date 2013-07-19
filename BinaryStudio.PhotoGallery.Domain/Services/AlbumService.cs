@@ -10,12 +10,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
-        public void AddAlbum(AlbumModel albumModel)
+        public bool CreateAlbum(AlbumModel album)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteAlbum(AlbumModel albumModel)
+        public bool UpdateAlbum(AlbumModel album)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteAlbum(AlbumModel album)
         {
             throw new NotImplementedException();
         }

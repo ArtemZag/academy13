@@ -27,7 +27,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             UserModel userModel = ModelConverter.ToModel(registrationViewModel);
 
-            userService.RegisterUser(userModel);
+            userService.CreateUser(userModel);
 
             return new HttpResponseMessage(HttpStatusCode.Created);
         }

@@ -10,13 +10,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
-        public bool RegisterUser(UserModel user)
+        public bool CreateUser(UserModel user)
         {
             try
             {
                 using (var unitOfWork = this.WorkFactory.GetUnitOfWork())
                 {
                     unitOfWork.Users.Create(user);
+                    unitOfWork.SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -34,6 +35,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 using (var unitOfWork = this.WorkFactory.GetUnitOfWork())
                 {
                     unitOfWork.Users.Update(user);
+                    unitOfWork.SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -51,6 +53,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 using (var unitOfWork = this.WorkFactory.GetUnitOfWork())
                 {
                     unitOfWork.Users.Delete(user);
+                    unitOfWork.SaveChanges();
                 }
             }
             catch (Exception ex)
