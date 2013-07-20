@@ -20,6 +20,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             // tear down
             result.Should().Be(false);
+            // todo: shoule be true 
         }
     }
 }

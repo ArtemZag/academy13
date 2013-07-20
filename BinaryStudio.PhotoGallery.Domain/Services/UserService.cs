@@ -50,7 +50,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             try
             {
-                using (IUnitOfWork unitOfWork = this.WorkFactory.GetUnitOfWork())
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
                 {
                     unitOfWork.Users.Delete(user);
                     unitOfWork.SaveChanges();
@@ -66,7 +66,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public bool CheckUser(string userEmail)
         {
-            using (IUnitOfWork unitOfWork = this.WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 IUserRepository userRepository = unitOfWork.Users;
 
