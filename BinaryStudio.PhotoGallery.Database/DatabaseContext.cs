@@ -4,7 +4,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    internal class DatabaseContext : DbContext, IDatabaseContext
+    public class DatabaseContext : DbContext, IDatabaseContext
     {
         public DbSet<UserModel> Users { get; set; }
         public DbSet<PhotoModel> PhotoModels { get; set; }

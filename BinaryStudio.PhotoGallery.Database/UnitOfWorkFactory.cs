@@ -8,9 +8,11 @@ namespace BinaryStudio.PhotoGallery.Database
 {
     internal class UnitOfWorkFactory : IUnitOfWorkFactory
     {
+        private DatabaseContext _databaseContext = new DatabaseContext();
+
         public IUnitOfWork GetUnitOfWork()
         {
-            return new UnitOfWork();
+            return new UnitOfWork(_databaseContext);
         }
     }
 }
