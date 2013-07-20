@@ -2,7 +2,7 @@
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    abstract internal class Service
+    internal abstract class Service
     {
         protected readonly IUnitOfWorkFactory WorkFactory;
 
