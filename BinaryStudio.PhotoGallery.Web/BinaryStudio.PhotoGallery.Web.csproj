@@ -59,6 +59,10 @@
     <Reference Include="AttributeRouting.Web.Mvc">
       <HintPath>..\packages\AttributeRouting.3.5.6\lib\net40\AttributeRouting.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.Unity, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -76,6 +80,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Extensions">
       <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net45\System.Net.Http.Extensions.dll</HintPath>
@@ -238,6 +243,10 @@
       <Project>{91126d20-a9b5-49be-9043-e3e8dcae3628}</Project>
       <Name>BinaryStudio.PhotoGallery.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BinaryStudio.PhotoGallery.Database\BinaryStudio.PhotoGallery.Data.csproj">
+      <Project>{b29a5e0c-0591-420a-80f7-ddc636d8350e}</Project>
+      <Name>BinaryStudio.PhotoGallery.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BinaryStudio.PhotoGallery.Domain\BinaryStudio.PhotoGallery.Domain.csproj">
       <Project>{8a8695b7-5687-4883-a819-e6e7dfdfba50}</Project>
       <Name>BinaryStudio.PhotoGallery.Domain</Name>
@@ -249,6 +258,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

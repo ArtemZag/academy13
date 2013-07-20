@@ -26,6 +26,7 @@ namespace BinaryStudio.PhotoGallery.Domain
                 //unitOfWork.SaveChanges();
 
                 _unitOfWork.Albums.Create(new AlbumModel());
+                _unitOfWork.Groups.All();
             }
         }
     }

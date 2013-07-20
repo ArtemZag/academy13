@@ -1,7 +1,9 @@
-﻿using System.Web;
+﻿using System.Data.Entity;
+using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using BinaryStudio.PhotoGallery.Database;
 
 namespace BinaryStudio.PhotoGallery.Web
 {
@@ -24,6 +26,10 @@ namespace BinaryStudio.PhotoGallery.Web
             AttributeRoutingConfig.Start();
 
             Bootstrapper.Initialise();
+            System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
+
+            //delete
+             BinaryStudio.PhotoGallery.Database.Bootstrapper.Test();
         }
     }
 }

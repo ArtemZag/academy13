@@ -29,6 +29,7 @@ namespace BinaryStudio.PhotoGallery.Web
 
             // e.g. container.RegisterType<ITestService, TestService>();    
             Domain.Bootstrapper.RegisterTypes(container);
+            Database.Bootstrapper.RegisterTypes(container);
         }
     }
 }

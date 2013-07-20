@@ -5,14 +5,14 @@ namespace BinaryStudio.PhotoGallery.Database
 {
     public interface IUnitOfWork : IDisposable
     {
-        int SaveChanges();
+        void SaveChanges();
 
         IUserRepository Users { get; }
-        IGroupRepository Groups { get; set; }
-        IAvailableGroupRepository AvailableGroups { get; set; }
-        IAuthInfoRepository AuthInfos { get; set; }
-        IPhotoRepository Photos { get; set; }
-        IPhotoCommentRepository PhotoComments { get; set; }
-        IAlbumRepository Albums { get; set; }
+        IGroupRepository Groups { get; }
+        IAvailableGroupRepository AvailableGroups { get; }
+        IAuthInfoRepository AuthInfos { get; }
+        IPhotoRepository Photos { get; }
+        IPhotoCommentRepository PhotoComments { get; }
+        IAlbumRepository Albums { get; }
     }
 }
