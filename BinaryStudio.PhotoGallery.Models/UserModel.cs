@@ -46,6 +46,6 @@ namespace BinaryStudio.PhotoGallery.Models
 
         public virtual ICollection<AlbumModel> Albums { get; set; }
         public virtual ICollection<GroupModel> Groups { get; set; }
-        public virtual ICollection<AuthInfoModel> Authinfos { get; set; }
+        public virtual ICollection<AuthInfoModel> AuthInfos { get; set; }
     }
 }
