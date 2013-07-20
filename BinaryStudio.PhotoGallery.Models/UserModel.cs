@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace BinaryStudio.PhotoGallery.Models
 {
@@ -47,5 +46,23 @@ namespace BinaryStudio.PhotoGallery.Models
         public virtual ICollection<AlbumModel> Albums { get; set; }
         public virtual ICollection<GroupModel> Groups { get; set; }
         public virtual ICollection<AuthInfoModel> Authinfos { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((UserModel) obj);
+        }
+
+        protected bool Equals(UserModel other)
+        {
+            return string.Equals(Email, other.Email);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Email != null ? Email.GetHashCode() : 0);
+        }
     }
 }

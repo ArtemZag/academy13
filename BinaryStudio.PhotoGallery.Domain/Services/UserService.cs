@@ -1,4 +1,5 @@
 ﻿using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Models;
 using System;
 
@@ -14,13 +15,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             try
             {
-                using (var unitOfWork = this.WorkFactory.GetUnitOfWork())
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
                 {
                     unitOfWork.Users.Create(user);
                     unitOfWork.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -32,13 +33,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             try
             {
-                using (var unitOfWork = this.WorkFactory.GetUnitOfWork())
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
                 {
                     unitOfWork.Users.Update(user);
                     unitOfWork.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -50,13 +51,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             try
             {
-                using (var unitOfWork = this.WorkFactory.GetUnitOfWork())
+                using (IUnitOfWork unitOfWork = this.WorkFactory.GetUnitOfWork())
                 {
                     unitOfWork.Users.Delete(user);
                     unitOfWork.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -66,9 +67,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public bool CheckUser(UserModel user)
         {
-            using (var unitOfWork = this.WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = this.WorkFactory.GetUnitOfWork())
             {
-                var userRepository = unitOfWork.Users;
+                IUserRepository userRepository = unitOfWork.Users;
 
                 return userRepository.Contains(model => model.Equals(user));
             }
