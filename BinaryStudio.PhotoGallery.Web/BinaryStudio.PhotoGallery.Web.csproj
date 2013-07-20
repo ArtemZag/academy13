@@ -194,7 +194,6 @@
     <Content Include="Content\images\github_logo.png" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
-    <Content Include="Content\images\test.png" />
     <Content Include="Content\images\twitter_logo.png" />
     <Content Include="Content\images\vkontakte_logo.png" />
     <Content Include="Content\style-libs\jasny-bootstrap-responsive.css" />

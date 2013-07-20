@@ -1,5 +1,4 @@
-﻿using System;
-using BinaryStudio.PhotoGallery.Database;
+﻿using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -12,17 +11,56 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public bool CreateAlbum(AlbumModel album)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                {
+                    unitOfWork.Albums.Create(album);
+                    unitOfWork.SaveChanges();
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public bool UpdateAlbum(AlbumModel album)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                {
+                    unitOfWork.Albums.Update(album);
+                    unitOfWork.SaveChanges();
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public bool DeleteAlbum(AlbumModel album)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                {
+                    unitOfWork.Albums.Delete(album);
+                    unitOfWork.SaveChanges();
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
