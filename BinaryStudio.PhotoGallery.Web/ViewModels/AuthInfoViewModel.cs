@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BinaryStudio.PhotoGallery.Web.Models
+namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
     public class AuthInfoViewModel
     {
