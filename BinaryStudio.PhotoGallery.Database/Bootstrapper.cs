@@ -8,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
         public static void RegisterTypes(IUnityContainer container)
         {
-            container.RegisterType(typeof (IUnitOfWorkFactory), typeof (UnitOfWorkFactory), new ContainerControlledLifetimeManager());
+            container.RegisterType<IUnitOfWorkFactory, UnitOfWorkFactory>(new ContainerControlledLifetimeManager());
         }
 
         public static void Test()

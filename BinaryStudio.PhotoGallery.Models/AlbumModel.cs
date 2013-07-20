@@ -18,8 +18,6 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the name of the album.
         /// </summary>
-        [Required(ErrorMessage = "AlbumName is required")]
-        [StringLength(100, ErrorMessage = "AlbumName must contain at least 3 characters.", MinimumLength = 3)]
         public string AlbumName { get; set; }
 
         /// <summary>
