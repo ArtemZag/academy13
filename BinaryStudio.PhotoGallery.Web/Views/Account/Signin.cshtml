@@ -5,23 +5,24 @@
     ViewBag.Title = "Login | Bingally";
 }
 
-<div class="change-panel well">
+<div id="change-panel" class="well">
     <strong class="pull-left">First time here?</strong>
     <a href="../Account/Signup" class="btn btn-success pull-right">Sign up</a>
 </div>
 
-<div class="login-panel">
+<div id="login-panel">
     <img src="~/Content/images/logo_v4.png"/>
-    <form class="form-horizontal form-signin well pagination-centered" method="POST">
+    <form class="form-horizontal form-signin well pagination-centered" method="POST" action="../Account/Signin">
         <div class="control-group">
             <input id="Email" name="Email" type="email" class="input-block-level" placeholder="E-mail address" />
             <input id="Password" name="Password" type="password" class="input-block-level" placeholder="Password" />
 
             <label class="checkbox">
-                <input type="checkbox" id="RememberMe" name="RememberMe" checked>Remember me
+@*                <input type="checkbox" id="RememberMe" name="RememberMe" checked>*@
+                @Html.CheckBoxFor(m => m.RememberMe)Remember me
             </label>
             
-            <a href="../Account/Signin" class="btn btn-primary">Sign In</a>
+            <button type="submit" class="btn btn-primary">Sign In</button>
             <a href="../Account/RemindPass" class="btn btn-link">Forgot password?</a>
         </div>
         <hr/>

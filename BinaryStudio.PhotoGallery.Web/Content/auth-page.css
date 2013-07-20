@@ -3,11 +3,7 @@
     outline: none;
 }
 
-body {
-    
-}
-
-.full-screen-shadow {
+#full-screen-shadow {
     position: absolute;
     margin: 0;
     padding: 0;
@@ -21,7 +17,7 @@ body {
     background-image: radial-gradient(farthest-side at center center, rgba(222, 224, 228, 0.476) -5%, rgba(0, 0, 0, 0.841) 100%);
 }
 
-.login-panel {
+#login-panel {
     position: absolute;
     top: 25%;
     left: 50%;
@@ -29,69 +25,69 @@ body {
     width: 260px;
 }
 
-.login-panel input[type=text], .login-panel [type=password] {
+#login-panel input[type=text], #login-panel [type=password] {
     margin-top: 1px;
     margin-bottom: 1px;
 }
 
-.login-panel .form-signin {
+#login-panel .form-signin {
     padding: 1px;
     border: 2px solid #03417d;
     border-radius: 8px;
     box-shadow: 0 0 20px 2px rgba(3, 65, 125, 0.7);
 }
 
-.login-panel .checkbox {
+#login-panel .checkbox {
     float: right;
     margin-top: 15px;
     margin-right: 10px;
 }
 
-.login-panel .btn-success {
+#login-panel .btn-success {
     margin-top: 8px;
     width: 84%;
     font-size: 18px;
     padding: 5px;
 }
 
-.login-panel .btn-primary {
+#login-panel .btn-primary {
     margin-top: 8px;
     width: 40%;
     font-size: 18px;
     padding: 5px;
 }
 
-.login-panel hr {
+#login-panel hr {
     border: 0;
     border-top: 1px solid #03417d;
     margin: 10px 0;
 }
 
-.login-panel .control-group {
+#login-panel .control-group {
     margin-bottom: 0px;
 }
 
-.login-panel .alert {
+#login-panel .alert {
     margin: 10px 2px 5px 2px;
 }
 
-.login-panel .social {
+#login-panel .social {
     display: block;
     margin-bottom: 10px;
     width: 100%;
 }
 
-.login-panel .social img {
+#login-panel .social img {
     width: 32px;
     height: 32px;
 }
  
-.login-panel .social img:hover {
+#login-panel .social img:hover {
     opacity: 0.8;
     cursor: pointer;
 }
 
-.login-panel .btn-link {
+#login-panel .btn-link {
     background: transparent;
     border: 0;
     box-shadow: none;
@@ -101,7 +97,7 @@ body {
     font-size: 14px!important;
 }
 
-.change-panel {
+#change-panel {
     position: absolute;
     top: 0;
     left: 50%;
@@ -116,7 +112,7 @@ body {
     background: rgba(245, 245, 245, 0.6);
 }
 
-.change-panel strong {
+#change-panel strong {
     font-size: 20px;
     color: white;
     margin-top: 5px;
@@ -124,6 +120,6 @@ body {
     text-align: center;
 }
 
-.change-panel .btn-primary, .change-panel .btn-success {
+#change-panel .btn-primary, #change-panel .btn-success {
     width: 40%;
 }

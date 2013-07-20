@@ -13,7 +13,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
         public bool RememberMe { get; set; }
     }
 }
