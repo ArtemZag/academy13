@@ -6,10 +6,8 @@
 }
 
 <div class="change-panel well">
-    <strong>Already registered?</strong>
-    <a href="/Account/Signin">
-        <button type="submit" class="btn btn-primary">Sign in</button>
-    </a>
+    <strong class="pull-left">Already registered?</strong>
+    <a href="/Account/Signin" class="btn btn-primary pull-right">Sign in</a>
 </div>
 
 <div class="login-panel">
@@ -21,27 +19,17 @@
             <input type="password" id="PasswordConfirmation" class="input-block-level" name="ConfirmPassword" placeholder="Repeat password">
             
             <label class="checkbox">
-                @Html.CheckBoxFor(m => m.RememberMe)Remember me
+                <input type="checkbox" id="RememberMe" name="RememberMe" checked>Remember me
             </label>
 
-            <a href="/Account/Signup">
-                <button type="submit" class="btn btn-success">Sign up</button>
-            </a>
+            <a href="/Account/Signup" class="btn btn-success">Sign up</a>
         </div>
         <hr/>
         <div class="social">
-            <a href="#">
-                <img src="~/Content/images/vkontakte_logo.png"/>
-            </a>
-            <a href="#">
-                <img src="~/Content/images/facebook_logo.png"/>
-            </a>
-            <a href="#">
-                <img src="~/Content/images/twitter_logo.png" />
-            </a>
-            <a href="#">
-                <img src="~/Content/images/github_logo.png" />
-            </a>
+            <a href="#"><img src="~/Content/images/vkontakte_logo.png"/></a>
+            <a href="#"><img src="~/Content/images/facebook_logo.png"/></a>
+            <a href="#"><img src="~/Content/images/twitter_logo.png" /></a>
+            <a href="#"><img src="~/Content/images/github_logo.png" /></a>
         </div>
     </form>	
 </div>
