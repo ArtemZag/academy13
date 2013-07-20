@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="DatabaseContext.cs" />
+    <Compile Include="DatabaseInitializer.cs" />
     <Compile Include="IDatabaseContext.cs" />
     <Compile Include="IBaseRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
