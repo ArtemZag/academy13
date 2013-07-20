@@ -17,8 +17,6 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the name of the group.
         /// </summary>
-        [Required(ErrorMessage = "GroupName is required")]
-        [StringLength(100, ErrorMessage = "GroupName must contain at least 3 characters.", MinimumLength = 3)]
         public string GroupName { get; set; }
 
         /// <summary>

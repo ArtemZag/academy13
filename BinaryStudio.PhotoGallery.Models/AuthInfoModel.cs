@@ -22,24 +22,17 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the name of the authentication.
         /// </summary>
-        [Required(ErrorMessage = "AuthName is required")]
-        [StringLength(50, ErrorMessage = "AuthName must contain at least 3 characters.", MinimumLength = 3)]
-        public string AuthName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user's E-mail.
-        /// </summary>
-        [Required(ErrorMessage = "E-mail is required")]
-        [DataType(DataType.EmailAddress)]
-        public string UserEmail { get; set; }
+        public string AuthProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the user's password.
         /// </summary>
-        [Required(ErrorMessage = "Password is required")]
-        [StringLength(50, ErrorMessage = "Password must contain at least 6 characters.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
         public string UserPassword { get; set; }
+
+        /// <summary>
+        /// Gets or sets token for work with social webs
+        /// </summary>
+        public string AuthProviderToken { get; set; }
 
         public virtual int UserModelID { get; set; }
     }

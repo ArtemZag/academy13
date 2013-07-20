@@ -16,7 +16,6 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the date and time of comment creation.
         /// </summary>
-        [Required]
         public DateTime DateOfCreating { get; set; }
 
         /// <summary>
@@ -27,14 +26,13 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the text of comment.
         /// </summary>
-        [Required]
-        [StringLength(500)]
         public string Text { get; set; }
 
         /// <summary>
         /// Gets or sets if user reply in other comment.
         /// </summary>
         public PhotoCommentModel Reply { get; set; }
+
         public int PhotoModelID  { get; set; }
         public int UserModelID { get; set; }
     }

@@ -14,7 +14,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             var authInfo = new AuthInfoModel()
                 {
-                    AuthName = viewModel.AuthProvider,
+                    AuthProvider = viewModel.AuthProvider,
                     UserPassword = viewModel.Password,
                 };
 

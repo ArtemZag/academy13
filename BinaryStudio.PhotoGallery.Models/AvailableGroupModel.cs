@@ -16,13 +16,9 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the availability for group.
         /// </summary>
-        [Required]
         public bool CanSeePhotos { get; set; }
-        [Required]
         public bool CanSeeComments { get; set; }
-        [Required]
         public bool CanAddPhotos { get; set; }
-        [Required]
         public bool CanAddComments { get; set; }
 
 

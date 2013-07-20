@@ -17,8 +17,6 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the photo name.
         /// </summary>
-        [Required(ErrorMessage = "PhotoName is required")]
-        [StringLength(100, ErrorMessage = "PhotoName must contain at least 3 characters.", MinimumLength = 3)]
         public string PhotoName { get; set; }
 
         /// <summary>
@@ -26,7 +24,9 @@ namespace BinaryStudio.PhotoGallery.Models
         /// </summary>
         public string Decription { get; set; }
 
-        [Required]
+        /// <summary>
+        /// Time and date of photo creating
+        /// </summary>
         public DateTime  DataOfCreation { get; set; }
 
         /// <summary>
