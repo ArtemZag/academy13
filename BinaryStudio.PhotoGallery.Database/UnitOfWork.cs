@@ -6,10 +6,9 @@ namespace BinaryStudio.PhotoGallery.Database
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private static DatabaseContext _databaseContext;
+        private static DatabaseContext _databaseContext; 
 
-
-
+ 
         private readonly Lazy<IUserRepository> _usersLazy =
             new Lazy<IUserRepository>(() => new UserRepository(_databaseContext));
 
@@ -35,10 +34,9 @@ namespace BinaryStudio.PhotoGallery.Database
         /// <summary>
         /// Create unit of work with databaseContext
         /// </summary>
-        /// <param name="databaseContext"></param>
-        public UnitOfWork(DatabaseContext databaseContext)
+        public UnitOfWork()
         {
-            _databaseContext = databaseContext;
+            _databaseContext = new DatabaseContext();
         }
 
         /// <summary>
