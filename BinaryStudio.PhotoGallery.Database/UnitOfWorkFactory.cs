@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    internal class UnitOfWorkFactory : IUnitOfWorkFactory
+    public class UnitOfWorkFactory : IUnitOfWorkFactory
     {
         private DatabaseContext _databaseContext = new DatabaseContext();
 
