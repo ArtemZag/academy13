@@ -1,7 +1,6 @@
 ﻿using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Models;
-using System;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -21,7 +20,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     unitOfWork.SaveChanges();
                 }
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
@@ -39,7 +38,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     unitOfWork.SaveChanges();
                 }
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
@@ -57,7 +56,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     unitOfWork.SaveChanges();
                 }
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
@@ -65,13 +64,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return true;
         }
 
-        public bool CheckUser(UserModel user)
+        public bool CheckUser(string userEmail)
         {
             using (IUnitOfWork unitOfWork = this.WorkFactory.GetUnitOfWork())
             {
                 IUserRepository userRepository = unitOfWork.Users;
 
-                return userRepository.Contains(model => model.Equals(user));
+                return userRepository.Contains(model => string.Equals(model.Email, userEmail));
             }
         }
     }

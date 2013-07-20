@@ -64,7 +64,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserRegistrationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             var user = ModelConverter.GetModel(authInfo);
 
-            var userExist = userService.CheckUser(user);
+            var userExist = userService.CheckUser(user.Email);
 
             if (userExist)
             {

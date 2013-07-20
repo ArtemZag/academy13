@@ -10,6 +10,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         bool DeleteUser(UserModel userModel);
 
-        bool CheckUser(UserModel userModel);
+        bool CheckUser(string userEmail);
     }
 }
