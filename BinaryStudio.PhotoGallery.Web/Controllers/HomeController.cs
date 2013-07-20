@@ -9,11 +9,17 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class HomeController : Controller
     {
         /// <summary>
-        /// It's main user page
+        /// Main user page
         /// </summary>
         /// <returns>Return page with flow of pictures</returns>
 		[GET]
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        [GET]
+        public ActionResult Settings()
         {
             return View();
         }

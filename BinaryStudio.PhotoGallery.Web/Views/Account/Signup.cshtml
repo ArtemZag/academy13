@@ -19,6 +19,10 @@
             <input type="email" id="Email" name="Email" class="input-block-level" placeholder="E-mail address">
             <input type="password" id="Password" name="Password" class="input-block-level" placeholder="Password">
             <input type="password" id="PasswordConfirmation" class="input-block-level" name="ConfirmPassword" placeholder="Repeat password">
+            
+            <label class="checkbox">
+                @Html.CheckBoxFor(m => m.RememberMe)Remember me
+            </label>
 
             <a href="/Account/Signup">
                 <button type="submit" class="btn btn-success">Sign up</button>

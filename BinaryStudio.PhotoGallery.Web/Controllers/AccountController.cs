@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [POST]
         public ActionResult SignIn(AuthInfoViewModel authInfo)
         {
-            var user = ModelConverter.ToModel(authInfo);
+            var user = ModelConverter.GetModel(authInfo);
 
             var userExist = userService.CheckUser(user);
 
@@ -67,6 +67,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [POST]
         public ActionResult Signup(RegistrationViewModel registrationViewModel)
         {
+            var user = ModelConverter.GetModel(registrationViewModel);
+
             return View(registrationViewModel);
         }
 

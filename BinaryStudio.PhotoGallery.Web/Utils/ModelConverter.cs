@@ -5,7 +5,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 {
     public static class ModelConverter
     {
-        public static UserModel ToModel(RegistrationViewModel viewModel)
+        public static UserModel GetModel(RegistrationViewModel viewModel)
         {
             var userModel = new UserModel
                 {
@@ -23,7 +23,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return userModel;
         }
 
-        public static UserModel ToModel(AuthInfoViewModel viewModel)
+        public static UserModel GetModel(AuthInfoViewModel viewModel)
         {
             var userModel = new UserModel { Email = viewModel.Email };
 

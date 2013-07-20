@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// </summary>
         public HttpResponseMessage PostRegistration([FromBody]RegistrationViewModel registrationViewModel)
         {
-            UserModel userModel = ModelConverter.ToModel(registrationViewModel);
+            UserModel userModel = ModelConverter.GetModel(registrationViewModel);
 
             userService.CreateUser(userModel);
 
@@ -37,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// </summary>
         public HttpResponseMessage PutUpdateUser(RegistrationViewModel registrationViewModel)
         {
-            UserModel userModel = ModelConverter.ToModel(registrationViewModel);
+            UserModel userModel = ModelConverter.GetModel(registrationViewModel);
 
             userService.UpdateUser(userModel);
 
