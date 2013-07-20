@@ -8,10 +8,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
     {
         public static UserModel GetModel(RegistrationViewModel viewModel)
         {
-            var userModel = new UserModel
-                {
-                    Email = viewModel.Email
-                };
+            var userModel = new UserModel { Email = viewModel.Email };
 
             var authInfo = new AuthInfoModel
                 {
@@ -19,32 +16,22 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     UserPassword = viewModel.Password,
                 };
 
-            // Collection of AuthInfos can be not created, so need check it
-            if (userModel.AuthInfos == null)
-            {
-                userModel.AuthInfos = new Collection<AuthInfoModel>();
-            }
-
-            userModel.AuthInfos.Add(authInfo);
+            userModel.AuthInfos = new Collection<AuthInfoModel> { authInfo };
 
             return userModel;
         }
 
         public static UserModel GetModel(AuthInfoViewModel viewModel)
         {
-            var userModel = new UserModel {Email = viewModel.Email};
+            var userModel = new UserModel { Email = viewModel.Email };
 
             var authInfo = new AuthInfoModel
                 {
                     AuthProvider = viewModel.AuthProvider,
                     UserPassword = viewModel.Password,
                 };
-            // Collection of AuthInfos can be not created, so need check it
-            if (userModel.AuthInfos == null)
-            {
-                userModel.AuthInfos = new Collection<AuthInfoModel>();
-            }
-            userModel.AuthInfos.Add(authInfo);
+            
+            userModel.AuthInfos = new Collection<AuthInfoModel> { authInfo };
 
             return userModel;
         }
