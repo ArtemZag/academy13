@@ -6,10 +6,8 @@
 }
 
 <div class="change-panel well">
-    <strong>First time here?</strong>
-    <a href="/Account/Signup">
-        <button type="submit" class="btn btn-success">Sign up</button>
-    </a>
+    <strong class="pull-left">First time here?</strong>
+    <a href="/Account/Signup" class="btn btn-success pull-right">Sign up</a>
 </div>
 
 <div class="login-panel">
@@ -20,14 +18,11 @@
             <input id="Password" name="Password" type="password" class="input-block-level" placeholder="Password" />
 
             <label class="checkbox">
-                @Html.CheckBoxFor(m => m.RememberMe)Remember me
+                <input type="checkbox" id="RememberMe" name="RememberMe" checked>Remember me
             </label>
-            <a href="/Account/Signin">
-                <button type="submit" class="btn btn-primary">Sign In</button>
-            </a>
-            <a href="/Account/RemindPass">
-                <button class="btn btn-link">Forgot password?</button>
-            </a>
+            
+            <a href="/Account/Signin" class="btn btn-primary">Sign In</a>
+            <a href="/Account/RemindPass" class="btn btn-link">Forgot password?</a>
         </div>
         <hr/>
         <div class="social">

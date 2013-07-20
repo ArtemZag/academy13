@@ -69,13 +69,28 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             var user = ModelConverter.GetModel(registrationViewModel);
 
-            return View(registrationViewModel);
+            var userExist = userService.CheckUser(user);
+
+            if (userExist)
+            {
+                return View(registrationViewModel);
+            }
+
+            userService.CreateUser(user);
+
+            return RedirectToAction("Index", "Home");
         }
 
         [GET]
         public ActionResult RemindPass()
         {
-            return View();
+            return View(new RemindPassViewModel());
+        }
+
+        [POST]
+        public ActionResult RemindPass(RemindPassViewModel remindPassViewModel)
+        {
+            return View(remindPassViewModel);
         }
     }
 }
