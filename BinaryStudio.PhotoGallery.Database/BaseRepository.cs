@@ -23,9 +23,9 @@ namespace BinaryStudio.PhotoGallery.Database
         /// <summary>
         /// Creates a new object(item) with TItem type in database.
         /// </summary>
-        public virtual void Create(TItem item)
+        public virtual TItem Create(TItem item)
         {
-            DbSet.Add(item);
+            return DbSet.Add(item);
         }
 
         /// <summary>
