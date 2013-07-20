@@ -3,6 +3,11 @@
     outline: none;
 }
 
+body {
+    background: url(images/cherdak.png);
+    background-size: cover;
+}
+
 #full-screen-shadow {
     position: absolute;
     margin: 0;
