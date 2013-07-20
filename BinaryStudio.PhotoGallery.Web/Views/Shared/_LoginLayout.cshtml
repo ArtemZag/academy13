@@ -9,7 +9,9 @@
     <link href="~/Content/auth-page.css" rel="stylesheet" />
 </head>
     <body>
-        <div class="full-screen-shadow"></div>
+        <div id="full-screen-shadow"></div>
         @RenderBody()
     </body>
+    @Scripts.Render("~/bundles/scripts/jquery")
+    @Scripts.Render("~/Scripts/auth-page.js")
 </html>

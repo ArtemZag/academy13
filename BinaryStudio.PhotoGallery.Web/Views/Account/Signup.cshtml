@@ -5,13 +5,13 @@
     ViewBag.Title = "Registration | Bingally";
 }
 
-<div class="change-panel well">
+<div id="change-panel" class="well">
     <strong class="pull-left">Already registered?</strong>
     <a href="../Account/Signin" class="btn btn-primary pull-right">Sign in</a>
 </div>
 
-<div class="login-panel">
-    <img src="~/Content/images/logo_v4.png"/>
+<div id="login-panel">
+    <img id="logo" src="~/Content/images/logo_v4.png"/>
     <form class="form-horizontal form-signin well pagination-centered" method="POST">
         <div class="control-group">
             <input type="email" id="Email" name="Email" class="input-block-level" placeholder="E-mail address">

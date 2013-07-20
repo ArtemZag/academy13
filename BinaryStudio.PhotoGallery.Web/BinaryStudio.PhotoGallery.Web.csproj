@@ -183,8 +183,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\auth-page.css" />
-    <Content Include="Content\images\big_logo.png" />
-    <Content Include="Content\main-layput.css" />
+    <Content Include="Content\images\logo_v1.png" />
+    <Content Include="Content\images\logo_v2.png" />
+    <Content Include="Content\images\logo_v3.png" />
+    <Content Include="Content\images\logo_v4.png" />
+    <Content Include="Content\main-layout.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.min.css" />
     <Content Include="Content\style-libs\bootstrap-tags.css" />
@@ -215,7 +218,7 @@
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
-    <Content Include="Scripts\login-page.js" />
+    <Content Include="Scripts\auth-page.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
