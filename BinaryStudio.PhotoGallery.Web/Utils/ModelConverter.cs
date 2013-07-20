@@ -19,13 +19,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     UserPassword = viewModel.Password,
                 };
 
-            // Collection of AuthInfos can be not created, so need check it
-            if (userModel.AuthInfos == null)
-            {
-                userModel.AuthInfos = new Collection<AuthInfoModel>();
-            }
-
-            userModel.AuthInfos.Add(authInfo);
+            userModel.AuthInfos = new Collection<AuthInfoModel> { authInfo };
 
             return userModel;
         }
@@ -39,12 +33,8 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     AuthProvider = viewModel.AuthProvider,
                     UserPassword = viewModel.Password,
                 };
-            // Collection of AuthInfos can be not created, so need check it
-            if (userModel.AuthInfos == null)
-            {
-                userModel.AuthInfos = new Collection<AuthInfoModel>();
-            }
-            userModel.AuthInfos.Add(authInfo);
+            
+            userModel.AuthInfos = new Collection<AuthInfoModel> { authInfo };
 
             return userModel;
         }
