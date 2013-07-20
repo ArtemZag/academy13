@@ -25,8 +25,8 @@ namespace BinaryStudio.PhotoGallery.Domain
                 //unitOfWork.Photos.Add(somePhoto);
                 //unitOfWork.SaveChanges();
 
-                _unitOfWork.Albums.Create(new AlbumModel());
-                _unitOfWork.Groups.All();
+//                _unitOfWork.Albums.Create(new AlbumModel());
+//                _unitOfWork.Groups.All();
             }
         }
     }
