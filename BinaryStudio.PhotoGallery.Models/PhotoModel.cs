@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the description of photo.
         /// </summary>
-        public string Decription { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Time and date of photo creating
