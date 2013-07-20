@@ -12,7 +12,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             var authInfo = new AuthInfoModel
                 {
-                    AuthProvider = viewModel.AuthProvider,
+                    AuthProvider = "local",
                     UserPassword = viewModel.Password,
                 };
 
@@ -27,7 +27,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             var authInfo = new AuthInfoModel
                 {
-                    AuthProvider = viewModel.AuthProvider,
+                    AuthProvider = "local",
                     UserPassword = viewModel.Password,
                 };
             
