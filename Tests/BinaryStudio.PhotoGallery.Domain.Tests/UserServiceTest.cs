@@ -1,7 +1,8 @@
 ﻿using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Models;
+using FluentAssertions;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
-using FluentAssertions;
 
 namespace BinaryStudio.PhotoGallery.Domain.Tests
 {
@@ -20,7 +21,31 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             // tear down
             result.Should().Be(false);
-            // todo: shoule be true 
+            // todo: should be true 
+        }
+
+        [Test]
+        public void UserShouldBeAdded()
+        {
+            // setup
+            IUnityContainer container = Bootstrapper.Initialise();
+            var userService = container.Resolve<IUserService>();
+
+            var userModel = new UserModel
+                {
+                    Email = "aaa@gmail.com",
+                    NickName = "Nick",
+                    FirstName = "First",
+                    LastName = "Last"
+                };
+
+            // body
+            bool creationResult = userService.CreateUser(userModel);
+            bool checkingResult = userService.CheckUser(userModel.Email);
+
+            // tear down
+            creationResult.Should().Be(true);
+            checkingResult.Should().Be(true);
         }
     }
 }
