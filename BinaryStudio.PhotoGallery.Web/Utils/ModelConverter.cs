@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Models;
+﻿using System.Collections.ObjectModel;
+using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Utils
@@ -18,22 +19,32 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     UserPassword = viewModel.Password,
                 };
 
-            userModel.Authinfos.Add(authInfo);
+            // Collection of AuthInfos can be not created, so need check it
+            if (userModel.AuthInfos == null)
+            {
+                userModel.AuthInfos = new Collection<AuthInfoModel>();
+            }
+
+            userModel.AuthInfos.Add(authInfo);
 
             return userModel;
         }
 
         public static UserModel GetModel(AuthInfoViewModel viewModel)
         {
-            var userModel = new UserModel { Email = viewModel.Email };
+            var userModel = new UserModel {Email = viewModel.Email};
 
             var authInfo = new AuthInfoModel
+                {
+                    AuthProvider = viewModel.AuthProvider,
+                    UserPassword = viewModel.Password,
+                };
+            // Collection of AuthInfos can be not created, so need check it
+            if (userModel.AuthInfos == null)
             {
-                AuthProvider = viewModel.AuthProvider,
-                UserPassword = viewModel.Password,
-            };
-
-            userModel.Authinfos.Add(authInfo);
+                userModel.AuthInfos = new Collection<AuthInfoModel>();
+            }
+            userModel.AuthInfos.Add(authInfo);
 
             return userModel;
         }
