@@ -17,6 +17,7 @@ namespace BinaryStudio.PhotoGallery.Database
             var unitOfWork = unitOfWorkFactory.GetUnitOfWork();
 
             unitOfWork.Users.Create(new UserModel());
+            unitOfWork.SaveChanges();
         }
     }
 }
