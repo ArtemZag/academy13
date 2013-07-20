@@ -6,10 +6,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class UserService : Service, IUserService
     {
-
-        // changed by AT: use class for constructor, not an interface
-        // public UserService(IUnitOfWorkFactory workFactory) : base(workFactory)
-        public UserService(UnitOfWorkFactory workFactory) : base(workFactory)
+        public UserService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
         }
 
