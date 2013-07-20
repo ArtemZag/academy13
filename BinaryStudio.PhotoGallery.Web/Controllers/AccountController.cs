@@ -1,14 +1,14 @@
 ﻿using System.Web.Mvc;
 using System.Web.Security;
+using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
-using AttributeRouting;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    using BinaryStudio.PhotoGallery.Web.Utils;
-
     [RoutePrefix("Account")]
     public class AccountController : Controller
     {
@@ -33,9 +33,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [POST]
         public ActionResult SignIn(AuthInfoViewModel authInfo)
         {
-            var user = ModelConverter.GetModel(authInfo);
+            UserModel user = ModelConverter.GetModel(authInfo);
 
-            var userExist = userService.CheckUser(user.Email);
+            bool userExist = userService.CheckUser(user.Email);
 
             if (userExist)
             {
@@ -67,9 +67,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [POST]
         public ActionResult Signup(RegistrationViewModel registrationViewModel)
         {
-            var user = ModelConverter.GetModel(registrationViewModel);
+            UserModel user = ModelConverter.GetModel(registrationViewModel);
 
-            var userExist = userService.CheckUser(user);
+            bool userExist = userService.CheckUser(user.Email);
 
             if (userExist)
             {
