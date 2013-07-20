@@ -39,7 +39,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             if (userExist)
             {
-                FormsAuthentication.SetAuthCookie(authInfo.Email, false);
+                FormsAuthentication.SetAuthCookie(authInfo.Email, authInfo.RememberMe);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -76,9 +76,15 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 return View(registrationViewModel);
             }
 
-            userService.CreateUser(user);
+            var userWasCreated = userService.CreateUser(user);
 
-            return RedirectToAction("Index", "Home");
+            if (userWasCreated)
+            {
+                FormsAuthentication.SetAuthCookie(user.Email, registrationViewModel.RememberMe);
+                RedirectToAction("Index", "Home");
+            }
+
+            return View(registrationViewModel);;
         }
 
         [GET]
