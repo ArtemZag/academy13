@@ -38,7 +38,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         }
 
         [POST]
-        public ActionResult Signin(AuthInfoViewModel authInfo)
+        public ActionResult SignIn(AuthInfoViewModel authInfo)
         {
             var user = ModelConverter.GetModel(authInfo);
 
@@ -88,7 +88,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             if (userWasCreated)
             {
-                FormsAuthentication.SetAuthCookie(user.Email, registrationViewModel.RememberMe);
+                FormsAuthentication.SetAuthCookie(user.Email, false);
                 RedirectToAction("Index", "Home");
             }
 

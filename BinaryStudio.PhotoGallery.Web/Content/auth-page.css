@@ -1,4 +1,9 @@
-﻿body {
+﻿/* remove dashed border in IE 10 */
+:root input:focus {
+    outline: none;
+}
+
+body {
     background-image: url(images/test.png);
     background-repeat: no-repeat;
     background-position: center;
@@ -43,7 +48,15 @@
     margin-right: 10px;
 }
 
-.login-panel .btn-primary, .login-panel .btn-success {
+.login-panel .btn-success {
+    margin-top: 8px;
+    width: 87%;
+    margin-left: 10px;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.login-panel .btn-primary {
     margin-top: 8px;
     margin-left: 10px;
     width: 40%;
