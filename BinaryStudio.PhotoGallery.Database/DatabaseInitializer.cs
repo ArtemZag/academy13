@@ -18,10 +18,13 @@ namespace BinaryStudio.PhotoGallery.Database
             var authInfo = new AuthInfoModel();
             var album = new AlbumModel();
             var group = new GroupModel();
+            var photo = new PhotoModel();
 
             user.AuthInfos = new Collection<AuthInfoModel>();
             user.Albums = new Collection<AlbumModel>();
             user.Groups = new Collection<GroupModel>();
+
+            album.DataOfCreation = new DateTime(2012,12,12);
 
             user.Department = "C# prommer";
             user.Email = "Maaak@gmail.com";
@@ -33,7 +36,7 @@ namespace BinaryStudio.PhotoGallery.Database
             user.AuthInfos.Add(authInfo);
             user.Albums.Add(album);
             user.Groups.Add(group);
-
+            
             databaseContext.Users.Add(user);
 
 

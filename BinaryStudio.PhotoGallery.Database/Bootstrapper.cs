@@ -18,6 +18,12 @@ namespace BinaryStudio.PhotoGallery.Database
 
             unitOfWork.Users.Create(new UserModel());
             unitOfWork.SaveChanges();
+
+            if (unitOfWork.Users.Contains(x => string.Equals(x.FirstName, "Alexander")))
+            {
+                
+            }
+            
         }
     }
 }
