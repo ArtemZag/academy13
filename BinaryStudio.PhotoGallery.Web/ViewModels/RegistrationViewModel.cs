@@ -16,13 +16,10 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         [Required]
         [StringLength(20, MinimumLength = 6)]
         [DataType(DataType.Password)]
-        public string PasswordConfirmation { get; set; }
+        public string ConfirmPassword { get; set; }
 
-        [Required]
-        public bool RememberMe { get; set; }
-
-        [Required]
         [StringLength(20, MinimumLength = 3)]
+        [DataType(DataType.Text)]
         public string AuthProvider { get; set; }
     }
 }

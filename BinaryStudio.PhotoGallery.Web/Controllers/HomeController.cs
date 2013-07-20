@@ -4,13 +4,14 @@ using AttributeRouting.Web.Mvc;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
+    [Authorize] // Only authorized user can access this controller
 	[RoutePrefix("Home")]
     public class HomeController : Controller
     {
         /// <summary>
-        /// It's user page (flow of his pictures)
+        /// It's main user page
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Return page with flow of pictures</returns>
 		[GET]
         public ActionResult Index()
         {

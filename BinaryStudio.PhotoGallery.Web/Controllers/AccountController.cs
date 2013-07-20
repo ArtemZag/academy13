@@ -2,19 +2,19 @@
 using System.Web.Security;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Web.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using AttributeRouting;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
+    using BinaryStudio.PhotoGallery.Web.Utils;
+
     [RoutePrefix("Account")]
     public class AccountController : Controller
     {
         private readonly IUserService userService;
 
         public AccountController(IUserService userService)
-
         {
             this.userService = userService;
         }
@@ -22,15 +22,24 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET]
         public ActionResult SignIn()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(new AuthInfoViewModel());
         }
 
         [POST]
         public ActionResult SignIn(AuthInfoViewModel authInfo)
         {
-            if (true)
+            var user = ModelConverter.ToModel(authInfo);
+
+            var userExist = userService.CheckUser(user);
+
+            if (userExist)
             {
-//                FormsAuthentication.SetAuthCookie(authInfo.Email, false);
+                FormsAuthentication.SetAuthCookie(authInfo.Email, false);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -47,13 +56,18 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET]
         public ActionResult Signup()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(new RegistrationViewModel());
         }
 
         [POST]
         public ActionResult Signup(RegistrationViewModel registrationViewModel)
         {
-            return View();
+            return View(registrationViewModel);
         }
 
         [GET]

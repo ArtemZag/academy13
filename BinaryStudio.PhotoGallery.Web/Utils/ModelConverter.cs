@@ -14,9 +14,24 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             var authInfo = new AuthInfoModel
                 {
-                    AuthName = viewModel.AuthProvider,
+                    AuthProvider = viewModel.AuthProvider,
                     UserPassword = viewModel.Password,
                 };
+
+            userModel.Authinfos.Add(authInfo);
+
+            return userModel;
+        }
+
+        public static UserModel ToModel(AuthInfoViewModel viewModel)
+        {
+            var userModel = new UserModel { Email = viewModel.Email };
+
+            var authInfo = new AuthInfoModel
+            {
+                AuthProvider = viewModel.AuthProvider,
+                UserPassword = viewModel.Password,
+            };
 
             userModel.Authinfos.Add(authInfo);
 

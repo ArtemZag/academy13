@@ -22,9 +22,9 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the name of the authentication.
         /// </summary>
-        [Required(ErrorMessage = "AuthName is required")]
-        [StringLength(50, ErrorMessage = "AuthName must contain at least 3 characters.", MinimumLength = 3)]
-        public string AuthName { get; set; }
+        [Required(ErrorMessage = "AuthProvider is required")]
+        [StringLength(50, ErrorMessage = "AuthProvider must contain at least 3 characters.", MinimumLength = 3)]
+        public string AuthProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the user's E-mail.

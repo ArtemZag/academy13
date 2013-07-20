@@ -11,27 +11,33 @@
         <button type="submit" class="btn btn-primary">Sign in</button>
     </a>
 </div>
+
 <div class="login-panel">
     <img src="~/Content/images/big_logo.png"/>
     <form class="form-horizontal form-signin well" method="POST">
         <div class="control-group">
             <input type="email" id="Email" name="Email" class="input-block-level" placeholder="E-mail address">
             <input type="password" id="Password" name="Password" class="input-block-level" placeholder="Password">
-            <input type="password" id="PasswordConfirmation" class="input-block-level" name="PasswordConfirmation" placeholder="Repeat password">
-                    
-            <label class="checkbox">
-                <input type="checkbox" id="RememberMe" name="RemberMe" checked>Remember me
-            </label>
+            <input type="password" id="PasswordConfirmation" class="input-block-level" name="ConfirmPassword" placeholder="Repeat password">
+
             <a href="/Account/Signup">
                 <button type="submit" class="btn btn-success">Sign up</button>
             </a>
         </div>
         <hr/>
         <div class="social">
-            <img src="~/Content/images/vkontakte_logo.png"/>
-            <img src="~/Content/images/facebook_logo.png"/>
-            <img src="~/Content/images/twitter_logo.png" />
-            <img src="~/Content/images/github_logo.png" />
+            <a href="#">
+                <img src="~/Content/images/vkontakte_logo.png"/>
+            </a>
+            <a href="#">
+                <img src="~/Content/images/facebook_logo.png"/>
+            </a>
+            <a href="#">
+                <img src="~/Content/images/twitter_logo.png" />
+            </a>
+            <a href="#">
+                <img src="~/Content/images/github_logo.png" />
+            </a>
         </div>
     </form>	
 </div>

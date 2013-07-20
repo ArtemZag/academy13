@@ -20,7 +20,7 @@
             <input id="Password" name="Password" type="password" class="input-block-level" placeholder="Password" />
 
             <label class="checkbox">
-                <input type="checkbox" id="RememberMe" name="RememberMe" checked>Remember me
+                @Html.CheckBoxFor(m => m.RememberMe)Remember me
             </label>
             <a href="/Account/Signin">
                 <button type="submit" class="btn btn-primary">Sign In</button>

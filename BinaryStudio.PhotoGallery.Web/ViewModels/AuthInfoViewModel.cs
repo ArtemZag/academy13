@@ -15,5 +15,9 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 
         [Required]
         public bool RememberMe { get; set; }
+
+        [StringLength(20, MinimumLength = 1)]
+        [DataType(DataType.Text)]
+        public string AuthProvider { get; set; }
     }
 }
