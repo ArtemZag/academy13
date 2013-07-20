@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,28 @@ namespace BinaryStudio.PhotoGallery.Database
     {
         protected override void Seed(DatabaseContext databaseContext)
         {
-            databaseContext.Users.Add(new UserModel());
+            var user = new UserModel();
+
+            var authInfo = new AuthInfoModel();
+            var album = new AlbumModel();
+            var group = new GroupModel();
+
+            user.AuthInfos = new Collection<AuthInfoModel>();
+            user.Albums = new Collection<AlbumModel>();
+            user.Groups = new Collection<GroupModel>();
+
+            user.Department = "C# prommer";
+            user.Email = "Maaak@gmail.com";
+            user.ID = 123;
+            user.IsAdmin = true;
+            user.FirstName = "Alexander";
+            user.LastName = "Towstonog";
+
+            user.AuthInfos.Add(authInfo);
+            user.Albums.Add(album);
+            user.Groups.Add(group);
+
+            databaseContext.Users.Add(user);
 
 
 

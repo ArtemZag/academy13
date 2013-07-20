@@ -29,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Web
             System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
 
             //delete
-             BinaryStudio.PhotoGallery.Database.Bootstrapper.Test();
+            // BinaryStudio.PhotoGallery.Database.Bootstrapper.Test();
         }
     }
 }
