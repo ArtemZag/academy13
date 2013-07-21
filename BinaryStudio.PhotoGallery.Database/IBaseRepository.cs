@@ -51,7 +51,7 @@ namespace BinaryStudio.PhotoGallery.Database
         /// Delete objects from database by specified filter expression.
         /// </summary>
         /// <param name="predicate"></param>
-        int Delete(Expression<Func<T, bool>> predicate);
+        void Delete(Expression<Func<T, bool>> predicate);
 
         /// <summary>
         /// Update object changes and save to database.

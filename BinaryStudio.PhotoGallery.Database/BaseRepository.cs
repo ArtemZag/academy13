@@ -132,13 +132,19 @@ namespace BinaryStudio.PhotoGallery.Database
         /// <summary>
         /// Delete item with specific presicate from database
         /// </summary>
-        public virtual int Delete(Expression<Func<TItem, bool>> predicate)
+        public virtual void Delete(Expression<Func<TItem, bool>> predicate)
         {
-            var objects = Filter(predicate);
-            foreach (var obj in objects)
-                DbSet.Remove(obj);
+            try
+            {
+                var items = Filter(predicate);
+                foreach (var item in items)
+                    DbSet.Remove(item);
+            }
+            catch (Exception e)
+            {
 
-            return 0;
+                throw new RepositoryDeleteException("entry", e);
+            }
         }
 
         public void Dispose()
