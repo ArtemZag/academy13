@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
@@ -92,14 +93,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                     return View(registrationViewModel);
                 }
 
-                var userWasCreated = userService.CreateUser(user);
-
-                if (userWasCreated)
+                try
                 {
+                    userService.CreateUser(user);
+
                     FormsAuthentication.SetAuthCookie(user.Email, false);
                     RedirectToAction("Index", "Home");
                 }
-                else
+                catch
                 {
                     ModelState.AddModelError("", "Can't create new user. Something happens with server");
                 }
