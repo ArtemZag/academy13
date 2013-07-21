@@ -92,7 +92,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 RedirectToAction("Index", "Home");
             }
 
-            return View(registrationViewModel);;
+            return View(registrationViewModel);
         }
 
         [GET("Signout")]

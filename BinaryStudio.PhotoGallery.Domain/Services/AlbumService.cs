@@ -1,4 +1,5 @@
 ﻿using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -9,58 +10,81 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
-        public bool CreateAlbum(AlbumModel album)
+        public AlbumModel GetAlbum(string userEmail, string albumName)
         {
-            try
+            AlbumModel result; 
+
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                UserModel user = unitOfWork.Users.Find(model => string.Equals(model.Email, userEmail));
+
+                if (user != null)
                 {
-                    unitOfWork.Albums.Create(album);
-                    unitOfWork.SaveChanges();
+                    result =
+                        unitOfWork.Albums.Find(
+                            model => model.UserModelID == user.ID && string.Equals(model.AlbumName, albumName));
+
+                    if (result == null)
+                    {
+                        throw new AlbumNotFoundException();
+                    }
+                }
+                else
+                {
+                    throw new UserNotFoundException(userEmail);
                 }
             }
-            catch
-            {
-                return false;
-            }
 
-            return true;
+            return result;
         }
 
-        public bool UpdateAlbum(AlbumModel album)
+        public void CreateAlbum(string userEmail, AlbumModel album)
         {
-            try
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                UserModel user = unitOfWork.Users.Find(model => string.Equals(model.Email, userEmail));
+
+                if (user != null)
                 {
-                    unitOfWork.Albums.Update(album);
+                    user.Albums.Add(album);
+
+                    unitOfWork.Users.Update(user);
                     unitOfWork.SaveChanges();
                 }
+                else
+                {
+                    throw new UserNotFoundException(userEmail);
+                }
             }
-            catch
-            {
-                return false;
-            }
-
-            return true;
         }
 
-        public bool DeleteAlbum(AlbumModel album)
+        public void CreateAlbum(UserModel user, AlbumModel album)
         {
-            try
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-                {
-                    unitOfWork.Albums.Delete(album);
-                    unitOfWork.SaveChanges();
-                }
-            }
-            catch
-            {
-                return false;
-            }
+                user.Albums.Add(album);
 
-            return true;
+                unitOfWork.Users.Update(user);
+                unitOfWork.SaveChanges();
+            }
+        }
+
+        public void UpdateAlbum(AlbumModel album)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                unitOfWork.Albums.Update(album);
+                unitOfWork.SaveChanges();
+            }
+        }
+
+        public void DeleteAlbum(AlbumModel album)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                unitOfWork.Albums.Delete(album);
+                unitOfWork.SaveChanges();
+            }
         }
     }
 }

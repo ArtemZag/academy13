@@ -13,7 +13,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the album id.
         /// </summary>
-        public int  ID { get; set; }
+        public int ID { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the album.
@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the permissions for aldum: what goups of user can see and add comments of photo.
         /// </summary>
-        public int  Permissions { get; set; } 
+        public int Permissions { get; set; } 
 
         public virtual int UserModelID { get; set; }
         public virtual ICollection<PhotoModel> Photos { get; set; }

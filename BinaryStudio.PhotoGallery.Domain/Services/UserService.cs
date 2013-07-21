@@ -1,5 +1,4 @@
-﻿using System;
-using BinaryStudio.PhotoGallery.Database;
+﻿using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Models;
 
