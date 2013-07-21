@@ -27,7 +27,7 @@ body {
     top: 25%;
     left: 50%;
     margin-left: -130px;
-    width: 260px;
+    width: 280px;
 }
 
 #login-panel input[type=text], #login-panel [type=password] {
@@ -57,7 +57,7 @@ body {
 
 #login-panel .btn-primary {
     margin-top: 8px;
-    width: 40%;
+    width: 48%;
     font-size: 18px;
     padding: 5px;
 }
@@ -127,4 +127,8 @@ body {
 
 #change-panel .btn-primary, #change-panel .btn-success {
     width: 40%;
+}
+
+.validation-summary-errors {
+    text-align: left!important;
 }

@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
-        [StringLength(20, MinimumLength = 6)]
+        [StringLength(20, ErrorMessage = "Password must have {2}-{1} symbols", MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
