@@ -37,17 +37,22 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return View(new AuthInfoViewModel());
         }
 
-        [POST]
+        [POST("Signin")]
         public ActionResult SignIn(AuthInfoViewModel authInfo)
         {
-            var user = ModelConverter.GetModel(authInfo);
-
-            var userExist = userService.CheckUser(user.Email);
-
-            if (userExist)
+            if (ModelState.IsValid)
             {
-                FormsAuthentication.SetAuthCookie(authInfo.Email, authInfo.RememberMe);
-                return RedirectToAction("Index", "Home");
+                var user = ModelConverter.GetModel(authInfo);
+
+                var userExist = userService.CheckUser(user.Email);
+
+                if (userExist)
+                {
+                    FormsAuthentication.SetAuthCookie(authInfo.Email, authInfo.RememberMe);
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ModelState.AddModelError("", "E-mail or password is incorrect");
             }
 
             return View(authInfo);
@@ -72,24 +77,32 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return View(new RegistrationViewModel());
         }
 
-        [POST]
+        [POST("Signup")]
         public ActionResult SignUp(RegistrationViewModel registrationViewModel)
         {
-            var user = ModelConverter.GetModel(registrationViewModel);
-
-            var userExist = userService.CheckUser(user.Email);
-
-            if (userExist)
+            if (ModelState.IsValid)
             {
-                return View(registrationViewModel);
-            }
+                var user = ModelConverter.GetModel(registrationViewModel);
 
-            var userWasCreated = userService.CreateUser(user);
+                var userExist = userService.CheckUser(user.Email);
 
-            if (userWasCreated)
-            {
-                FormsAuthentication.SetAuthCookie(user.Email, false);
-                RedirectToAction("Index", "Home");
+                if (userExist)
+                {
+                    ModelState.AddModelError("", "This E-mail address is already in use");
+                    return View(registrationViewModel);
+                }
+
+                var userWasCreated = userService.CreateUser(user);
+
+                if (userWasCreated)
+                {
+                    FormsAuthentication.SetAuthCookie(user.Email, false);
+                    RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Can't create new user. Something happens with server");
+                }
             }
 
             return View(registrationViewModel);
@@ -108,7 +121,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return View(new RemindPassViewModel());
         }
 
-        [POST]
+        [POST("Remindpass")]
         public ActionResult RemindPass(RemindPassViewModel remindPassViewModel)
         {
             return View(remindPassViewModel);

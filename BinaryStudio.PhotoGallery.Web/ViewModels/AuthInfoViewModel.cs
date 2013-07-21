@@ -4,11 +4,11 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
     public class AuthInfoViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "E-mail address is required")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is required")]
         [StringLength(20, MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
