@@ -1,5 +1,6 @@
 ﻿using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -10,59 +11,35 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
-        // todo: does bool value returning is normal? 
-        public bool CreateUser(UserModel user)
+        public void CreateUser(UserModel user)
         {
-            try
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-                {
-                    unitOfWork.Users.Create(user);
-                    unitOfWork.SaveChanges();
-                }
+                unitOfWork.Users.Create(user);
             }
-            catch
-            {
-                return false;
-            }
-
-            return true;
         }
 
-        public bool UpdateUser(UserModel user)
+        public void UpdateUser(UserModel user)
         {
-            try
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-                {
-                    unitOfWork.Users.Update(user);
-                    unitOfWork.SaveChanges();
-                }
+                unitOfWork.Users.Update(user);
             }
-            catch
-            {
-                return false;
-            }
-
-            return true;
         }
 
-        public bool DeleteUser(UserModel user)
+        public void DeleteUser(string userEmail)
         {
-            try
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                try
                 {
+                    UserModel user = GetUser(userEmail, unitOfWork);
                     unitOfWork.Users.Delete(user);
-                    unitOfWork.SaveChanges();
+                }
+                catch (UserNotFoundException)
+                {
                 }
             }
-            catch
-            {
-                return false;
-            }
-
-            return true;
         }
 
         public bool CheckUser(string userEmail)

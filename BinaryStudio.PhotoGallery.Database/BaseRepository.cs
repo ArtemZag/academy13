@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using BinaryStudio.PhotoGallery.Database.Exceptions;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
@@ -12,7 +13,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
         protected BaseRepository(DatabaseContext dataBaseContext)
         {
-            this.Context = dataBaseContext;
+            Context = dataBaseContext;
         }
 
         protected DbSet<TItem> DbSet
@@ -23,9 +24,20 @@ namespace BinaryStudio.PhotoGallery.Database
         /// <summary>
         /// Creates a new object(item) with TItem type in database.
         /// </summary>
+        /// <exception cref="RepositoryCreateException">Says that repository cann't create new entry.</exception>
         public virtual TItem Create(TItem item)
         {
-            return DbSet.Add(item);
+            try
+            {
+                TItem entry = DbSet.Add(item);
+                Context.SaveChanges();
+
+                return entry;
+            }
+            catch (Exception e)
+            {
+                throw new RepositoryCreateException(e);
+            }
         }
 
         /// <summary>
@@ -82,41 +94,61 @@ namespace BinaryStudio.PhotoGallery.Database
         /// <summary>
         /// Delete item from database
         /// </summary>
-        public virtual int Delete(TItem item)
+        /// <exception cref="RepositoryDeleteException">Says that repository cann't delete this entry. Maybe it is alredy deleted</exception>
+        public virtual void Delete(TItem item)
         {
-            DbSet.Remove(item);
-
-            return 0;
+            try
+            {
+                DbSet.Remove(item);
+                Context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new RepositoryDeleteException(e);
+            }
         }
 
         /// <summary>
         /// Update a state of item to Modified
         /// </summary>
-        public virtual int Update(TItem item)
+        /// <exception cref="RepositoryUpdateException">Says that repository cann't update this entry. Maybe it is not present.</exception>
+        public virtual void Update(TItem item)
         {
-            var entry = this.Context.Entry(item);
-            DbSet.Attach(item);
-            entry.State = EntityState.Modified;
-
-            return 0;
+            try
+            {
+                Context.Entry(item).State = EntityState.Modified;
+                Context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new RepositoryUpdateException(e);
+            }
         }
 
         /// <summary>
         /// Delete item with specific presicate from database
         /// </summary>
-        public virtual int Delete(Expression<Func<TItem, bool>> predicate)
+        public virtual void Delete(Expression<Func<TItem, bool>> predicate)
         {
-            var objects = Filter(predicate);
-            foreach (var obj in objects)
-                DbSet.Remove(obj);
+            try
+            {
+                var items = Filter(predicate);
 
-            return 0;
+                foreach (var item in items)
+                {
+                    DbSet.Remove(item);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new RepositoryDeleteException(e);
+            }
         }
 
         public void Dispose()
         {
-            if (this.Context != null)
-                this.Context.Dispose();
+            if (Context != null)
+                Context.Dispose();
         }
     }
 }

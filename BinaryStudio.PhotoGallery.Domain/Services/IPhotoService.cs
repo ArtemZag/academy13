@@ -16,8 +16,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         /// <param name="userEmail">Users email.</param>
         /// <param name="albumName">Album name.</param>
-        /// <param name="from">Beginning of the interval.</param>
-        /// <param name="to">Ending of the interval.</param>
-        ICollection<PhotoModel> GetPhotos(string userEmail, string albumName, int from, int to);
+        /// <param name="begin">Beginning of the interval.</param>
+        /// <param name="end">Ending of the interval.</param>
+        ICollection<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
     }
 }

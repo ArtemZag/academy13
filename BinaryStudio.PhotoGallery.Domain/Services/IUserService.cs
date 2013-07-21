@@ -4,11 +4,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     public interface IUserService
     {
-        bool CreateUser(UserModel userModel);
+        void CreateUser(UserModel userModel);
 
-        bool UpdateUser(UserModel userModel);
+        void UpdateUser(UserModel userModel);
 
-        bool DeleteUser(UserModel userModel);
+        void DeleteUser(string userEmail);
 
         bool CheckUser(string userEmail);
     }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
@@ -48,19 +45,19 @@ namespace BinaryStudio.PhotoGallery.Database
         /// Delete the object from database.
         /// </summary>
         /// <param name="item">Specified a existing object to delete.</param>        
-        int Delete(T item);
+        void Delete(T item);
 
         /// <summary>
         /// Delete objects from database by specified filter expression.
         /// </summary>
         /// <param name="predicate"></param>
-        int Delete(Expression<Func<T, bool>> predicate);
+        void Delete(Expression<Func<T, bool>> predicate);
 
         /// <summary>
         /// Update object changes and save to database.
         /// </summary>
         /// <param name="item">Specified the object to save.</param>
-        int Update(T item);
+        void Update(T item);
 
         /// <summary>
         /// Get the total objects count.

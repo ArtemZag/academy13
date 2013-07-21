@@ -1,4 +1,7 @@
-﻿using BinaryStudio.PhotoGallery.Database;
+﻿using System;
+using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -8,7 +11,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         protected Service(IUnitOfWorkFactory workFactory)
         {
-            this.WorkFactory = workFactory;
+            WorkFactory = workFactory;
+        }
+
+        protected UserModel GetUser(string userEmail, IUnitOfWork unitOfWork)
+        {
+            UserModel user = unitOfWork.Users.Find(model => string.Equals(model.Email, userEmail));
+
+            if (user == null)
+            {
+                throw new UserNotFoundException(userEmail);
+            }
+
+            return user;
         }
     }
 }
