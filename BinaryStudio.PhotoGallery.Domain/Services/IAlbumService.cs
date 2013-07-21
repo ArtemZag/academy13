@@ -7,15 +7,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         /// Gets users album specified by name. 
         /// </summary>
-        /// <param name="userEmail"></param>
-        /// <param name="albumName"></param>
-        /// <returns></returns>
         AlbumModel GetAlbum(string userEmail, string albumName);
-
-        /// <summary>
-        /// Creates album for specified user.
-        /// </summary>
-        void CreateAlbum(UserModel user, AlbumModel album);
 
         /// <summary>
         /// Creates album for specified user by his email.
