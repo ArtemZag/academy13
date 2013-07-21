@@ -65,9 +65,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         public void UserShouldBeDeleted()
         {
             // setup
-            IUnityContainer container = Bootstrapper.Initialise();
-            var userService = container.Resolve<IUserService>();
-
             var userModel = new UserModel
             {
                 Email = "aaa@gmail.com",
