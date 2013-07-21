@@ -42,7 +42,7 @@ namespace BinaryStudio.PhotoGallery.Database
         /// </summary>
         public UnitOfWork()
         {
-            _databaseContext = new DatabaseContext();
+            _databaseContext = new DatabaseContext("BinaryStudio.PhotoGallery.Database.DatabaseContext");
         }
 
         /// <summary>

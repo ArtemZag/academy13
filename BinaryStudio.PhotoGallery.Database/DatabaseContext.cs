@@ -6,6 +6,14 @@ namespace BinaryStudio.PhotoGallery.Database
 {
     public class DatabaseContext : DbContext, IDatabaseContext
     {
+        protected DatabaseContext()
+        {
+        }
+
+        public DatabaseContext(string nameOrConnectionString) : base(nameOrConnectionString)
+        {
+        }
+
         public DbSet<UserModel> Users { get; set; }
         public DbSet<PhotoModel> PhotoModels { get; set; }
         public DbSet<PhotoCommentModel> PhotoComments { get; set; }
