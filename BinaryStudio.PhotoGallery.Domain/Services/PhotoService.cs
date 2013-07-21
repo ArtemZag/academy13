@@ -10,12 +10,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
-        public bool AddPhoto(string userEmail, PhotoModel photo)
+        public bool AddPhoto(string userEmail, string albumName, PhotoModel photo)
         {
             throw new System.NotImplementedException();
         }
 
-        public bool AddPhotos(string userEmail, ICollection<PhotoModel> photos)
+        public bool AddPhotos(string userEmail, string albumName, ICollection<PhotoModel> photos)
         {
             throw new System.NotImplementedException();
         }
@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             throw new System.NotImplementedException();
         }
 
-        public ICollection<PhotoModel> GetPhotos(string userEmail, int @from, int to)
+        public ICollection<PhotoModel> GetPhotos(string userEmail, string albumName, int @from, int to)
         {
             throw new System.NotImplementedException();
         }

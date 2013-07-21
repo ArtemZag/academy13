@@ -38,6 +38,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return result;
         }
 
+        // todo: what method realization is better?
         public void CreateAlbum(string userEmail, AlbumModel album)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

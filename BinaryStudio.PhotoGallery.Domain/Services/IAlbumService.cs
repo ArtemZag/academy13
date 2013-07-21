@@ -4,9 +4,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     public interface IAlbumService
     {
-        // todo: too many questions about db
-        //AlbumModel GetAlbum(UserModel model, string albumName);
-
+        /// <summary>
+        /// Gets users album specified by name. 
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="albumName"></param>
+        /// <returns></returns>
         AlbumModel GetAlbum(string userEmail, string albumName);
 
         /// <summary>
@@ -25,7 +28,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         void UpdateAlbum(AlbumModel album);
 
         /// <summary>
-        /// Deletes specified album
+        /// Deletes specified album.
         /// </summary>
         void DeleteAlbum(AlbumModel album);
     }

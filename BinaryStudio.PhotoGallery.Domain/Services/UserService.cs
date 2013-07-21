@@ -10,6 +10,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
+        // todo: does bool value returning is normal? 
         public bool CreateUser(UserModel user)
         {
             try
