@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E3290E15-9DCB-4EF6-8E44-92A741402992}</ProjectGuid>
+    <ProjectGuid>{F7272D8A-4A42-4292-AFD2-965BC40EFBAE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BinaryStudio.PhotoGallery.Domain.Tests</RootNamespace>
@@ -16,7 +16,7 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -37,31 +37,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="FizzWare.NBuilder">
-      <HintPath>..\..\packages\NBuilder.3.0.1.1\lib\FizzWare.NBuilder.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentAssertions, Version=2.0.1.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
+      <HintPath>..\BinaryStudio.PhotoGallery.Web\bin\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
+      <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity.Configuration">
-      <HintPath>..\..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="NSubstitute">
-      <HintPath>..\..\packages\NSubstitute.1.6.1.0\lib\NET40\NSubstitute.dll</HintPath>
+      <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -71,7 +63,11 @@
         <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
       </ItemGroup>
     </When>
-    <Otherwise />
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
   </Choose>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
@@ -79,24 +75,19 @@
     <Compile Include="UserServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BinaryStudio.PhotoGallery.Core\BinaryStudio.PhotoGallery.Core.csproj">
-      <Project>{91126d20-a9b5-49be-9043-e3e8dcae3628}</Project>
-      <Name>BinaryStudio.PhotoGallery.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\BinaryStudio.PhotoGallery.Database\BinaryStudio.PhotoGallery.Data.csproj">
+    <ProjectReference Include="..\BinaryStudio.PhotoGallery.Database\BinaryStudio.PhotoGallery.Data.csproj">
       <Project>{b29a5e0c-0591-420a-80f7-ddc636d8350e}</Project>
       <Name>BinaryStudio.PhotoGallery.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\BinaryStudio.PhotoGallery.Domain\BinaryStudio.PhotoGallery.Domain.csproj">
+    <ProjectReference Include="..\BinaryStudio.PhotoGallery.Domain\BinaryStudio.PhotoGallery.Domain.csproj">
       <Project>{8a8695b7-5687-4883-a819-e6e7dfdfba50}</Project>
       <Name>BinaryStudio.PhotoGallery.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\BinaryStudio.PhotoGallery.Models\BinaryStudio.PhotoGallery.Models.csproj">
-      <Project>{489D5695-2C0E-4D21-B8BB-2814F9E49FF0}</Project>
+    <ProjectReference Include="..\BinaryStudio.PhotoGallery.Models\BinaryStudio.PhotoGallery.Models.csproj">
+      <Project>{489d5695-2c0e-4d21-b8bb-2814f9e49ff0}</Project>
       <Name>BinaryStudio.PhotoGallery.Models</Name>
     </ProjectReference>
   </ItemGroup>

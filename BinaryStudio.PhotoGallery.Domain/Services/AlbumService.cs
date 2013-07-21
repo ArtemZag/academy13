@@ -43,7 +43,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 user.Albums.Add(album);
 
                 unitOfWork.Users.Update(user);
-                unitOfWork.SaveChanges();
             }
         }
 
@@ -52,16 +51,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 unitOfWork.Albums.Update(album);
-                unitOfWork.SaveChanges();
             }
         }
 
+        // todo: email and name
         public void DeleteAlbum(AlbumModel album)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 unitOfWork.Albums.Delete(album);
-                unitOfWork.SaveChanges();
             }
         }
     }
