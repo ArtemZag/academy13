@@ -13,5 +13,25 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
         public PhotoTagRepository(DatabaseContext dataBaseContext) : base(dataBaseContext)
         {
         }
+
+        public bool AddTag(string tagName, int photoID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RemoveTag(string tagName, int photoID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<PhotoModel> FindPhotosByTag(string tagName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<string> GetTagsFromPhoto(int photoID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
