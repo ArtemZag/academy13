@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Database;
+﻿using System;
+using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -12,57 +13,33 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public AlbumModel GetAlbum(string userEmail, string albumName)
         {
-            AlbumModel result; 
+            AlbumModel result;
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = unitOfWork.Users.Find(model => string.Equals(model.Email, userEmail));
+                UserModel user = GetUser(userEmail, unitOfWork);
 
-                if (user != null)
+                try
                 {
                     result =
                         unitOfWork.Albums.Find(
                             model => model.UserModelID == user.ID && string.Equals(model.AlbumName, albumName));
-
-                    if (result == null)
-                    {
-                        throw new AlbumNotFoundException();
-                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    throw new UserNotFoundException(userEmail);
+                    throw new AlbumNotFoundException(e);
                 }
             }
 
             return result;
         }
 
-        // todo: what method realization is better?
         public void CreateAlbum(string userEmail, AlbumModel album)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = unitOfWork.Users.Find(model => string.Equals(model.Email, userEmail));
+                UserModel user = GetUser(userEmail, unitOfWork);
 
-                if (user != null)
-                {
-                    user.Albums.Add(album);
-
-                    unitOfWork.Users.Update(user);
-                    unitOfWork.SaveChanges();
-                }
-                else
-                {
-                    throw new UserNotFoundException(userEmail);
-                }
-            }
-        }
-
-        public void CreateAlbum(UserModel user, AlbumModel album)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
                 user.Albums.Add(album);
 
                 unitOfWork.Users.Update(user);
