@@ -41,11 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlbumModel.cs" />
+    <Compile Include="AlbumTagModel.cs" />
     <Compile Include="AuthInfoModel.cs" />
     <Compile Include="AvailableGroupModel.cs" />
     <Compile Include="GroupModel.cs" />
     <Compile Include="PhotoModel.cs" />
     <Compile Include="PhotoCommentModel.cs" />
+    <Compile Include="PhotoTagModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserModel.cs" />
   </ItemGroup>

@@ -13,5 +13,7 @@ namespace BinaryStudio.PhotoGallery.Database
         public DbSet<AvailableGroupModel> AvailableGroups { get; set; }
         public DbSet<AuthInfoModel> AuthInfoModels { get; set; }
         public DbSet<AlbumModel> AlbumModels { get; set; }
+        public DbSet<PhotoTagModel> PhotoTagModels { get; set; }
+        public DbSet<AlbumTagModel> AlbumTagModels { get; set; }
     }
 }

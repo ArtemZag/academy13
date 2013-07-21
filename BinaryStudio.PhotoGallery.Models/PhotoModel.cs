@@ -38,6 +38,7 @@ namespace BinaryStudio.PhotoGallery.Models
         public int UserModelID { get; set; }
         public int AlbumModelID { get; set; }
         public virtual ICollection<PhotoCommentModel> PhotoComments { get; set; }
+        public virtual ICollection<PhotoTagModel> PhotoTags { get; set; } 
 
     }
 }
