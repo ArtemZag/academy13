@@ -8,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         void UpdateUser(UserModel userModel);
 
-        void DeleteUser(UserModel userModel);
+        void DeleteUser(string userEmail);
 
         bool CheckUser(string userEmail);
     }

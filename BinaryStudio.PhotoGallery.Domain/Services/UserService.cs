@@ -1,5 +1,6 @@
 ﻿using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -26,11 +27,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void DeleteUser(UserModel user)
+        public void DeleteUser(string userEmail)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                unitOfWork.Users.Delete(user);
+                try
+                {
+                    UserModel user = GetUser(userEmail, unitOfWork);
+                    unitOfWork.Users.Delete(user);
+                }
+                catch (UserNotFoundException)
+                {
+                }
             }
         }
 
