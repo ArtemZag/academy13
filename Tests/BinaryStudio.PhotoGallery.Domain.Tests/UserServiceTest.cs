@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         public void UserShoulBeAbsent()
         {
             // body
-            bool result = userService.CheckUser("aaa@gmail.com");
+            bool result = userService.CheckUser("nononono@gmail.com");
 
             // tear down
             result.Should().Be(false);

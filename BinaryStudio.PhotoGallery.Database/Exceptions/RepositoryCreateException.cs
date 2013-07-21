@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BinaryStudio.PhotoGallery.Database.Exceptions
 {
-    class RepositoryCreateException :Exception
+    public class RepositoryCreateException : Exception
     {
-        public RepositoryCreateException(string entry, Exception innerException)
+        public RepositoryCreateException(Exception innerException) : base(string.Empty, innerException)
         {
-            var message = "Repository cann't create " + entry.ToString();
         }
     }
 }

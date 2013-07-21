@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.PhotoGallery.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.PhotoGallery.Web.Tests", "Tests\BinaryStudio.PhotoGallery.Web.Tests\BinaryStudio.PhotoGallery.Web.Tests.csproj", "{1D9A6AC3-2777-45B7-A07A-672F6791D75C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.PhotoGallery.Domain.Tests", "BinaryStudio.PhotoGallery.Domain.Tests\BinaryStudio.PhotoGallery.Domain.Tests.csproj", "{F7272D8A-4A42-4292-AFD2-965BC40EFBAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.PhotoGallery.Domain.Tests", "Tests\BinaryStudio.PhotoGallery.Domain.Tests\BinaryStudio.PhotoGallery.Domain.Tests.csproj", "{F7272D8A-4A42-4292-AFD2-965BC40EFBAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

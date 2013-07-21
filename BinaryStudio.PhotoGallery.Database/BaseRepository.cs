@@ -13,7 +13,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
         protected BaseRepository(DatabaseContext dataBaseContext)
         {
-            this.Context = dataBaseContext;
+            Context = dataBaseContext;
         }
 
         protected DbSet<TItem> DbSet
@@ -27,16 +27,16 @@ namespace BinaryStudio.PhotoGallery.Database
         /// <exception cref="RepositoryCreateException">Says that repository cann't create new entry.</exception>
         public virtual TItem Create(TItem item)
         {
-            //return DbSet.Add(item);
             try
             {
-                var entry = DbSet.Add(item);
+                TItem entry = DbSet.Add(item);
                 Context.SaveChanges();
+
                 return entry;
             }
             catch (Exception e)
             {
-                throw new RepositoryCreateException(item.ToString(), e);
+                throw new RepositoryCreateException(e);
             }
         }
 
@@ -97,7 +97,6 @@ namespace BinaryStudio.PhotoGallery.Database
         /// <exception cref="RepositoryDeleteException">Says that repository cann't delete this entry. Maybe it is alredy deleted</exception>
         public virtual void Delete(TItem item)
         {
-            //DbSet.Remove(item);
             try
             {
                 DbSet.Remove(item);
@@ -105,7 +104,7 @@ namespace BinaryStudio.PhotoGallery.Database
             }
             catch (Exception e)
             {
-                throw new RepositoryDeleteException(item.ToString(), e);
+                throw new RepositoryDeleteException(e);
             }
         }
 
@@ -115,9 +114,6 @@ namespace BinaryStudio.PhotoGallery.Database
         /// <exception cref="RepositoryUpdateException">Says that repository cann't update this entry. Maybe it is not present.</exception>
         public virtual void Update(TItem item)
         {
-            /*var entry = this.Context.Entry(item);
-            DbSet.Attach(item);
-            entry.State = EntityState.Modified;*/
             try
             {
                 Context.Entry(item).State = EntityState.Modified;
@@ -125,7 +121,7 @@ namespace BinaryStudio.PhotoGallery.Database
             }
             catch (Exception e)
             {
-                throw new RepositoryUpdateException(item.ToString(), e);
+                throw new RepositoryUpdateException(e);
             }
         }
 
