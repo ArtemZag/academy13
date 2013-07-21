@@ -27,8 +27,8 @@ namespace BinaryStudio.PhotoGallery.Web
             Bootstrapper.Initialise();
             System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
 
-            //delete
-//            BinaryStudio.PhotoGallery.Database.Bootstrapper.Test();
+            // todo: delete
+            // Database.Bootstrapper.Test();
         }
     }
 }

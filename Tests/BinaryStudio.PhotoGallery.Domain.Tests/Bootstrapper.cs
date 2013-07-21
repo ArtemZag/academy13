@@ -6,13 +6,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     {
         public static IUnityContainer Initialise()
         {
-            var container = BuildUnityContainer();
-
-            return container;
-        }
-
-        private static IUnityContainer BuildUnityContainer()
-        {
             var container = new UnityContainer();
             RegisterTypes(container);
 

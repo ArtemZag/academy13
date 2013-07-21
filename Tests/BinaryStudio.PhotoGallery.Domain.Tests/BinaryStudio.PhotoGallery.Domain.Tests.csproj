@@ -83,6 +83,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\BinaryStudio.PhotoGallery.Core\BinaryStudio.PhotoGallery.Core.csproj">
+      <Project>{91126d20-a9b5-49be-9043-e3e8dcae3628}</Project>
+      <Name>BinaryStudio.PhotoGallery.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\BinaryStudio.PhotoGallery.Database\BinaryStudio.PhotoGallery.Data.csproj">
       <Project>{b29a5e0c-0591-420a-80f7-ddc636d8350e}</Project>
       <Name>BinaryStudio.PhotoGallery.Data</Name>
