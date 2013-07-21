@@ -48,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Database
         /// Delete the object from database.
         /// </summary>
         /// <param name="item">Specified a existing object to delete.</param>        
-        int Delete(T item);
+        void Delete(T item);
 
         /// <summary>
         /// Delete objects from database by specified filter expression.
@@ -60,7 +60,7 @@ namespace BinaryStudio.PhotoGallery.Database
         /// Update object changes and save to database.
         /// </summary>
         /// <param name="item">Specified the object to save.</param>
-        int Update(T item);
+        void Update(T item);
 
         /// <summary>
         /// Get the total objects count.

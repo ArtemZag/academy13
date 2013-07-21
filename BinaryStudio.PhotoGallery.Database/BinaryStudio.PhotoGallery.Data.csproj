@@ -60,6 +60,9 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="DatabaseContext.cs" />
     <Compile Include="DatabaseInitializer.cs" />
+    <Compile Include="Exceptions\RepositoryCreateException.cs" />
+    <Compile Include="Exceptions\RepositoryDeleteException.cs" />
+    <Compile Include="Exceptions\RepositoryUpdateException.cs" />
     <Compile Include="IDatabaseContext.cs" />
     <Compile Include="IBaseRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />

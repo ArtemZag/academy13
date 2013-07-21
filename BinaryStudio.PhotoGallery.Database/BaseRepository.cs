@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using BinaryStudio.PhotoGallery.Database.Exceptions;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
@@ -23,9 +24,20 @@ namespace BinaryStudio.PhotoGallery.Database
         /// <summary>
         /// Creates a new object(item) with TItem type in database.
         /// </summary>
+        /// <exception cref="RepositoryCreateException">Says that repository cann't create new entry.</exception>
         public virtual TItem Create(TItem item)
         {
-            return DbSet.Add(item);
+            //return DbSet.Add(item);
+            try
+            {
+                var entry = DbSet.Add(item);
+                Context.SaveChanges();
+                return entry;
+            }
+            catch (Exception e)
+            {
+                throw new RepositoryCreateException(item.ToString(), e);
+            }
         }
 
         /// <summary>
@@ -82,23 +94,39 @@ namespace BinaryStudio.PhotoGallery.Database
         /// <summary>
         /// Delete item from database
         /// </summary>
-        public virtual int Delete(TItem item)
+        /// <exception cref="RepositoryDeleteException">Says that repository cann't delete this entry. Maybe it is alredy deleted</exception>
+        public virtual void Delete(TItem item)
         {
-            DbSet.Remove(item);
-
-            return 0;
+            //DbSet.Remove(item);
+            try
+            {
+                DbSet.Remove(item);
+                Context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new RepositoryDeleteException(item.ToString(), e);
+            }
         }
 
         /// <summary>
         /// Update a state of item to Modified
         /// </summary>
-        public virtual int Update(TItem item)
+        /// <exception cref="RepositoryUpdateException">Says that repository cann't update this entry. Maybe it is not present.</exception>
+        public virtual void Update(TItem item)
         {
-            var entry = this.Context.Entry(item);
+            /*var entry = this.Context.Entry(item);
             DbSet.Attach(item);
-            entry.State = EntityState.Modified;
-
-            return 0;
+            entry.State = EntityState.Modified;*/
+            try
+            {
+                Context.Entry(item).State = EntityState.Modified;
+                Context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new RepositoryUpdateException(item.ToString(), e);
+            }
         }
 
         /// <summary>
@@ -115,8 +143,8 @@ namespace BinaryStudio.PhotoGallery.Database
 
         public void Dispose()
         {
-            if (this.Context != null)
-                this.Context.Dispose();
+            if (Context != null)
+                Context.Dispose();
         }
     }
 }
