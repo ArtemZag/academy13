@@ -133,13 +133,15 @@ namespace BinaryStudio.PhotoGallery.Database
             try
             {
                 var items = Filter(predicate);
+
                 foreach (var item in items)
+                {
                     DbSet.Remove(item);
+                }
             }
             catch (Exception e)
             {
-
-                throw new RepositoryDeleteException("entry", e);
+                throw new RepositoryDeleteException(e);
             }
         }
 
