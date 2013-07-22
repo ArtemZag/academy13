@@ -47,7 +47,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             // setup
             var userModel = new UserModel
             {
-                Email = "aaa@gmail.com",
+                Email = "bbb@gmail.com",
                 NickName = "Nick",
                 FirstName = "First",
                 LastName = "Last"
@@ -62,15 +62,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         }
 
         [Test]
-        // todo: it's some erros there
         public void UserShouldBeDeleted()
         {
             // setup
             var userModel = new UserModel
             {
                 Email = "aaa@gmail.com",
-                NickName = "Nick",
-                FirstName = "First",
+                NickName = "Bill",
+                FirstName = "Billy",
                 LastName = "Last"
             };
 
