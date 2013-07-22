@@ -21,8 +21,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         ICollection<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
 
         /// <summary>
-        /// Returns random users photos
+        /// Returns random users photos.
         /// </summary>
+        /// <param name="userEmail">Users email.</param>
+        /// <param name="count">Photos count.</param>
         ICollection<PhotoModel> GetPhotos(string userEmail, int count);
     }
 }
