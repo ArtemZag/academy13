@@ -25,7 +25,16 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Home");
+                    // recheck user (maybe it was deleted, while cookie is truth)
+                    var userExist = userService.CheckUser(User.Identity.Name);
+
+                    if (userExist)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    // Clear cookie
+                    FormsAuthentication.SignOut();
                 }
             }
             else
