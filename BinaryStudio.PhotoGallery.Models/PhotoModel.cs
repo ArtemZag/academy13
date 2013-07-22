@@ -10,6 +10,11 @@ namespace BinaryStudio.PhotoGallery.Models
     public class PhotoModel
     {
         // Initializes some properties, that must contain some value by default
+        public PhotoModel()
+        {
+            DateOfCreation = DateTime.Now;
+        }
+
         public PhotoModel(int albumModelID, int userModelID)
         {
             AlbumModelID = albumModelID;
