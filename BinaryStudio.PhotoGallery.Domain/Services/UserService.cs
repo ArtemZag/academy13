@@ -11,6 +11,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
+        public UserModel GetUser(string userEmail)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return GetUser(userEmail, unitOfWork);                
+            }
+        }
+
         public void CreateUser(UserModel user)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

@@ -92,23 +92,6 @@ namespace BinaryStudio.PhotoGallery.Database
         }
 
         /// <summary>
-        /// Delete item from database
-        /// </summary>
-        /// <exception cref="RepositoryDeleteException">Says that repository cann't delete this entry. Maybe it is alredy deleted</exception>
-        public virtual void Delete(TItem item)
-        {
-            try
-            {
-                DbSet.Remove(item);
-                Context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                throw new RepositoryDeleteException(e);
-            }
-        }
-
-        /// <summary>
         /// Update a state of item to Modified
         /// </summary>
         /// <exception cref="RepositoryUpdateException">Says that repository cann't update this entry. Maybe it is not present.</exception>
@@ -122,6 +105,23 @@ namespace BinaryStudio.PhotoGallery.Database
             catch (Exception e)
             {
                 throw new RepositoryUpdateException(e);
+            }
+        }
+
+        /// <summary>
+        /// Delete item from database
+        /// </summary>
+        /// <exception cref="RepositoryDeleteException">Says that repository cann't delete this entry. Maybe it is alredy deleted</exception>
+        public virtual void Delete(TItem item)
+        {
+            try
+            {
+                DbSet.Remove(item);
+                Context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new RepositoryDeleteException(e);
             }
         }
 

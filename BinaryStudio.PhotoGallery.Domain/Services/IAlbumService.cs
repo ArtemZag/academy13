@@ -15,13 +15,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         void CreateAlbum(string userEmail, AlbumModel album);
 
         /// <summary>
-        /// Updates some albums info.
+        /// Updates info about album.
         /// </summary>
+        /// <param name="album">Must to contain full info about album.</param>
         void UpdateAlbum(AlbumModel album);
 
         /// <summary>
         /// Deletes specified album.
         /// </summary>
-        void DeleteAlbum(AlbumModel album);
+        void DeleteAlbum(string userEmail, string albumName);
     }
 }

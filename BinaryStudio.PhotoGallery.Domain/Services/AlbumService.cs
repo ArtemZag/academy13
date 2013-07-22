@@ -19,16 +19,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                try
-                {
-                    result =
-                        unitOfWork.Albums.Find(
-                            model => model.UserModelID == user.ID && string.Equals(model.AlbumName, albumName));
-                }
-                catch (Exception e)
-                {
-                    throw new AlbumNotFoundException(e);
-                }
+                result = GetAlbum(user, albumName, unitOfWork);
             }
 
             return result;
@@ -54,13 +45,34 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        // todo: email and name
-        public void DeleteAlbum(AlbumModel album)
+        public void DeleteAlbum(string userEmail, string albumName)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                unitOfWork.Albums.Delete(album);
+                UserModel user = GetUser(userEmail, unitOfWork);
+
+                AlbumModel album = GetAlbum(user, albumName, unitOfWork);
+
+                user.Albums.Remove(album);
             }
+        }
+
+        private AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
+        {
+            AlbumModel result;
+
+            try
+            {
+                result =
+                    unitOfWork.Albums.Find(
+                        model => model.UserModelID == user.ID && string.Equals(model.AlbumName, albumName));
+            }
+            catch (Exception e)
+            {
+                throw new AlbumNotFoundException(e);
+            }
+
+            return result;
         }
     }
 }

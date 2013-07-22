@@ -1,5 +1,4 @@
-﻿using System;
-using BinaryStudio.PhotoGallery.Database;
+﻿using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
