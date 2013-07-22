@@ -11,7 +11,9 @@ using BinaryStudio.PhotoGallery.Web.Utils;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    [Authorize] // Only authorized user can access this controller
+    using BinaryStudio.PhotoGallery.Web.ViewModels;
+
+    [Authorize] // Only authorized users can access this controller
 	[RoutePrefix("Home")]
     public class HomeController : Controller
     {
@@ -24,20 +26,45 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             _userService = userService;
         }
         /// <summary>
-        /// Main user page
+        /// Main user page (click on "bingally")
         /// </summary>
-        /// <returns>Return page with flow of pictures</returns>
-		[GET]
+        /// <returns>page with flow of public pictures</returns>
+		[GET("Index")]
         public ActionResult Index()
         {
+            return View(new InfoViewModel { UserEmail = User.Identity.Name });
+        }
+
+        /// <summary>
+        /// Gallery page
+        /// </summary>
+        /// <returns>page with all users photos, sorted by date</returns>
+        [GET("Gallery")]
+        public ActionResult Gallery()
+        {
+            return View();
             // for example&test get 20 photos
             var viewmodels = _photoService.GetPhotos(User.Identity.Name, 0, 20);
             List<PhotoViewModel> photos = viewmodels.Select(ModelConverter.GetViewModel).ToList();
             return View(photos);
         }
 
-        [GET]
-        public ActionResult Settings()
+        /// <summary>
+        /// Album page
+        /// </summary>
+        /// <returns>page with all users albums</returns>
+        [GET("Albums")]
+        public ActionResult Albums()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Gruops page
+        /// </summary>
+        /// <returns>page with all users groups</returns>
+        [GET("Groups")]
+        public ActionResult Groups()
         {
             return View();
         }

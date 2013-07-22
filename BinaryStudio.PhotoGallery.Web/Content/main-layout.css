@@ -1,1 +1,38 @@
-﻿
+﻿#main-render-place {
+    margin-top: 50px;
+}
+
+.navbar {
+    width: 100%;
+    height: 50px;
+    background-image: linear-gradient(to bottom, rgba(56, 56, 56, 0.95) 0%, rgba(0, 0, 0, 0.95) 100%);
+}
+
+.brand {
+    position: relative;
+    height: 40px;
+    margin-left: 0px!important;
+    padding: 5px 10px!important;
+}
+
+.brand img {
+    height: inherit;
+}
+
+.nav > li {
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.nav li > .dropdown-toggle {
+    color: #ffffff;
+    padding: 16px 10px 14px;
+}
+
+.nav li > .dropdown-toggle:hover {
+    background-color: #2fa4e7;
+}
+
+.nav .btn {
+    margin-right: 10px;
+}

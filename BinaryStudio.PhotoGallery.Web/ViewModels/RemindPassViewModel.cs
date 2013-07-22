@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
     public class RemindPassViewModel
     {
+        [Required(ErrorMessage = "E-mail or login is required")]
+        [DataType(DataType.Text)]
+        public string EmailOrLogin { get; set; }
     }
 }

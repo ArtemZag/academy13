@@ -1,13 +1,16 @@
 ﻿$(function () {
-    pageAnimation();
-    correctValidationStyle();
-});
-
-function correctValidationStyle() {
     var validField = $(".validation-summary-errors");
 
-    if (validField == "undefined") return;
+    console.log(validField);
 
+    if (validField.length == 0) {
+        pageAnimation();
+    } else {
+        correctValidationStyle(validField);
+    }
+});
+
+function correctValidationStyle(validField) {
     validField.addClass("alert alert-error");
     validField.prepend("<strong>Errors</strong><br/>");
     validField.prepend("<button type='button' class='close' data-dismiss='alert'>&times;</button>");

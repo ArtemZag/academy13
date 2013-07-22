@@ -40,9 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncPhotoProcessor.cs" />
+    <Compile Include="NotificationsUtils\NotificationSender.cs" />
+    <Compile Include="PhotoUtils\AsyncPhotoProcessor.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="PhotoProcessor.cs" />
+    <Compile Include="PhotoUtils\PhotoProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
