@@ -9,6 +9,7 @@ namespace BinaryStudio.PhotoGallery.Domain
         {
             container.RegisterType(typeof(IUserService), typeof(UserService));
             container.RegisterType(typeof(IAlbumService), typeof(AlbumService));
+            container.RegisterType(typeof(IPhotoService), typeof(PhotoService));
         }
     }
 }

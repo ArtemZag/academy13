@@ -6,6 +6,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
     {
         [Required(ErrorMessage = "E-mail address is required")]
         [DataType(DataType.EmailAddress)]
+        [StringLength(100, ErrorMessage = "E-mail address must have {2}-{1} symbols", MinimumLength = 7)]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password is required")]

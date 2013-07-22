@@ -252,6 +252,7 @@
     <Content Include="Views\Home\Albums.cshtml" />
     <Content Include="Views\Home\Gallery.cshtml" />
     <Content Include="Views\Home\Groups.cshtml" />
+    <Content Include="Views\Shared\_AfterLoginLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

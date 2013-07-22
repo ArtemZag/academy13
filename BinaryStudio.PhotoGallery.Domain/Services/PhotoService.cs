@@ -32,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public ICollection<PhotoModel> GetPhotos(string userEmail)
         {
-            throw new System.NotImplementedException();
+            return new List<PhotoModel>();
         }
     }
 }
