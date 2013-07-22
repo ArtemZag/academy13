@@ -3,6 +3,10 @@
 }
 
 .navbar {
+    min-width: 1020px;
+}
+
+.navbar {
     width: 100%;
     height: 50px;
     background-image: linear-gradient(to bottom, rgba(56, 56, 56, 0.95) 0%, rgba(0, 0, 0, 0.95) 100%);
@@ -35,4 +39,8 @@
 
 .nav .btn {
     margin-right: 10px;
+}
+
+.search-query {
+    width: 180px;
 }
