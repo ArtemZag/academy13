@@ -30,9 +30,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             throw new System.NotImplementedException();
         }
 
-        public ICollection<PhotoModel> GetPhotos(string userEmail)
+        public ICollection<PhotoModel> GetPhotos(string userEmail, int count)
         {
-            return new List<PhotoModel>();
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userEmail, unitOfWork);
+
+                // todo:
+            }
         }
     }
 }
