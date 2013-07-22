@@ -35,5 +35,12 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             return userModel;
         }
+
+        public static PhotoViewModel GetViewModel(PhotoModel viewModel)
+        {
+            var photoModel = new PhotoViewModel {PhotoSource = viewModel.PhotoSource};
+
+            return photoModel;
+        }
     }
 }

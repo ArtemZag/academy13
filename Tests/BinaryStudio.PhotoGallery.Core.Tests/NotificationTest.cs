@@ -10,7 +10,7 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
         public void MessageShouldBeSended()
         {
             // setup 
-            string toEmail = "antnglvn@gmail.com";
+            string toEmail = "YOUR_EMAIL_TO_TEST";
             string text = "text";
 
             // tear down

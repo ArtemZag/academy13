@@ -19,5 +19,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="begin">Beginning of the interval.</param>
         /// <param name="end">Ending of the interval.</param>
         ICollection<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
+
+        /// <summary>
+        /// Returns random users photos
+        /// </summary>
+        ICollection<PhotoModel> GetPhotos(string userEmail, int count);
     }
 }

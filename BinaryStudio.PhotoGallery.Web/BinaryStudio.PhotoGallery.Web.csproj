@@ -182,6 +182,7 @@
     <Compile Include="Utils\ModelConverter.cs" />
     <Compile Include="ViewModels\AuthInfoViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
+    <Compile Include="ViewModels\PhotoViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
   </ItemGroup>
@@ -212,6 +213,7 @@
     <Content Include="Content\style-libs\jasny-bootstrap-responsive.min.css" />
     <Content Include="Content\style-libs\jasny-bootstrap.css" />
     <Content Include="Content\style-libs\jasny-bootstrap.min.css" />
+    <Content Include="Content\style-libs\photo_flow.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -229,6 +231,7 @@
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
     <Content Include="Scripts\auth-page.js" />
+    <Content Include="Scripts\photo_placer.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -250,8 +253,7 @@
     <Content Include="Views\Home\Albums.cshtml" />
     <Content Include="Views\Home\Gallery.cshtml" />
     <Content Include="Views\Home\Groups.cshtml" />
-    <Content Include="Views\AdminPanel\Index.cshtml" />
-  </ItemGroup>
+	<Content Include="Views\AdminPanel\Index.cshtml" />	<Content Include="Views\Shared\_AfterLoginLayout.cshtml" />  </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>

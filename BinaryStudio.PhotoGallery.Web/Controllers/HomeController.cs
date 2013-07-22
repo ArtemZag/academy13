@@ -1,6 +1,13 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
+using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Web.Utils;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -10,14 +17,25 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 	[RoutePrefix("Home")]
     public class HomeController : Controller
     {
+        private readonly IPhotoService _photoService;
+        private readonly IUserService _userService;
+
+        public HomeController(IUserService userService, IPhotoService photoService)
+        {
+            _photoService = photoService;
+            _userService = userService;
+        }
         /// <summary>
         /// Main user page (click on "bingally")
         /// </summary>
         /// <returns>page with flow of public pictures</returns>
 		[GET("Index")]
         public ActionResult Index()
-        {
-            return View(new InfoViewModel { UserEmail = User.Identity.Name });
+        {   
+            // i hope there aren't too many photos here)
+            var viewmodels = _photoService.GetPhotos(User.Identity.Name, 20);
+            return View(new InfoViewModel { UserEmail = User.Identity.Name, 
+                                            Photos = viewmodels.Select(ModelConverter.GetViewModel).ToList()});
         }
 
         /// <summary>
