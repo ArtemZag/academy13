@@ -180,6 +180,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
     <Compile Include="ViewModels\AuthInfoViewModel.cs" />
+    <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
   </ItemGroup>
@@ -205,6 +206,7 @@
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\twitter_logo.png" />
     <Content Include="Content\images\vkontakte_logo.png" />
+    <Content Include="Content\style-libs\effeckt-buttons.css" />
     <Content Include="Content\style-libs\jasny-bootstrap-responsive.css" />
     <Content Include="Content\style-libs\jasny-bootstrap-responsive.min.css" />
     <Content Include="Content\style-libs\jasny-bootstrap.css" />
@@ -218,6 +220,7 @@
     <Content Include="CodeTemplates\AddController\ApiControllerWithContext.tt" />
     <Content Include="CodeTemplates\AddController\ApiController.tt" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\effeckt-buttons.js" />
     <Content Include="Scripts\jasny-bootstrap.js" />
     <Content Include="Scripts\jasny-bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
@@ -244,6 +247,8 @@
     <Content Include="Views\Account\RemindPass.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Home\Albums.cshtml" />
+    <Content Include="Views\Home\Gallery.cshtml" />
+    <Content Include="Views\Home\Groups.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
