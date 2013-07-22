@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
@@ -84,7 +83,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = ModelConverter.GetModel(registrationViewModel);
-
+                
                 var userExist = userService.CheckUser(user.Email);
 
                 if (userExist)
@@ -98,7 +97,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                     userService.CreateUser(user);
 
                     FormsAuthentication.SetAuthCookie(user.Email, false);
-                    RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 catch
                 {
