@@ -1,0 +1,19 @@
+﻿@model IEnumerable<BinaryStudio.PhotoGallery.Models.UserModel>
+
+@{
+	Layout = "~/Views/Shared/_MainLayout.cshtml";
+	ViewBag.Title = "Administration | Bingally";
+}
+
+
+<div class="user-container">
+	@for (int i = 0; i < 20; i++)
+{
+	foreach (var user in @Model)
+	{
+		<div class="user-row">
+			<label>User login: @user.LastName</label>
+		</div>
+	}
+}
+</div>
