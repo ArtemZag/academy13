@@ -12,12 +12,7 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
 
         public void Add(int albumID, int ownerID)
         {
-            var photo = new PhotoModel
-                {
-                    AlbumModelID = albumID,
-                    UserModelID = ownerID
-                };
-            base.Add(photo);
+            base.Add(new PhotoModel(albumID, ownerID));
         }
     }
 }
