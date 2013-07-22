@@ -171,6 +171,7 @@
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
@@ -207,12 +208,8 @@
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Content\images\twitter_logo.png" />
     <Content Include="Content\images\vkontakte_logo.png" />
+    <Content Include="Content\style-libs\dropzone.css" />
     <Content Include="Content\style-libs\effeckt-buttons.css" />
-    <Content Include="Content\style-libs\jasny-bootstrap-responsive.css" />
-    <Content Include="Content\style-libs\jasny-bootstrap-responsive.min.css" />
-    <Content Include="Content\style-libs\jasny-bootstrap.css" />
-    <Content Include="Content\style-libs\jasny-bootstrap.min.css" />
-    <Content Include="Content\style-libs\photo_flow.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -222,9 +219,9 @@
     <Content Include="CodeTemplates\AddController\ApiControllerWithContext.tt" />
     <Content Include="CodeTemplates\AddController\ApiController.tt" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\dropzone.js" />
+    <Content Include="Scripts\dropzone.min.js" />
     <Content Include="Scripts\effeckt-buttons.js" />
-    <Content Include="Scripts\jasny-bootstrap.js" />
-    <Content Include="Scripts\jasny-bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
@@ -252,7 +249,9 @@
     <Content Include="Views\Home\Albums.cshtml" />
     <Content Include="Views\Home\Gallery.cshtml" />
     <Content Include="Views\Home\Groups.cshtml" />
+    <Content Include="Views\AdminPanel\Index.cshtml" />
     <Content Include="Views\Shared\_AfterLoginLayout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

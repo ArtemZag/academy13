@@ -48,7 +48,7 @@ namespace Test
                                              image.Save(pathToPrewiewOfImage, ImageFormat.Jpeg);
                                          }
                                      }
-                                     catch (Exception exc)
+                                     catch
                                      {
                                          image = new Bitmap(maxSize, maxSize);
                                      }
