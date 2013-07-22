@@ -9,6 +9,12 @@ namespace BinaryStudio.PhotoGallery.Models
     /// </summary>
     public class PhotoModel
     {
+        // Initializes some properties, that must contain some value by default
+        public PhotoModel()
+        {
+            DateOfCreation = DateTime.Now;
+        }
+
         /// <summary>
         /// Gets or sets the photo ID.
         /// </summary>
