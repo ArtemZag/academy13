@@ -38,6 +38,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 // todo:
             }
+
+            //TODO only for tests
+            return new List<PhotoModel>();
         }
     }
 }
