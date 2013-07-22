@@ -34,7 +34,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return View(new AuthInfoViewModel());
+            return View(new AuthInfoViewModel { RememberMe = true });
         }
 
         [POST("Signin")]

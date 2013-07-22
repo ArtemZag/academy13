@@ -1,4 +1,5 @@
-﻿@using System.Web.Optimization
+﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.InfoViewModel
+@using System.Web.Optimization
 
 <!DOCTYPE html>
 <html>
@@ -10,11 +11,29 @@
     </head>
     <body>
         <nav class="navbar navbar-fixed-top">
-            
+            <a href="../Home/Index" class="brand"><img src="~/Content/images/logo_v4.png"/></a>
+            <ul class="nav">
+                <li><a href="../Home/Gallery">Gallery</a></li>
+                <li><a href="../Home/Albums">Albums</a></li>
+                <li><a href="../Home/Groups">Groups</a></li>
+            </ul>
+            <ul class="nav pull-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">@Html.DisplayFor(m => m.UserEmail) <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Administration</a></li>
+                        <li><a href="#">Notifications</a></li>
+                        <li><a href="#">Settings</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Sign out</a></li>
+                    </ul>
+                </li>
+            </ul>
         </nav>
         <div>
             @RenderBody()
         </div>
     </body>
     @Scripts.Render("~/bundles/scripts/jquery")
+    @Scripts.Render("~/bundles/scripts/bootstrap")
 </html>
