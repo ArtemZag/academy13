@@ -21,7 +21,10 @@
                 @Html.CheckBoxFor(m => m.RememberMe)Remember me
             </label>
             
-            <button type="submit" class="btn btn-primary">Sign in</button>
+            <button id="signin-button" type="button" class="btn btn-primary effeckt-button zoom-in">
+                <span class="effeckt-label">Sign in</span>
+                <span class="effeckt-spinner"></span>
+            </button>
             <a href="../Account/RemindPass" class="btn btn-link">Forgot password?</a>
         </div>
         @Html.ValidationSummary(false)

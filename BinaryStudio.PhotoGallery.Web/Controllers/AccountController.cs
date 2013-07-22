@@ -47,7 +47,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         }
 
         [POST("Signin")]
-        public ActionResult SignIn(AuthInfoViewModel authInfo)
+        public JsonResult SignIn(AuthInfoViewModel authInfo)
         {
             if (ModelState.IsValid)
             {
@@ -58,13 +58,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 if (userExist)
                 {
                     FormsAuthentication.SetAuthCookie(authInfo.Email, authInfo.RememberMe);
-                    return RedirectToAction("Index", "Home");
+                    return Json("ok");
                 }
-
-                ModelState.AddModelError("", "E-mail or password is incorrect");
             }
 
-            return View(authInfo);
+            return Json(null);
         }
 
         [GET("Signup/{service}")]
