@@ -58,14 +58,12 @@ namespace BinaryStudio.PhotoGallery.Database
             }
 
             // Creating album without any informations about it
-            unitOfWork.Albums.Add(1);
+            unitOfWork.Albums.Add("First album", 1);
 
             // Creating album with some informations about it
-            unitOfWork.Albums.Add(new AlbumModel()
+            unitOfWork.Albums.Add(new AlbumModel("Academy", 5)
                 {
-                    AlbumName = "Academy",
-                    Description = ".Net student group in Binary Studio Academy. Donetsk 2013.",
-                    UserModelID = 5
+                    Description = ".Net student group in Binary Studio Academy. Donetsk 2013."
                 });
 
 

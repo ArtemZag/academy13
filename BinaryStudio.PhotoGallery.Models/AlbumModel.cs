@@ -11,10 +11,12 @@ namespace BinaryStudio.PhotoGallery.Models
     public class AlbumModel
     {
         // Initializes some properties, that must contain some value by default
-        public AlbumModel()
+        public AlbumModel(string albumName, int ownerID)
         {
+            AlbumName = albumName;
+            UserModelID = ownerID;
             DateOfCreation = DateTime.Now;
-            Permissions = 111;
+            Permissions = 111; // in moment, it is just for future
         }
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// </summary>
         public int Permissions { get; set; } 
 
-        public virtual int UserModelID { get; set; }
+        public int UserModelID { get; set; }
         public virtual ICollection<PhotoModel> Photos { get; set; }
         public virtual ICollection<AvailableGroupModel> AvailableGroups { get; set; }
         public virtual ICollection<AlbumTagModel> AlbumTags { get; set; }
