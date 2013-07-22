@@ -30,7 +30,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             throw new System.NotImplementedException();
         }
 
-        public ICollection<PhotoModel> GetPhotos(string userEmail, int begin, int end)
+        public ICollection<PhotoModel> GetPhotos(string userEmail)
         {
             throw new System.NotImplementedException();
         }

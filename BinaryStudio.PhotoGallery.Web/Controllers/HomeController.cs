@@ -31,8 +31,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <returns>page with flow of public pictures</returns>
 		[GET("Index")]
         public ActionResult Index()
-        {
-            var viewmodels = _photoService.GetPhotos(User.Identity.Name, 0, 20);
+        {   
+            // i hope there aren't too many photos here)
+            var viewmodels = _photoService.GetPhotos(User.Identity.Name);
             return View(new InfoViewModel { UserEmail = User.Identity.Name, 
                                             Photos = viewmodels.Select(ModelConverter.GetViewModel).ToList()});
         }
@@ -45,10 +46,6 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult Gallery()
         {
             return View();
-            // for example&test get 20 photos
-            var viewmodels = _photoService.GetPhotos(User.Identity.Name, 0, 20);
-            List<PhotoViewModel> photos = viewmodels.Select(ModelConverter.GetViewModel).ToList();
-            return View(photos);
         }
 
         /// <summary>

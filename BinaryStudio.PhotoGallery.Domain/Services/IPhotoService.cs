@@ -21,6 +21,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         ICollection<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
 
         // if needs some photos from different albums. Uses on user index page.
-        ICollection<PhotoModel> GetPhotos(string userEmail, int begin, int end);
+        ICollection<PhotoModel> GetPhotos(string userEmail);
     }
 }
