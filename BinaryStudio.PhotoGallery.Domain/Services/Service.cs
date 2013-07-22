@@ -16,16 +16,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         protected UserModel GetUser(string userEmail, IUnitOfWork unitOfWork)
         {
-            try
-            {
-                UserModel user = unitOfWork.Users.Find(model => string.Equals(model.Email, userEmail));
+            UserModel user = unitOfWork.Users.Find(model => string.Equals(model.Email, userEmail));
 
-                return user;
-            }
-            catch (Exception e)
+            if (user == null)
             {
-                throw new UserNotFoundException(userEmail, e);
+                throw new UserNotFoundException(userEmail);
             }
+
+            return user;
         }
     }
 }

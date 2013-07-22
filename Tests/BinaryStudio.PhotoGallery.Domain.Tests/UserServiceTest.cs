@@ -62,6 +62,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         }
 
         [Test]
+        // todo: it's some erros there
         public void UserShouldBeDeleted()
         {
             // setup
@@ -77,7 +78,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             userService.CreateUser(userModel);
             bool isPresentAfterCreation = userService.CheckUser(userModel.Email);
 
-            userService.DeleteUser(userModel);
+            userService.DeleteUser(userModel.Email);
             bool isPresentAfterDeleting = userService.CheckUser(userModel.Email);
 
             // tear down
