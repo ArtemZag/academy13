@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="NotificationsUtils\NotificationSender.cs" />
     <Compile Include="PhotoUtils\AsyncPhotoProcessor.cs" />
-    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="PhotoUtils\PhotoProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

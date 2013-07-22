@@ -5,11 +5,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     public interface IPhotoService
     {
-        bool AddPhoto(string userEmail, string albumName, PhotoModel photo);
+        /// <summary>
+        /// Adds photo by specidied user to his album.  
+        /// </summary>
+        void AddPhoto(string userEmail, string albumName, PhotoModel photo);
 
-        bool AddPhotos(string userEmail, string albumName, ICollection<PhotoModel> photos);
+        /// <summary>
+        /// Adds photos by specidied user to his album.  
+        /// </summary>
+        void AddPhotos(string userEmail, string albumName, ICollection<PhotoModel> photos);
 
-        bool DeletePhoto(int photoId);
+        /// <summary>
+        /// Deletes 
+        /// </summary>
+        void DeletePhoto(PhotoModel photo);
 
         /// <summary>
         /// Returns specified interval of photos (sorted by date).
@@ -21,10 +30,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         ICollection<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
 
         /// <summary>
-        /// Returns random users photos.
+        /// Returns last N users photos.
         /// </summary>
         /// <param name="userEmail">Users email.</param>
-        /// <param name="count">Photos count.</param>
+        /// <param name="count">Number of photos.</param>
         ICollection<PhotoModel> GetPhotos(string userEmail, int count);
     }
 }
