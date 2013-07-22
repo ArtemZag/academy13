@@ -1,0 +1,17 @@
+﻿@using System.Web.Optimization
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/bundles/styles/bootstrap")
+    <link href="~/Content/photo_placer.css" rel="stylesheet" />
+</head>
+    <body>
+        @RenderBody()
+    </body>
+    @Scripts.Render("~/bundles/scripts/jquery")
+    @Scripts.Render("~/bundles/scripts/bootstrap")
+    @Scripts.Render("~/Scripts/photo_placer.js")
+</html>

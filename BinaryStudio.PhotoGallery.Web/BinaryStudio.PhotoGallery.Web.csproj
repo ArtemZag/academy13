@@ -180,6 +180,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
     <Compile Include="ViewModels\AuthInfoViewModel.cs" />
+    <Compile Include="ViewModels\PhotoViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
   </ItemGroup>
@@ -194,6 +195,7 @@
     <Content Include="Content\images\logo_v3.png" />
     <Content Include="Content\images\logo_v4.png" />
     <Content Include="Content\main-layout.css" />
+    <Content Include="Content\photo_flow.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.min.css" />
     <Content Include="Content\style-libs\bootstrap-tags.css" />
@@ -225,6 +227,7 @@
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
     <Content Include="Scripts\auth-page.js" />
+    <Content Include="Scripts\photo_placer.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -241,6 +244,7 @@
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Account\RemindPass.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
+    <Content Include="Views\Shared\_AfterLoginLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
