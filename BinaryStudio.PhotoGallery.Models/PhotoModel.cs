@@ -27,7 +27,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Time and date of photo creating
         /// </summary>
-        public DateTime DataOfCreation { get; set; }
+        public DateTime DateOfCreation { get; set; }
 
         /// <summary>
         /// Gets or sets the user's rating of each photo in album.

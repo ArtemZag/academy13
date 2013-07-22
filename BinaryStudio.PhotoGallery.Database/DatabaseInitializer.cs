@@ -24,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Database
             user.Albums = new Collection<AlbumModel>();
             user.Groups = new Collection<GroupModel>();
 
-            album.DataOfCreation = new DateTime(2012,12,12);
+            album.DateOfCreation = new DateTime(2012,12,12);
 
             user.Department = "C# prommer";
             user.Email = "Maaak@gmail.com";

@@ -28,7 +28,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the date and time of album creation.
         /// </summary>
-        public DateTime DataOfCreation { get; set; }
+        public DateTime DateOfCreation { get; set; }
 
         /// <summary>
         /// Gets or sets the permissions for aldum: what goups of user can see and add comments of photo.
