@@ -16,8 +16,7 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
 
         public void Add(string tagName)
         {
-            var tag = new PhotoTagModel(){ TagName = tagName };
-            base.Add(tag);
+            base.Add(new PhotoTagModel(tagName));
         }
 
         public bool RemoveTag(string tagName, int photoID)
