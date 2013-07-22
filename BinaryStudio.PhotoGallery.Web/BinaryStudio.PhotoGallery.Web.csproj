@@ -196,7 +196,6 @@
     <Content Include="Content\images\logo_v3.png" />
     <Content Include="Content\images\logo_v4.png" />
     <Content Include="Content\main-layout.css" />
-    <Content Include="Content\photo_flow.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.min.css" />
     <Content Include="Content\style-libs\bootstrap-tags.css" />
@@ -213,6 +212,7 @@
     <Content Include="Content\style-libs\jasny-bootstrap-responsive.min.css" />
     <Content Include="Content\style-libs\jasny-bootstrap.css" />
     <Content Include="Content\style-libs\jasny-bootstrap.min.css" />
+    <Content Include="Content\style-libs\photo_flow.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -230,10 +230,9 @@
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
     <Content Include="Scripts\auth-page.js" />
-    <Content Include="Web.config">
     <Content Include="Scripts\photo_placer.js" />
+    <Content Include="Web.config">
       <SubType>Designer</SubType>
-    <Content Include="Web.config" />
     </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -252,75 +251,8 @@
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\Home\Albums.cshtml" />
     <Content Include="Views\Home\Gallery.cshtml" />
-    <Content Include="Views\Shared\_AfterLoginLayout.cshtml" />
     <Content Include="Views\Home\Groups.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BinaryStudio.PhotoGallery.Core\BinaryStudio.PhotoGallery.Core.csproj">
-      <Project>{91126d20-a9b5-49be-9043-e3e8dcae3628}</Project>
-      <Name>BinaryStudio.PhotoGallery.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BinaryStudio.PhotoGallery.Database\BinaryStudio.PhotoGallery.Data.csproj">
-      <Project>{b29a5e0c-0591-420a-80f7-ddc636d8350e}</Project>
-      <Name>BinaryStudio.PhotoGallery.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BinaryStudio.PhotoGallery.Domain\BinaryStudio.PhotoGallery.Domain.csproj">
-      <Project>{8a8695b7-5687-4883-a819-e6e7dfdfba50}</Project>
-      <Name>BinaryStudio.PhotoGallery.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BinaryStudio.PhotoGallery.Models\BinaryStudio.PhotoGallery.Models.csproj">
-      <Project>{489d5695-2c0e-4d21-b8bb-2814f9e49ff0}</Project>
-      <Name>BinaryStudio.PhotoGallery.Models</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-  </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
-    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
-  </Target>
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-        <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57367/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-        </WebProjectProperties>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target> -->
-</Project>  </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
