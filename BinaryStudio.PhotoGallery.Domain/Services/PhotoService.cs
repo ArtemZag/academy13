@@ -22,6 +22,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 photo.UserModelID = user.ID;
                 album.Photos.Add(photo);
+
+                // todo: is it necessary? 
+                unitOfWork.Albums.Update(album);
             }
         }
 
@@ -36,6 +39,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     album.Photos.Add(photo);
                 }
+
+                // todo: is it necessary? 
+                unitOfWork.Albums.Update(album);
             }
         }
 
