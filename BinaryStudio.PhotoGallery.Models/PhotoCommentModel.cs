@@ -9,8 +9,12 @@ namespace BinaryStudio.PhotoGallery.Models
     public class PhotoCommentModel
     {
         // Initializes some properties, that must contain some value by default
-        public PhotoCommentModel()
+        public PhotoCommentModel(int userModelID,  int photoModelID, string text, PhotoCommentModel reply)
         {
+            Reply = reply;
+            Text = text;
+            PhotoModelID = photoModelID;
+            UserModelID = userModelID;
             DateOfCreating = DateTime.Now;
         }
 
