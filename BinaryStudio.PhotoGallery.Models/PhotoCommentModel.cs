@@ -8,6 +8,12 @@ namespace BinaryStudio.PhotoGallery.Models
     /// </summary>
     public class PhotoCommentModel
     {
+        // Initializes some properties, that must contain some value by default
+        public PhotoCommentModel()
+        {
+            DateOfCreating = DateTime.Now;
+        }
+
         /// <summary>
         /// Gets or sets the phot comment ID.
         /// </summary>

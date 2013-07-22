@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Database
         /// Creates a new object(item) with TItem type in database.
         /// </summary>
         /// <exception cref="RepositoryCreateException">Says that repository cann't create new entry.</exception>
-        public virtual TItem Create(TItem item)
+        public virtual TItem Add(TItem item)
         {
             try
             {

@@ -10,6 +10,13 @@ namespace BinaryStudio.PhotoGallery.Models
     /// </summary>
     public class AlbumModel
     {
+        // Initializes some properties, that must contain some value by default
+        public AlbumModel()
+        {
+            DateOfCreation = DateTime.Now;
+            Permissions = 111;
+        }
+
         /// <summary>
         /// Gets or sets the album id.
         /// </summary>
@@ -28,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the date and time of album creation.
         /// </summary>
-        public DateTime DataOfCreation { get; set; }
+        public DateTime DateOfCreation { get; set; }
 
         /// <summary>
         /// Gets or sets the permissions for aldum: what goups of user can see and add comments of photo.
@@ -37,7 +44,7 @@ namespace BinaryStudio.PhotoGallery.Models
 
         public virtual int UserModelID { get; set; }
         public virtual ICollection<PhotoModel> Photos { get; set; }
-        public virtual ICollection<AvailableGroupModel> AvaibleGroups { get; set; }
+        public virtual ICollection<AvailableGroupModel> AvailableGroups { get; set; }
         public virtual ICollection<AlbumTagModel> AlbumTags { get; set; }
 
     }

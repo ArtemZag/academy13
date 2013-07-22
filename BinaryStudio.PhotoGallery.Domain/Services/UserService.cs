@@ -15,7 +15,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                unitOfWork.Users.Create(user);
+                unitOfWork.Users.Add(user);
             }
         }
 

@@ -22,11 +22,13 @@ namespace BinaryStudio.PhotoGallery.Domain
         {
             using (_unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
             {
-                //unitOfWork.Photos.Add(somePhoto);
-                //unitOfWork.SaveChanges();
+                _unitOfWork.Users.Add(new UserModel());
 
-                //                _unitOfWork.Albums.Create(new AlbumModel());
-                //                _unitOfWork.Groups.All();
+                _unitOfWork.PhotoTags.Add(new PhotoTagModel());
+
+                _unitOfWork.Photos.Add(new PhotoModel());
+
+                _unitOfWork.Albums.Add(new AlbumModel());
             }
         }
     }
