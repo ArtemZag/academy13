@@ -1,5 +1,5 @@
-﻿using System;
-using BinaryStudio.PhotoGallery.Core;
+﻿using BinaryStudio.PhotoGallery.Core;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using NUnit.Framework;
 using System.Drawing;
 using FluentAssertions;
