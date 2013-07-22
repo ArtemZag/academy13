@@ -10,7 +10,7 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
         {
         }
 
-        public void AddAuthInfo(int userID, string password, string authProvider)
+        public void Add(int userID, string password, string authProvider)
         {
             var auth = new AuthInfoModel
                 {
@@ -18,10 +18,10 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
                     UserPassword = password,
                     AuthProvider = authProvider
                 };
-            base.Create(auth);
+            base.Add(auth);
         }
 
-        public void AddAuthInfo(int userID, string password, string authProvider, string authToken)
+        public void Add(int userID, string password, string authProvider, string authToken)
         {
             var auth = new AuthInfoModel
             {
@@ -30,7 +30,7 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
                 AuthProvider = authProvider,
                 AuthProviderToken = authToken
             };
-            base.Create(auth);
+            base.Add(auth);
         }
     }
 }

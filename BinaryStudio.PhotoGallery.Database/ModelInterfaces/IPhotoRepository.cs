@@ -9,6 +9,6 @@ namespace BinaryStudio.PhotoGallery.Database.ModelInterfaces
         /// </summary>
         /// <param name="albumID">Album ID which contains this photo</param>
         /// <param name="ownerID">User ID that post photo</param>
-        void AddPhoto(int albumID, int ownerID);
+        void Add(int albumID, int ownerID);
     }
 }

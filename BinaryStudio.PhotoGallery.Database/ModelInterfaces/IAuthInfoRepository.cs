@@ -10,7 +10,7 @@ namespace BinaryStudio.PhotoGallery.Database.ModelInterfaces
         /// <param name="userID">User ID</param>
         /// <param name="password">User's password</param>
         /// <param name="authProvider">[local][google][facebook]</param>
-        void AddAuthInfo(int userID, string password, string authProvider);
+        void Add(int userID, string password, string authProvider);
 
         /// <summary>
         /// Adds authentication method for user
@@ -19,6 +19,6 @@ namespace BinaryStudio.PhotoGallery.Database.ModelInterfaces
         /// <param name="password">User's password</param>
         /// <param name="authProvider">[local][google][facebook]</param>
         /// <param name="authToken">Token for OAuth</param>
-        void AddAuthInfo(int userID, string password, string authProvider, string authToken);
+        void Add(int userID, string password, string authProvider, string authToken);
     }
 }

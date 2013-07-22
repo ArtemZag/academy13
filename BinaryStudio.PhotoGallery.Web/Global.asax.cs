@@ -3,6 +3,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain;
 
 namespace BinaryStudio.PhotoGallery.Web
 {
@@ -28,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Web
             System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
 
             // todo: delete
-            // Database.Bootstrapper.Test();
+             Database.Bootstrapper.Test();
         }
     }
 }

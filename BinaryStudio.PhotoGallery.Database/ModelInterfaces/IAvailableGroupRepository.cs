@@ -9,6 +9,6 @@ namespace BinaryStudio.PhotoGallery.Database.ModelInterfaces
         /// </summary>
         /// <param name="groupID">ID of group with permissions</param>
         /// <param name="albumID">Album ID</param>
-        void AddAvailableGroup(int groupID, int albumID);
+        void Add(int groupID, int albumID);
     }
 }

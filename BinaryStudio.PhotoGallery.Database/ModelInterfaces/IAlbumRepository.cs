@@ -9,6 +9,6 @@ namespace BinaryStudio.PhotoGallery.Database.ModelInterfaces
         /// </summary>
         /// <param name="ownerID">User ID that is album's owner</param>
         /// <returns></returns>
-        void AddAlbum(int ownerID);
+        void Add(int ownerID);
     }
 }

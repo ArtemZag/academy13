@@ -11,6 +11,6 @@ namespace BinaryStudio.PhotoGallery.Database.ModelInterfaces
         /// <param name="photoID">What photo is commened.</param>
         /// <param name="text">Text of comment.</param>
         /// <param name="repliedCommentID">What comment is replied. If null - just a comment without reply.</param>
-        void AddComment(int ownerID, int photoID, string text, PhotoCommentModel repliedCommentID);
+        void Add(int ownerID, int photoID, string text, PhotoCommentModel repliedCommentID);
     }
 }

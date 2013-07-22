@@ -10,7 +10,7 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
         {
         }
 
-        public void AddComment(int ownerID, int photoID, string text, PhotoCommentModel repliedCommentID)
+        public void Add(int ownerID, int photoID, string text, PhotoCommentModel repliedCommentID)
         {
             var comment = new PhotoCommentModel
                 {
@@ -19,7 +19,7 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
                     Text = text,
                     Reply = repliedCommentID
                 };
-            base.Create(comment);
+            base.Add(comment);
         }
     }
 }

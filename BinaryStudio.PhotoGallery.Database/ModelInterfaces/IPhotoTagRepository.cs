@@ -13,9 +13,8 @@ namespace BinaryStudio.PhotoGallery.Database.ModelInterfaces
         /// Add tag to photo
         /// </summary>
         /// <param name="tagName">tag name</param>
-        /// <param name="photoID">photo ID</param>
         /// <returns></returns>
-        bool AddTag(string tagName, int photoID);
+        void Add(string tagName);
 
         /// <summary>
         /// Remove tag from photo

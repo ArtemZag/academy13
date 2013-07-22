@@ -39,7 +39,7 @@ namespace BinaryStudio.PhotoGallery.Database
         /// Create a new object to database.
         /// </summary>
         /// <param name="item">Specified a new object to create.</param>
-        T Create(T item);
+        T Add(T item);
 
         /// <summary>
         /// Delete the object from database.
