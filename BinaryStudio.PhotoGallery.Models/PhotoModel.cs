@@ -21,6 +21,11 @@ namespace BinaryStudio.PhotoGallery.Models
         public int ID { get; set; }
 
         /// <summary>
+        /// Gets or sets a path to photo.
+        /// </summary>
+        public string PhotoSource { get; set; }
+
+        /// <summary>
         /// Gets or sets the photo name.
         /// </summary>
         public string PhotoName { get; set; }

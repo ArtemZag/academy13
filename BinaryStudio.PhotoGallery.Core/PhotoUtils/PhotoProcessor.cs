@@ -14,7 +14,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                 g.SmoothingMode = SmoothingMode.HighQuality;
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 g.DrawImage(image, 0, 0, nWidth, nHeight);
-                g.Dispose();
             }
             return result;
         }

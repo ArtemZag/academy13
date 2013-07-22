@@ -181,6 +181,7 @@
     <Compile Include="Utils\ModelConverter.cs" />
     <Compile Include="ViewModels\AuthInfoViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
+    <Compile Include="ViewModels\PhotoViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
   </ItemGroup>
@@ -211,6 +212,7 @@
     <Content Include="Content\style-libs\jasny-bootstrap-responsive.min.css" />
     <Content Include="Content\style-libs\jasny-bootstrap.css" />
     <Content Include="Content\style-libs\jasny-bootstrap.min.css" />
+    <Content Include="Content\style-libs\photo_flow.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -228,6 +230,7 @@
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
     <Content Include="Scripts\auth-page.js" />
+    <Content Include="Scripts\photo_placer.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
