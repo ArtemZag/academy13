@@ -34,25 +34,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public ICollection<PhotoModel> GetPhotos(string userEmail, int count)
         {
-            var result = new List<PhotoModel>();
+            List<PhotoModel> result;
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
-                List<PhotoModel> photos = unitOfWork.Photos.Filter(model => model.UserModelID == user.ID).ToList();
 
-                if (photos.Count < count)
-                {
-                    count = photos.Count;
-                }
-
-                var random = new Random(DateTime.Now.Millisecond);
-                for (int i = 0; i < count; i++)
-                {
-                    int randomIndex = random.Next(photos.Count);
-
-                    result.Add(photos[randomIndex]);
-                }
+                result =
+                    unitOfWork.Photos.Filter(model => model.UserModelID == user.ID).Take(count).ToList();
             }
 
             return result;
