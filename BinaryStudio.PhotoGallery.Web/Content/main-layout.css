@@ -1,4 +1,8 @@
-﻿.navbar {
+﻿#main-render-place {
+    margin-top: 50px;
+}
+
+.navbar {
     width: 100%;
     height: 50px;
     background-image: linear-gradient(to bottom, rgba(56, 56, 56, 0.95) 0%, rgba(0, 0, 0, 0.95) 100%);
@@ -27,4 +31,8 @@
 
 .nav li > .dropdown-toggle:hover {
     background-color: #2fa4e7;
+}
+
+.nav .btn {
+    margin-right: 10px;
 }
