@@ -3,10 +3,23 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
 {
-    class PhotoCommentRepository : BaseRepository<PhotoCommentModel>, IPhotoCommentRepository
+    internal class PhotoCommentRepository : BaseRepository<PhotoCommentModel>, IPhotoCommentRepository
     {
-        public PhotoCommentRepository(DatabaseContext dataBaseContext) : base(dataBaseContext)
+        public PhotoCommentRepository(DatabaseContext dataBaseContext)
+            : base(dataBaseContext)
         {
+        }
+
+        public void AddComment(int ownerID, int photoID, string text, PhotoCommentModel repliedCommentID)
+        {
+            var comment = new PhotoCommentModel
+                {
+                    UserModelID = ownerID,
+                    PhotoModelID = photoID,
+                    Text = text,
+                    Reply = repliedCommentID
+                };
+            base.Create(comment);
         }
     }
 }
