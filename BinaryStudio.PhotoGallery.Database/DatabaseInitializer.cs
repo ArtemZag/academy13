@@ -13,35 +13,69 @@ namespace BinaryStudio.PhotoGallery.Database
     {
         protected override void Seed(DatabaseContext databaseContext)
         {
-            var user = new UserModel();
-
-            var authInfo = new AuthInfoModel();
-            var album = new AlbumModel();
-            var group = new GroupModel();
-            var photo = new PhotoModel();
-
-            user.AuthInfos = new Collection<AuthInfoModel>();
-            user.Albums = new Collection<AlbumModel>();
-            user.Groups = new Collection<GroupModel>();
-
-            album.DateOfCreation = new DateTime(2012,12,12);
-
-            user.Department = "C# prommer";
-            user.Email = "Maaak@gmail.com";
-            user.ID = 123;
-            user.IsAdmin = true;
-            user.FirstName = "Alexander";
-            user.LastName = "Towstonog";
-
-            user.AuthInfos.Add(authInfo);
-            user.Albums.Add(album);
-            user.Groups.Add(group);
-            
-            databaseContext.Users.Add(user);
+            var userFirstNames = new[] {"Artem", "Anton", "Andrey", "Александр", "Michail", "Oleg", "Alexander"};
+            var userLastNames = new[] {"Zagorodnuk", "Golovin", "Spivakov", "Носов", "Bratuha", "", "Towstonog"};
+            var tags = new[] {"summer", "wind", "friends", "animals", "pentax", "binary", "cherdak", "work&fun"};
+            var groups = new[] {"friends", "enemies", "kill", "neighbor", "boss", "partners"};
 
 
+            var unitOfWorkFactory = new UnitOfWorkFactory();
+            var unitOfWork = unitOfWorkFactory.GetUnitOfWork();
 
-            databaseContext.SaveChanges();
+
+            // Creating accounts for team
+            for (var i = 0; i < userFirstNames.Count(); i++)
+            {
+                var random = new Random();
+                
+                unitOfWork.Users.Add(new UserModel()
+                {
+                    FirstName = userFirstNames[i],
+                    LastName = userLastNames[i],
+                    Email = string.Format("{0}{1}@bingally.com",userFirstNames[i],userLastNames[i]),
+                    IsAdmin = (random.Next(1, 10)%2 == 1)
+                });
+                //adds local auth provider with preset password
+                unitOfWork.AuthInfos.Add(i + 1, userLastNames[i], "local");
+            }
+
+            // Creating a list of usefull tags
+            foreach (var photoTag in tags)
+            {
+                unitOfWork.PhotoTags.Add(photoTag);
+            }
+
+            // Creating a list of useful tags
+            foreach (var albumTag in tags)
+            {
+                unitOfWork.AlbumTags.Add(new AlbumTagModel(){TagName = albumTag});
+            }
+
+            // Creating a list of useful groups
+            foreach (var group in groups)
+            {
+                unitOfWork.Groups.Add(new GroupModel() {GroupName = group});
+            }
+
+            // Creating album without any informations about it
+            unitOfWork.Albums.Add(1);
+
+            // Creating album with some informations about it
+            unitOfWork.Albums.Add(new AlbumModel()
+                {
+                    AlbumName = "Academy",
+                    Description = ".Net student group in Binary Studio Academy. Donetsk 2013.",
+                    UserModelID = 5
+                });
+
+
+            // Adding 100 photos from different users to album with ID 2(Academy)
+            for (var i = 0; i < 100; i++)
+            {
+                var random = new Random();
+                unitOfWork.Photos.Add(2, random.Next(1,7));
+            }
+
             base.Seed(databaseContext); 
         }
     }
