@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Models;
+﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -8,6 +9,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// Gets users album specified by name. 
         /// </summary>
         AlbumModel GetAlbum(string userEmail, string albumName);
+
+        /// <summary>
+        /// Gets all albums for specified user. 
+        /// </summary>
+        ICollection<AlbumModel> GetAlbums(string userEmail); 
 
         /// <summary>
         /// Creates album for specified user by his email.

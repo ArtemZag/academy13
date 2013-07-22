@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
@@ -9,6 +10,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     {
         public AlbumService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
+        }
+
+        public ICollection<AlbumModel> GetAlbums(string userEmail)
+        {
+            ICollection<AlbumModel> result;
+
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userEmail, unitOfWork);
+
+                result = user.Albums;
+            }
+
+            return result;
         }
 
         public AlbumModel GetAlbum(string userEmail, string albumName)

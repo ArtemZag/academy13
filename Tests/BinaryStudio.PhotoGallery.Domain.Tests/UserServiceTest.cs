@@ -32,16 +32,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         }
 
         [Test]
-        public void UserShouldBePresent()
-        {
-            // body
-            bool result = userService.CheckUser("Maaak@gmail.com");
-
-            // tear down
-            result.Should().Be(true);
-        }
-
-        [Test]
         public void UserShouldBeAdded()
         {
             // setup
