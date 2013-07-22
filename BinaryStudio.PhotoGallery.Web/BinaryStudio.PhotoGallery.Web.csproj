@@ -171,7 +171,6 @@
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
@@ -242,7 +241,7 @@
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Account\RemindPass.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
-    <Content Include="Views\Album\Albumns.cshtml" />
+    <Content Include="Views\Home\Albums.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
