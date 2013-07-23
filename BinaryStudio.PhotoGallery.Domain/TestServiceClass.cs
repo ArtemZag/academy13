@@ -20,7 +20,7 @@ namespace BinaryStudio.PhotoGallery.Domain
 
         private void SomeMethod()
         {
-            using (_unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
+            /*using (_unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
             {
                 _unitOfWork.Users.Add(new UserModel());
 
@@ -29,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Domain
                 _unitOfWork.Photos.Add(new PhotoModel());
 
                 _unitOfWork.Albums.Add(new AlbumModel());
-            }
+            }*/
         }
     }
 }

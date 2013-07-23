@@ -15,6 +15,19 @@ namespace BinaryStudio.PhotoGallery.Models
         public const string GOOGLE_PROFILE = "google";
 
         /// <summary>
+        /// Main constructor with important fields
+        /// </summary>
+        /// <param name="userID">user id</param>
+        /// <param name="password">password</param>
+        /// <param name="authProvider">[local][google][facebook]</param>
+        public AuthInfoModel(int userID, string password, string authProvider)
+        {
+            UserModelID = userID;
+            UserPassword = password;
+            AuthProvider = authProvider;
+        }
+
+        /// <summary>
         /// Gets or sets the name of the user.
         /// </summary>
         public int ID { get; set; }
@@ -34,6 +47,6 @@ namespace BinaryStudio.PhotoGallery.Models
         /// </summary>
         public string AuthProviderToken { get; set; }
 
-        public virtual int UserModelID { get; set; }
+        public int UserModelID { get; set; }
     }
 }
