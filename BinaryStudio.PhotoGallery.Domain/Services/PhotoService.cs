@@ -28,7 +28,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void AddPhotos(string userEmail, string albumName, ICollection<PhotoModel> photos)
+        public void AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -55,7 +55,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public ICollection<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end)
+        public IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -66,7 +66,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public ICollection<PhotoModel> GetPhotos(string userEmail, int count)
+        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int count)
         {
             List<PhotoModel> result;
 

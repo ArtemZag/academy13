@@ -13,7 +13,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         /// Adds photos by specidied user to his album.  
         /// </summary>
-        void AddPhotos(string userEmail, string albumName, ICollection<PhotoModel> photos);
+        void AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
 
         /// <summary>
         /// Deletes 
@@ -27,13 +27,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="albumName">Album name.</param>
         /// <param name="begin">Beginning of the interval.</param>
         /// <param name="end">Ending of the interval.</param>
-        ICollection<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
+        IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
 
         /// <summary>
         /// Returns last N users photos.
         /// </summary>
         /// <param name="userEmail">Users email.</param>
         /// <param name="count">Number of photos.</param>
-        ICollection<PhotoModel> GetPhotos(string userEmail, int count);
+        IEnumerable<PhotoModel> GetPhotos(string userEmail, int count);
     }
 }
