@@ -4,6 +4,7 @@ using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Core.Helpers;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -76,6 +77,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 result =
                     unitOfWork.Photos.Filter(model => model.UserModelID == user.ID).Take(count).ToList();
             }
+
+            //for test only! todo: remove when real user photos will be added
+            for (int i = 1; i < 20; i++)
+                result.Add(new PhotoModel { PhotoThumbSource = PathHelper.ImageRoot + "/test/" + i + ".jpg" });
 
             return result;
         }

@@ -30,7 +30,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         public static PhotoViewModel GetViewModel(PhotoModel viewModel)
         {
-            var photoModel = new PhotoViewModel {PhotoSource = viewModel.PhotoSource};
+            var photoModel = new PhotoViewModel {PhotoThumbSource = viewModel.PhotoThumbSource};
 
             return photoModel;
         }
