@@ -32,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 		[GET("Index")]
         public ActionResult Index()
         {   
-            // i hope there aren't too many photos here)
+
             var viewmodels = _photoService.GetPhotos(User.Identity.Name, 20);
             return View(new InfoViewModel { UserEmail = User.Identity.Name, 
                                             Photos = viewmodels.Select(ModelConverter.GetViewModel).ToList()});

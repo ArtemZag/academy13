@@ -33,6 +33,12 @@ namespace BinaryStudio.PhotoGallery.Models
         public string PhotoSource { get; set; }
 
         /// <summary>
+        /// Gets or sets a path to photo.  
+        /// todo: if we need more thumbnails - we should create a table of its.
+        /// </summary>
+        public string PhotoThumbSource { get; set; }
+
+        /// <summary>
         /// Gets or sets the photo name.
         /// </summary>
         public string PhotoName { get; set; }
