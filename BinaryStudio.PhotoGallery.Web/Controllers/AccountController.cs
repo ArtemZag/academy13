@@ -10,6 +10,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Web;
 
     [RoutePrefix("Account")]
     public class AccountController : Controller
@@ -59,7 +63,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 if (userValid)
                 {
                     FormsAuthentication.SetAuthCookie(authInfo.Email, authInfo.RememberMe);
-                    return Json(null);
+                    return Json("ok");
                 }
             }
 

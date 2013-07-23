@@ -24,19 +24,25 @@ function animateQuery() {
                 Password: $("#Password").val(),
                 RememberMe: $("#RememberMe").val()
             })
-            .done(function(data) {
-                if (data != null) {
-                    submitButton.removeClass("disabled");
-                    submitButton.removeAttr("data-loading");
-                    
+            .done(function (data) {
+                submitButton.removeClass("disabled");
+                submitButton.removeAttr("data-loading");
+
+                // remove all error-fields and then ...
+                
+                if (data == "ok") {
                     hideLoginPanel(function () {
                         setTimeout(function () { window.location = "../Home/Index"; }, 500);
                     });
+                } else {
+                    // show error fields
+                    console.log(data);
                 }
             })
             .fail(function() {
                 submitButton.removeClass("disabled");
-                submitButton.removeAttr("data-loading");
+                submitButton.removeAttr("data-loading", true);
+//                console.log("Can't get response from server");
             });
 
     });
@@ -83,7 +89,7 @@ function hideLoginPanel(callback) {
         shadow.fadeOut(500);
     });
     
-    loginPanel.animate({ top: "-20%", opacity: 0 }, 800, function() {
+    loginPanel.animate({ top: "-20%", opacity: 0 }, 900, function() {
         callback();
     });
 }
