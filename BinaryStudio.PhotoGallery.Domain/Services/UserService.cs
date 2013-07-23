@@ -2,25 +2,30 @@
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Core.UserUtils;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class UserService : Service, IUserService
     {
-        public UserService(IUnitOfWorkFactory workFactory) : base(workFactory)
+        private readonly ICryptoProvider cryptoProvider;
+
+        public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider) : base(workFactory)
         {
+            this.cryptoProvider = cryptoProvider;
         }
 
         public UserModel GetUser(string userEmail)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return GetUser(userEmail, unitOfWork);                
+                return GetUser(userEmail, unitOfWork);
             }
         }
 
         public void CreateUser(UserModel user)
         {
+            // TODO user password come in opned view - you must make hash and then create user
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 unitOfWork.Users.Add(user);
@@ -50,7 +55,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public bool CheckUser(string userEmail)
+        public bool IsUserValid(string userEmail, string userPassword)
+        {
+            // TODO this method must compare passwords too
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                IUserRepository userRepository = unitOfWork.Users;
+
+                return userRepository.Contains(model => string.Equals(model.Email, userEmail));
+            }
+        }
+
+        public bool IsUserExist(string userEmail)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {

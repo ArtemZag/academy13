@@ -11,11 +11,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         /// Updates info about user.
         /// </summary>
-        /// <param name="userModel">Must to contain full info about user.</param>
+        /// <param name="userModel">Must contains full info about user.</param>
         void UpdateUser(UserModel userModel);
 
         void DeleteUser(string userEmail);
 
-        bool CheckUser(string userEmail);
+        bool IsUserValid(string userEmail, string userPassword);
+
+        bool IsUserExist(string userEmail);
     }
 }
