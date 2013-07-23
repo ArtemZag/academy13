@@ -197,7 +197,6 @@
     <Content Include="Content\images\logo_v2.png" />
     <Content Include="Content\images\logo_v3.png" />
     <Content Include="Content\images\logo_v4.png" />
-    <Content Include="Content\images\no_avatar.png" />
     <Content Include="Content\main-layout.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.min.css" />
@@ -229,7 +228,6 @@
     <Content Include="Scripts\knockout-2.3.0.js" />
     <Content Include="Scripts\auth-page.js" />
     <Content Include="Scripts\photo_placer.js" />
-    <Content Include="Scripts\UserSlider.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -252,7 +250,6 @@
     <Content Include="Views\Home\Gallery.cshtml" />
     <Content Include="Views\Home\Groups.cshtml" />
     <Content Include="Views\AdminPanel\Index.cshtml" />
-    <Content Include="Views\Shared\_AfterLoginLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
