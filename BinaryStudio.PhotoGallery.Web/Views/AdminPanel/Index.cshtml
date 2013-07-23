@@ -1,4 +1,5 @@
-﻿@model IEnumerable<BinaryStudio.PhotoGallery.Models.UserModel>
+﻿@using System.Web.Optimization
+@model IEnumerable<BinaryStudio.PhotoGallery.Models.UserModel>
 
 @{
 	Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -7,13 +8,26 @@
 
 
 <div class="user-container">
-	@for (int i = 0; i < 20; i++)
-{
-	foreach (var user in @Model)
-	{
-		<div class="user-row">
-			<label>User login: @user.LastName</label>
-		</div>
-	}
-}
+	@for (int i = 0; i < 10; i++)
+ {
+	 foreach (var user in @Model)
+	 {
+		<a href="">
+			<div class="user-row">
+				<div class="user-main-info">
+					<img scr="~/Content/images/no_avatar.png" alt="@user.LastName" />
+					<span>User: @user.LastName</span>
+					<span class="user-status">Offline</span>
+				</div>
+			</div>
+
+		</a>
+	 }
+ }
 </div>
+<div class="hidden-field">
+	
+</div>
+
+
+
