@@ -1,39 +1,32 @@
-﻿using System.Net;
+﻿using System.Configuration;
+using System.Net;
 using System.Net.Mail;
 
 namespace BinaryStudio.PhotoGallery.Core.NotificationsUtils
 {
-    public static class NotificationSender
+    internal class NotificationSender : INotificationSender
     {
-        private const string OWN_EMAIL = "binarystudio.gallery@outlook.com";
-        private const string HOST = "smtp.live.com";
-
-        // todo: maybe it's wrong
-        private const string PASSWORD = "s5PCqNQn";
-
-        private const string SUBJECT = "Notification";
-
-        public static void Send(string email, string text)
+        public void Send(string fromHost, string fromEmail, string fromPassword, string toEmail, string text)
         {
             var message = new MailMessage
-                {
-                    From = new MailAddress(OWN_EMAIL)
-                };
+            {
+                From = new MailAddress(fromEmail)
+            };
 
-            message.To.Add(email);
+            message.To.Add(toEmail);
 
-            message.Subject = SUBJECT;
+            message.Subject = "Notification";
 
             message.Body = text;
             message.IsBodyHtml = true;
 
             //SMTP client
-            var smtpClient = new SmtpClient(HOST)
-                {
-                    Port = 587,
-                    Credentials = new NetworkCredential(OWN_EMAIL, PASSWORD),
-                    EnableSsl = true
-                };
+            var smtpClient = new SmtpClient(fromHost)
+            {
+                Port = 587,
+                Credentials = new NetworkCredential(fromEmail, fromPassword),
+                EnableSsl = true
+            };
 
             smtpClient.Send(message);
         }
