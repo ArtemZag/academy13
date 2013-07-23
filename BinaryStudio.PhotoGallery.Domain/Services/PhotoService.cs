@@ -80,7 +80,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
             //for test only! todo: remove when real user photos will be added
             for (int i = 1; i < 20; i++)
-                result.Add(new PhotoModel { PhotoThumbSource = PathHelper.ImageRoot + "/test/" + i + ".jpg" });
+                result.Add(new PhotoModel { PhotoThumbSource = PathHelper.ImageDir + "/test/" + i + ".jpg" });
 
             return result;
         }

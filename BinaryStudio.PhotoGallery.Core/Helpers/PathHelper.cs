@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
 {
     public static class PathHelper
     {
-        public static string ContentRoot
+        public static string ContentDir
         {
             get
             {
@@ -18,25 +18,25 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             }
         }
 
-        public static string ImageRoot
+        public static string ImageDir
         {
-            get { return string.Format("{0}/{1}", ContentRoot,"Images"); }
+            get { return string.Format("{0}/{1}", ContentDir,"Images"); }
         }
 
-        public static string CssRoot
+        public static string CssDir
         {
-            get { return string.Format("{0}/{1}", ContentRoot, "Css"); }
+            get { return string.Format("{0}/{1}", ContentDir, "Css"); }
         }
   
         public static string ImageUrl(string imageFile)
         {
-            string result = string.Format("{0}/{1}", ImageRoot, imageFile);
+            string result = string.Format("{0}/{1}", ImageDir, imageFile);
             return result;
         }
 
         public static string CssUrl(string cssFile)
         {
-            string result = string.Format("{0}/{1}", CssRoot, cssFile);
+            string result = string.Format("{0}/{1}", CssDir, cssFile);
             return result;
         }
     }
