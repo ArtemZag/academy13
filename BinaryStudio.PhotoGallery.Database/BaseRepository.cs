@@ -18,7 +18,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
         protected DbSet<TItem> DbSet
         {
-            get { return this.Context.Set<TItem>(); }
+            get { return Context.Set<TItem>(); }
         }
 
         /// <summary>
@@ -30,7 +30,6 @@ namespace BinaryStudio.PhotoGallery.Database
             try
             {
                 TItem entry = DbSet.Add(item);
-                Context.SaveChanges();
 
                 return entry;
             }
@@ -100,7 +99,6 @@ namespace BinaryStudio.PhotoGallery.Database
             try
             {
                 Context.Entry(item).State = EntityState.Modified;
-                Context.SaveChanges();
             }
             catch (Exception e)
             {
@@ -117,7 +115,6 @@ namespace BinaryStudio.PhotoGallery.Database
             try
             {
                 DbSet.Remove(item);
-                Context.SaveChanges();
             }
             catch (Exception e)
             {

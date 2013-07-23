@@ -24,8 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 photo.UserModelID = user.ID;
                 album.Photos.Add(photo);
 
-                // todo: is it necessary? 
-                unitOfWork.Albums.Update(album);
+                unitOfWork.SaveChanges();
             }
         }
 
@@ -41,8 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     album.Photos.Add(photo);
                 }
 
-                // todo: is it necessary? 
-                unitOfWork.Albums.Update(album);
+                unitOfWork.SaveChanges();
             }
         }
 
@@ -52,6 +50,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 unitOfWork.Photos.Delete(photo);
+
+                unitOfWork.SaveChanges();
             }
         }
 

@@ -31,17 +31,5 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             return new HttpResponseMessage(HttpStatusCode.Created);
         }
-
-        /// <summary>
-        /// Updates user. PUT api/updateuser
-        /// </summary>
-        public HttpResponseMessage PutUpdateUser(RegistrationViewModel registrationViewModel)
-        {
-            UserModel userModel = ModelConverter.GetModel(registrationViewModel);
-
-            userService.UpdateUser(userModel);
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
-        }
     }
 }
