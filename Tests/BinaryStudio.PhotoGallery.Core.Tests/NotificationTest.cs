@@ -26,7 +26,7 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             string ownEmail = ConfigurationManager.AppSettings["NotificationEmail"];
             string ownPassword = ConfigurationManager.AppSettings["NotificationPassword"];
 
-            string toEmail = "antnglvn@gmail.com";
+            string toEmail = "YOUR_EMAIL_TO_TEST";
             string text = "text";
 
             // tear down
