@@ -7,5 +7,10 @@
                 $(photos[j]).closest(".photoContainer").css('width', (photos[j].width * coef) - 0.2);
             }            firstElemInRow = i + 1;            width = 0;            margins = 0;
         }
+        else if (i == photos.length - 1) {
+            for (j = firstElemInRow; j <= i; j++) {
+                $(photos[j]).closest(".photoContainer").css('width', photos[j].width);
+            }
+        }
     });
 }
