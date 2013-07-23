@@ -48,6 +48,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 user.Albums.Add(album);
 
+                // todo: is it necessary? 
                 unitOfWork.Users.Update(user);
             }
         }
