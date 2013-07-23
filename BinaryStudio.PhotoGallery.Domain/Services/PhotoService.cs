@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -12,47 +13,86 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
-        public bool AddPhoto(string userEmail, string albumName, PhotoModel photo)
+        public void AddPhoto(string userEmail, string albumName, PhotoModel photo)
         {
-            throw new NotImplementedException();
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userEmail, unitOfWork);
+                AlbumModel album = GetAlbum(user, albumName, unitOfWork);
+
+                photo.UserModelID = user.ID;
+                album.Photos.Add(photo);
+
+                // todo: is it necessary? 
+                unitOfWork.Albums.Update(album);
+            }
         }
 
-        public bool AddPhotos(string userEmail, string albumName, ICollection<PhotoModel> photos)
+        public void AddPhotos(string userEmail, string albumName, ICollection<PhotoModel> photos)
         {
-            throw new NotImplementedException();
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userEmail, unitOfWork);
+                AlbumModel album = GetAlbum(user, albumName, unitOfWork);
+
+                foreach (var photo in photos)
+                {
+                    album.Photos.Add(photo);
+                }
+
+                // todo: is it necessary? 
+                unitOfWork.Albums.Update(album);
+            }
         }
 
-        public bool DeletePhoto(int photoId)
+        // todo: what about storage?
+        public void DeletePhoto(PhotoModel photo)
         {
-            throw new NotImplementedException();
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                unitOfWork.Photos.Delete(photo);
+            }
         }
 
         public ICollection<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end)
         {
-            throw new NotImplementedException();
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userEmail, unitOfWork);
+                AlbumModel album = GetAlbum(user, albumName, unitOfWork);
+
+                return album.Photos.Skip(begin).Take(end - begin).ToList();
+            }
         }
 
         public ICollection<PhotoModel> GetPhotos(string userEmail, int count)
         {
-            var result = new List<PhotoModel>();
+            List<PhotoModel> result;
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
-                List<PhotoModel> photos = unitOfWork.Photos.Filter(model => model.UserModelID == user.ID).ToList();
 
-                if (photos.Count < count)
-                {
-                    count = photos.Count;
-                }
+                result =
+                    unitOfWork.Photos.Filter(model => model.UserModelID == user.ID).Take(count).ToList();
+            }
 
-                var random = new Random(DateTime.Now.Millisecond);
-                for (int i = 0; i < count; i++)
-                {
-                    int randomIndex = random.Next(photos.Count);
+            return result;
+        }
 
-                    result.Add(photos[randomIndex]);
-                }
+        private AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
+        {
+            AlbumModel result;
+
+            try
+            {
+                result =
+                    unitOfWork.Albums.Find(
+                        model => model.UserModelID == user.ID && string.Equals(model.AlbumName, albumName));
+            }
+            catch (Exception e)
+            {
+                throw new AlbumNotFoundException(e);
             }
 
             return result;

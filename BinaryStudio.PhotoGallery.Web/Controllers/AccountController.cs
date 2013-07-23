@@ -8,6 +8,13 @@ using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Web;
+
     [RoutePrefix("Account")]
     public class AccountController : Controller
     {
@@ -25,7 +32,16 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Home");
+                    // recheck user (maybe it was deleted, while cookie is truth)
+                    var userExist = userService.IsUserExist(User.Identity.Name);
+
+                    if (userExist)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    // Clear cookie
+                    FormsAuthentication.SignOut();
                 }
             }
             else
@@ -38,24 +54,20 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         }
 
         [POST("Signin")]
-        public ActionResult SignIn(AuthInfoViewModel authInfo)
+        public JsonResult SignIn(AuthInfoViewModel authInfo)
         {
             if (ModelState.IsValid)
             {
-                var user = ModelConverter.GetModel(authInfo);
+                var userValid = userService.IsUserValid(authInfo.Email, authInfo.Password);
 
-                var userExist = userService.CheckUser(user.Email);
-
-                if (userExist)
+                if (userValid)
                 {
                     FormsAuthentication.SetAuthCookie(authInfo.Email, authInfo.RememberMe);
-                    return RedirectToAction("Index", "Home");
+                    return Json("ok");
                 }
-
-                ModelState.AddModelError("", "E-mail or password is incorrect");
             }
 
-            return View(authInfo);
+            return Json(ModelState.SelectMany(item => item.Value.Errors).Select(error => error.ErrorMessage).ToList());
         }
 
         [GET("Signup/{service}")]
@@ -82,18 +94,18 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = ModelConverter.GetModel(registrationViewModel);
-                
-                var userExist = userService.CheckUser(user.Email);
+                var userValid = userService.IsUserValid(registrationViewModel.Email, registrationViewModel.Password);
 
-                if (userExist)
+                if (userValid)
                 {
-                    ModelState.AddModelError("", "This E-mail address is already in use");
+                    ModelState.AddModelError("", "This e-mail address is already in use");
                     return View(registrationViewModel);
                 }
 
                 try
                 {
+                    var user = ModelConverter.GetModel(registrationViewModel);
+
                     userService.CreateUser(user);
 
                     FormsAuthentication.SetAuthCookie(user.Email, false);

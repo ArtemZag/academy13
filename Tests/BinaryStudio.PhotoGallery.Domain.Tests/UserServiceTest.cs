@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         public void UserShoulBeAbsent()
         {
             // body
-            bool result = userService.CheckUser("nononono@gmail.com");
+            bool result = userService.IsUserExist("nononono@gmail.com");
 
             // tear down
             result.Should().Be(false);
@@ -45,7 +45,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             // body
             userService.CreateUser(userModel);
-            bool checkingResult = userService.CheckUser(userModel.Email);
+            bool checkingResult = userService.IsUserExist(userModel.Email);
 
             // tear down
             checkingResult.Should().Be(true);
@@ -65,10 +65,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             // body
             userService.CreateUser(userModel);
-            bool isPresentAfterCreation = userService.CheckUser(userModel.Email);
+            bool isPresentAfterCreation = userService.IsUserExist(userModel.Email);
 
             userService.DeleteUser(userModel.Email);
-            bool isPresentAfterDeleting = userService.CheckUser(userModel.Email);
+            bool isPresentAfterDeleting = userService.IsUserExist(userModel.Email);
 
             // tear down
             isPresentAfterCreation.Should().Be(true);

@@ -15,6 +15,13 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreation = DateTime.Now;
         }
 
+        public PhotoModel(int albumModelID, int userModelID)
+        {
+            AlbumModelID = albumModelID;
+            UserModelID = userModelID;
+            DateOfCreation = DateTime.Now;
+        }
+
         /// <summary>
         /// Gets or sets the photo ID.
         /// </summary>

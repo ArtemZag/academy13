@@ -17,9 +17,22 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
             BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/bootstrap").Include(
                 "~/Scripts/bootstrap.js"
                 ));
+            BundleTable.Bundles.Add(new ScriptBundle("~/bundels/scripts/dropzone").Include(
+                "~/Scripts/dropzone.js"
+                ));
+            BundleTable.Bundles.Add(new ScriptBundle("~/bundels/scripts/effeckt-buttons").Include(
+                "~/Scripts/effeckt-buttons.js"
+                ));
+
             BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/bootstrap").Include(
                 "~/Content/style-libs/bootstrap.css",
                 "~/Content/style-libs/bootstrap-responsive.css"
+                ));
+            BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/effeckt-buttons").Include(
+                "~/Content/style-libs/effeckt-buttons.css"
+                ));
+            BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/dropzone").Include(
+                "~/Content/style-libs/dropzone.css"
                 ));
 		}
 	}

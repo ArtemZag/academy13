@@ -1,14 +1,52 @@
 ﻿$(function () {
     var validField = $(".validation-summary-errors");
 
-    console.log(validField);
-
     if (validField.length == 0) {
-        pageAnimation();
+        showLoginPanel();
     } else {
         correctValidationStyle(validField);
     }
+
+    animateQuery();
 });
+
+function animateQuery() {
+    var submitButton = $("#signin-button");
+    
+    submitButton.click(function () {
+        submitButton.addClass("disabled");
+        submitButton.attr("data-loading", true);
+        
+        // ajax query
+        $.post('../Account/Signin',
+            {
+                Email: $("#Email").val(),
+                Password: $("#Password").val(),
+                RememberMe: $("#RememberMe").val()
+            })
+            .done(function (data) {
+                submitButton.removeClass("disabled");
+                submitButton.removeAttr("data-loading");
+
+                // remove all error-fields and then ...
+                
+                if (data == "ok") {
+                    hideLoginPanel(function () {
+                        setTimeout(function () { window.location = "../Home/Index"; }, 500);
+                    });
+                } else {
+                    // show error fields
+                    console.log(data);
+                }
+            })
+            .fail(function() {
+                submitButton.removeClass("disabled");
+                submitButton.removeAttr("data-loading", true);
+//                console.log("Can't get response from server");
+            });
+
+    });
+}
 
 function correctValidationStyle(validField) {
     validField.addClass("alert alert-error");
@@ -16,7 +54,7 @@ function correctValidationStyle(validField) {
     validField.prepend("<button type='button' class='close' data-dismiss='alert'>&times;</button>");
 }
 
-function pageAnimation() {
+function showLoginPanel() {
     // Search DOM elements
     var changePanel = $("#change-panel");
     var shadow = $("#full-screen-shadow");
@@ -27,8 +65,8 @@ function pageAnimation() {
     var changePanelCss = { top: changePanel.css("top"), opacity: changePanel.css("opacity") };
 
     // Init new values
-    loginPanel.css({ top: "-20%", opacity: 0.0 });
-    changePanel.css({ top: -60, opacity: 0.0 });
+    loginPanel.css({ top: "-20%", opacity: 0 });
+    changePanel.css({ top: -60, opacity: 0 });
 
     shadow.hide();
 
@@ -38,4 +76,20 @@ function pageAnimation() {
     });
 
     shadow.fadeIn(500);
+}
+
+function hideLoginPanel(callback) {
+    // Search DOM elements
+    var changePanel = $("#change-panel");
+    var shadow = $("#full-screen-shadow");
+    var loginPanel = $("#login-panel");
+    
+    // Animate all elements
+    changePanel.animate({ top: -60, opacity: 0 }, 500, function () {
+        shadow.fadeOut(500);
+    });
+    
+    loginPanel.animate({ top: "-20%", opacity: 0 }, 900, function() {
+        callback();
+    });
 }

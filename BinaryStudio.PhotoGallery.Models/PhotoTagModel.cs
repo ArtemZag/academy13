@@ -8,6 +8,11 @@ namespace BinaryStudio.PhotoGallery.Models
     /// </summary>
     public class PhotoTagModel
     {
+        public PhotoTagModel(string tagName)
+        {
+            TagName = tagName;
+        }
+
         /// <summary>
         /// Gets or sets the photo tag ID.
         /// </summary>
