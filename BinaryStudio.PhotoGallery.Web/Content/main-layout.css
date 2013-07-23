@@ -48,28 +48,70 @@
 }
 
 .search-query {
-    width: 180px;}
-.user-container {
-	padding: 20px;
+    width: 180px;
 }
 
-.user-container div {
-	width: 100px;
-	height: 200px;
-	padding: 10px;
-	float: left;
-	background-color: #f0f0f0;
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(5%, #ffffff), to(#ffffff));
-	background-image: -webkit-linear-gradient(#ffffff, #ffffff 5%, #ffffff);
-	background-image: -moz-linear-gradient(top, #ffffff, #ffffff 5%, #ffffff);
-	background-image: -o-linear-gradient(#ffffff, #ffffff 5%, #ffffff);
-	background-image: linear-gradient(#ffffff, #ffffff 5%, #ffffff);
-	background-repeat: no-repeat;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
+.user-container {
+	padding: 20px;
+	width: 80%;
 }
 
 .user-row {
-	
-}}
+	height: 220px;
+	padding: 10px;
+	float: left;
+	margin: 0px 8px 8px 0px;
+	border: 1px solid black;
+	background: #f3f3f3; /* Для старых браузров */
+    background: -moz-linear-gradient(-225deg, #f1f1f1, #d3d3d3); 
+    background: -webkit-gradient(linear, left top, right bottom, 
+                color-stop(0%,#f1f1f1), color-stop(100%, #d3d3d3));
+    background: -webkit-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: -o-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: -ms-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	text-align: center;
+}
+
+.user-row:hover {
+	background: #d5d5d5; /* Для старых браузров */
+    background: -moz-linear-gradient(-225deg, #ede7e7, #c5bebe); 
+    background: -webkit-gradient(linear, left top, right bottom, 
+                color-stop(0%, #ede7e7), color-stop(100%, #c5bebe));
+    background: -webkit-linear-gradient(-225deg, #ede7e7, #c5bebe);
+    background: -o-linear-gradient(-225deg, #ede7e7, #c5bebe);
+    background: -ms-linear-gradient(-225deg, #ede7e7, #c5bebe);
+    background: linear-gradient(-225deg, #ede7e7, #c5bebe);
+}
+
+.user-main-info {
+	width: 100px;
+	height: 200px;
+	float: left;
+}
+
+.user-row img {
+	width: 80px;
+	height: 80px;
+}
+
+.user-status 
+{
+	color: red;
+}
+
+a span {
+	color: black;
+}
+
+.hidden-field {
+	height: 200px;
+	width: 130px;
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	display: none;
+}
