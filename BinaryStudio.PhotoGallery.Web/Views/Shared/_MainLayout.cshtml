@@ -10,40 +10,42 @@
         <title>@ViewBag.Title</title>
     </head>
     <body>
-        <nav class="navbar navbar-fixed-top">
-            <a href="../Home/Index" class="brand"><img src="~/Content/images/logo_v4.png"/></a>
-            <ul class="nav">
-                <li><a href="../Home/Gallery">Gallery</a></li>
-                <li><a href="../Home/Albums">Albums</a></li>
-                <li><a href="../Home/Groups">Groups</a></li>
-            </ul>
-            <ul class="nav pull-right">
-                <li class="navbar-search">
-                    <form action="../Search" method="GET" class="form-search">
-                        <div class="input-append">
-                            <input type="search" class="search-query" placeholder="Enter keyword">
-                            <button type="button" class="btn btn-info">Search</button>
-                        </div>
-                    </form>
-                </li>
-                <li class="btn btn-success">Upload</li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                        <strong>@User.Identity.Name</strong>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Administration</a></li>
-                        <li><a href="Home/News">Notifications</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li class="divider"></li>
-                        <li><a href="../Account/Signout">Sign out</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        <div id="main-render-place">
-            @RenderBody()
+        <div id="homepageWrapper">
+            <nav class="navbar navbar-fixed-top">
+                <a href="../Home/Index" class="brand"><img src="~/Content/images/logo_v4.png"/></a>
+                <ul class="nav">
+                    <li><a href="../Home/Gallery">Gallery</a></li>
+                    <li><a href="../Home/Albums">Albums</a></li>
+                    <li><a href="../Home/Groups">Groups</a></li>
+                </ul>
+                <ul class="nav pull-right">
+                    <li class="navbar-search">
+                        <form action="../Search" method="GET" class="form-search">
+                            <div class="input-append">
+                                <input type="search" class="search-query" placeholder="Enter keyword">
+                                <button type="button" class="btn btn-info">Search</button>
+                            </div>
+                        </form>
+                    </li>
+                    <li class="btn btn-success">Upload</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <strong>@User.Identity.Name</strong>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Administration</a></li>
+                            <li><a href="Home/News">Notifications</a></li>
+                            <li><a href="#">Settings</a></li>
+                            <li class="divider"></li>
+                            <li><a href="../Account/Signout">Sign out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <div id="main-render-place">
+                @RenderBody()
+            </div>
         </div>
     </body>
     @Scripts.Render("~/bundles/scripts/jquery")
