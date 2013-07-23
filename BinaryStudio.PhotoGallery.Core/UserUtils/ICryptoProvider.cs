@@ -2,7 +2,7 @@
 {
     public interface ICryptoProvider
     {
-        string EncryptString(string originalString);
+        string Solt { get; }
 
         string CreateHashForPassword(string password, string solt);
 

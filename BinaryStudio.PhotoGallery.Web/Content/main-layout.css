@@ -8,7 +8,8 @@
 
 body
 {
-	background-color: #2E2E2E !important;	min-height: 100%;
+	background-color: #2E2E2E !important;
+	min-height: 100%;
 }
 
 
@@ -57,7 +58,7 @@ body
 }
 
 .user-row {
-	height: 220px;
+	height: 200px;
 	padding: 10px;
 	float: left;
 	margin: 0px 8px 8px 0px;
@@ -114,4 +115,8 @@ a span {
 	padding: 0px;
 	float: left;
 	display: none;
+}
+
+.hidden-field input[type="button"] {
+	margin-top: 10px;
 }

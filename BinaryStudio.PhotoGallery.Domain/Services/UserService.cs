@@ -1,8 +1,9 @@
-﻿using BinaryStudio.PhotoGallery.Database;
+﻿using System.Linq;
+using BinaryStudio.PhotoGallery.Core.UserUtils;
+using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Core.UserUtils;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -25,7 +26,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public void CreateUser(UserModel user)
         {
-            // TODO user password come in opned view - you must make hash and then create user
+            // todo: it will be parameter
+            const string AUTH_PROVIDER = AuthInfoModel.LOCAL_PROFILE;
+
+            AuthInfoModel authInfoModel =
+                user.AuthInfos.First(model => string.Equals(model.AuthProvider, AUTH_PROVIDER));
+
+            authInfoModel.UserPassword = cryptoProvider.CreateHashForPassword(authInfoModel.UserPassword,
+                                                                              cryptoProvider.Solt);
+
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 unitOfWork.Users.Add(user);
@@ -57,13 +66,31 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public bool IsUserValid(string userEmail, string userPassword)
         {
-            // TODO this method must compare passwords too
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                IUserRepository userRepository = unitOfWork.Users;
+            bool result;
 
-                return userRepository.Contains(model => string.Equals(model.Email, userEmail));
+            try
+            {
+                // todo: it will be parameter
+                const string AUTH_PROVIDER = AuthInfoModel.LOCAL_PROFILE;
+
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                {
+                    UserModel user = GetUser(userEmail, unitOfWork);
+
+                    AuthInfoModel authInfoModel =
+                        user.AuthInfos.First(model => string.Equals(model.AuthProvider, AUTH_PROVIDER));
+
+                    string dbPassword = authInfoModel.UserPassword;
+
+                    result = cryptoProvider.IsPasswordsEqual(userPassword, dbPassword, cryptoProvider.Solt);
+                }
             }
+            catch (UserNotFoundException)
+            {
+                result = false;
+            }
+
+            return result;
         }
 
         public bool IsUserExist(string userEmail)
