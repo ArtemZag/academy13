@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\BinaryStudio.PhotoGallery.Web\bin\Microsoft.Practices.Unity.dll</HintPath>
+      <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

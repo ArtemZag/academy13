@@ -8,13 +8,6 @@ using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Web;
-
     [RoutePrefix("Account")]
     public class AccountController : Controller
     {
@@ -25,65 +18,31 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             this.userService = userService;
         }
 
-        [GET("Signin/{service}")]
-        public ActionResult SignIn(string service)
+        public ActionResult SignIn()
         {
-            if (string.IsNullOrEmpty(service))
+            if (User.Identity.IsAuthenticated)
             {
-                if (User.Identity.IsAuthenticated)
-                {
-                    // recheck user (maybe it was deleted, while cookie is truth)
-                    var userExist = userService.IsUserExist(User.Identity.Name);
+                // recheck user (maybe it was deleted, while cookie is truth)
+                var userExist = userService.IsUserExist(User.Identity.Name);
 
-                    if (userExist)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-
-                    // Clear cookie
-                    FormsAuthentication.SignOut();
-                }
-            }
-            else
-            {
-                // TODO Auth with social (don't change this block!!! It will be changed)
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View(new AuthInfoViewModel { RememberMe = true });
-        }
-
-        [POST("Signin")]
-        public JsonResult SignIn(AuthInfoViewModel authInfo)
-        {
-            if (ModelState.IsValid)
-            {
-                var userValid = userService.IsUserValid(authInfo.Email, authInfo.Password);
-
-                if (userValid)
-                {
-                    FormsAuthentication.SetAuthCookie(authInfo.Email, authInfo.RememberMe);
-                    return Json("ok");
-                }
-            }
-
-            return Json(ModelState.SelectMany(item => item.Value.Errors).Select(error => error.ErrorMessage).ToList());
-        }
-
-        [GET("Signup/{service}")]
-        public ActionResult SignUp(string service)
-        {
-            if (string.IsNullOrEmpty(service))
-            {
-                if (User.Identity.IsAuthenticated)
+                if (userExist)
                 {
                     return RedirectToAction("Index", "Home");
                 }
+
+                // Clear cookie
+                FormsAuthentication.SignOut();
             }
-            else
+
+            return View(new AuthorizationViewModel { RememberMe = true });
+        }
+
+        [GET("Signup")]
+        public ActionResult SignUp()
+        {
+            if (User.Identity.IsAuthenticated)
             {
-                // TODO Auth with social (don't change this block!!! It will be changed)
-                return RedirectToAction("Index", "Home");;
+                return RedirectToAction("Index", "Home");
             }
 
             return View(new RegistrationViewModel());
@@ -136,7 +95,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [POST("Remindpass")]
         public ActionResult RemindPass(RemindPassViewModel remindPassViewModel)
         {
-            return View(remindPassViewModel);
+            return View();
         }
     }
 }

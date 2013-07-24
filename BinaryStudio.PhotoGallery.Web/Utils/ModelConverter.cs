@@ -17,7 +17,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return userModel;
         }
 
-        public static UserModel GetModel(AuthInfoViewModel viewModel)
+        public static UserModel GetModel(AuthorizationViewModel viewModel)
         {
             var userModel = new UserModel
                 {
