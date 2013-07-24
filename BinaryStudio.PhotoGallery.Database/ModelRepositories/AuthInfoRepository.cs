@@ -10,14 +10,14 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
         {
         }
 
-        public void Add(int userID, string password, string authProvider)
+        public void Add(int userID, string authProvider)
         {
-            base.Add(new AuthInfoModel(userID, password, authProvider));
+            base.Add(new AuthInfoModel(userID, authProvider));
         }
 
-        public void Add(int userID, string password, string authProvider, string authToken)
+        public void Add(int userID, string authProvider, string authToken)
         {
-            base.Add(new AuthInfoModel(userID, password, authProvider)
+            base.Add(new AuthInfoModel(userID, authProvider)
                 {
                     AuthProviderToken = authToken
                 });

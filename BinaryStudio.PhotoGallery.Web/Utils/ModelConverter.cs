@@ -11,18 +11,22 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             var userModel = new UserModel
                 {
                     Email = viewModel.Email,
-                    AuthInfos = new Collection<AuthInfoModel> {new AuthInfoModel(-1, viewModel.Password, "local")}
+                    UserPassword = viewModel.Password
+                    // For local registration that field must be null, isn't it?
+//                    AuthInfos = new Collection<AuthInfoModel>()
                 };
 
             return userModel;
         }
 
-        public static UserModel GetModel(AuthInfoViewModel viewModel)
+        public static UserModel GetModel(AuthorizationViewModel viewModel)
         {
             var userModel = new UserModel
                 {
                     Email = viewModel.Email,
-                    AuthInfos = new Collection<AuthInfoModel> {new AuthInfoModel(-1, viewModel.Password, "local")}
+                    UserPassword = viewModel.Password
+                    // For local registration that field must be null, isn't it?
+//                    AuthInfos = new Collection<AuthInfoModel>()
                 };
 
             return userModel;

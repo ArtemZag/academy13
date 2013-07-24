@@ -7,11 +7,17 @@ namespace BinaryStudio.PhotoGallery.Models
     /// </summary>
     public class AvailableGroupModel
     {
+        public AvailableGroupModel()
+        {
+        }
+
         public AvailableGroupModel(int groupModelID, int albumModelID)
         {
             GroupModelID = groupModelID;
             AlbumModelID = albumModelID;
         }
+
+        
 
         /// <summary>
         /// Gets or sets the idintification for each group availability.

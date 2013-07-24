@@ -1,4 +1,4 @@
-﻿$(function () {
+﻿$(function() {
     var validField = $(".validation-summary-errors");
 
     if (validField.length == 0) {
@@ -8,88 +8,82 @@
     }
 
     animateQuery();
-});
 
-function animateQuery() {
-    var submitButton = $("#signin-button");
-    
-    submitButton.click(function () {
-        submitButton.addClass("disabled");
-        submitButton.attr("data-loading", true);
+    function clearErrorMessages() {
         
-        // ajax query
-        $.post('../Account/Signin',
-            {
-                Email: $("#Email").val(),
-                Password: $("#Password").val(),
-                RememberMe: $("#RememberMe").val()
-            })
-            .done(function (data) {
-                submitButton.removeClass("disabled");
-                submitButton.removeAttr("data-loading");
+    }
 
-                // remove all error-fields and then ...
-                
-                if (data == "ok") {
-                    hideLoginPanel(function () {
-                        setTimeout(function () { window.location = "../Home/Index"; }, 500);
+    function showErrorMessage(message) {
+        
+    }
+
+    function animateQuery() {
+        var submitButton = $("#signin-button");
+
+        submitButton.click(function () {
+            clearErrorMessages();
+
+            submitButton.addClass("disabled");
+            submitButton.attr("data-loading", true);
+
+            console.log($("#form-signin").serialize());
+
+            // ajax query
+            $.post('../Api/Account/Signin',
+                $("#form-signin").serialize())
+                .done(function() {
+                    hideLoginPanel(function() {
+                        setTimeout(function() { window.location = "../Home/Index"; }, 500);
                     });
-                } else {
-                    // show error fields
-                    console.log(data);
-                }
-            })
-            .fail(function() {
-                submitButton.removeClass("disabled");
-                submitButton.removeAttr("data-loading", true);
-//                console.log("Can't get response from server");
-            });
+                })
+                .fail(function() {
+                    
+                })
+                .always(function() {
+                    submitButton.removeClass("disabled");
+                    submitButton.removeAttr("data-loading", true);
+                });
 
-    });
-}
+        });
+    }
 
-function correctValidationStyle(validField) {
-    validField.addClass("alert alert-error");
-    validField.prepend("<strong>Errors</strong><br/>");
-    validField.prepend("<button type='button' class='close' data-dismiss='alert'>&times;</button>");
-}
+    function showLoginPanel() {
+        // Search DOM elements
+        var changePanel = $("#change-panel");
+        var shadow = $("#full-screen-shadow");
+        var loginPanel = $("#login-panel");
 
-function showLoginPanel() {
-    // Search DOM elements
-    var changePanel = $("#change-panel");
-    var shadow = $("#full-screen-shadow");
-    var loginPanel = $("#login-panel");
+        // Save setted values
+        var loginPanelCss = { top: loginPanel.css("top"), opacity: loginPanel.css("opacity") };
+        var changePanelCss = { top: changePanel.css("top"), opacity: changePanel.css("opacity") };
 
-    // Save setted values
-    var loginPanelCss = { top: loginPanel.css("top"), opacity: loginPanel.css("opacity") };
-    var changePanelCss = { top: changePanel.css("top"), opacity: changePanel.css("opacity") };
+        // Init new values
+        loginPanel.css({ top: "-20%", opacity: 0 });
+        changePanel.css({ top: -60, opacity: 0 });
 
-    // Init new values
-    loginPanel.css({ top: "-20%", opacity: 0 });
-    changePanel.css({ top: -60, opacity: 0 });
+        shadow.hide();
 
-    shadow.hide();
+        // Animate all elements
+        loginPanel.animate(loginPanelCss, 800, function() {
+            changePanel.animate(changePanelCss, 600);
+        });
 
-    // Animate all elements
-    loginPanel.animate(loginPanelCss, 800, function () {
-        changePanel.animate(changePanelCss, 600);
-    });
+        shadow.fadeIn(500);
+    }
 
-    shadow.fadeIn(500);
-}
+    function hideLoginPanel(callback) {
+        // Search DOM elements
+        var changePanel = $("#change-panel");
+        var shadow = $("#full-screen-shadow");
+        var loginPanel = $("#login-panel");
 
-function hideLoginPanel(callback) {
-    // Search DOM elements
-    var changePanel = $("#change-panel");
-    var shadow = $("#full-screen-shadow");
-    var loginPanel = $("#login-panel");
-    
-    // Animate all elements
-    changePanel.animate({ top: -60, opacity: 0 }, 500, function () {
-        shadow.fadeOut(500);
-    });
-    
-    loginPanel.animate({ top: "-20%", opacity: 0 }, 900, function() {
-        callback();
-    });
-}
+        // Animate all elements
+        changePanel.animate({ top: -60, opacity: 0 }, 500, function() {
+            shadow.fadeOut(500);
+        });
+
+        loginPanel.animate({ top: "-20%", opacity: 0 }, 900, function() {
+            callback();
+        });
+    }
+});

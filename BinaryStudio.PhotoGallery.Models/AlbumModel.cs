@@ -11,6 +11,11 @@ namespace BinaryStudio.PhotoGallery.Models
     public class AlbumModel
     {
         // Initializes some properties, that must contain some value by default
+        public AlbumModel()
+        {
+            DateOfCreation = DateTime.Now;
+        }
+
         public AlbumModel(string albumName, int ownerID)
         {
             AlbumName = albumName;
@@ -18,6 +23,8 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreation = DateTime.Now;
             Permissions = 111; // in moment, it is just for future
         }
+
+        
 
         /// <summary>
         /// Gets or sets the album id.

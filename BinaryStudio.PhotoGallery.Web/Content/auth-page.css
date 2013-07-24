@@ -35,7 +35,7 @@ body {
     margin-bottom: 1px;
 }
 
-#login-panel .form-signin {
+#login-panel form {
     padding: 1px;
     border: 2px solid #03417d;
     border-radius: 8px;

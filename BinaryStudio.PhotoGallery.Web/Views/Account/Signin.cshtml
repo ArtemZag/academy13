@@ -1,4 +1,4 @@
-﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.AuthInfoViewModel
+﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.AuthorizationViewModel
 
 @{
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
@@ -12,13 +12,13 @@
 
 <div id="login-panel">
     <img src="~/Content/images/logo_v4.png"/>
-    <form class="form-horizontal form-signin well pagination-centered" method="POST" action="../Account/Signin">
+    <form id="form-signin" class="form-horizontal well pagination-centered" method="POST" action="../Account/Signin">
         <div class="control-group">
             <input id="Email" name="Email" type="email" class="input-block-level" placeholder="E-mail address" />
             <input id="Password" name="Password" type="password" class="input-block-level" placeholder="Password" />
 
             <label class="checkbox">
-                @Html.CheckBoxFor(m => m.RememberMe)Remember me
+                <input id="RememberMe" name="RememberMe" type="checkbox" value="true"> Remember me
             </label>
             
             <button id="signin-button" type="button" class="btn btn-primary effeckt-button zoom-in">
@@ -27,7 +27,6 @@
             </button>
             <a href="../Account/RemindPass" class="btn btn-link">Forgot password?</a>
         </div>
-        @Html.ValidationSummary(false)
         <hr/>
         <div class="social">
             <a href="../Account/Signin/vkontakte"><img src="~/Content/images/vkontakte_logo.png" /></a>

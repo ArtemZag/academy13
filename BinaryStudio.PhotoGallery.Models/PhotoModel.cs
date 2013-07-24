@@ -28,11 +28,6 @@ namespace BinaryStudio.PhotoGallery.Models
         public int ID { get; set; }
 
         /// <summary>
-        /// Gets or sets a path to photo.
-        /// </summary>
-        public string PhotoSource { get; set; }
-
-        /// <summary>
         /// Gets or sets a path to photo.  
         /// todo: if we need more thumbnails - we should create a table of its.
         /// </summary>

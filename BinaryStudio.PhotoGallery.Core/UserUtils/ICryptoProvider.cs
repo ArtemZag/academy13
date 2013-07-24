@@ -2,10 +2,10 @@
 {
     public interface ICryptoProvider
     {
-        string Solt { get; }
+        string Salt { get; }
 
-        string CreateHashForPassword(string password, string solt);
+        string CreateHashForPassword(string password, string salt);
 
-        bool IsPasswordsEqual(string enteredPassword, string encryptedPasswordFromDb, string solt);
+        bool IsPasswordsEqual(string enteredPassword, string encryptedPasswordFromDb, string salt);
     }
 }
