@@ -6,7 +6,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     {
         UserModel GetUser(string userEmail);
 
-        void CreateUser(UserModel userModel);
+        void CreateUser(UserModel userModel, string provider);
 
         void DeleteUser(string userEmail);
 
