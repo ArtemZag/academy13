@@ -20,12 +20,18 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <param name="userID">user id</param>
         /// <param name="password">password</param>
         /// <param name="authProvider">[local][google][facebook]</param>
+        public AuthInfoModel()
+        {
+        }
+
         public AuthInfoModel(int userID, string password, string authProvider)
         {
             UserModelID = userID;
             UserPassword = password;
             AuthProvider = authProvider;
         }
+
+        
 
         /// <summary>
         /// Gets or sets the name of the user.

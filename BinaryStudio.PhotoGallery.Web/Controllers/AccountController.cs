@@ -83,6 +83,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             else
             {
                 // TODO Auth with social (don't change this block!!! It will be changed)
+
                 return RedirectToAction("Index", "Home");;
             }
 
