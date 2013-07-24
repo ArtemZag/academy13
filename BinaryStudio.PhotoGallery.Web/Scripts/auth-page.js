@@ -1,5 +1,5 @@
 ﻿$(function() {
-    var signinPanel = $('.login-panel');
+    var loginPanel = $('.login-panel');
     var changePanel = $('.change-panel');
     var shadow = $('#full-screen-shadow');
 
@@ -7,7 +7,7 @@
 
     shadow.fadeIn();
     
-    move(signinPanel,
+    move(loginPanel,
         {
             direction: 'top',
             method: 'show',
@@ -18,23 +18,30 @@
             move(changePanel, { direction: 'top', method: 'show', animTime: 510 });
         });
 
-    animateSigninButton();
+    liveSubmitButton($("#signin-button"), '../Api/Account/Signin');
+    liveSubmitButton($("#signup-button"), '../Api/Account/Signup');
 
-    function animateSigninButton() {
-        var submitButton = $("#signin-button");
-
+    function liveSubmitButton(submitButton, address) {
         submitButton.click(function() {
-            clearErrorMessages(signinPanel);
+            clearErrorMessages(loginPanel);
 
             submitButton.addClass('disabled');
             submitButton.attr('data-loading', true);
-
-            $.post('../Api/Account/Signin', $('#form-signin').serialize())
+            
+            $.post(address, submitButton.parent().serialize())
                 .done(function () {
-                    
-                    //                    hideLoginPanel(function() {
-                    //                        setTimeout(function() { window.location = "../Home/Index"; }, 500);
-                    //                    });
+                    move(loginPanel, { direction: 'top', method: 'hide', animTime: 500 });
+                    move(changePanel,
+                        {
+                            direction: 'top',
+                            method: 'hide',
+                            animTime: 500
+                        },
+                        function() {
+                            shadow.fadeOut(500, function() {
+                                window.location = '../Home/Index';
+                            });
+                        });
                 })
                 .fail(function (jqXHR) {
                     var errorMsg = "Uknown server error";
@@ -43,7 +50,7 @@
                         errorMsg = "Email or password is incorrect";
                     }
 
-                    showErrorMessage(signinPanel, errorMsg);
+                    showErrorMessage(loginPanel, errorMsg);
                 })
                 .always(function() {
                     submitButton.removeClass('disabled');
@@ -58,9 +65,9 @@
 
     function showErrorMessage(obj, message) {
         var errorField = obj.find('.error-field');
-
+        
         errorField.append('<div class="alert alert-error">'
-                + '<a class="close">×</a>' + message + '</div>');
+                + '<button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>');
     }
 
     function move(obj, options, callback, delayForCallback) {
@@ -104,7 +111,7 @@
 
         obj.css(cssFrom);
         obj.animate(cssTo, animTime, function () {
-            if (callback === 'undefined') return;
+            if (callback == null) return;
 
             if (delayForCallback === 'undefined') {
                 callback();

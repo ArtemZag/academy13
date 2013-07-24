@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using BinaryStudio.PhotoGallery.Models;
+﻿using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Utils
@@ -12,8 +11,6 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 {
                     Email = viewModel.Email,
                     UserPassword = viewModel.Password
-                    // For local registration that field must be null, isn't it?
-//                    AuthInfos = new Collection<AuthInfoModel>()
                 };
 
             return userModel;
@@ -25,8 +22,6 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 {
                     Email = viewModel.Email,
                     UserPassword = viewModel.Password
-                    // For local registration that field must be null, isn't it?
-//                    AuthInfos = new Collection<AuthInfoModel>()
                 };
 
             return userModel;
@@ -34,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         public static PhotoViewModel GetViewModel(PhotoModel viewModel)
         {
-            var photoModel = new PhotoViewModel {PhotoThumbSource = viewModel.PhotoThumbSource};
+            var photoModel = new PhotoViewModel { PhotoThumbSource = viewModel.PhotoThumbSource };
 
             return photoModel;
         }

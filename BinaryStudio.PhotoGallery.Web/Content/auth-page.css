@@ -23,17 +23,13 @@ body {
     background-image: radial-gradient(farthest-side at center center, rgba(222, 224, 228, 0.476) -5%, rgba(0, 0, 0, 0.841) 100%);
 }
 
-.error-field {
-    margin-top: 10px;
+.login-panel .error-field {
+    margin-top: 25px;
     text-align: left!important;
 }
 
-.alert {
-    display: none;
-}
-
 .login-panel .alert {
-    display: block;
+    padding: 6px 30px 6px 10px;
 }
 
 .login-panel .visible {
@@ -46,7 +42,6 @@ body {
     left: 50%;
     margin-left: -140px;
     width: 280px;
-
 }
 
 .login-panel .well {
@@ -148,10 +143,9 @@ body {
     text-align: center;
 }
 
-.change-panel .btn-primary, .change-panel .btn-success {
-    width: 40%;
+.change-panel .btn {
+    width: 42%;
 }
-
 
 /* Effect button */
 
