@@ -24,11 +24,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void CreateUser(UserModel user)
+        public void CreateUser(UserModel user, string provider)
         {
             if (!IsUserExist(user.Email))
             {
-                // todo: it will be parameter
+                /*// todo: it will be parameter
                 const string AUTH_PROVIDER = AuthInfoModel.LOCAL_PROFILE;
 
                 // todo: local password will be in UserModel
@@ -36,7 +36,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     user.AuthInfos.First(model => string.Equals(model.AuthProvider, AUTH_PROVIDER));
 
                 authInfoModel.UserPassword = cryptoProvider.CreateHashForPassword(authInfoModel.UserPassword,
-                                                                                  cryptoProvider.Solt);
+                                                                                  cryptoProvider.Salt);*/
+                if (provider == AuthInfoModel.LOCAL_PROFILE)
+                {
+                    var salt = cryptoProvider.Salt;
+
+                    user.UserPassword = cryptoProvider.CreateHashForPassword(user.UserPassword, salt);
+                    user.Salt = salt;
+                }
+
 
                 using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
                 {
@@ -80,13 +88,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     UserModel user = GetUser(userEmail, unitOfWork);
 
-                    // todo: local password will be in UserModel
+                    /*/#1#/ todo: local password will be in UserModel
                     AuthInfoModel authInfoModel =
-                        user.AuthInfos.First(model => string.Equals(model.AuthProvider, AUTH_PROVIDER));
+                        user.AuthInfos.First(model => string.Equals(model.AuthProvider, AUTH_PROVIDER));#1#
 
-                    string dbPassword = authInfoModel.UserPassword;
+                    string dbPassword = user.UserPassword;*/
 
-                    result = cryptoProvider.IsPasswordsEqual(userPassword, dbPassword, cryptoProvider.Solt);
+                    result = cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
                 }
             }
             catch (UserNotFoundException)

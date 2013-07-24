@@ -25,9 +25,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// </summary>
         public HttpResponseMessage PostRegistration([FromBody]RegistrationViewModel registrationViewModel)
         {
-            UserModel userModel = ModelConverter.GetModel(registrationViewModel);
+            UserModel userModel = ModelConverter.GetModel(registrationViewModel, "local");
 
-            userService.CreateUser(userModel);
+            userService.CreateUser(userModel, "local");
 
             return new HttpResponseMessage(HttpStatusCode.Created);
         }

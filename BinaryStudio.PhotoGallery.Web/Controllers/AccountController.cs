@@ -105,9 +105,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
                 try
                 {
-                    var user = ModelConverter.GetModel(registrationViewModel);
+                    var user = ModelConverter.GetModel(registrationViewModel, "local");
 
-                    userService.CreateUser(user);
+                    userService.CreateUser(user, "local");
 
                     FormsAuthentication.SetAuthCookie(user.Email, false);
                     return RedirectToAction("Index", "Home");
