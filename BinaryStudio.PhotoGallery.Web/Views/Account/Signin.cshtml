@@ -5,34 +5,33 @@
     ViewBag.Title = "Login | Bingally";
 }
 
-<div id="change-panel" class="well">
+<div class="change-panel" class="well">
     <strong class="pull-left">First time here?</strong>
     <a href="../Account/Signup" class="btn btn-success pull-right">Sign up</a>
 </div>
 
-<div id="login-panel">
-    <img src="~/Content/images/logo_v4.png"/>
-    <form id="form-signin" class="form-horizontal well pagination-centered" method="POST" action="../Account/Signin">
-        <div class="control-group">
+<div class="login-panel">
+    <img src="~/Content/images/logo_big.png"/>
+    <div class="well">
+        <form id="form-signin" class="control-group form-horizontal pagination-centered" method="POST" action="../Account/Signin">
             <input id="Email" name="Email" type="email" class="input-block-level" placeholder="E-mail address" />
             <input id="Password" name="Password" type="password" class="input-block-level" placeholder="Password" />
-
             <label class="checkbox">
-                <input id="RememberMe" name="RememberMe" type="checkbox" value="true"> Remember me
+                <input id="RememberMe" name="RememberMe" type="checkbox" value="true" checked> Remember me
             </label>
-            
             <button id="signin-button" type="button" class="btn btn-primary effeckt-button zoom-in">
                 <span class="effeckt-label">Sign in</span>
-                <span class="effeckt-spinner"></span>
+                <span class="effeckt-spinner-blue"></span>
             </button>
-            <a href="../Account/RemindPass" class="btn btn-link">Forgot password?</a>
-        </div>
-        <hr/>
+        </form>
+        <a href="../Account/RemindPass" class="btn btn-link">Forgot password?</a>
+        <div class="error-field"></div>
+        <hr />
         <div class="social">
             <a href="../Account/Signin/vkontakte"><img src="~/Content/images/vkontakte_logo.png" /></a>
             <a href="../Account/Signin/facebook"><img src="~/Content/images/facebook_logo.png"/></a>
             <a href="../Account/Signin/twitter"><img src="~/Content/images/twitter_logo.png" /></a>
             <a href="../Account/Signin/github"><img src="~/Content/images/github_logo.png" /></a>
         </div>
-    </form>	
+    </div>
 </div>

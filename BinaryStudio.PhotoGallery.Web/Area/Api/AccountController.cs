@@ -25,6 +25,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [POST]
         public HttpResponseMessage Signin([FromBody] AuthorizationViewModel viewModel)
         {
+            if (viewModel == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
             var userNotValid = !_userService.IsUserValid(viewModel.Email, viewModel.Password);
 
             if (userNotValid)
@@ -40,6 +45,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [POST]
         public HttpResponseMessage Signup([FromBody] RegistrationViewModel viewModel)
         {
+            if (viewModel == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
             try
             {
                 var user = ModelConverter.GetModel(viewModel);

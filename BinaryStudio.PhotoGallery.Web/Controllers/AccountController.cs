@@ -34,7 +34,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 FormsAuthentication.SignOut();
             }
 
-            return View();
+            return View(new AuthorizationViewModel());
         }
 
         [GET]
@@ -54,7 +54,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 FormsAuthentication.SignOut();
             }
 
-            return View();
+            return View(new RegistrationViewModel());
         }
 
         [GET]
