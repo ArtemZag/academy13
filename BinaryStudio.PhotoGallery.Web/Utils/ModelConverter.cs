@@ -6,24 +6,34 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 {
     public static class ModelConverter
     {
-        public static UserModel GetModel(RegistrationViewModel viewModel)
+        public static UserModel GetModel(RegistrationViewModel viewModel, string authProvider)
         {
             var userModel = new UserModel
                 {
                     Email = viewModel.Email,
-                    AuthInfos = new Collection<AuthInfoModel> {new AuthInfoModel(-1, viewModel.Password, "local")}
+                    UserPassword = viewModel.Password
                 };
+
+            if (authProvider != AuthInfoModel.LOCAL_PROFILE)
+            {
+                userModel.AuthInfos = new Collection<AuthInfoModel> {new AuthInfoModel(-1, authProvider)};
+            }
 
             return userModel;
         }
 
-        public static UserModel GetModel(AuthInfoViewModel viewModel)
+        public static UserModel GetModel(AuthInfoViewModel viewModel, string authProvider)
         {
             var userModel = new UserModel
-                {
-                    Email = viewModel.Email,
-                    AuthInfos = new Collection<AuthInfoModel> {new AuthInfoModel(-1, viewModel.Password, "local")}
-                };
+            {
+                Email = viewModel.Email,
+                UserPassword = viewModel.Password
+            };
+
+            if (authProvider != AuthInfoModel.LOCAL_PROFILE)
+            {
+                userModel.AuthInfos = new Collection<AuthInfoModel> { new AuthInfoModel(-1, authProvider) };
+            }
 
             return userModel;
         }

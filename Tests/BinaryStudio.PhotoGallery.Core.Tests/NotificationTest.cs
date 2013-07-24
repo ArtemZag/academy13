@@ -1,4 +1,6 @@
-﻿using BinaryStudio.PhotoGallery.Core.NotificationsUtils;
+﻿using System.Configuration;
+using BinaryStudio.PhotoGallery.Core.NotificationsUtils;
+using Microsoft.Practices.Unity;
 using NUnit.Framework;
 
 namespace BinaryStudio.PhotoGalery.Core.Tests
@@ -6,15 +8,29 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
     [TestFixture]
     internal class NotificationTest
     {
+        private INotificationSender sender;
+
+        [SetUp]
+        public void Setup()
+        {
+            IUnityContainer container = Bootstrapper.Initialise();
+            sender = container.Resolve<INotificationSender>();
+        }
+
         [Test]
         public void MessageShouldBeSended()
         {
             // setup 
+            string ownHost = ConfigurationManager.AppSettings["NotificationHost"];
+
+            string ownEmail = ConfigurationManager.AppSettings["NotificationEmail"];
+            string ownPassword = ConfigurationManager.AppSettings["NotificationPassword"];
+
             string toEmail = "YOUR_EMAIL_TO_TEST";
             string text = "text";
 
             // tear down
-            NotificationSender.Send(toEmail, text);
+            sender.Send(ownHost, ownEmail, ownPassword, toEmail, text);
         }
     }
 }

@@ -4,7 +4,5 @@ namespace BinaryStudio.PhotoGallery.Database.ModelInterfaces
 {
     public interface IUserRepository : IBaseRepository<UserModel>
     {
-
-
     }
 }

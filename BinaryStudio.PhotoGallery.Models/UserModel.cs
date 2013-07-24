@@ -42,6 +42,16 @@ namespace BinaryStudio.PhotoGallery.Models
         /// </summary>
         public string Department { get; set; }
 
+        /// <summary>
+        /// Gets or sets the user's password.
+        /// </summary>
+        public string UserPassword { get; set; }
+
+        /// <summary>
+        /// Salt for password
+        /// </summary>
+        public string Salt { get; set; }
+
 
         public virtual ICollection<AlbumModel> Albums { get; set; }
         public virtual ICollection<GroupModel> Groups { get; set; }

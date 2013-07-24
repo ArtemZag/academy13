@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Exceptions\AlbumNotFoundException.cs" />
+    <Compile Include="Exceptions\UserAlreadyExistException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AlbumService.cs" />

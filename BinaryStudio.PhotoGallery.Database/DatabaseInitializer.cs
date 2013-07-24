@@ -33,11 +33,11 @@ namespace BinaryStudio.PhotoGallery.Database
                     FirstName = userFirstNames[i],
                     LastName = userLastNames[i],
                     Email = string.Format("{0}{1}@bingally.com",userFirstNames[i],userLastNames[i]),
-                    IsAdmin = (random.Next(1, 10)%2 == 1)
+                    IsAdmin = (random.Next(1, 10)%2 == 1),
+                    UserPassword = userLastNames[i]
                 });
-                //adds local auth provider with preset password
-                unitOfWork.AuthInfos.Add(i + 1, userLastNames[i], "local");
             }
+            unitOfWork.SaveChanges();
 
             // Creating a list of usefull tags
             foreach (var photoTag in tags)
@@ -66,14 +66,13 @@ namespace BinaryStudio.PhotoGallery.Database
                     Description = ".Net student group in Binary Studio Academy. Donetsk 2013."
                 });
 
-
             // Adding 100 photos from different users to album with ID 2(Academy)
             for (var i = 0; i < 100; i++)
             {
                 var random = new Random();
                 unitOfWork.Photos.Add(2, random.Next(1,7));
             }
-
+            unitOfWork.SaveChanges();
             base.Seed(databaseContext); 
         }
     }

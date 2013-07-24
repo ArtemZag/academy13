@@ -12,9 +12,34 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
-        public ICollection<AlbumModel> GetAlbums(string userEmail)
+        public void CreateAlbum(string userEmail, AlbumModel album)
         {
-            ICollection<AlbumModel> result;
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userEmail, unitOfWork);
+
+                user.Albums.Add(album);
+
+                unitOfWork.SaveChanges();
+            }
+        }
+
+        public void DeleteAlbum(string userEmail, string albumName)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userEmail, unitOfWork);
+                AlbumModel album = GetAlbum(user, albumName, unitOfWork);
+
+                user.Albums.Remove(album);
+
+                unitOfWork.SaveChanges();
+            }
+        }
+
+        public IEnumerable<AlbumModel> GetAlbums(string userEmail)
+        {
+            IEnumerable<AlbumModel> result;
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -38,39 +63,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
 
             return result;
-        }
-
-        public void CreateAlbum(string userEmail, AlbumModel album)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(userEmail, unitOfWork);
-
-                user.Albums.Add(album);
-
-                // todo: is it necessary? 
-                unitOfWork.Users.Update(user);
-            }
-        }
-
-        public void UpdateAlbum(AlbumModel album)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                unitOfWork.Albums.Update(album);
-            }
-        }
-
-        public void DeleteAlbum(string userEmail, string albumName)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(userEmail, unitOfWork);
-
-                AlbumModel album = GetAlbum(user, albumName, unitOfWork);
-
-                user.Albums.Remove(album);
-            }
         }
 
         private AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)

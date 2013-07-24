@@ -24,12 +24,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 photo.UserModelID = user.ID;
                 album.Photos.Add(photo);
 
-                // todo: is it necessary? 
-                unitOfWork.Albums.Update(album);
+                unitOfWork.SaveChanges();
             }
         }
 
-        public void AddPhotos(string userEmail, string albumName, ICollection<PhotoModel> photos)
+        public void AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -41,8 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     album.Photos.Add(photo);
                 }
 
-                // todo: is it necessary? 
-                unitOfWork.Albums.Update(album);
+                unitOfWork.SaveChanges();
             }
         }
 
@@ -52,10 +50,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 unitOfWork.Photos.Delete(photo);
+
+                unitOfWork.SaveChanges();
             }
         }
 
-        public ICollection<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end)
+        public IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -66,7 +66,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public ICollection<PhotoModel> GetPhotos(string userEmail, int count)
+        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int count)
         {
             List<PhotoModel> result;
 

@@ -24,28 +24,37 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void CreateUser(UserModel user)
+        public void CreateUser(UserModel user, string provider)
         {
-            // todo: it will be parameter
-            const string AUTH_PROVIDER = AuthInfoModel.LOCAL_PROFILE;
-
-            AuthInfoModel authInfoModel =
-                user.AuthInfos.First(model => string.Equals(model.AuthProvider, AUTH_PROVIDER));
-
-            authInfoModel.UserPassword = cryptoProvider.CreateHashForPassword(authInfoModel.UserPassword,
-                                                                              cryptoProvider.Solt);
-
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            if (!IsUserExist(user.Email))
             {
-                unitOfWork.Users.Add(user);
+                /*// todo: it will be parameter
+                const string AUTH_PROVIDER = AuthInfoModel.LOCAL_PROFILE;
+
+                // todo: local password will be in UserModel
+                AuthInfoModel authInfoModel =
+                    user.AuthInfos.First(model => string.Equals(model.AuthProvider, AUTH_PROVIDER));
+
+                authInfoModel.UserPassword = cryptoProvider.CreateHashForPassword(authInfoModel.UserPassword,
+                                                                                  cryptoProvider.Salt);*/
+                if (provider == AuthInfoModel.LOCAL_PROFILE)
+                {
+                    var salt = cryptoProvider.Salt;
+
+                    user.UserPassword = cryptoProvider.CreateHashForPassword(user.UserPassword, salt);
+                    user.Salt = salt;
+                }
+
+
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                {
+                    unitOfWork.Users.Add(user);
+                    unitOfWork.SaveChanges();
+                }
             }
-        }
-
-        public void UpdateUser(UserModel user)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            else
             {
-                unitOfWork.Users.Update(user);
+                throw new UserAlreadyExistException(user.Email);
             }
         }
 
@@ -57,6 +66,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     UserModel user = GetUser(userEmail, unitOfWork);
                     unitOfWork.Users.Delete(user);
+
+                    unitOfWork.SaveChanges();
                 }
                 catch (UserNotFoundException)
                 {
@@ -77,12 +88,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     UserModel user = GetUser(userEmail, unitOfWork);
 
+                    /*/#1#/ todo: local password will be in UserModel
                     AuthInfoModel authInfoModel =
-                        user.AuthInfos.First(model => string.Equals(model.AuthProvider, AUTH_PROVIDER));
+                        user.AuthInfos.First(model => string.Equals(model.AuthProvider, AUTH_PROVIDER));#1#
 
-                    string dbPassword = authInfoModel.UserPassword;
+                    string dbPassword = user.UserPassword;*/
 
-                    result = cryptoProvider.IsPasswordsEqual(userPassword, dbPassword, cryptoProvider.Solt);
+                    result = cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
                 }
             }
             catch (UserNotFoundException)
