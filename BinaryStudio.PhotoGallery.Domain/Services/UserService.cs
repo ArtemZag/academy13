@@ -29,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 throw new UserAlreadyExistException(user.Email);
             }
-            
+
             if (provider == AuthInfoModel.ProviderType.Local)
             {
                 user.Salt = cryptoProvider.Salt;
