@@ -11,8 +11,9 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             var userModel = new UserModel
                 {
                     Email = viewModel.Email,
-                    UserPassword = viewModel.Password,
-                    AuthInfos = new Collection<AuthInfoModel>()
+                    UserPassword = viewModel.Password
+                    // For local registration that field must be null, isn't it?
+//                    AuthInfos = new Collection<AuthInfoModel>()
                 };
 
             return userModel;
@@ -23,8 +24,9 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             var userModel = new UserModel
                 {
                     Email = viewModel.Email,
-                    UserPassword = viewModel.Password,
-                    AuthInfos = new Collection<AuthInfoModel>()
+                    UserPassword = viewModel.Password
+                    // For local registration that field must be null, isn't it?
+//                    AuthInfos = new Collection<AuthInfoModel>()
                 };
 
             return userModel;
