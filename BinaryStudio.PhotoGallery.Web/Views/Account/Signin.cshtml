@@ -13,7 +13,7 @@
 <div class="login-panel">
     <img src="~/Content/images/logo_big.png"/>
     <div class="well">
-        <form id="form-signin" class="control-group form-horizontal pagination-centered" method="POST" action="../Account/Signin">
+        <form class="control-group form-horizontal pagination-centered" method="POST" action="../Account/Signin">
             <input id="Email" name="Email" type="email" class="input-block-level" placeholder="E-mail address" />
             <input id="Password" name="Password" type="password" class="input-block-level" placeholder="Password" />
             <label class="checkbox">
@@ -23,8 +23,8 @@
                 <span class="effeckt-label">Sign in</span>
                 <span class="effeckt-spinner effeckt-spinner-blue"></span>
             </button>
+            <a href="../Account/RemindPass" class="btn btn-link">Forgot password?</a>
         </form>
-        <a href="../Account/RemindPass" class="btn btn-link">Forgot password?</a>
         <div class="error-field"></div>
         <hr />
         <div class="social">

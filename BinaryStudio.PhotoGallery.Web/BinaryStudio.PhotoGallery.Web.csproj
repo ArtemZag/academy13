@@ -197,6 +197,7 @@
     <Content Include="Content\auth-page.css" />
     <Content Include="Content\images\cherdak.png" />
     <Content Include="Content\images\loading_blue.gif" />
+    <Content Include="Content\images\loading_green.gif" />
     <Content Include="Content\images\logo_big.png" />
     <Content Include="Content\images\no_avatar.png" />
     <Content Include="Content\main-layout.css" />

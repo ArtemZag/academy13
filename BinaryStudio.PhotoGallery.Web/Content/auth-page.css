@@ -24,7 +24,6 @@ body {
 }
 
 .login-panel .error-field {
-    margin-top: 25px;
     text-align: left!important;
 }
 
@@ -84,22 +83,20 @@ body {
 }
 
 .login-panel .control-group {
-    margin-bottom: 0;
+    margin-bottom: 10px;
 }
 
 .login-panel .btn-link {
     background: transparent;
     border: 0;
     box-shadow: none;
-    float: right;
-    margin-bottom: 10px;
-    margin-right: 5px;
+    margin-left: 144px;
     padding: 0;
     font-size: 14px!important;
 }
 
 .login-panel .alert {
-    margin: 10px 2px 5px 2px;
+    margin: 5px 2px 5px 2px;
 }
 
 .login-panel .social {
@@ -173,6 +170,10 @@ body {
 
 .effeckt-button .effeckt-spinner-blue {
     background-image: url(images/loading_blue.gif);
+}
+
+.effeckt-button .effeckt-spinner-green {
+    background-image: url(images/loading_green.gif);
 }
 
 .effeckt-button,
