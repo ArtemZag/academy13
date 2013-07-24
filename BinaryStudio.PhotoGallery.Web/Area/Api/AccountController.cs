@@ -29,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             if (userNotValid)
             {
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
             FormsAuthentication.SetAuthCookie(viewModel.Email, viewModel.RememberMe);

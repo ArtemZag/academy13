@@ -20,23 +20,22 @@ namespace BinaryStudio.PhotoGallery.Core.UserUtils
 
         public string CreateHashForPassword(string password, string salt)
         {
-            string hash = EncryptString(password);
+            var hash = EncryptString(password);
 
             hash = EncryptString(hash + salt);
 
             return EncryptString(hash + salt);
         }
 
-        private string EncryptString(string originalString)
+        private static string EncryptString(string originalString)
         {
             var md5 = new MD5CryptoServiceProvider();
-            Encoding encoding = Encoding.UTF8;
+            var encoding = Encoding.UTF8;
 
-            byte[] endcodedString = md5.ComputeHash(encoding.GetBytes(originalString));
+            var endcodedString = md5.ComputeHash(encoding.GetBytes(originalString));
 
             return Convert.ToBase64String(endcodedString);
         }
-
 
         // This block of code generates a random string with settable length
         #region Random string generator

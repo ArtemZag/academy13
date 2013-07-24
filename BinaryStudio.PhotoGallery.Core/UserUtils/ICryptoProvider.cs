@@ -7,6 +7,5 @@
         string CreateHashForPassword(string password, string salt);
 
         bool IsPasswordsEqual(string enteredPassword, string encryptedPasswordFromDb, string salt);
-
     }
 }

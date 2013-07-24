@@ -11,7 +11,8 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             var userModel = new UserModel
                 {
                     Email = viewModel.Email,
-                    AuthInfos = new Collection<AuthInfoModel> {new AuthInfoModel(-1, viewModel.Password, "local")}
+                    UserPassword = viewModel.Password,
+                    AuthInfos = new Collection<AuthInfoModel>()
                 };
 
             return userModel;
@@ -22,7 +23,8 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             var userModel = new UserModel
                 {
                     Email = viewModel.Email,
-                    AuthInfos = new Collection<AuthInfoModel> {new AuthInfoModel(-1, viewModel.Password, "local")}
+                    UserPassword = viewModel.Password,
+                    AuthInfos = new Collection<AuthInfoModel>()
                 };
 
             return userModel;

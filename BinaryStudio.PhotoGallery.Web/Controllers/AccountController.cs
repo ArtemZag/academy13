@@ -3,7 +3,6 @@ using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
@@ -18,6 +17,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             this.userService = userService;
         }
 
+        [GET]
         public ActionResult SignIn()
         {
             if (User.Identity.IsAuthenticated)
@@ -34,65 +34,43 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 FormsAuthentication.SignOut();
             }
 
-            return View(new AuthorizationViewModel { RememberMe = true });
+            return View();
         }
 
-        [GET("Signup")]
+        [GET]
         public ActionResult SignUp()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
-            }
+                // recheck user (maybe it was deleted, while cookie is truth)
+                var userExist = userService.IsUserExist(User.Identity.Name);
 
-            return View(new RegistrationViewModel());
-        }
-
-        [POST("Signup")]
-        public ActionResult SignUp(RegistrationViewModel registrationViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var userValid = userService.IsUserValid(registrationViewModel.Email, registrationViewModel.Password);
-
-                if (userValid)
+                if (userExist)
                 {
-                    ModelState.AddModelError("", "This e-mail address is already in use");
-                    return View(registrationViewModel);
-                }
-
-                try
-                {
-                    var user = ModelConverter.GetModel(registrationViewModel);
-
-                    userService.CreateUser(user);
-
-                    FormsAuthentication.SetAuthCookie(user.Email, false);
                     return RedirectToAction("Index", "Home");
                 }
-                catch
-                {
-                    ModelState.AddModelError("", "Can't create new user. Something happens with server");
-                }
+
+                // Clear cookie
+                FormsAuthentication.SignOut();
             }
 
-            return View(registrationViewModel);
+            return View();
         }
 
-        [GET("Signout")]
+        [GET]
         public ActionResult SignOut()
         {
             FormsAuthentication.SignOut();
             return RedirectToAction("Signin", "Account");
         }
 
-        [GET("Remindpass")]
+        [GET]
         public ActionResult RemindPass()
         {
             return View(new RemindPassViewModel());
         }
 
-        [POST("Remindpass")]
+        [POST]
         public ActionResult RemindPass(RemindPassViewModel remindPassViewModel)
         {
             return View();

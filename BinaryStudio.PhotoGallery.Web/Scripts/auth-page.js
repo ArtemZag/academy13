@@ -26,6 +26,8 @@
             submitButton.addClass("disabled");
             submitButton.attr("data-loading", true);
 
+            console.log($("#form-signin").serialize());
+
             // ajax query
             $.post('../Api/Account/Signin',
                 $("#form-signin").serialize())
