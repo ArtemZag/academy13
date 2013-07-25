@@ -21,11 +21,17 @@
     addClickEventTo($("#signin-button"), '../Api/Account/Signin');
     addClickEventTo($("#signup-button"), '../Api/Account/Signup');
 
-//    loginPanel.find('input[type=email] ,input[type=password]').focus();
+    loginPanel.find('input[type=email], input[type=password]')
+        .on('focus', function() {
+            clearErrorMessages();
+        })
+        .on('keypress', function() {
+            clearErrorMessages();
+        });
 
     function addClickEventTo(submitButton, address) {
         submitButton.click(function (event) {         
-            clearErrorMessages(loginPanel);
+            clearErrorMessages();
 
             submitButton.addClass('disabled');
             submitButton.attr('data-loading', true);
@@ -60,7 +66,7 @@
                             break;
                     }
 
-                    showErrorMessage(loginPanel, errorMsg);
+                    showErrorMessage(errorMsg);
                 })
                 .always(function() {
                     submitButton.removeClass('disabled');
@@ -71,12 +77,12 @@
         });
     }
     
-    function clearErrorMessages(obj) {
-        obj.find('.error-field').html('');
+    function clearErrorMessages() {
+        $('.error-field').html('');
     }
 
-    function showErrorMessage(obj, message) {
-        var errorField = obj.find('.error-field');
+    function showErrorMessage(message) {
+        var errorField = $('.error-field');
         
         errorField.append('<div class="alert alert-error">'
                 + '<button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>');
