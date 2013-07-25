@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Core.UserUtils
     {
         private const int SALT_SIZE = 32;
 
-        private readonly Randomizer _randimizer = new Randomizer();
+        private readonly Randomizer _randomizer = new Randomizer();
 
         public bool IsPasswordsEqual(string enteredPassword, string encryptedPasswordFromDb, string salt)
         {
@@ -18,7 +18,7 @@ namespace BinaryStudio.PhotoGallery.Core.UserUtils
 
         public string GetNewSalt()
         {
-            return _randimizer.GetString(SALT_SIZE);
+            return _randomizer.GetString(SALT_SIZE);
         }
 
         public string CreateHashForPassword(string password, string salt)
