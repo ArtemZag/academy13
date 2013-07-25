@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Database
             // Creating accounts for team
             for (int i = 0; i < userFirstNames.Count(); i++)
             {
-                string salt = crypto.CalculateSalt();
+                string salt = crypto.GetNewSalt();
 
                 unitOfWork.Users.Add(
                     new UserModel

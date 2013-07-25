@@ -32,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
             if (provider == AuthInfoModel.ProviderType.Local)
             {
-                user.Salt = cryptoProvider.CalculateSalt();
+                user.Salt = cryptoProvider.GetNewSalt();
                 user.UserPassword = cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
             }
 

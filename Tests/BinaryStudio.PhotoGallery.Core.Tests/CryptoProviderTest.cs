@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             const string PASSWORD = "abc123";
 
             // body
-            string salt = cryptoProvider.CalculateSalt();
+            string salt = cryptoProvider.GetNewSalt();
             string encryptedVersion = cryptoProvider.CreateHashForPassword(PASSWORD, salt);
 
             // tear down
@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             const string PASSWORD = "abc123";
 
             // body
-            string salt = cryptoProvider.CalculateSalt();
+            string salt = cryptoProvider.GetNewSalt();
             string twiceEcryptedVersion = cryptoProvider.CreateHashForPassword(PASSWORD, salt);
             twiceEcryptedVersion = cryptoProvider.CreateHashForPassword(twiceEcryptedVersion, salt);
 

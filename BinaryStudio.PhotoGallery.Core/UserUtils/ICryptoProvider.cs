@@ -2,7 +2,7 @@
 {
     public interface ICryptoProvider
     {
-        string CalculateSalt();
+        string GetNewSalt();
 
         string CreateHashForPassword(string password, string salt);
 

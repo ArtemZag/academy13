@@ -9,16 +9,16 @@ namespace BinaryStudio.PhotoGallery.Core.UserUtils
     {
         private const int SALT_SIZE = 32;
 
-        private RandomStringGenerator stringGenerator = new RandomStringGenerator();
+        private readonly Randomizer _randimizer = new Randomizer();
 
         public bool IsPasswordsEqual(string enteredPassword, string encryptedPasswordFromDb, string salt)
         {
             return string.Equals(CreateHashForPassword(enteredPassword, salt), encryptedPasswordFromDb);
         }
 
-        public string CalculateSalt()
+        public string GetNewSalt()
         {
-            return stringGenerator.Generate(SALT_SIZE);
+            return _randimizer.GetString(SALT_SIZE);
         }
 
         public string CreateHashForPassword(string password, string salt)
