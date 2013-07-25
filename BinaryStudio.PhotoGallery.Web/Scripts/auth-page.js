@@ -21,8 +21,10 @@
     addClickEventTo($("#signin-button"), '../Api/Account/Signin');
     addClickEventTo($("#signup-button"), '../Api/Account/Signup');
 
+//    loginPanel.find('input[type=email] ,input[type=password]').focus();
+
     function addClickEventTo(submitButton, address) {
-        submitButton.click(function() {
+        submitButton.click(function (event) {         
             clearErrorMessages(loginPanel);
 
             submitButton.addClass('disabled');
@@ -44,10 +46,18 @@
                         });
                 })
                 .fail(function (jqXHR) {
-                    var errorMsg = "Uknown server error";
+                    var errorMsg;
                     
-                    if (jqXHR.status == 400) {
-                        errorMsg = "Email or password is incorrect";
+                    switch (jqXHR.status) {
+                        case 400:
+                            errorMsg = "Email or password is incorrect";
+                            break;
+                        case 500:
+                            errorMsg = "Server is not available";
+                            break;
+                        default:
+                            errorMsg = "Uknown server error";
+                            break;
                     }
 
                     showErrorMessage(loginPanel, errorMsg);
@@ -56,6 +66,8 @@
                     submitButton.removeClass('disabled');
                     submitButton.removeAttr('data-loading', true);
                 });
+            
+            event.preventDefault();
         });
     }
     
