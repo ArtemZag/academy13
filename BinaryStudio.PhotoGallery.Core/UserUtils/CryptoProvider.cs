@@ -5,7 +5,7 @@ using BinaryStudio.PhotoGallery.Core.Helpers;
 
 namespace BinaryStudio.PhotoGallery.Core.UserUtils
 {
-    internal class CryptoProvider : ICryptoProvider
+    public class CryptoProvider : ICryptoProvider
     {
         private const int SALT_SIZE = 32;
 

@@ -50,7 +50,7 @@ body {
     box-shadow: 0 0 20px 2px rgba(3, 65, 125, 0.7);
 }
 
-.login-panel input[type=text], .login-panel [type=password] {
+.login-panel input[type=email], .login-panel [type=password] {
     margin-top: 1px;
     margin-bottom: 1px;
 }

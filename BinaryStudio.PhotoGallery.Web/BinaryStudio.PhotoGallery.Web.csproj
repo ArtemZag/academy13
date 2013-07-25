@@ -216,6 +216,7 @@
     <Content Include="Content\style-libs\dropzone.css" />
     <Content Include="Content\photo_flow.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\animation-storage.js" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
