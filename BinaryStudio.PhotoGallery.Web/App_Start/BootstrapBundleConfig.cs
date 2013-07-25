@@ -28,9 +28,6 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
                 "~/Content/style-libs/bootstrap.css",
                 "~/Content/style-libs/bootstrap-responsive.css"
                 ));
-            BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/effeckt-buttons").Include(
-                "~/Content/style-libs/effeckt-buttons.css"
-                ));
             BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/dropzone").Include(
                 "~/Content/style-libs/dropzone.css"
                 ));

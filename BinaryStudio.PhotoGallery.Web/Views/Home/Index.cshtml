@@ -1,13 +1,9 @@
 ﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.InfoViewModel
+@using System.Web.Optimization
+
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "Users flow | Bingally";
 }
 
-<div id="photoWrapper">
-    @foreach (var photo in Model.Photos)
-    {
-        <div class="photoContainer">
-            <img src="@photo.PhotoThumbSource"/>
-        </div>
-    }								
-</div>
+@*@Scripts.Render("~/Scripts/photo_placer.js")*@

@@ -201,6 +201,7 @@
     <Content Include="Content\images\logo_big.png" />
     <Content Include="Content\images\logo_small.png" />
     <Content Include="Content\images\no_avatar.png" />
+    <Content Include="Content\images\spritemap.png" />
     <Content Include="Content\main-layout.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.min.css" />
@@ -215,6 +216,7 @@
     <Content Include="Content\images\vkontakte_logo.png" />
     <Content Include="Content\style-libs\dropzone.css" />
     <Content Include="Content\photo_flow.css" />
+    <Content Include="Content\upload-images.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -237,6 +239,7 @@
     <Content Include="Scripts\knockout.validation.debug.js" />
     <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\photo_placer.js" />
+    <Content Include="Scripts\upload-images.js" />
     <Content Include="Scripts\UserSlider.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

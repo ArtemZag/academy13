@@ -5,8 +5,10 @@
     <head>
         <meta name="viewport" content="width=device-width" />
         <link href="~/Content/main-layout.css" rel="stylesheet"/>
-         <link href="~/Content/photo_flow.css" rel="stylesheet" />
+@*        <link href="~/Content/photo_flow.css" rel="stylesheet" />*@
         @Styles.Render("~/bundles/styles/bootstrap")
+        @Styles.Render("~/bundles/styles/dropzone")
+        @Styles.Render("~/Content/upload-images.css")
         <title>@ViewBag.Title</title>
     </head>
     <body>
@@ -42,13 +44,19 @@
                 </li>
             </ul>
         </nav>
+        <div id="dropzone">
+            <form class="dropzone dz-clickable">
+                <div class="dz-default dz-message">
+                    <span>Drop files here to upload</span>
+                </div>
+            </form>
+        </div>
         <div id="main-render-place">
             @RenderBody()
         </div>
     </body>
     @Scripts.Render("~/bundles/scripts/jquery")
     @Scripts.Render("~/bundles/scripts/bootstrap")
-    @Scripts.Render("~/Scripts/photo_placer.js")
-	@Scripts.Render("~/Scripts/UserSlider.js")
+    @Scripts.Render("~/bundels/scripts/dropzone")
+    @Scripts.Render("~/Scripts/upload-images.js")
 </html>
-

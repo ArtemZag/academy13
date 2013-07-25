@@ -1,0 +1,11 @@
+﻿#dropzone {
+    margin-top: 10px;
+    margin-right: 10px;
+    float: right;
+    width: 35%;
+    min-width: 200px;
+    background: greenyellow;
+}
+.dropzone {
+    height: 400px!important;
+}
