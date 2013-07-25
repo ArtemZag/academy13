@@ -12,11 +12,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     [RoutePrefix("Account")]
     public class AccountController : Controller
     {
-        private readonly IUserService userService;
+        private readonly IUserService _userService;
 
         public AccountController(IUserService userService)
         {
-            this.userService = userService;
+            this._userService = userService;
         }
 
         [GET("Signin/{service}")]
@@ -27,25 +27,18 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     // recheck user (maybe it was deleted, while cookie is truth)
-                    var userExist = userService.IsUserExist(User.Identity.Name);
+                var userExist = this._userService.IsUserExist(User.Identity.Name);
 
                     if (userExist)
                     {
                         return RedirectToAction("Index", "Home");
                     }
 
-                    // Clear cookie
-                    FormsAuthentication.SignOut();
-                }
+                // Clear cookie
+                FormsAuthentication.SignOut();
             }
-            else
-            {
-                // TODO Auth with social (don't change this block!!! It will be changed)
-                if (service == "facebook")
-                {
-                    var authAddress = Facebook.GetAuthAddress();
 
-                    return Redirect(authAddress);
+            return View(new AuthorizationViewModel());
                 }
 
 
@@ -61,7 +54,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 // recheck user (maybe it was deleted, while cookie is truth)
-                var userExist = userService.IsUserExist(User.Identity.Name);
+                var userExist = this._userService.IsUserExist(User.Identity.Name);
 
                 if (userExist)
                 {
@@ -72,7 +65,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 FormsAuthentication.SignOut();
             }
 
-            return View();
+            return View(new RegistrationViewModel());
         }
 
         [GET]

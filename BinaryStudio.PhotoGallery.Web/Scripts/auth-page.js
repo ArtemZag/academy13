@@ -1,89 +1,123 @@
 ﻿$(function() {
-    var validField = $(".validation-summary-errors");
+    var loginPanel = $('.login-panel');
+    var changePanel = $('.change-panel');
+    var shadow = $('#full-screen-shadow');
 
-    if (validField.length == 0) {
-        showLoginPanel();
-    } else {
-        correctValidationStyle(validField);
-    }
+    changePanel.hide();
 
-    animateQuery();
+    shadow.fadeIn();
+    
+    move(loginPanel,
+        {
+            direction: 'top',
+            method: 'show',
+            animTime: 600
+        },
+        function() {
+            changePanel.show();
+            move(changePanel, { direction: 'top', method: 'show', animTime: 510 });
+        });
 
-    function clearErrorMessages() {
-        
-    }
+    liveSubmitButton($("#signin-button"), '../Api/Account/Signin');
+    liveSubmitButton($("#signup-button"), '../Api/Account/Signup');
 
-    function showErrorMessage(message) {
-        
-    }
+    function liveSubmitButton(submitButton, address) {
+        submitButton.click(function() {
+            clearErrorMessages(loginPanel);
 
-    function animateQuery() {
-        var submitButton = $("#signin-button");
-
-        submitButton.click(function () {
-            clearErrorMessages();
-
-            submitButton.addClass("disabled");
-            submitButton.attr("data-loading", true);
-
-            console.log($("#form-signin").serialize());
-
-            // ajax query
-            $.post('../Api/Account/Signin',
-                $("#form-signin").serialize())
-                .done(function() {
-                    hideLoginPanel(function() {
-                        setTimeout(function() { window.location = "../Home/Index"; }, 500);
-                    });
+            submitButton.addClass('disabled');
+            submitButton.attr('data-loading', true);
+            
+            $.post(address, submitButton.parent().serialize())
+                .done(function () {
+                    move(loginPanel, { direction: 'top', method: 'hide', animTime: 500 });
+                    move(changePanel,
+                        {
+                            direction: 'top',
+                            method: 'hide',
+                            animTime: 500
+                        },
+                        function() {
+                            shadow.fadeOut(500, function() {
+                                window.location = '../Home/Index';
+                            });
+                        });
                 })
-                .fail(function() {
+                .fail(function (jqXHR) {
+                    var errorMsg = "Uknown server error";
                     
+                    if (jqXHR.status == 400) {
+                        errorMsg = "Email or password is incorrect";
+                    }
+
+                    showErrorMessage(loginPanel, errorMsg);
                 })
                 .always(function() {
-                    submitButton.removeClass("disabled");
-                    submitButton.removeAttr("data-loading", true);
+                    submitButton.removeClass('disabled');
+                    submitButton.removeAttr('data-loading', true);
                 });
-
         });
     }
-
-    function showLoginPanel() {
-        // Search DOM elements
-        var changePanel = $("#change-panel");
-        var shadow = $("#full-screen-shadow");
-        var loginPanel = $("#login-panel");
-
-        // Save setted values
-        var loginPanelCss = { top: loginPanel.css("top"), opacity: loginPanel.css("opacity") };
-        var changePanelCss = { top: changePanel.css("top"), opacity: changePanel.css("opacity") };
-
-        // Init new values
-        loginPanel.css({ top: "-20%", opacity: 0 });
-        changePanel.css({ top: -60, opacity: 0 });
-
-        shadow.hide();
-
-        // Animate all elements
-        loginPanel.animate(loginPanelCss, 800, function() {
-            changePanel.animate(changePanelCss, 600);
-        });
-
-        shadow.fadeIn(500);
+    
+    function clearErrorMessages(obj) {
+        obj.find('.error-field').html('');
     }
 
-    function hideLoginPanel(callback) {
-        // Search DOM elements
-        var changePanel = $("#change-panel");
-        var shadow = $("#full-screen-shadow");
-        var loginPanel = $("#login-panel");
+    function showErrorMessage(obj, message) {
+        var errorField = obj.find('.error-field');
+        
+        errorField.append('<div class="alert alert-error">'
+                + '<button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>');
+    }
 
-        // Animate all elements
-        changePanel.animate({ top: -60, opacity: 0 }, 500, function() {
-            shadow.fadeOut(500);
-        });
+    function move(obj, options, callback, delayForCallback) {
+        var cssCurrent = {};
+        var cssForHide = {};
 
-        loginPanel.animate({ top: "-20%", opacity: 0 }, 900, function() {
-            callback();
+        switch (options.direction) {
+        case 'left':
+            cssCurrent = { left: obj.css('left'), opacity: obj.css('opacity') };
+            cssForHide = { left: '-10%', opacity: 0 };
+            break;
+        case 'right':
+            cssCurrent = { right: obj.css('right'), opacity: obj.css('opacity') };
+            cssForHide = { right: '-10%', opacity: 0 };
+            break;
+        case 'top':
+            cssCurrent = { top: obj.css('top'), opacity: obj.css('opacity') };
+            cssForHide = { top: '-10%', opacity: 0 };
+            break;
+        case 'bottom':
+            cssCurrent = { bottom: obj.css('bottom'), opacity: obj.css('opacity') };
+            cssForHide = { bottom: '-10%', opacity: 0 };
+            break;
+        }
+
+        var cssFrom = null;
+        var cssTo = null;
+
+        switch (options.method) {
+        case 'show':
+            cssFrom = cssForHide;
+            cssTo = cssCurrent;
+            break;
+        case 'hide':
+            cssFrom = cssCurrent;
+            cssTo = cssForHide;
+            break;
+        }
+
+        var animTime = options.animTime | 500;
+
+        obj.css(cssFrom);
+        obj.animate(cssTo, animTime, function () {
+            if (callback == null) return;
+
+            if (delayForCallback === 'undefined') {
+                callback();
+            } else {
+                setTimeout(function() { callback(); }, delayForCallback);
+            }
         });
     }
 });

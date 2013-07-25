@@ -23,20 +23,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void CreateUser(UserModel user, string provider)
+        public void CreateUser(UserModel user, AuthInfoModel.ProviderType provider)
         {
             if (IsUserExist(user.Email))
             {
                 throw new UserAlreadyExistException(user.Email);
             }
-            
-            if (provider == AuthInfoModel.LOCAL_PROFILE)
+
+            if (provider == AuthInfoModel.ProviderType.Local)
             {
-                user.Salt = this.cryptoProvider.Salt;
-                user.UserPassword = this.cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
+                user.Salt = cryptoProvider.Salt;
+                user.UserPassword = cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
             }
 
-            using (IUnitOfWork unitOfWork = this.WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 unitOfWork.Users.Add(user);
                 unitOfWork.SaveChanges();

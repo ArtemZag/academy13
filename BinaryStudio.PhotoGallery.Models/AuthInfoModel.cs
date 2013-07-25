@@ -8,12 +8,11 @@ namespace BinaryStudio.PhotoGallery.Models
     /// </summary>
     public class AuthInfoModel
     {
-        /// <summary>
-        /// Strings that represents type of auth.
-        /// </summary>
-        public const string LOCAL_PROFILE = "local";
-        public const string GOOGLE_PROFILE = "google";
-
+        public enum ProviderType
+        {
+            Local,
+            Google
+        }
 
         public AuthInfoModel()
         {
@@ -22,11 +21,11 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Main constructor with important fields
         /// </summary>
-        /// <param name="userID">user id</param>
+        /// <param name="userId">user id</param>
         /// <param name="authProvider">[local][google][facebook]</param>
-        public AuthInfoModel(int userID, string authProvider)
+        public AuthInfoModel(int userId, string authProvider)
         {
-            UserModelID = userID;
+            UserModelID = userId;
             AuthProvider = authProvider;
         }
 

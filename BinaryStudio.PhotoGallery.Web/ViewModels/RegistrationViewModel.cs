@@ -4,20 +4,20 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
     public class RegistrationViewModel
     {
-        [Required(ErrorMessage = "E-mail address is required")]
+        [Required]
         [DataType(DataType.EmailAddress)]
-        [StringLength(100, ErrorMessage = "E-mail address must have {2}-{1} symbols", MinimumLength = 7)]
+        [StringLength(100, MinimumLength = 5)]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
+        [Required]
         [DataType(DataType.Password)]
-        [StringLength(20, ErrorMessage = "Password must have {2}-{1} symbols", MinimumLength = 6)]
+        [StringLength(20, MinimumLength = 6)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Confirm password is required")]
+        [Required]
         [DataType(DataType.Password)]
-        [StringLength(20, ErrorMessage = "Confirm password must have {2}-{1} symbols", MinimumLength = 6)]
-        [Compare("Password", ErrorMessage = "Passwords are not equel")]
+        [StringLength(20, MinimumLength = 6)]
+        [Compare("Password")]
         public string ConfirmPassword { get; set; }
     }
 }
