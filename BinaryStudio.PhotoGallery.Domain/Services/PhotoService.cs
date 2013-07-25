@@ -66,7 +66,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int count)
+        public List<PhotoModel> GetPhotos(string userEmail, int count)
         {
             List<PhotoModel> result;
 

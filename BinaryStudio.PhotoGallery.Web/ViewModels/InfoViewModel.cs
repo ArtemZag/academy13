@@ -7,5 +7,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
     {
         public string UserEmail { get; set; }
         public List<PhotoViewModel> Photos { get; set; }
+        public int StartIndexOfPhoto;
     }
 }

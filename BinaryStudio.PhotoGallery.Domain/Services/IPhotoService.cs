@@ -34,6 +34,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         /// <param name="userEmail">Users email.</param>
         /// <param name="count">Number of photos.</param>
-        IEnumerable<PhotoModel> GetPhotos(string userEmail, int count);
+        List<PhotoModel> GetPhotos(string userEmail, int count);
     }
 }

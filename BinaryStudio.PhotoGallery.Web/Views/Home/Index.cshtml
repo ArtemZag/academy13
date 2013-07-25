@@ -1,13 +1,28 @@
-﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.InfoViewModel
+﻿@using PerpetuumSoft.Knockout
+@model BinaryStudio.PhotoGallery.Web.ViewModels.InfoViewModel
+<script src="@Url.Content("~/Scripts/knockout-2.3.0.js")" type="text/javascript"></script> <!-- Use your version of knockout -->
+<script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"></script>
+
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var preloaderpath = BinaryStudio.PhotoGallery.Core.Helpers.PathHelper.ImageDir + "photopreloader.gif";
+    var ko = Html.CreateKnockoutContext();
 }
 
+
+
 <div id="photoWrapper">
-    @foreach (var photo in Model.Photos)
+    
+    @using (var ph = ko.Foreach(m => m.Photos))
     {
         <div class="photoContainer">
-            <img src="@photo.PhotoThumbSource"/>
+            <img @ph.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
         </div>
-    }								
+
+    }  
+    <img src="@preloaderpath" id="photopreloader" />		
 </div>
+@ko.Html.Button("Inc 1", "Indexx", "Home", new { num = 1 })
+
+@ko.Apply(Model)

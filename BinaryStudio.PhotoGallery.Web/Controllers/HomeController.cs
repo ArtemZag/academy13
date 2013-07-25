@@ -29,12 +29,18 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// Main user page (click on "bingally")
         /// </summary>
         /// <returns>page with flow of public pictures</returns>
-		[GET("Index")]
-        public ActionResult Index()
+        [GET("Index/{photoNum}")]
+        public ActionResult Index(int photoNum = 0)
         {   
             var viewmodels = _photoService.GetPhotos(User.Identity.Name, 20);
             return View(new InfoViewModel { UserEmail = User.Identity.Name, 
                                             Photos = viewmodels.Select(ModelConverter.GetViewModel).ToList()});
+        }
+
+        public ActionResult Indexx(InfoViewModel model, int num)
+        {
+            model.Photos.AddRange(_photoService.GetPhotos(User.Identity.Name, 20).Select(ModelConverter.GetViewModel).ToList());
+            return Json(model);
         }
 
         /// <summary>
