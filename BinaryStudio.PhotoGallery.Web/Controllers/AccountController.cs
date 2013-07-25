@@ -2,8 +2,10 @@
 using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
+using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
+
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -17,24 +19,40 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             this.userService = userService;
         }
 
-        [GET]
-        public ActionResult SignIn()
+        [GET("Signin/{service}")]
+        public ActionResult SignIn(string service)
         {
-            if (User.Identity.IsAuthenticated)
+            if (string.IsNullOrEmpty(service))
             {
-                // recheck user (maybe it was deleted, while cookie is truth)
-                var userExist = userService.IsUserExist(User.Identity.Name);
-
-                if (userExist)
+                if (User.Identity.IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Home");
+                    // recheck user (maybe it was deleted, while cookie is truth)
+                    var userExist = userService.IsUserExist(User.Identity.Name);
+
+                    if (userExist)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    // Clear cookie
+                    FormsAuthentication.SignOut();
+                }
+            }
+            else
+            {
+                // TODO Auth with social (don't change this block!!! It will be changed)
+                if (service == "facebook")
+                {
+                    var authAddress = Facebook.GetAuthAddress();
+
+                    return Redirect(authAddress);
                 }
 
-                // Clear cookie
-                FormsAuthentication.SignOut();
+
+                return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            return View(new AuthorizationViewModel {RememberMe = true});
         }
 
         [GET]
@@ -74,6 +92,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult RemindPass(RemindPassViewModel remindPassViewModel)
         {
             return View();
+        }
+
+        //[GET("FacebookCallBack/{code}")]
+        public void FacebookCallBack(string code)
+        {
+            var facebook = new Facebook();
+            facebook.GetAccessToken(code);
+
         }
     }
 }
