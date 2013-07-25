@@ -19,18 +19,34 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
         }
 
         [Test]
-        public void PasswordShouldBeEqualWithEnryptedVersion()
+        public void PasswordShouldBeEqualWithEncryptedVersion()
         {
             // setup
             const string PASSWORD = "abc123";
 
             // body
-            string salt = cryptoProvider.Salt;
+            string salt = cryptoProvider.CalculateSalt();
             string encryptedVersion = cryptoProvider.CreateHashForPassword(PASSWORD, salt);
 
             // tear down
             bool isEqual = cryptoProvider.IsPasswordsEqual(PASSWORD, encryptedVersion, salt);
             isEqual.Should().Be(true);
+        }
+
+        [Test]
+        public void PasswordShouldBeNoEqualWithTwiceEncryptedVersion()
+        {
+            // setup
+            const string PASSWORD = "abc123";
+
+            // body
+            string salt = cryptoProvider.CalculateSalt();
+            string twiceEcryptedVersion = cryptoProvider.CreateHashForPassword(PASSWORD, salt);
+            twiceEcryptedVersion = cryptoProvider.CreateHashForPassword(twiceEcryptedVersion, salt);
+
+            // tear down
+            bool isEqual = cryptoProvider.IsPasswordsEqual(PASSWORD, twiceEcryptedVersion, salt);
+            isEqual.Should().Be(false);
         }
     }
 }
