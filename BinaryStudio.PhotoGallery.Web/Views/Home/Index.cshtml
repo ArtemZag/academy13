@@ -1,7 +1,10 @@
-﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.InfoViewModel
+﻿@using System.Web.Optimization
+@model BinaryStudio.PhotoGallery.Web.ViewModels.InfoViewModel
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+
+<link href="~/Content/photo_flow.css" rel="stylesheet" />
 
 <div id="photoWrapper">
     @foreach (var photo in Model.Photos)
@@ -11,3 +14,7 @@
         </div>
     }								
 </div>
+
+@Scripts.Render("~/bundles/scripts/jquery")
+@Scripts.Render("~/bundles/scripts/bootstrap")
+@Scripts.Render("~/Scripts/photo_placer.js")

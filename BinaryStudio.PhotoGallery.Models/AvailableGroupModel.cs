@@ -1,6 +1,4 @@
-﻿
-
-namespace BinaryStudio.PhotoGallery.Models
+﻿namespace BinaryStudio.PhotoGallery.Models
 {
     /// <summary>
     /// The class that represents groups that avaible for work with a comments and photos (different for each album).
@@ -11,10 +9,10 @@ namespace BinaryStudio.PhotoGallery.Models
         {
         }
 
-        public AvailableGroupModel(int groupModelID, int albumModelID)
+        public AvailableGroupModel(int groupModelId, int albumModelId)
         {
-            GroupModelID = groupModelID;
-            AlbumModelID = albumModelID;
+            GroupModelId = groupModelId;
+            AlbumModelId = albumModelId;
         }
 
         
@@ -33,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Models
         public bool CanAddComments { get; set; }
 
 
-        public int GroupModelID { get; set; }
-        public int AlbumModelID { get; set; }
+        public int GroupModelId { get; set; }
+        public int AlbumModelId { get; set; }
     }
 }

@@ -67,7 +67,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 return 
                     unitOfWork.Albums.Find(
-                        model => model.UserModelID == user.ID && string.Equals(model.AlbumName, albumName));
+                        model => model.UserModelID == user.Id && string.Equals(model.AlbumName, albumName));
             }
             catch (Exception e)
             {
