@@ -53,6 +53,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="NotificationsUtils\INotificationSender.cs" />
+    <Compile Include="PhotoUtils\IAsyncPhotoProcessor.cs" />
     <Compile Include="UserUtils\CryptoProvider.cs" />
     <Compile Include="UserUtils\ICryptoProvider.cs" />
     <Compile Include="NotificationsUtils\NotificationSender.cs" />
