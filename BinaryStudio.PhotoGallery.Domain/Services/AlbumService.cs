@@ -39,16 +39,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<AlbumModel> GetAlbums(string userEmail)
         {
-            IEnumerable<AlbumModel> result;
-
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                result = user.Albums;
+                return user.Albums;
             }
-
-            return result;
         }
 
         public AlbumModel GetAlbum(string userEmail, string albumName)
@@ -67,11 +63,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
         {
-            AlbumModel result;
-
             try
             {
-                result =
+                return 
                     unitOfWork.Albums.Find(
                         model => model.UserModelID == user.ID && string.Equals(model.AlbumName, albumName));
             }
@@ -79,8 +73,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 throw new AlbumNotFoundException(e);
             }
-
-            return result;
         }
     }
 }
