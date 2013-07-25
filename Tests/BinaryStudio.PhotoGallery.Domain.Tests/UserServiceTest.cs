@@ -44,7 +44,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             };
 
             // body
-            userService.CreateUser(userModel, "local");
+            userService.CreateUser(userModel);
             bool checkingResult = userService.IsUserExist(userModel.Email);
 
             // tear down
@@ -64,7 +64,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             };
 
             // body
-            userService.CreateUser(userModel, "local");
+            userService.CreateUser(userModel, AuthInfoModel.ProviderType.Local);
             bool isPresentAfterCreation = userService.IsUserExist(userModel.Email);
 
             userService.DeleteUser(userModel.Email);

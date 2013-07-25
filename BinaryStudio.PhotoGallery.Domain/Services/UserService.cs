@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using BinaryStudio.PhotoGallery.Core.UserUtils;
+﻿using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -24,37 +23,23 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void CreateUser(UserModel user, string provider)
+        public void CreateUser(UserModel user, AuthInfoModel.ProviderType provider)
         {
-            if (!IsUserExist(user.Email))
-            {
-                /*// todo: it will be parameter
-                const string AUTH_PROVIDER = AuthInfoModel.LOCAL_PROFILE;
-
-                // todo: local password will be in UserModel
-                AuthInfoModel authInfoModel =
-                    user.AuthInfos.First(model => string.Equals(model.AuthProvider, AUTH_PROVIDER));
-
-                authInfoModel.UserPassword = cryptoProvider.CreateHashForPassword(authInfoModel.UserPassword,
-                                                                                  cryptoProvider.Salt);*/
-                if (provider == AuthInfoModel.LOCAL_PROFILE)
-                {
-                    var salt = cryptoProvider.Salt;
-
-                    user.UserPassword = cryptoProvider.CreateHashForPassword(user.UserPassword, salt);
-                    user.Salt = salt;
-                }
-
-
-                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-                {
-                    unitOfWork.Users.Add(user);
-                    unitOfWork.SaveChanges();
-                }
-            }
-            else
+            if (IsUserExist(user.Email))
             {
                 throw new UserAlreadyExistException(user.Email);
+            }
+
+            if (provider == AuthInfoModel.ProviderType.Local)
+            {
+                user.Salt = cryptoProvider.GetNewSalt();
+                user.UserPassword = cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
+            }
+
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                unitOfWork.Users.Add(user);
+                unitOfWork.SaveChanges();
             }
         }
 
@@ -75,26 +60,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public bool IsUserValid(string userEmail, string userPassword)
+        public bool IsUserValid(string userEmail, string enteredUserPassword)
         {
             bool result;
 
             try
             {
-                // todo: it will be parameter
-                const string AUTH_PROVIDER = AuthInfoModel.LOCAL_PROFILE;
-
                 using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
                 {
                     UserModel user = GetUser(userEmail, unitOfWork);
 
-                    /*/#1#/ todo: local password will be in UserModel
-                    AuthInfoModel authInfoModel =
-                        user.AuthInfos.First(model => string.Equals(model.AuthProvider, AUTH_PROVIDER));#1#
-
-                    string dbPassword = user.UserPassword;*/
-
-                    result = cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
+                    result = cryptoProvider.IsPasswordsEqual(enteredUserPassword, user.UserPassword, user.Salt);
                 }
             }
             catch (UserNotFoundException)

@@ -14,7 +14,7 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
 
         private static void RegisterTypes(IUnityContainer container)
         {
-            BinaryStudio.PhotoGallery.Core.Bootstrapper.RegisterTypes(container);
+            PhotoGallery.Core.Bootstrapper.RegisterTypes(container);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         void DeletePhoto(PhotoModel photo);
 
         /// <summary>
-        /// Returns specified interval of photos (sorted by date).
+        /// Returns specified interval of photos (sorted by date) from specified album.
         /// </summary>
         /// <param name="userEmail">Users email.</param>
         /// <param name="albumName">Album name.</param>
@@ -30,10 +30,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
 
         /// <summary>
-        /// Returns last N users photos.
+        /// Returns specified interval of users photos.
         /// </summary>
         /// <param name="userEmail">Users email.</param>
-        /// <param name="count">Number of photos.</param>
-        List<PhotoModel> GetPhotos(string userEmail, int count);
+        /// <param name="begin">Beginning of the interval.</param>
+        /// <param name="end">Ending of the interval.</param>
+        IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end);
     }
 }

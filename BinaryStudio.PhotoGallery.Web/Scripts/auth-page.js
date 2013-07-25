@@ -1,95 +1,72 @@
-﻿$(function () {
-    var validField = $(".validation-summary-errors");
+﻿$(function() {
+    var loginPanel = $('.login-panel');
+    var changePanel = $('.change-panel');
+    var shadow = $('#full-screen-shadow');
 
-    if (validField.length == 0) {
-        showLoginPanel();
-    } else {
-        correctValidationStyle(validField);
+    changePanel.hide();
+
+    shadow.fadeIn();
+    
+    move(loginPanel,
+        {
+            direction: 'top',
+            method: 'show',
+            animTime: 600
+        },
+        function() {
+            changePanel.show();
+            move(changePanel, { direction: 'top', method: 'show', animTime: 510 });
+        });
+
+    addClickEventTo($("#signin-button"), '../Api/Account/Signin');
+    addClickEventTo($("#signup-button"), '../Api/Account/Signup');
+
+    function addClickEventTo(submitButton, address) {
+        submitButton.click(function() {
+            clearErrorMessages(loginPanel);
+
+            submitButton.addClass('disabled');
+            submitButton.attr('data-loading', true);
+            
+            $.post(address, submitButton.parent().serialize())
+                .done(function () {
+                    move(loginPanel, { direction: 'top', method: 'hide', animTime: 500 });
+                    move(changePanel,
+                        {
+                            direction: 'top',
+                            method: 'hide',
+                            animTime: 500
+                        },
+                        function() {
+                            shadow.fadeOut(500, function() {
+                                window.location = '../Home/Index';
+                            });
+                        });
+                })
+                .fail(function (jqXHR) {
+                    var errorMsg = "Uknown server error";
+                    
+                    if (jqXHR.status == 400) {
+                        errorMsg = "Email or password is incorrect";
+                    }
+
+                    showErrorMessage(loginPanel, errorMsg);
+                })
+                .always(function() {
+                    submitButton.removeClass('disabled');
+                    submitButton.removeAttr('data-loading', true);
+                });
+        });
+    }
+    
+    function clearErrorMessages(obj) {
+        obj.find('.error-field').html('');
     }
 
-    animateQuery();
-});
-
-function animateQuery() {
-    var submitButton = $("#signin-button");
-    
-    submitButton.click(function () {
-        submitButton.addClass("disabled");
-        submitButton.attr("data-loading", true);
+    function showErrorMessage(obj, message) {
+        var errorField = obj.find('.error-field');
         
-        // ajax query
-        $.post('../Account/Signin',
-            {
-                Email: $("#Email").val(),
-                Password: $("#Password").val(),
-                RememberMe: $("#RememberMe").val()
-            })
-            .done(function (data) {
-                submitButton.removeClass("disabled");
-                submitButton.removeAttr("data-loading");
-
-                // remove all error-fields and then ...
-                
-                if (data == "ok") {
-                    hideLoginPanel(function () {
-                        setTimeout(function () { window.location = "../Home/Index"; }, 500);
-                    });
-                } else {
-                    // show error fields
-                    console.log(data);
-                }
-            })
-            .fail(function() {
-                submitButton.removeClass("disabled");
-                submitButton.removeAttr("data-loading", true);
-//                console.log("Can't get response from server");
-            });
-
-    });
-}
-
-function correctValidationStyle(validField) {
-    validField.addClass("alert alert-error");
-    validField.prepend("<strong>Errors</strong><br/>");
-    validField.prepend("<button type='button' class='close' data-dismiss='alert'>&times;</button>");
-}
-
-function showLoginPanel() {
-    // Search DOM elements
-    var changePanel = $("#change-panel");
-    var shadow = $("#full-screen-shadow");
-    var loginPanel = $("#login-panel");
-
-    // Save setted values
-    var loginPanelCss = { top: loginPanel.css("top"), opacity: loginPanel.css("opacity") };
-    var changePanelCss = { top: changePanel.css("top"), opacity: changePanel.css("opacity") };
-
-    // Init new values
-    loginPanel.css({ top: "-20%", opacity: 0 });
-    changePanel.css({ top: -60, opacity: 0 });
-
-    shadow.hide();
-
-    // Animate all elements
-    loginPanel.animate(loginPanelCss, 800, function () {
-        changePanel.animate(changePanelCss, 600);
-    });
-
-    shadow.fadeIn(500);
-}
-
-function hideLoginPanel(callback) {
-    // Search DOM elements
-    var changePanel = $("#change-panel");
-    var shadow = $("#full-screen-shadow");
-    var loginPanel = $("#login-panel");
-    
-    // Animate all elements
-    changePanel.animate({ top: -60, opacity: 0 }, 500, function () {
-        shadow.fadeOut(500);
-    });
-    
-    loginPanel.animate({ top: "-20%", opacity: 0 }, 900, function() {
-        callback();
-    });
-}
+        errorField.append('<div class="alert alert-error">'
+                + '<button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>');
+    }
+});

@@ -5,28 +5,31 @@
     ViewBag.Title = "Registration | Bingally";
 }
 
-<div id="change-panel" class="well">
+<div class="change-panel well">
     <strong class="pull-left">Already registered?</strong>
     <a href="../Account/Signin" class="btn btn-primary pull-right">Sign in</a>
 </div>
 
-<div id="login-panel">
-    <img id="logo" src="~/Content/images/logo_v4.png"/>
-    <form class="form-horizontal form-signin well pagination-centered" method="POST" action="../Account/Signup" autocomplete="off">
-        <div class="control-group">
-            <input type="email" id="Email" name="Email" class="input-block-level" placeholder="E-mail address">
-            <input type="password" id="Password" name="Password" class="input-block-level" placeholder="Password">
+<div class="login-panel">
+    <img src="~/Content/images/logo_big.png"/>
+    <div class="well">
+        <form class="control-group form-horizontal pagination-centered" method="POST" action="../Account/Signin" autocomplete="off">
+            <input id="Email" name="Email" type="email" class="input-block-level" placeholder="E-mail address" />
+            <input id="Password" name="Password" type="password" class="input-block-level" placeholder="Password" />
             <input type="password" id="PasswordConfirmation" class="input-block-level" name="ConfirmPassword" placeholder="Repeat password">
 
-            <button type="submit" class="btn btn-success">Sign up</button>
-        </div>
-        @Html.ValidationSummary(false)
-        <hr/>
+            <button id="signup-button" type="button" class="btn btn-success effeckt-button zoom-in">
+                <span class="effeckt-label">Sign up</span>
+                <span class="effeckt-spinner effeckt-spinner-green"></span>
+            </button>
+        </form>
+        <div class="error-field"></div>
+        <hr />
         <div class="social">
-            <a href="../Account/Signup/vkontakte"><img src="~/Content/images/vkontakte_logo.png" /></a>
-            <a href="../Account/Signup/facebook"><img src="~/Content/images/facebook_logo.png"/></a>
-            <a href="../Account/Signup/twitter"><img src="~/Content/images/twitter_logo.png" /></a>
-            <a href="../Account/Signup/github"><img src="~/Content/images/github_logo.png" /></a>
+            <a href="../Account/Signin/vkontakte"><img src="~/Content/images/vkontakte_logo.png" /></a>
+            <a href="../Account/Signin/facebook"><img src="~/Content/images/facebook_logo.png"/></a>
+            <a href="../Account/Signin/twitter"><img src="~/Content/images/twitter_logo.png" /></a>
+            <a href="../Account/Signin/github"><img src="~/Content/images/github_logo.png" /></a>
         </div>
-    </form>	
+    </div>
 </div>

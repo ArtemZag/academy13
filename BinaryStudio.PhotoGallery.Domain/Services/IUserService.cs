@@ -6,11 +6,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     {
         UserModel GetUser(string userEmail);
 
-        void CreateUser(UserModel userModel, string provider);
+        void CreateUser(UserModel userModel, AuthInfoModel.ProviderType providerType = AuthInfoModel.ProviderType.Local);
 
         void DeleteUser(string userEmail);
 
-        bool IsUserValid(string userEmail, string userPassword);
+        bool IsUserValid(string userEmail, string enteredUserPassword);
 
         bool IsUserExist(string userEmail);
     }

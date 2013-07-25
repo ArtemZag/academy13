@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace BinaryStudio.PhotoGallery.Models
 {
@@ -15,10 +14,10 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreation = DateTime.Now;
         }
 
-        public PhotoModel(int albumModelID, int userModelID)
+        public PhotoModel(int albumModelId, int userModelId)
         {
-            AlbumModelID = albumModelID;
-            UserModelID = userModelID;
+            AlbumModelID = albumModelId;
+            UserModelID = userModelId;
             DateOfCreation = DateTime.Now;
         }
 
@@ -26,11 +25,6 @@ namespace BinaryStudio.PhotoGallery.Models
         /// Gets or sets the photo ID.
         /// </summary>
         public int ID { get; set; }
-
-        /// <summary>
-        /// Gets or sets a path to photo.
-        /// </summary>
-        public string PhotoSource { get; set; }
 
         /// <summary>
         /// Gets or sets a path to photo.  

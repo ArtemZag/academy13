@@ -2,7 +2,7 @@
 
 namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
-    public class RegistrationViewModel
+    public class AuthorizationViewModel
     {
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -10,14 +10,10 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         public string Email { get; set; }
 
         [Required]
-        [DataType(DataType.Password)]
         [StringLength(20, MinimumLength = 6)]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [StringLength(20, MinimumLength = 6)]
-        [Compare("Password")]
-        public string ConfirmPassword { get; set; }
+       
+        public bool RememberMe { get; set; }
     }
 }

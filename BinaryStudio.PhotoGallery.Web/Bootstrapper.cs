@@ -1,6 +1,6 @@
-using System.Web.Mvc;
 using Microsoft.Practices.Unity;
-using Unity.Mvc4;
+using System.Web.Http;
+using System.Web.Mvc;
 
 namespace BinaryStudio.PhotoGallery.Web
 {
@@ -9,7 +9,9 @@ namespace BinaryStudio.PhotoGallery.Web
         public static IUnityContainer Initialise()
         {
             var container = BuildUnityContainer();
-            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
+
+            DependencyResolver.SetResolver(new Unity.Mvc4.UnityDependencyResolver(container));
+            GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
 
             return container;
         }
@@ -26,7 +28,6 @@ namespace BinaryStudio.PhotoGallery.Web
         {
             // register all your components with the container here
             // it is NOT necessary to register your controllers
-
             // e.g. container.RegisterType<ITestService, TestService>();    
             Domain.Bootstrapper.RegisterTypes(container);
             Database.Bootstrapper.RegisterTypes(container);
