@@ -48,5 +48,17 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             bool isEqual = cryptoProvider.IsPasswordsEqual(PASSWORD, twiceEcryptedVersion, salt);
             isEqual.Should().Be(false);
         }
+
+        [Test]
+        public void SaltsShouldBeNotEqualWithTwiceCalling()
+        {
+            // body
+            string salt1 = cryptoProvider.GetNewSalt();
+            string salt2 = cryptoProvider.GetNewSalt();
+
+            // tear down
+            bool isEqual = string.Equals(salt1, salt2);
+            isEqual.Should().BeFalse();
+        }
     }
 }
