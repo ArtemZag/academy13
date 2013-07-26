@@ -51,6 +51,11 @@ namespace BinaryStudio.PhotoGallery.Models
         /// Gets or sets the user's rating of each photo in album.
         /// </summary>
         public int Rating { get; set; }
+
+        /// <summary>
+        /// Gets or sets a photo state
+        /// </summary>
+        public bool IsDeleted { get; set; }
  
 
         public int UserModelID { get; set; }
