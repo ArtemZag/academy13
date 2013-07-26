@@ -1,9 +1,17 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Net;
+using System.Net.Http;
+using System.Web.Mvc;
 using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
+using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Core.Helpers;
+using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -17,45 +25,101 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             this._userService = userService;
         }
 
-        [GET]
-        public ActionResult SignIn()
+        [GET("Signin/{service}")]
+        public ActionResult SignIn(string service)
         {
-            if (User.Identity.IsAuthenticated)
+            if (string.IsNullOrEmpty(service))
             {
-                // recheck user (maybe it was deleted, while cookie is truth)
-                var userExist = this._userService.IsUserExist(User.Identity.Name);
-
-                if (userExist)
+                if (User.Identity.IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Home");
-                }
+                    // recheck user (maybe it was deleted, while cookie is truth)
+                    var userExist = this._userService.IsUserExist(User.Identity.Name);
 
-                // Clear cookie
-                FormsAuthentication.SignOut();
+                    if (userExist)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    // Clear cookie
+                    FormsAuthentication.SignOut();
+                }
             }
+            if (service == "facebook")
+            {
+                return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
+            }
+
 
             return View(new AuthorizationViewModel());
         }
 
-        [GET]
-        public ActionResult SignUp()
+        [GET("Signup/{service}")]
+        public ActionResult SignUp(string service)
         {
-            if (User.Identity.IsAuthenticated)
+            if (string.IsNullOrEmpty(service))
             {
-                // recheck user (maybe it was deleted, while cookie is truth)
-                var userExist = this._userService.IsUserExist(User.Identity.Name);
-
-                if (userExist)
+                if (User.Identity.IsAuthenticated)
                 {
-                    return RedirectToAction("Index", "Home");
+                    // recheck user (maybe it was deleted, while cookie is truth)
+                    var userExist = this._userService.IsUserExist(User.Identity.Name);
+
+                    if (userExist)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    // Clear cookie
+                    FormsAuthentication.SignOut();
                 }
-
-                // Clear cookie
-                FormsAuthentication.SignOut();
             }
-
+            if (service == "facebook")
+            {
+                return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
+            }
             return View(new RegistrationViewModel());
         }
+
+        [GET("FacebookCallBack/{userSecret}")]
+        public RedirectToRouteResult FacebookCallBack(string userSecret, string code)
+        {
+            var token = FB.GetAccessToken(userSecret, code);
+
+            FB.GetAccountInfo("", token);
+
+
+            if (!_userService.IsUserExist(FB.Email))
+            {
+                var newUser = new UserModel
+                    {
+                        FirstName = FB.FirstName,
+                        LastName = FB.LastName,
+                        Email = FB.Email,
+                        AuthInfos = new Collection<AuthInfoModel>
+                            {
+                                new AuthInfoModel()
+                                    {
+                                        AuthProvider = AuthInfoModel.ProviderType.Facebook.ToString(),
+                                        AuthProviderToken = token
+                                    }
+                            }
+                    };
+                _userService.CreateUser(newUser, AuthInfoModel.ProviderType.Facebook);
+                Session["AccessToken"] = token;
+                FormsAuthentication.SetAuthCookie(newUser.Email, false);
+            }
+            else
+            {
+                /*var user = _userService.GetUser(FB.Email);
+                if (user.AuthInfos.Contains(new AuthInfoModel(user.ID, AuthInfoModel.ProviderType.Facebook.ToString())))
+                {
+                    
+
+                }*/
+                Session["AccessToken"] = token;
+                FormsAuthentication.SetAuthCookie(FB.Email, false);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
 
         [GET]
         public ActionResult SignOut()
