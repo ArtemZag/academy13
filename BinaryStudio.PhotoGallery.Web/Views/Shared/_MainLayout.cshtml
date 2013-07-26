@@ -4,8 +4,10 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width" />
-        <link href="~/Content/main-layout.css" rel="stylesheet"/>
+        
+         <link href="~/Content/photo_flow.css" rel="stylesheet" />
 @*        <link href="~/Content/photo_flow.css" rel="stylesheet" />*@
+        @Styles.Render("~/Content/main-layout.css")
         @Styles.Render("~/bundles/styles/bootstrap")
         @Styles.Render("~/bundles/styles/dropzone")
         @Styles.Render("~/Content/upload-images.css")
@@ -60,3 +62,4 @@
     @Scripts.Render("~/bundels/scripts/dropzone")
     @Scripts.Render("~/Scripts/upload-images.js")
 </html>
+

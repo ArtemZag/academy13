@@ -14,6 +14,7 @@ namespace BinaryStudio.PhotoGallery.Database
             container.RegisterType<IUnitOfWorkFactory, UnitOfWorkFactory>(new ContainerControlledLifetimeManager());
         }
 
+        // todo: delete
         public static void Test()
         {
             //var unitOfWorkFactory = new UnitOfWorkFactory();

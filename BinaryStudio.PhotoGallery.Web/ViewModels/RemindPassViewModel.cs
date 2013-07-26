@@ -4,8 +4,9 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
     public class RemindPassViewModel
     {
-        [Required(ErrorMessage = "E-mail or login is required")]
+        [Required]
         [DataType(DataType.Text)]
+        [MaxLength(255)]
         public string EmailOrLogin { get; set; }
     }
 }

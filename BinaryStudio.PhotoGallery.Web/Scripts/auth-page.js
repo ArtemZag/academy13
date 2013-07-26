@@ -18,12 +18,25 @@
             move(changePanel, { direction: 'top', method: 'show', animTime: 510 });
         });
 
-    liveSubmitButton($("#signin-button"), '../Api/Account/Signin');
-    liveSubmitButton($("#signup-button"), '../Api/Account/Signup');
+    addClickEventTo($("#signin-button"), '../Api/Account/Signin');
+    addClickEventTo($("#signup-button"), '../Api/Account/Signup');
 
-    function liveSubmitButton(submitButton, address) {
-        submitButton.click(function() {
-            clearErrorMessages(loginPanel);
+    loginPanel.find('input[type=email], input[type=password]')
+        .on('focus', function() {
+            clearErrorMessages();
+        })
+        .on('keypress', function() {
+            clearErrorMessages();
+        });
+
+    function addClickEventTo(submitButton, address) {
+        submitButton.click(function (event) {
+            clearErrorMessages();
+            
+            if (!$('form').valid()) {
+                showErrorMessage("Correctly fill in all the fields");
+                return false;
+            }
 
             submitButton.addClass('disabled');
             submitButton.attr('data-loading', true);
@@ -44,80 +57,40 @@
                         });
                 })
                 .fail(function (jqXHR) {
-                    var errorMsg = "Uknown server error";
+                    var errorMsg;
                     
-                    if (jqXHR.status == 400) {
-                        errorMsg = "Email or password is incorrect";
+                    switch (jqXHR.status) {
+                        case 400:
+                            errorMsg = "Email or password is incorrect";
+                            break;
+                        case 500:
+                            errorMsg = "Uknown server error";
+                            
+                            break;
+                        default:
+                            errorMsg = "Server is not available";
+                            break;
                     }
 
-                    showErrorMessage(loginPanel, errorMsg);
+                    showErrorMessage(errorMsg);
                 })
                 .always(function() {
                     submitButton.removeClass('disabled');
                     submitButton.removeAttr('data-loading', true);
                 });
+            
+            event.preventDefault();
         });
     }
     
-    function clearErrorMessages(obj) {
-        obj.find('.error-field').html('');
+    function clearErrorMessages() {
+        $('.error-field').html('');
     }
 
-    function showErrorMessage(obj, message) {
-        var errorField = obj.find('.error-field');
+    function showErrorMessage(message) {
+        var errorField = $('.error-field');
         
         errorField.append('<div class="alert alert-error">'
                 + '<button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>');
-    }
-
-    function move(obj, options, callback, delayForCallback) {
-        var cssCurrent = {};
-        var cssForHide = {};
-
-        switch (options.direction) {
-        case 'left':
-            cssCurrent = { left: obj.css('left'), opacity: obj.css('opacity') };
-            cssForHide = { left: '-10%', opacity: 0 };
-            break;
-        case 'right':
-            cssCurrent = { right: obj.css('right'), opacity: obj.css('opacity') };
-            cssForHide = { right: '-10%', opacity: 0 };
-            break;
-        case 'top':
-            cssCurrent = { top: obj.css('top'), opacity: obj.css('opacity') };
-            cssForHide = { top: '-10%', opacity: 0 };
-            break;
-        case 'bottom':
-            cssCurrent = { bottom: obj.css('bottom'), opacity: obj.css('opacity') };
-            cssForHide = { bottom: '-10%', opacity: 0 };
-            break;
-        }
-
-        var cssFrom = null;
-        var cssTo = null;
-
-        switch (options.method) {
-        case 'show':
-            cssFrom = cssForHide;
-            cssTo = cssCurrent;
-            break;
-        case 'hide':
-            cssFrom = cssCurrent;
-            cssTo = cssForHide;
-            break;
-        }
-
-        var animTime = options.animTime | 500;
-
-        obj.css(cssFrom);
-        obj.animate(cssTo, animTime, function () {
-            if (callback == null) return;
-
-            if (delayForCallback === 'undefined') {
-                callback();
-            } else {
-                setTimeout(function() { callback(); }, delayForCallback);
-            }
-        });
     }
 });

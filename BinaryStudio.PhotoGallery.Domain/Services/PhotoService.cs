@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Core.Helpers;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class PhotoService : Service, IPhotoService
+    internal class PhotoService : DbService, IPhotoService
     {
         public PhotoService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
@@ -21,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                photo.UserModelID = user.ID;
+                photo.UserModelID = user.Id;
                 album.Photos.Add(photo);
 
                 unitOfWork.SaveChanges();
@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                foreach (var photo in photos)
+                foreach (PhotoModel photo in photos)
                 {
                     album.Photos.Add(photo);
                 }
@@ -49,7 +49,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                unitOfWork.Photos.Delete(photo);
+                unitOfWork.Photos.Find(photo).IsDeleted = true;
 
                 unitOfWork.SaveChanges();
             }
@@ -62,45 +62,51 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                return album.Photos.Skip(begin).Take(end - begin).ToList();
+                return
+                    album.Photos.OrderBy(model => model.DateOfCreation)
+                         .ThenBy(model => model.ID)
+                         .Skip(begin)
+                         .Take(end - begin);
             }
         }
 
-        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int count)
+        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end)
         {
-            List<PhotoModel> result;
-
+            // real code block 
+            /*
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                result =
-                    unitOfWork.Photos.Filter(model => model.UserModelID == user.ID).Take(count).ToList();
+                return 
+                    unitOfWork.Photos.Filter(model => model.UserModelID == user.ID)
+                              .OrderBy(model => model.DateOfCreation)
+                              .ThenBy(model => model.ID)
+                              .Skip(begin).Take(end - begin);
             }
+            */
 
-            // for test only! todo: remove when real user photos will be added
+            // for test only!
+            // todo: remove when real user photos will be added
+            var test = new List<PhotoModel>();
             for (int i = 1; i < 20; i++)
-                result.Add(new PhotoModel { PhotoThumbSource = PathHelper.ImageDir + "/test/" + i + ".jpg" });
+                test.Add(new PhotoModel {PhotoThumbSource = PathHelper.ImageDir + "/test/" + i + ".jpg"});
 
-            return result;
+            return test;
         }
 
         private AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
         {
-            AlbumModel result;
-
             try
             {
-                result =
+                return
                     unitOfWork.Albums.Find(
-                        model => model.UserModelID == user.ID && string.Equals(model.AlbumName, albumName));
+                        model => model.UserModelID == user.Id && string.Equals(model.AlbumName, albumName));
             }
             catch (Exception e)
             {
                 throw new AlbumNotFoundException(e);
             }
-
-            return result;
         }
     }
 }

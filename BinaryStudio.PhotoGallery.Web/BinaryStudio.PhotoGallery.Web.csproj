@@ -66,6 +66,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="FluentScheduler">
+      <HintPath>..\packages\FluentScheduler.1.1.36\lib\net40\FluentScheduler.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.Unity, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -183,6 +186,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceRegistry.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
@@ -201,7 +205,6 @@
     <Content Include="Content\images\logo_big.png" />
     <Content Include="Content\images\logo_small.png" />
     <Content Include="Content\images\no_avatar.png" />
-    <Content Include="Content\images\spritemap.png" />
     <Content Include="Content\main-layout.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.min.css" />
@@ -216,8 +219,10 @@
     <Content Include="Content\images\vkontakte_logo.png" />
     <Content Include="Content\style-libs\dropzone.css" />
     <Content Include="Content\photo_flow.css" />
-    <Content Include="Content\upload-images.css" />
+    <Content Include="Content\style-libs\opentip.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\animation-storage.js" />
+    <Content Include="Scripts\auth-validate.js" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -236,10 +241,9 @@
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
     <Content Include="Scripts\auth-page.js" />
-    <Content Include="Scripts\knockout.validation.debug.js" />
-    <Content Include="Scripts\knockout.validation.js" />
+    <Content Include="Scripts\opentip-jquery.js" />
+    <Content Include="Scripts\opentip-jquery.min.js" />
     <Content Include="Scripts\photo_placer.js" />
-    <Content Include="Scripts\upload-images.js" />
     <Content Include="Scripts\UserSlider.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

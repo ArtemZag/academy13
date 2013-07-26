@@ -12,6 +12,9 @@ body
 	min-height: 100%;
 }
 
+.navbar-search form {
+    margin: 0;
+}
 
 .navbar {
     width: 100%;

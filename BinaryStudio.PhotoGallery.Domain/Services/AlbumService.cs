@@ -6,7 +6,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class AlbumService : Service, IAlbumService
+    internal class AlbumService : DbService, IAlbumService
     {
         public AlbumService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
@@ -39,16 +39,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<AlbumModel> GetAlbums(string userEmail)
         {
-            IEnumerable<AlbumModel> result;
-
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                result = user.Albums;
+                return user.Albums;
             }
-
-            return result;
         }
 
         public AlbumModel GetAlbum(string userEmail, string albumName)
@@ -67,20 +63,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
         {
-            AlbumModel result;
-
             try
             {
-                result =
+                return 
                     unitOfWork.Albums.Find(
-                        model => model.UserModelID == user.ID && string.Equals(model.AlbumName, albumName));
+                        model => model.UserModelID == user.Id && string.Equals(model.AlbumName, albumName));
             }
             catch (Exception e)
             {
                 throw new AlbumNotFoundException(e);
             }
-
-            return result;
         }
     }
 }

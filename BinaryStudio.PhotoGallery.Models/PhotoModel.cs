@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace BinaryStudio.PhotoGallery.Models
 {
@@ -15,10 +14,10 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreation = DateTime.Now;
         }
 
-        public PhotoModel(int albumModelID, int userModelID)
+        public PhotoModel(int albumModelId, int userModelId)
         {
-            AlbumModelID = albumModelID;
-            UserModelID = userModelID;
+            AlbumModelID = albumModelId;
+            UserModelID = userModelId;
             DateOfCreation = DateTime.Now;
         }
 
@@ -52,6 +51,11 @@ namespace BinaryStudio.PhotoGallery.Models
         /// Gets or sets the user's rating of each photo in album.
         /// </summary>
         public int Rating { get; set; }
+
+        /// <summary>
+        /// Gets or sets a photo state
+        /// </summary>
+        public bool IsDeleted { get; set; }
  
 
         public int UserModelID { get; set; }

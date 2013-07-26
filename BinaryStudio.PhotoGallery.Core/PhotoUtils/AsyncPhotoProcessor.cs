@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
-    internal class AsyncPhotoProcessor : IEnumerable<string>
+   
+
+    internal class AsyncPhotoProcessor : IEnumerable<string>, IAsyncPhotoProcessor
     {
         private string relativePath;
         private int maxHeight;
