@@ -90,5 +90,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return userRepository.Contains(model => string.Equals(model.Email, userEmail));
             }
         }
+
+        /// <summary>
+        /// Checks if there is a user with given token
+        /// </summary>
+        /// <param name="authProvider">[facebook][google]</param>
+        /// <param name="token">Token for authorization</param>
+        /// <returns></returns>
+        public bool IsUserExist(string authProvider, string token)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                IAuthInfoRepository authInfoRepository = unitOfWork.AuthInfos;
+
+                return authInfoRepository.Contains(model => string.Equals(model.AuthProvider, authProvider)&&string.Equals(model.AuthProviderToken, token));
+            }
+        }
     }
 }
