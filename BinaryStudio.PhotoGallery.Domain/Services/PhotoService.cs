@@ -49,7 +49,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                unitOfWork.Photos.Delete(photo);
+                unitOfWork.Photos.Find(photo).IsDeleted = true;
 
                 unitOfWork.SaveChanges();
             }
