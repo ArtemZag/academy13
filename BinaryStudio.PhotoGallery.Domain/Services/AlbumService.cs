@@ -6,7 +6,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class AlbumService : Service, IAlbumService
+    internal class AlbumService : DbService, IAlbumService
     {
         public AlbumService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {

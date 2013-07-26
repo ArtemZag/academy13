@@ -8,7 +8,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class PhotoService : Service, IPhotoService
+    internal class PhotoService : DbService, IPhotoService
     {
         public PhotoService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
@@ -49,7 +49,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                unitOfWork.Photos.Delete(photo);
+                unitOfWork.Photos.Find(photo).IsDeleted = true;
 
                 unitOfWork.SaveChanges();
             }
