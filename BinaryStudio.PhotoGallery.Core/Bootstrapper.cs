@@ -8,8 +8,8 @@ namespace BinaryStudio.PhotoGallery.Core
     {
         public static void RegisterTypes(IUnityContainer container)
         {
-            container.RegisterType(typeof (INotificationSender), typeof (NotificationSender));
-            container.RegisterType(typeof (ICryptoProvider), typeof (CryptoProvider));
+            container.RegisterType<INotificationSender, NotificationSender>();
+            container.RegisterType<ICryptoProvider, CryptoProvider>();
         }
     }
 }

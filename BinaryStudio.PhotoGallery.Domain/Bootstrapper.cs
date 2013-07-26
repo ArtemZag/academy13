@@ -8,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Domain
         public static void RegisterTypes(IUnityContainer container)
         {
             container.RegisterType<IUserService, UserService>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IAlbumService,AlbumService>();
+            container.RegisterType<IAlbumService, AlbumService>();
             container.RegisterType<IPhotoService, PhotoService>();
             container.RegisterType<IPhotoCleanupService, PhotoCleaupService>();
         }
