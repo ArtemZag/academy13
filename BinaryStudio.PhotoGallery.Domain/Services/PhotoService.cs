@@ -8,7 +8,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class PhotoService : Service, IPhotoService
+    internal class PhotoService : DbService, IPhotoService
     {
         public PhotoService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {

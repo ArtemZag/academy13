@@ -1,6 +1,7 @@
-using Microsoft.Practices.Unity;
 using System.Web.Http;
 using System.Web.Mvc;
+using Microsoft.Practices.Unity;
+using Unity.Mvc4;
 
 namespace BinaryStudio.PhotoGallery.Web
 {
@@ -8,9 +9,9 @@ namespace BinaryStudio.PhotoGallery.Web
     {
         public static IUnityContainer Initialise()
         {
-            var container = BuildUnityContainer();
+            IUnityContainer container = BuildUnityContainer();
 
-            DependencyResolver.SetResolver(new Unity.Mvc4.UnityDependencyResolver(container));
+            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
 
             return container;
