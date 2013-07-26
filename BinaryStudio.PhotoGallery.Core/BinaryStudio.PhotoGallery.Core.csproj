@@ -56,6 +56,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\Randomizer.cs" />
+    <Compile Include="PhotoUtils\IAsyncPhotoProcessor.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFB.cs" />
     <Compile Include="SocialNetworkUtils\Vkontakte\IVK.cs" />
     <Compile Include="SocialNetworkUtils\Vkontakte\VK.cs" />
