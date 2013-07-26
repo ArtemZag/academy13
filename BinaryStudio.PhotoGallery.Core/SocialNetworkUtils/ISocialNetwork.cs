@@ -3,10 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils
 {
-    interface ISocialNetwork
+    public interface ISocialNetwork
     {
+        /// <summary>
+        /// Creates album in social network without adding photos.
+        /// </summary>
+        /// <param name="albumName">Album name</param>
+        /// <param name="token">User's access token for social network</param>
+        void CreateAlbum(string albumName, string token);
+
+        /// <summary>
+        /// Adds photo collection to album in social network. If album does not exist, creates album first.
+        /// </summary>
+        /// <param name="photos">Collection of photo</param>
+        /// <param name="albumName">Album name</param>
+        /// <param name="token">User's access token for social network</param>
+        void AddPhotosToAlbum(IEnumerable<PhotoModel> photos, string albumName, string token);
     }
 }

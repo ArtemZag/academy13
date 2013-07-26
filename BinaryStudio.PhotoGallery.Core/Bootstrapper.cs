@@ -1,4 +1,5 @@
 ﻿using BinaryStudio.PhotoGallery.Core.NotificationsUtils;
+using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using Microsoft.Practices.Unity;
 
