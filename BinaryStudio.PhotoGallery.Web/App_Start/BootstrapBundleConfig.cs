@@ -26,6 +26,10 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
             BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/jquery.validate").Include(
                 "~/Scripts/jquery.validate.js"
                 ));
+
+            BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/opentip").Include(
+                "~/Scripts/opentip-jquery.js"
+                ));
             
 
             BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/bootstrap").Include(
@@ -35,6 +39,10 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
 
 		    BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/dropzone").Include(
 		        "~/Content/style-libs/dropzone.css"
+                ));
+
+            BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/opentip").Include(
+                "~/Content/style-libs/opentip.css"
                 ));
 		}
 	}
