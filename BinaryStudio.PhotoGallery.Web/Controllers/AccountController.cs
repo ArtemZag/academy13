@@ -83,7 +83,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             var token = FB.GetAccessToken(userSecret, code);
 
-            FB.GetAccountInfo("", token);
+            FB.GetAccountInfo("", token); //magic
 
 
             if (!_userService.IsUserExist(FB.Email))
@@ -103,20 +103,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                             }
                     };
                 _userService.CreateUser(newUser, AuthInfoModel.ProviderType.Facebook);
-                Session["AccessToken"] = token;
-                FormsAuthentication.SetAuthCookie(newUser.Email, false);
-            }
-            else
-            {
-                /*var user = _userService.GetUser(FB.Email);
-                if (user.AuthInfos.Contains(new AuthInfoModel(user.ID, AuthInfoModel.ProviderType.Facebook.ToString())))
-                {
-                    
 
-                }*/
-                Session["AccessToken"] = token;
-                FormsAuthentication.SetAuthCookie(FB.Email, false);
             }
+
+            Session["AccessToken"] = token;
+            FormsAuthentication.SetAuthCookie(FB.Email, false);
             return RedirectToAction("Index", "Home");
         }
 

@@ -27,6 +27,11 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Generate a URL-type string to make a request to facebook for CODE
+        /// </summary>
+        /// <param name="userSecret">user unic key</param>
+        /// <returns>URL-tyle string request</returns>
         public static string CreateAuthURL(string userSecret)
         {
             var stringBuilder = new StringBuilder();
@@ -43,6 +48,12 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
             return stringBuilder.ToString();
         }
 
+        /// <summary>
+        /// Recive a token from facebook
+        /// </summary>
+        /// <param name="userSecret">user unic key</param>
+        /// <param name="code">unic user code from facebook</param>
+        /// <returns>Token from facebook</returns>
         public static string GetAccessToken(string userSecret, string code)
         {
             var facebookClient = new FacebookClient();
@@ -58,6 +69,11 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
             return result.access_token;
         }
 
+        /// <summary>
+        /// Update static properties FirstName, LastName, Email from facebook
+        /// </summary>
+        /// <param name="infos">param string(not available in moment)</param>
+        /// <param name="token">unic user token from facebook</param>
         public static void GetAccountInfo(string infos, string token)
         {
             var facebookClient = new FacebookClient {AccessToken = token};
