@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -11,7 +12,8 @@ namespace BinaryStudio.PhotoGallery.Models
         public enum ProviderType
         {
             Local,
-            Google
+            Google,
+            Facebook
         }
 
         public AuthInfoModel()
