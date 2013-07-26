@@ -6,10 +6,8 @@
         <meta name="viewport" content="width=device-width" />
         
          <link href="~/Content/photo_flow.css" rel="stylesheet" />
-@*        <link href="~/Content/photo_flow.css" rel="stylesheet" />*@
         @Styles.Render("~/Content/main-layout.css")
         @Styles.Render("~/bundles/styles/bootstrap")
-        @Styles.Render("~/bundles/styles/dropzone")
         @Styles.Render("~/Content/upload-images.css")
         <title>@ViewBag.Title</title>
     </head>
@@ -30,7 +28,7 @@
                         </div>
                     </form>
                 </li>
-                <li class="btn btn-success">Upload</li>
+                <li><a href="../Upload" class="btn btn-success">Upload</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         <strong>@User.Identity.Name</strong>
@@ -46,20 +44,12 @@
                 </li>
             </ul>
         </nav>
-        <div id="dropzone">
-            <form class="dropzone dz-clickable">
-                <div class="dz-default dz-message">
-                    <span>Drop files here to upload</span>
-                </div>
-            </form>
-        </div>
         <div id="main-render-place">
             @RenderBody()
         </div>
     </body>
     @Scripts.Render("~/bundles/scripts/jquery")
     @Scripts.Render("~/bundles/scripts/bootstrap")
-    @Scripts.Render("~/bundels/scripts/dropzone")
     @Scripts.Render("~/Scripts/upload-images.js")
 </html>
 
