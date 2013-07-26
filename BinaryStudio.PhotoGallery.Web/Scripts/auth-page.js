@@ -30,8 +30,13 @@
         });
 
     function addClickEventTo(submitButton, address) {
-        submitButton.click(function (event) {         
+        submitButton.click(function (event) {
             clearErrorMessages();
+            
+            if (!$('form').valid()) {
+                showErrorMessage("Correctly fill in all the fields");
+                return false;
+            }
 
             submitButton.addClass('disabled');
             submitButton.attr('data-loading', true);
@@ -59,10 +64,11 @@
                             errorMsg = "Email or password is incorrect";
                             break;
                         case 500:
-                            errorMsg = "Server is not available";
+                            errorMsg = "Uknown server error";
+                            
                             break;
                         default:
-                            errorMsg = "Uknown server error";
+                            errorMsg = "Server is not available";
                             break;
                     }
 
