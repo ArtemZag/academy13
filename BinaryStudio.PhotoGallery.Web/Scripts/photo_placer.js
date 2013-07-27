@@ -5,11 +5,12 @@
         $('div#photoWrapper > div.invisible').removeClass("invisible");   
     });
     $(window).resize(calcPhotoSizes);
+    $(window).scroll(scrolled);
     //the start index of photo to get
     
     var startIndex = 30;
     var scrHeight = $(window).height();
-    $(window).scroll(scrolled);
+    
     var busy = false;
 
     function scrolled() {
@@ -25,6 +26,9 @@
         }
     }
 
+    // todo: Maby needs to refactor, external variable. 
+    var ajaxContainer = false;
+
     function calcPhotoSizes() {
         var width = 0;
         var firstElemInRow = 0;
@@ -33,8 +37,16 @@
         var wrapperWidth = $('div#photoWrapper').width();
         var marginPhotoCont = parseInt($('.photoContainer').css('margin-left'))
                             + parseInt($('.photoContainer').css('margin-right'));
-        var photos = $('div#photoWrapper > div > img');
+        var photos;
+        if (!ajaxContainer) {
+            photos = $('div.photoContainer > img');
+        } else {
+            ajaxContainer = false;
+            photos = $('div.photoContainer.marked > img');
+        }
+            
         jQuery.each(photos, function (indPh) {
+            $(this).closest('div').removeClass("marked");
             width += this.width;
             margins += marginPhotoCont;
             if (width > wrapperWidth - margins) {
@@ -48,7 +60,9 @@
             }
             else if (indPh == photos.length - 1) {
                 for (indSub = firstElemInRow; indSub <= indPh; indSub++) {
-                    $(photos[indSub]).closest(".photoContainer").addClass("invisible");
+                    $(photos[indSub]).closest(".photoContainer")
+                        .css('width', photos[indSub].width)
+                        .addClass("marked");
                 }
             }
         });
@@ -63,9 +77,9 @@
         if (photos.length > 0) {
             $.each(photos, function() {
                 var elem = $("#photoWrapper");
-                elem.append('<div class="photoContainer invisible"><img src="' + this.PhotoThumbSource + '"/></div>');
+                elem.append('<div class="photoContainer invisible marked"><img src="' + this.PhotoThumbSource + '"/></div>');
             });
-            console.log(photos.length);
+            ajaxContainer = true;
             calcPhotoSizes();
             $('div#photoWrapper > div.invisible').removeClass("invisible");
             busy = false;
