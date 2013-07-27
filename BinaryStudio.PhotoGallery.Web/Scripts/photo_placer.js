@@ -43,10 +43,10 @@
         } else {
             ajaxContainer = false;
             photos = $('div.photoContainer.marked > img');
+            $(photos).closest('div').removeClass("marked");
         }
             
         jQuery.each(photos, function (indPh) {
-            $(this).closest('div').removeClass("marked");
             width += this.width;
             margins += marginPhotoCont;
             if (width > wrapperWidth - margins) {
