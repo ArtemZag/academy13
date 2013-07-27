@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Database;
+﻿using System;
+using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -23,6 +24,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
 
             return user;
+        }
+
+        protected AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
+        {
+            try
+            {
+                return
+                    unitOfWork.Albums.Find(
+                        model => model.UserModelID == user.Id && string.Equals(model.AlbumName, albumName));
+            }
+            catch (Exception e)
+            {
+                throw new AlbumNotFoundException(e);
+            }
         }
     }
 }
