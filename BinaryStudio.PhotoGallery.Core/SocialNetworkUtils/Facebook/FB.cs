@@ -39,6 +39,16 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
             return album.id;
         }
 
+        void ISocialNetwork.AddPhotosToAlbum(IEnumerable<string> photos, string albumName, string token)
+        {
+            AddPhotosToAlbum(photos, albumName, token);
+        }
+
+        string ISocialNetwork.CreateAlbum(string albumName, string description, string token)
+        {
+            return CreateAlbum(albumName, description, token);
+        }
+
         /// <summary>
         /// Adds photo collection to album in social network. If album does not exist, creates album first.
         /// </summary>
@@ -148,7 +158,7 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
         /// <returns>List of album names represented at facebook.com</returns>
         public static IEnumerable<string> GetListOfAlbums(string token)
         {
-            var facebookClient = new FacebookClient();
+            var facebookClient = new FacebookClient(token);
             var albumList = new List<string>();
 
             dynamic albums = facebookClient.Get("/me/albums");

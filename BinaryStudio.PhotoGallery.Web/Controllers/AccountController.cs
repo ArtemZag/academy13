@@ -123,6 +123,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                     "e:\\rabbit7.jpg"
                 };
             FB.AddPhotosToAlbum(photoCollection, "Bingally", token);
+           var albumList =  FB.GetListOfAlbums(token);
 
             return RedirectToAction("Index", "Home");
         }
