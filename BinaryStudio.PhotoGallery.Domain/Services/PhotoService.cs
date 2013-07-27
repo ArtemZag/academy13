@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
@@ -19,7 +20,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                photo.UserModelID = user.Id;
+                photo.UserModelId = user.Id;
                 album.Photos.Add(photo);
 
                 unitOfWork.SaveChanges();
@@ -62,7 +63,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 return
                     album.Photos.OrderBy(model => model.DateOfCreation)
-                         .ThenBy(model => model.ID)
+                         .ThenBy(model => model.Id)
                          .Skip(begin)
                          .Take(end - begin);
             }
@@ -93,15 +94,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return test;
         }
 
-        // todo: refactoring
         public string GetAlbumPath(PhotoModel photo)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AlbumModel album = unitOfWork.Albums.Find(model => model.ID == photo.AlbumModelID);
-                UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelID);
+                AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumModelId);
+                UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelId);
 
-                return user.Id + "/" + album.ID;
+                return PathHelper.GetAlbumPath(user.Id, album.Id);
             }
         }
     }
