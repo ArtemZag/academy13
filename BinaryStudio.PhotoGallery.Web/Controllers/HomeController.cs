@@ -37,10 +37,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                                             Photos = viewmodels.Select(ModelConverter.GetViewModel).ToList()});
         }
 
-        public ActionResult Indexx(InfoViewModel model, int num)
+        [HttpPost]
+        public ActionResult Getphotos(int startIndex)
         {
-            model.Photos.AddRange(_photoService.GetPhotos(User.Identity.Name, 20).Select(ModelConverter.GetViewModel).ToList());
-            return Json(model);
+            var viewmodels = _photoService.GetPhotos(User.Identity.Name, startIndex, 20+startIndex);
+            return Json( viewmodels.Select(ModelConverter.GetViewModel).ToList());
         }
 
         /// <summary>
