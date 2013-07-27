@@ -38,6 +38,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var userModel = new UserModel
             {
                 Email = "bbb@gmail.com",
+                UserPassword = "abc123",
                 NickName = "Nick",
                 FirstName = "First",
                 LastName = "Last"
@@ -58,13 +59,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var userModel = new UserModel
             {
                 Email = "aaa@gmail.com",
+                UserPassword = "abc123",
                 NickName = "Bill",
                 FirstName = "Billy",
                 LastName = "Last"
             };
 
             // body
-            userService.CreateUser(userModel, AuthInfoModel.ProviderType.Local);
+            userService.CreateUser(userModel);
             bool isPresentAfterCreation = userService.IsUserExist(userModel.Email);
 
             userService.DeleteUser(userModel.Email);

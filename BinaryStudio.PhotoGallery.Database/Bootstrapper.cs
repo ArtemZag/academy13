@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using BinaryStudio.PhotoGallery.Database.ModelRepositories;
-using BinaryStudio.PhotoGallery.Models;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 
 namespace BinaryStudio.PhotoGallery.Database
 {

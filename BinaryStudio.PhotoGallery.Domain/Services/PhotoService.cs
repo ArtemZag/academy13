@@ -92,5 +92,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
             return test;
         }
+
+        // todo: refactoring
+        public string GetAlbumPath(PhotoModel photo)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                AlbumModel album = unitOfWork.Albums.Find(model => model.ID == photo.AlbumModelID);
+                UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelID);
+
+                return user.Id + "/" + album.ID;
+            }
+        }
     }
 }

@@ -164,6 +164,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             //имя для prewiew; ???? 
             string result = string.Format(@"{0}\@_@_@{1}.jpg", pathToThumbnail, Path.GetRandomFileName());
             img.Save(result, ImageFormat.Jpeg);
+
             return result;
         }
         public string[] GetPrewiews()

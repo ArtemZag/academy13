@@ -16,6 +16,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         {
             Domain.Bootstrapper.RegisterTypes(container);
             Database.Bootstrapper.RegisterTypes(container);
+            Core.Bootstrapper.RegisterTypes(container);
         }
     }
 }
