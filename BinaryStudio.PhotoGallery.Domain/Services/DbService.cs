@@ -29,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             AlbumModel album =
                 unitOfWork.Albums.Find(
-                    model => model.UserModelID == user.Id && string.Equals(model.AlbumName, albumName));
+                    model => model.UserModelId == user.Id && string.Equals(model.AlbumName, albumName));
 
             if (album == null)
             {
