@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     calcPhotoSizes();
     $('div#photoWrapper > div.invisible').removeClass("invisible");
+    $("#photopreloader").hide();
     $(window).resize(calcPhotoSizes);
     //the start index of photo to get
     

@@ -29,8 +29,16 @@ body {
 	display: block;
 	margin: auto;
 	clear: both;
+	width:200px; 
+	height:26px; 
+	position:absolute; 
+	top:50%; 
+	left:50%; 
+	margin:-13px auto auto -100px;
+	border-radius: 20px 20px 20px 20px;
 }
 
 #invisible {
 	display: none;
 }
+
