@@ -4,6 +4,24 @@
     var startIndex = 0;
     ajaxPhotoLoad();
     $("#tester").click(ajaxPhotoLoad);
+    
+    var scrHeight = $(window).height();
+
+    $(window).scroll(scrolled);
+    var busy = false;
+
+    function scrolled() {
+        if (!busy) {
+            var underScroll = $(this).scrollTop();
+            var phWrapHeight = $("div#photoWrapper").height();
+            var scrollPos = scrHeight + underScroll;
+
+            if (phWrapHeight - scrollPos < 300) {
+                busy = true;
+                ajaxPhotoLoad();
+            }
+        }
+    }
 
     function calcPhotoSizes() {
         var width = 0;
@@ -33,8 +51,6 @@
             }
         });
     }
-    
-
 
     function ajaxPhotoLoad() {
         $("#photopreloader").show();
@@ -42,14 +58,20 @@
     }
 
     function getPhotos(photos) {
-        $.each(photos, function () {
-            var elem = $("#photoWrapper");
-            elem.append('<div class="photoContainer invisible"><img src="' + this.PhotoThumbSource + '"/></div>');
-        });
-        calcPhotoSizes();
-        var invisible = $('div#photoWrapper > div.invisible').removeClass("invisible");
+        if (photos.length > 0) {
+            $.each(photos, function() {
+                var elem = $("#photoWrapper");
+                elem.append('<div class="photoContainer invisible"><img src="' + this.PhotoThumbSource + '"/></div>');
+            });
+            calcPhotoSizes();
+            $('div#photoWrapper > div.invisible').removeClass("invisible");
+            busy = false;
+            startIndex += 20;
+        } else {
+            console.log("End");
+            $(window).unbind("scroll");
+        }
         $("#photopreloader").hide();
-        startIndex += 20;
     }
 
 });
