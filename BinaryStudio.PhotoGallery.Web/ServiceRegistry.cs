@@ -7,11 +7,11 @@ namespace BinaryStudio.PhotoGallery.Web
 {
     internal class CleanupServiceRegistry : Registry
     {
-        private readonly IPhotoCleanupService cleanupService;
+        private readonly IPhotoCleanupTask cleanupService;
 
         public CleanupServiceRegistry()
         {
-            cleanupService = DependencyResolver.Current.GetService<IPhotoCleanupService>();
+            cleanupService = DependencyResolver.Current.GetService<IPhotoCleanupTask>();
 
             Register();
         }
@@ -21,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Web
             int dayFrequency = int.Parse(ConfigurationManager.AppSettings["PhotoCleanupDayFrequency"]);
             int hours = int.Parse(ConfigurationManager.AppSettings["PhotoCleanupHour"]);
 
-            Schedule<IPhotoCleanupService>().ToRunEvery(dayFrequency).Days().At(hours, 0);
+            Schedule<IPhotoCleanupTask>().ToRunEvery(dayFrequency).Days().At(hours, 0);
         }
 
         public override ITask GetTaskInstance<T>()

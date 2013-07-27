@@ -2,11 +2,11 @@
 {
     internal interface IAsyncPhotoProcessor
     {
-        string CreateThumbnailsIfNotExist();
-        string DeleteThumbnails();
-        string DeleteThumbnailForSpecifiedOriginalFile(string name);
-        string DeleteThumbnailsIfOriginalNotExist();
-        string SyncOriginalAndThumbnailImages();
+        void CreateThumbnailsIfNotExist();
+        void DeleteThumbnails();
+        void DeleteThumbnailForSpecifiedOriginalFile(string name);
+        void DeleteThumbnailsIfOriginalNotExist();
+        void SyncOriginalAndThumbnailImages();
         string[] GetRandomThumbnail(int howMany);
         string[] GetThumbnails(string searchPattern = "*.*");
         string MakePrewiew(int width, int rows);

@@ -24,5 +24,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
             return user;
         }
+
+        protected AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
+        {
+            AlbumModel album =
+                unitOfWork.Albums.Find(
+                    model => model.UserModelID == user.Id && string.Equals(model.AlbumName, albumName));
+
+            if (album == null)
+            {
+                throw new AlbumNotFoundException();
+            }
+
+            return album;
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    public interface IPhotoCleanupService : ITask
+    public interface IPhotoCleanupTask : ITask
     {
     }
 }

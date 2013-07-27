@@ -16,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         void AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
 
         /// <summary>
-        /// Deletes 
+        /// Deletes specified photo
         /// </summary>
         void DeletePhoto(PhotoModel photo);
 
@@ -36,5 +36,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="begin">Beginning of the interval.</param>
         /// <param name="end">Ending of the interval.</param>
         IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end);
+
+        /// <summary>
+        /// Returns path to album that contains specified photo
+        /// </summary>
+        string GetAlbumPath(PhotoModel photo);
     }
 }

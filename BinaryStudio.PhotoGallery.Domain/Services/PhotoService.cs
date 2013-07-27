@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -95,17 +93,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return test;
         }
 
-        private AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
+        // todo: refactoring
+        public string GetAlbumPath(PhotoModel photo)
         {
-            try
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return
-                    unitOfWork.Albums.Find(
-                        model => model.UserModelID == user.Id && string.Equals(model.AlbumName, albumName));
-            }
-            catch (Exception e)
-            {
-                throw new AlbumNotFoundException(e);
+                AlbumModel album = unitOfWork.Albums.Find(model => model.ID == photo.AlbumModelID);
+                UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelID);
+
+                return user.Id + "/" + album.ID;
             }
         }
     }
