@@ -48,7 +48,7 @@
             }
             else if (indPh == photos.length - 1) {
                 for (indSub = firstElemInRow; indSub <= indPh; indSub++) {
-                    $(photos[indSub]).closest(".photoContainer").css('width', photos[indSub].width);
+                    $(photos[indSub]).closest(".photoContainer").addClass("invisible");
                 }
             }
         });
