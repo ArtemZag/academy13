@@ -48,32 +48,39 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
         public void AddPhotosToAlbum(IEnumerable<string> photos, string albumName, string token)
         {
             var facebookClient = new FacebookClient(token);
+            var albumID = "";
 
             //Reads album infos
             dynamic albums = facebookClient.Get("/me/albums");
             foreach (dynamic albumInfo in albums.data)
             {
-                if (albumInfo.name == albumName)
-                {
-                    foreach (var photo in photos)
-                    {
-                        Stream attachement = new FileStream(photo, FileMode.Open);
-                        var parameters = new Dictionary<string, object>();
-                        parameters["message"] = "uploaded using Bingally";
-                        parameters["file"] = new FacebookMediaStream
-                        {
-                            ContentType = "image/jpeg",
-                            FileName = Randomizer.GetString(8) + ".jpg"
-                        }.SetValue(attachement);
-
-                        facebookClient.PostTaskAsync(albumInfo.id + "/photos", parameters);
-                    }
-                    break;
-                }
-                //Get the Pictures inside the album this gives JASON objects list that has photo attributes 
-                // described here http://developers.facebook.com/docs/reference/api/photo/
-                dynamic albumsPhotos = facebookClient.Get(albumInfo.id + "/photos");
+                if (albumInfo.name != albumName) continue;
+                albumID = albumInfo.id;
+                break;
             }
+
+            if (string.IsNullOrEmpty(albumID))
+            {
+                albumID = CreateAlbum(albumName, "Created by Bingally", token);
+            }
+
+            foreach (var photo in photos)
+            {
+                Stream attachement = new FileStream(photo, FileMode.Open);
+                var parameters = new Dictionary<string, object>();
+                parameters["message"] = "uploaded using Bingally";
+                parameters["file"] = new FacebookMediaStream
+                    {
+                        ContentType = "image/jpeg",
+                        FileName = Randomizer.GetString(8) + ".jpg"
+                    }.SetValue(attachement);
+
+                facebookClient.PostTaskAsync(albumID + "/photos", parameters);
+            }
+
+            /*//Get the Pictures inside the album this gives JASON objects list that has photo attributes 
+            // described here http://developers.facebook.com/docs/reference/api/photo/
+            dynamic albumsPhotos = facebookClient.Get(albumInfo.id + "/photos");*/
         }
 
         /// <summary>
