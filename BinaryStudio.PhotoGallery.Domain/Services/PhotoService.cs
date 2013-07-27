@@ -8,7 +8,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class PhotoService : Service, IPhotoService
+    internal class PhotoService : DbService, IPhotoService
     {
         public PhotoService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
@@ -21,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                photo.UserModelID = user.ID;
+                photo.UserModelID = user.Id;
                 album.Photos.Add(photo);
 
                 unitOfWork.SaveChanges();
@@ -49,7 +49,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                unitOfWork.Photos.Delete(photo);
+                unitOfWork.Photos.Find(photo).IsDeleted = true;
 
                 unitOfWork.SaveChanges();
             }
@@ -102,7 +102,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 return
                     unitOfWork.Albums.Find(
-                        model => model.UserModelID == user.ID && string.Equals(model.AlbumName, albumName));
+                        model => model.UserModelID == user.Id && string.Equals(model.AlbumName, albumName));
             }
             catch (Exception e)
             {

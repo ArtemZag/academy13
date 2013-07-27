@@ -4,11 +4,11 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal abstract class Service
+    internal abstract class DbService
     {
         protected readonly IUnitOfWorkFactory WorkFactory;
 
-        protected Service(IUnitOfWorkFactory workFactory)
+        protected DbService(IUnitOfWorkFactory workFactory)
         {
             WorkFactory = workFactory;
         }

@@ -14,7 +14,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
         public AccountController(IUserService userService)
         {
-            this._userService = userService;
+            _userService = userService;
         }
 
         [GET]
@@ -23,7 +23,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 // recheck user (maybe it was deleted, while cookie is truth)
-                var userExist = this._userService.IsUserExist(User.Identity.Name);
+                var userExist = _userService.IsUserExist(User.Identity.Name);
 
                 if (userExist)
                 {
@@ -43,7 +43,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 // recheck user (maybe it was deleted, while cookie is truth)
-                var userExist = this._userService.IsUserExist(User.Identity.Name);
+                var userExist = _userService.IsUserExist(User.Identity.Name);
 
                 if (userExist)
                 {

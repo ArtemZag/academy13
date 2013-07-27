@@ -6,7 +6,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class UserService : Service, IUserService
+    internal class UserService : DbService, IUserService
     {
         private readonly ICryptoProvider cryptoProvider;
 
