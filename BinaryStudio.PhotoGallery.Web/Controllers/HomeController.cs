@@ -32,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("Index/{photoNum}")]
         public ActionResult Index(int photoNum = 0)
         {   
-            var viewmodels = _photoService.GetPhotos(User.Identity.Name, 0, 20);
+            var viewmodels = _photoService.GetPhotos(User.Identity.Name, 0, 30);
             return View(new InfoViewModel { UserEmail = User.Identity.Name, 
                                             Photos = viewmodels.Select(ModelConverter.GetViewModel).ToList()});
         }
@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [HttpPost]
         public ActionResult Getphotos(int startIndex)
         {
-            var viewmodels = _photoService.GetPhotos(User.Identity.Name, startIndex, 20+startIndex);
+            var viewmodels = _photoService.GetPhotos(User.Identity.Name, startIndex, 30+startIndex);
             return Json( viewmodels.Select(ModelConverter.GetViewModel).ToList());
         }
 

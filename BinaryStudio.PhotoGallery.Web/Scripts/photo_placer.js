@@ -1,11 +1,13 @@
 ﻿$(document).ready(function () {
-    calcPhotoSizes();
-    $('div#photoWrapper > div.invisible').removeClass("invisible");
     $("#photopreloader").hide();
+    $(window).load(function() {
+        calcPhotoSizes();
+        $('div#photoWrapper > div.invisible').removeClass("invisible");   
+    });
     $(window).resize(calcPhotoSizes);
     //the start index of photo to get
     
-    var startIndex = 20;
+    var startIndex = 30;
     var scrHeight = $(window).height();
     $(window).scroll(scrolled);
     var busy = false;
@@ -67,9 +69,8 @@
             calcPhotoSizes();
             $('div#photoWrapper > div.invisible').removeClass("invisible");
             busy = false;
-            startIndex += 20;
+            startIndex += 30;
         } else {
-            console.log("End");
             $(window).unbind("scroll");
         }
         $("#photopreloader").hide();
