@@ -5,6 +5,7 @@ using System.Security.Policy;
 using System.Text;
 using BinaryStudio.PhotoGallery.Models;
 using Facebook;
+using BinaryStudio.PhotoGallery.Core.Helpers;
 
 namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
 {
@@ -18,27 +19,61 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
         public static string LastName { get; private set; }
         public static string Email { get; private set; }
 
-        public void CreateAlbum(string albumName, string token)
+        /// <summary>
+        /// Creates album in social network without adding photos.
+        /// </summary>
+        /// <param name="albumName">Album name</param>
+        /// <param name="description">Description for album</param>
+        /// <param name="token">User's access token for social network</param>
+        /// <returns>album ID</returns>
+        public string CreateAlbum(string albumName, string description, string token)
         {
             var facebookClient = new FacebookClient(token);
             var albumParameters = new Dictionary<string, object>();
-            albumParameters["message"] = "new message";
+
+            albumParameters["message"] = description;
             albumParameters["name"] = albumName;
-            //albumParameters["privacy"] = "EVERYONE";
-            facebookClient.PostTaskAsync("/me/albums", albumParameters);
+
+            dynamic album = facebookClient.Post("/me/albums", albumParameters);
+
+            return album.id;
+        }
+
+        /// <summary>
+        /// Adds photo collection to album in social network. If album does not exist, creates album first.
+        /// </summary>
+        /// <param name="photos">Collection of photo</param>
+        /// <param name="albumName">Album name</param>
+        /// <param name="token">User's access token for social network</param>
+        public void AddPhotosToAlbum(IEnumerable<string> photos, string albumName, string token)
+        {
+            var facebookClient = new FacebookClient(token);
+
+            //Reads album infos
             dynamic albums = facebookClient.Get("/me/albums");
             foreach (dynamic albumInfo in albums.data)
             {
+                if (albumInfo.name == albumName)
+                {
+                    foreach (var photo in photos)
+                    {
+                        Stream attachement = new FileStream(photo, FileMode.Open);
+                        var parameters = new Dictionary<string, object>();
+                        parameters["message"] = "uploaded using Bingally";
+                        parameters["file"] = new FacebookMediaStream
+                        {
+                            ContentType = "image/jpeg",
+                            FileName = Randomizer.GetString(8) + ".jpg"
+                        }.SetValue(attachement);
+
+                        facebookClient.PostTaskAsync(albumInfo.id + "/photos", parameters);
+                    }
+                    break;
+                }
                 //Get the Pictures inside the album this gives JASON objects list that has photo attributes 
                 // described here http://developers.facebook.com/docs/reference/api/photo/
                 dynamic albumsPhotos = facebookClient.Get(albumInfo.id + "/photos");
             }
-
-        }
-
-        public void AddPhotosToAlbum(IEnumerable<PhotoModel> photos, string albumName, string token)
-        {
-            throw new System.NotImplementedException();
         }
 
         /// <summary>

@@ -201,6 +201,7 @@
     <Content Include="Content\images\logo_big.png" />
     <Content Include="Content\images\logo_small.png" />
     <Content Include="Content\images\no_avatar.png" />
+    <Content Include="Content\images\rabbit.jpg" />
     <Content Include="Content\main-layout.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.min.css" />

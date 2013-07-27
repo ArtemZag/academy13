@@ -110,7 +110,19 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             FormsAuthentication.SetAuthCookie(FB.Email, false);
 
             var fb = new FB();
-            fb.CreateAlbum("test",token);
+           // fb.CreateAlbum("test", "my test album", token);
+            var photoCollection = new string[]
+                {
+                    "e:\\rabbit.jpg",
+                    "e:\\rabbit1.jpg",
+                    "e:\\rabbit2.jpg",
+                    "e:\\rabbit3.jpg",
+                    "e:\\rabbit4.jpg",
+                    "e:\\rabbit5.jpg",
+                    "e:\\rabbit6.jpg",
+                    "e:\\rabbit7.jpg"
+                };
+            fb.AddPhotosToAlbum(photoCollection, "test", token);
 
             return RedirectToAction("Index", "Home");
         }

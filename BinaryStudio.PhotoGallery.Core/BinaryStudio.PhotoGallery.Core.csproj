@@ -62,7 +62,6 @@
     <Compile Include="SocialNetworkUtils\Vkontakte\VK.cs" />
     <Compile Include="SocialNetworkUtils\ISocialNetwork.cs" />
     <Compile Include="NotificationsUtils\INotificationSender.cs" />
-    <Compile Include="SocialNetworkUtils\Facebook\IFacebook.cs" />
     <Compile Include="SocialNetworkUtils\ISocialNetworkFactory.cs" />
     <Compile Include="SocialNetworkUtils\SocialNetworkFactory.cs" />
     <Compile Include="UserUtils\CryptoProvider.cs" />

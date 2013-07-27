@@ -14,8 +14,10 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils
         /// Creates album in social network without adding photos.
         /// </summary>
         /// <param name="albumName">Album name</param>
+        /// <param name="description">Description for album</param>
         /// <param name="token">User's access token for social network</param>
-        void CreateAlbum(string albumName, string token);
+        /// <returns>album ID</returns>
+        string CreateAlbum(string albumName, string description, string token);
 
         /// <summary>
         /// Adds photo collection to album in social network. If album does not exist, creates album first.
@@ -23,6 +25,6 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils
         /// <param name="photos">Collection of photo</param>
         /// <param name="albumName">Album name</param>
         /// <param name="token">User's access token for social network</param>
-        void AddPhotosToAlbum(IEnumerable<PhotoModel> photos, string albumName, string token);
+        void AddPhotosToAlbum(IEnumerable<string> photos, string albumName, string token);
     }
 }
