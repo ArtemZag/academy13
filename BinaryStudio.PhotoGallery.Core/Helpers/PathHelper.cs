@@ -21,7 +21,6 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
         public static string ImageDir
         {
             get { return string.Format("{0}/{1}", ContentDir, "Images"); }
-            get { return string.Format("{0}/{1}", ContentDir,"Images/"); }
         }
 
         public static string CssDir
