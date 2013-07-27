@@ -26,7 +26,7 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
         /// <param name="description">Description for album</param>
         /// <param name="token">User's access token for social network</param>
         /// <returns>album ID</returns>
-        public string CreateAlbum(string albumName, string description, string token)
+        public static string CreateAlbum(string albumName, string description, string token)
         {
             var facebookClient = new FacebookClient(token);
             var albumParameters = new Dictionary<string, object>();
@@ -45,7 +45,7 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
         /// <param name="photos">Collection of photo</param>
         /// <param name="albumName">Album name</param>
         /// <param name="token">User's access token for social network</param>
-        public void AddPhotosToAlbum(IEnumerable<string> photos, string albumName, string token)
+        public static void AddPhotosToAlbum(IEnumerable<string> photos, string albumName, string token)
         {
             var facebookClient = new FacebookClient(token);
             var albumID = "";
@@ -139,6 +139,28 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
             FirstName = me.first_name;
             LastName = me.last_name;
             Email = me.email;
+        }
+
+        /// <summary>
+        /// Gets list of all avaible album's names from facebook.com
+        /// </summary>
+        /// <param name="token">Unic user token from facebook</param>
+        /// <returns>List of album names represented at facebook.com</returns>
+        public static IEnumerable<string> GetListOfAlbums(string token)
+        {
+            var facebookClient = new FacebookClient();
+            var albumList = new List<string>();
+
+            dynamic albums = facebookClient.Get("/me/albums");
+            foreach (dynamic albumInfo in albums.data)
+            {
+                if (!albumList.Contains(albumInfo.name))
+                {
+                    albumList.Add(albumInfo.name);
+                }
+            }
+
+            return albumList;
         }
     }
 }

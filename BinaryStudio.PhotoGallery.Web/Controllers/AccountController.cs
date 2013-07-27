@@ -109,7 +109,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             Session["AccessToken"] = token;
             FormsAuthentication.SetAuthCookie(FB.Email, false);
 
-            var fb = new FB();
+            //var fb = new FB();
            // fb.CreateAlbum("test", "my test album", token);
             var photoCollection = new string[]
                 {
@@ -122,7 +122,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                     "e:\\rabbit6.jpg",
                     "e:\\rabbit7.jpg"
                 };
-            fb.AddPhotosToAlbum(photoCollection, "Bingally", token);
+            FB.AddPhotosToAlbum(photoCollection, "Bingally", token);
 
             return RedirectToAction("Index", "Home");
         }
