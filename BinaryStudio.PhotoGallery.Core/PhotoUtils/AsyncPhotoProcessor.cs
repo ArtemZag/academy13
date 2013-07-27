@@ -53,7 +53,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             string[] files = Directory.GetFiles(relativePath);
 
             Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
-                             (path) =>
+                             path =>
                              {
                                  // получаем имя изображения
                                  string imageName = Path.GetFileNameWithoutExtension(path);
@@ -96,11 +96,17 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             string[] files = Directory.GetFiles(pathToThumbnail);
 
             Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
-                             (path) =>
+                             path =>
                              {
                                  string srcName = Path.GetFileNameWithoutExtension(path);
 
-                                 File.Delete(path);
+                                 string pathToSrcOfImage = Path.Combine(relativePath, string.Format("{0}.jpg", srcName));
+
+                                 if (!File.Exists(pathToSrcOfImage))
+                                 {
+                                     File.Delete(path);
+                                 }
+
                              });
         }
 
@@ -137,8 +143,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public string MakePrewiew(int width, int rows)
         {
-            string result = "";
-
             SetUpForRandomEnumerable(GetThumbnails());
             int iter = 0;
             int sumWidth = 0;
@@ -157,13 +161,14 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                         break;
                 }
             }
-            //имя для prewiew;
-            result = string.Format(@"{0}\@_@_@{1}.jpg", pathToThumbnail, Path.GetRandomFileName());
+            //имя для prewiew; ???? 
+            string result = string.Format(@"{0}\@_@_@{1}.jpg", pathToThumbnail, Path.GetRandomFileName());
             img.Save(result, ImageFormat.Jpeg);
             return result;
         }
         public string[] GetPrewiews()
         {
+            // ????? 
             return GetThumbnails("@_@_@????????????.jpg");
         }
 
@@ -180,14 +185,13 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             //иначе формируем список и удаляем из него пока не останется то количество картинок которое нам нужно
             var rnd = new Random((int)DateTime.Now.Ticks);
-            int index;
             for (int iter = 0; iter < length - howMany; iter++)
             {
-                index = rnd.Next(0, length - iter);
+                int index = rnd.Next(0, length - iter);
                 indexes.RemoveAt(index);
             }
 
-            string[] result = new string[howMany];
+            var result = new string[howMany];
             for (int iter = 0; iter < howMany; iter++)
                 result[iter] = files[indexes[iter]];
 
@@ -206,10 +210,9 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                 Enumerable.Range(0, length).ToList();
 
             var rnd = new Random((int)DateTime.Now.Ticks);
-            int index;
             for (int iter = 0; iter < length; iter++)
             {
-                index = rnd.Next(0, length - iter);
+                int index = rnd.Next(0, length - iter);
                 yield return array[indexes[index]];
                 indexes.RemoveAt(index);
             }
