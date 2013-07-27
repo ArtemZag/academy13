@@ -181,6 +181,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -205,6 +206,7 @@
     <Content Include="Content\images\logo_big.png" />
     <Content Include="Content\images\logo_small.png" />
     <Content Include="Content\images\no_avatar.png" />
+    <Content Include="Content\images\rabbit.jpg" />
     <Content Include="Content\main-layout.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.min.css" />
@@ -268,6 +270,7 @@
     <Content Include="Views\Home\Groups.cshtml" />
     <Content Include="Views\AdminPanel\Index.cshtml" />
     <Content Include="Views\Shared\_AfterLoginLayout.cshtml" />
+    <Content Include="Views\StaticContent\PageNotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
