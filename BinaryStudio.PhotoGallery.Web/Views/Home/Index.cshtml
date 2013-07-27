@@ -18,17 +18,9 @@
     
 }
 
-<div id="photoWrapper">
-    @using (var ph = ko.Foreach(m => m.Photos))
-    {
-        <div class="photoContainer">
-            <img @ph.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
-        </div>
-
-    }  
-    <img src="@preloaderpath" id="photopreloader" />		
+<div id="photoWrapper">	
 </div>
-
+<img src="@preloaderpath" id="photopreloader" />
 
 
 <button id ="tester" style="height: 100px; width: 100px">тест</button>

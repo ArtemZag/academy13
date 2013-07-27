@@ -1,7 +1,8 @@
 ﻿$(document).ready(function () {
     $(window).resize(calcPhotoSizes);
-    calcPhotoSizes(); // todo why is it bad works on webkit? Need fix.
-    $("#photopreloader").hide();
+    //the start index of photo to get
+    var startIndex = 0;
+    ajaxPhotoLoad();
     $("#tester").click(ajaxPhotoLoad);
 
     function calcPhotoSizes() {
@@ -33,12 +34,10 @@
         });
     }
     
-    //the start index of photo to get
-    var startIndex = 0;
+
 
     function ajaxPhotoLoad() {
         $("#photopreloader").show();
-        startIndex += 20;
         $.post("/Home/GetPhotos", { startIndex: startIndex }, getPhotos);
     }
 
@@ -50,6 +49,7 @@
         calcPhotoSizes();
         var invisible = $('div#photoWrapper > div.invisible').removeClass("invisible");
         $("#photopreloader").hide();
+        startIndex += 20;
     }
 
 });
