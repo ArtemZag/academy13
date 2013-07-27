@@ -18,9 +18,15 @@
     
 }
 
-<div id="photoWrapper">	
+<div id="photoWrapper">
+    @using (var ph = ko.Foreach(m => m.Photos))
+    {
+        <div class="photoContainer invisible">
+            <img @ph.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
+        </div>
+
+    }  		
 </div>
 <img src="@preloaderpath" id="photopreloader" />
-
 @ko.Apply(Model)
 

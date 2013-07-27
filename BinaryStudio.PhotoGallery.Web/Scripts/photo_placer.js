@@ -1,12 +1,11 @@
 ﻿$(document).ready(function () {
+    calcPhotoSizes();
+    $('div#photoWrapper > div.invisible').removeClass("invisible");
     $(window).resize(calcPhotoSizes);
     //the start index of photo to get
-    var startIndex = 0;
-    ajaxPhotoLoad();
-    $("#tester").click(ajaxPhotoLoad);
     
+    var startIndex = 20;
     var scrHeight = $(window).height();
-
     $(window).scroll(scrolled);
     var busy = false;
 
@@ -63,6 +62,7 @@
                 var elem = $("#photoWrapper");
                 elem.append('<div class="photoContainer invisible"><img src="' + this.PhotoThumbSource + '"/></div>');
             });
+            console.log(photos.length);
             calcPhotoSizes();
             $('div#photoWrapper > div.invisible').removeClass("invisible");
             busy = false;
