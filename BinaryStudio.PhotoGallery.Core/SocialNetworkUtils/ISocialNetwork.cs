@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
-using BinaryStudio.PhotoGallery.Models;
+﻿using System.Collections.Generic;
+
 
 namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils
 {

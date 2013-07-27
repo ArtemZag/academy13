@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
-using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Vkontakte;
+﻿using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Vkontakte;
+
 
 namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils
 {
@@ -13,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils
 
         public ISocialNetwork getFacebookUnit()
         {
-            return new FB();
+            return null;
         }
 
         public ISocialNetwork getVK()

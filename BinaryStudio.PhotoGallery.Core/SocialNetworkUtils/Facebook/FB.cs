@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Security.Policy;
 using System.Text;
-using BinaryStudio.PhotoGallery.Models;
 using Facebook;
 using BinaryStudio.PhotoGallery.Core.Helpers;
 
+
 namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
 {
-    public class FB : IFB
+    public static class FB
     {
         private const string AppID = "659826524046756";
         private const string AppSecret = "1e75119f703323257a5ebcbafe3687e6";
@@ -37,16 +35,6 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
             dynamic album = facebookClient.Post("/me/albums", albumParameters);
 
             return album.id;
-        }
-
-        void ISocialNetwork.AddPhotosToAlbum(IEnumerable<string> photos, string albumName, string token)
-        {
-            AddPhotosToAlbum(photos, albumName, token);
-        }
-
-        string ISocialNetwork.CreateAlbum(string albumName, string description, string token)
-        {
-            return CreateAlbum(albumName, description, token);
         }
 
         /// <summary>
