@@ -108,6 +108,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             Session["AccessToken"] = token;
             FormsAuthentication.SetAuthCookie(FB.Email, false);
+
+            var fb = new FB();
+            fb.CreateAlbum("test",token);
+
             return RedirectToAction("Index", "Home");
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Policy;
 using System.Text;
 using BinaryStudio.PhotoGallery.Models;
@@ -19,7 +20,20 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
 
         public void CreateAlbum(string albumName, string token)
         {
-            throw new System.NotImplementedException();
+            var facebookClient = new FacebookClient(token);
+            var albumParameters = new Dictionary<string, object>();
+            albumParameters["message"] = "new message";
+            albumParameters["name"] = albumName;
+            //albumParameters["privacy"] = "EVERYONE";
+            facebookClient.PostTaskAsync("/me/albums", albumParameters);
+            dynamic albums = facebookClient.Get("/me/albums");
+            foreach (dynamic albumInfo in albums.data)
+            {
+                //Get the Pictures inside the album this gives JASON objects list that has photo attributes 
+                // described here http://developers.facebook.com/docs/reference/api/photo/
+                dynamic albumsPhotos = facebookClient.Get(albumInfo.id + "/photos");
+            }
+
         }
 
         public void AddPhotosToAlbum(IEnumerable<PhotoModel> photos, string albumName, string token)
@@ -43,7 +57,7 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
             stringBuilder.Append("&redirect_uri=");
             stringBuilder.Append(RedirectionURL);
             stringBuilder.Append(userSecret);
-            stringBuilder.Append("&response_type=code&scope=email");
+            stringBuilder.Append("&response_type=code&scope=email,user_photos");
 
             return stringBuilder.ToString();
         }
