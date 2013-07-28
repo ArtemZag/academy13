@@ -75,13 +75,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return 
-                    unitOfWork.Photos.Filter(model => model.UserModelID == user.ID)
+                return
+                    unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
+                              .Where(model => !model.IsDeleted)
                               .OrderBy(model => model.DateOfCreation)
-                              .ThenBy(model => model.ID)
+                              .ThenBy(model => model.Id)
                               .Skip(begin).Take(end - begin);
-            }
-            */
+            }*/
+
 
             // for test only!
             // todo: remove when real user photos will be added

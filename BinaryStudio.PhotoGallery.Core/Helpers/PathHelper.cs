@@ -6,6 +6,8 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
     public static class PathHelper
     {
         private const string DELIMITER = "//";
+
+        private const string PHOTOS_DIRECTORY_NAME = "photos";
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
         private const string COLLAGES_DIRECTORY_NAME = "collages";
 
@@ -43,7 +45,9 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
         public static string GetAlbumPath(int userId, int albumId)
         {
             var builder = new StringBuilder();
-            builder.Append(userId)
+            builder.Append(PHOTOS_DIRECTORY_NAME)
+                   .Append(DELIMITER)
+                   .Append(userId)
                    .Append(DELIMITER)
                    .Append(albumId);
 
@@ -52,9 +56,10 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
 
         public static string GetOriginalPhotoPath(int userId, int albumId, string name)
         {
-            var builder = new StringBuilder();
+            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
                    .Append(name);
+            // todo: what about extension? .jpg, .png etc. 
 
             return builder.ToString();
         }
