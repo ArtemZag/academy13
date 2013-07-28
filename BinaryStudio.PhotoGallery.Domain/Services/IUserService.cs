@@ -10,7 +10,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         void DeleteUser(string userEmail);
 
-        bool IsUserValid(string userEmail, string enteredUserPassword);
+        bool IsUserValid(string userEmail, string userPassword);
 
         bool IsUserExist(string userEmail);
     }

@@ -60,7 +60,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public bool IsUserValid(string userEmail, string enteredUserPassword)
+        public bool IsUserValid(string userEmail, string userPassword)
         {
             bool result;
 
@@ -70,7 +70,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     UserModel user = GetUser(userEmail, unitOfWork);
 
-                    result = cryptoProvider.IsPasswordsEqual(enteredUserPassword, user.UserPassword, user.Salt);
+                    result = cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
                 }
             }
             catch (UserNotFoundException)
