@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
@@ -6,55 +7,59 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked.ModelRepositories
 {
-    internal class TestPhotosRepository : IPhotoRepository
+    internal class TestAlbumRepository : IAlbumRepository
     {
-        public IQueryable<PhotoModel> All()
+        // for NSubstitute
+        private readonly IUserRepository mockedRepository;
+        private readonly List<AlbumModel> models;
+
+        public IQueryable<AlbumModel> All()
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<PhotoModel> Filter(Expression<Func<PhotoModel, bool>> predicate)
+        public IQueryable<AlbumModel> Filter(Expression<Func<AlbumModel, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public bool Contains(Expression<Func<PhotoModel, bool>> predicate)
+        public bool Contains(Expression<Func<AlbumModel, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public PhotoModel Find(params object[] keys)
+        public AlbumModel Find(params object[] keys)
         {
             throw new NotImplementedException();
         }
 
-        public PhotoModel Find(Expression<Func<PhotoModel, bool>> predicate)
+        public AlbumModel Find(Expression<Func<AlbumModel, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public PhotoModel Add(PhotoModel item)
+        public AlbumModel Add(AlbumModel item)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(PhotoModel item)
+        public void Delete(AlbumModel item)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(Expression<Func<PhotoModel, bool>> predicate)
+        public void Delete(Expression<Func<AlbumModel, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(PhotoModel item)
+        public void Update(AlbumModel item)
         {
             throw new NotImplementedException();
         }
 
         public int Count { get; private set; }
-        public void Add(int albumId, int ownerId)
+        public void Add(string albumName, int ownerId)
         {
             throw new NotImplementedException();
         }

@@ -76,8 +76,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Mocked\AlbumServiceTest.cs" />
     <Compile Include="Mocked\MockedContext.cs" />
-    <Compile Include="Mocked\ModelRepositories\TestPhotosRepository.cs" />
+    <Compile Include="Mocked\ModelRepositories\TestAlbumRepository.cs" />
+    <Compile Include="Mocked\ModelRepositories\TestPhotoRepository.cs" />
     <Compile Include="Mocked\TestUnitOfWork.cs" />
     <Compile Include="Mocked\ModelRepositories\TestUserRepository.cs" />
     <Compile Include="Mocked\TestUnitOfWorkFactory.cs" />
