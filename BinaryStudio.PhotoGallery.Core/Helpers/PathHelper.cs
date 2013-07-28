@@ -43,17 +43,21 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
         public static string GetAlbumPath(int userId, int albumId)
         {
             var builder = new StringBuilder();
-            builder.Append(userId)
+            builder.Append(ImageDir)
+                   .Append(DELIMITER)
+                   .Append(userId)
                    .Append(DELIMITER)
                    .Append(albumId);
 
             return builder.ToString();
         }
 
+
         public static string GetThumbnailPath(int userId, int albumId)
         {
             var builder = new StringBuilder(GetAlbumPath(userId, albumId));
-            builder.Append(THUMBNAIL_DIRECTORY_NAME);
+            builder.Append(DELIMITER)
+                   .Append(THUMBNAIL_DIRECTORY_NAME);
 
             return builder.ToString();
         }

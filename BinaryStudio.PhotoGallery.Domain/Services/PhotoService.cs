@@ -90,7 +90,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             var test = new List<PhotoModel>();
             if (begin<90)
             for (var i = 0; i < 30; i++)
-                test.Add(new PhotoModel {PhotoThumbSource = PathHelper.ImageDir + "/test/" + i + ".jpg"});
+                test.Add(new PhotoModel
+                    {
+                        PhotoName =  i+".jpg",
+                        AlbumModelId = 1111,
+                        UserModelId = 1111
+                    });
             return test;
         }
 

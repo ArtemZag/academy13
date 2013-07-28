@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Models;
+﻿using BinaryStudio.PhotoGallery.Core.Helpers;
+using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Utils
@@ -29,7 +30,15 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         public static PhotoViewModel GetViewModel(PhotoModel viewModel)
         {
-            var photoModel = new PhotoViewModel { PhotoThumbSource = viewModel.PhotoThumbSource };
+            var photoModel = new PhotoViewModel 
+            { 
+                PhotoThumbSource = PathHelper.GetThumbnailPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                                    +"/"+viewModel.PhotoName,
+                PhotoSource = PathHelper.GetAlbumPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                                    +"/"+viewModel.PhotoName,
+                AlbumId = viewModel.AlbumModelId,
+                PhotoId = viewModel.Id
+            };
 
             return photoModel;
         }
