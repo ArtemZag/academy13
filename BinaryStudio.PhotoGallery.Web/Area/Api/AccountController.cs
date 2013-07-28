@@ -6,12 +6,11 @@ using BinaryStudio.PhotoGallery.Web.ViewModels;
 using System.Net;
 using System.Web.Security;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
+using BinaryStudio.PhotoGallery.Web.Utils;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-    using BinaryStudio.PhotoGallery.Domain.Exceptions;
-    using BinaryStudio.PhotoGallery.Web.Utils;
-
     [RoutePrefix("Api/Account")]
     public class AccountController : ApiController
     {
@@ -63,7 +62,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return new HttpResponseMessage(HttpStatusCode.Created);
         }
     }
 }
