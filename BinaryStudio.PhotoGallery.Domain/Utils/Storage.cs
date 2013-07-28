@@ -1,11 +1,10 @@
 ﻿using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Utils
 {
-    internal class Storage
+    internal class Storage : IStorage
     {
         private readonly IUnitOfWorkFactory workFactory;
 

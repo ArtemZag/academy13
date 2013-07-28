@@ -1,4 +1,5 @@
 ﻿using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Domain.Utils;
 using Microsoft.Practices.Unity;
 
 namespace BinaryStudio.PhotoGallery.Domain
@@ -10,7 +11,8 @@ namespace BinaryStudio.PhotoGallery.Domain
             container.RegisterType<IUserService, UserService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IAlbumService, AlbumService>();
             container.RegisterType<IPhotoService, PhotoService>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IPhotoCleanupTask, CleanupTask>();
+            container.RegisterType<ICleanupTask, CleanupTask>();
+            container.RegisterType<IStorage, Storage>();
         }
     }
 }

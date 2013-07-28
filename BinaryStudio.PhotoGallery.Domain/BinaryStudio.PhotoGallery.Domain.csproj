@@ -72,6 +72,7 @@
     <Compile Include="Services\CleanupTask.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="TestServiceClass.cs" />
+    <Compile Include="Utils\IStorage.cs" />
     <Compile Include="Utils\Storage.cs" />
   </ItemGroup>
   <ItemGroup>

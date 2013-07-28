@@ -9,13 +9,13 @@ using System.Linq;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class CleanupTask : DbService, IPhotoCleanupTask
+    internal class CleanupTask : DbService, ICleanupTask
     {
-        private readonly Storage storage;
+        private readonly IStorage storage;
 
-        public CleanupTask(IUnitOfWorkFactory workFactory) : base(workFactory)
+        public CleanupTask(IUnitOfWorkFactory workFactory, IStorage storage) : base(workFactory)
         {
-            storage = new Storage(workFactory);
+            this.storage = storage;
         }
 
         public void Execute()
