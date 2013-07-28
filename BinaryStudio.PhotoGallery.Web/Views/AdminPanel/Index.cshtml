@@ -9,21 +9,47 @@
 
 <div class="user-container">
 	@for (int i = 0; i < 10; i++)
- {
-	 foreach (var user in @Model)
-	 {
-		<a href="">
-			<div class="user-row">
-				<div class="user-main-info">
-					<img scr="~/Content/images/no_avatar.png" alt="@user.LastName" />
-					<span>User: @user.LastName</span>
-					<span class="user-status">Offline</span>
+	{
+		foreach (var user in @Model)
+		{
+			<a href="">
+				<div class="user-row">
+					<div class="user-main-info">
+						<img scr="~/Content/images/no_avatar.png" alt="@user.LastName" />
+						<span>User: @user.LastName</span>
+						<span class="user-status">Offline</span>
+					</div>
 				</div>
-			</div>
 
-		</a>
-	 }
- }
+			</a>
+		}
+	}
+</div>
+<div class="user-info">
+	<p>Login</p>
+	<img src="~/Content/images/no_avatar.png" alt=""/>
+	<p><strong>First Name:</strong>
+		<input type="text" value="FName"/>
+	</p>
+	<p><strong>Last Name:</strong>
+		<input type="text" value="LName"/>
+	</p>
+	<p><strong>Role:</strong>
+		<span>Admin</span>
+	</p>
+	<p><strong>Last visit:</strong>
+		<span>Sun 28.07.2013 10:13 AM</span>
+	</p>
+	<p><strong>Total albums:</strong>
+		<span>2</span>
+	</p>
+	<p><strong>Total photos:</strong>
+		<span>23</span>
+	</p>
+</div>
+<div class="delete-queue-info">
+	<span>There is 5 photo scheduled for deleting.</span>
+	<input type="button" class="btn" value="Confirm deleting"/>
 </div>
 <div class="hidden-field">
 	<input type="button" class="btn" value="Reset Password" onclick="alert('Password has been reset! Notification was send!'); e.preventDefault();"/>
