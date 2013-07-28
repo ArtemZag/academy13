@@ -69,7 +69,7 @@
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\PhotoService.cs" />
     <Compile Include="Services\DbService.cs" />
-    <Compile Include="Services\PhotoCleaupTask.cs" />
+    <Compile Include="Services\CleanupTask.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="TestServiceClass.cs" />
   </ItemGroup>

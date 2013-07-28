@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Core.UserUtils;
+﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -13,6 +14,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider) : base(workFactory)
         {
             this.cryptoProvider = cryptoProvider;
+        }
+
+        public IEnumerable<UserModel> GetAllUsers()
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Users.All();
+            }
         }
 
         public UserModel GetUser(string userEmail)

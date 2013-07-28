@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 using System.Linq;
@@ -33,6 +34,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 album.IsDeleted = true;
 
                 unitOfWork.SaveChanges();
+            }
+        }
+
+        public string GetAlbumPath(AlbumModel album)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(album.UserModelId, unitOfWork);
+
+                return PathHelper.BuildAlbumPath(user.Id, album.Id);
             }
         }
 
