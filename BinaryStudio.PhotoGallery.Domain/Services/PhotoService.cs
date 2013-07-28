@@ -86,9 +86,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             // for test only!
             // todo: remove when real user photos will be added
             var test = new List<PhotoModel>();
-            if (begin<90)
-            for (var i = 0; i < 30; i++)
-                test.Add(new PhotoModel {PhotoThumbSource = PathHelper.ImageDir + "/test/" + i + ".jpg"});
+            if (begin < 90)
+                for (int i = 0; i < 30; i++)
+                    test.Add(new PhotoModel {PhotoThumbSource = PathHelper.ImageDir + "/test/" + i + ".jpg"});
             return test;
         }
 

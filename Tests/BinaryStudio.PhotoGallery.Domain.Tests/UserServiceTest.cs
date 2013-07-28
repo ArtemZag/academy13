@@ -9,14 +9,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     internal class UserServiceTest
     {
-        private IUserService userService;
-
         [SetUp]
         public void Setup()
         {
             IUnityContainer container = Bootstrapper.Initialise();
             userService = container.Resolve<IUserService>();
         }
+
+        private IUserService userService;
 
         [Test]
         public void UserShoulBeAbsent()
@@ -33,13 +33,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         {
             // setup
             var userModel = new UserModel
-            {
-                Email = "bbb@gmail.com",
-                UserPassword = "abc123",
-                NickName = "Nick",
-                FirstName = "First",
-                LastName = "Last"
-            };
+                {
+                    Email = "bbb@gmail.com",
+                    UserPassword = "abc123",
+                    NickName = "Nick",
+                    FirstName = "First",
+                    LastName = "Last"
+                };
 
             // body
             userService.CreateUser(userModel);
@@ -54,13 +54,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         {
             // setup
             var userModel = new UserModel
-            {
-                Email = "aaa@gmail.com",
-                UserPassword = "abc123",
-                NickName = "Bill",
-                FirstName = "Billy",
-                LastName = "Last"
-            };
+                {
+                    Email = "aaa@gmail.com",
+                    UserPassword = "abc123",
+                    NickName = "Bill",
+                    FirstName = "Billy",
+                    LastName = "Last"
+                };
 
             // body
             userService.CreateUser(userModel);
@@ -76,30 +76,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         }
 
         [Test]
-        public void UserShouldBeValid()
-        {
-            // setup
-            const string EMAIL_TO_CHECK = "aaa@gmail.com";
-            const string PASSWORD_TO_CHECK = "abc123";
-
-            var userModel = new UserModel
-            {
-                Email = "aaa@gmail.com",
-                UserPassword = "abc123",
-                NickName = "Bill",
-                FirstName = "Billy",
-                LastName = "Last"
-            };
-
-            // body
-            userService.CreateUser(userModel);
-            bool isValid = userService.IsUserValid(EMAIL_TO_CHECK, PASSWORD_TO_CHECK);
-
-            // tear down
-            isValid.Should().Be(true);
-        }
-
-        [Test]
         public void UserShouldBeNotValid()
         {
             // setup
@@ -107,13 +83,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             const string PASSWORD_TO_CHECK = "uuh ooh";
 
             var userModel = new UserModel
-            {
-                Email = "sss@gmail.com",
-                UserPassword = "abc123",
-                NickName = "Bill",
-                FirstName = "Billy",
-                LastName = "Last"
-            };
+                {
+                    Email = "sss@gmail.com",
+                    UserPassword = "abc123",
+                    NickName = "Bill",
+                    FirstName = "Billy",
+                    LastName = "Last"
+                };
 
             // body
             userService.CreateUser(userModel);
@@ -121,6 +97,30 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             // tear down
             isValid.Should().Be(false);
+        }
+
+        [Test]
+        public void UserShouldBeValid()
+        {
+            // setup
+            const string EMAIL_TO_CHECK = "aaa@gmail.com";
+            const string PASSWORD_TO_CHECK = "abc123";
+
+            var userModel = new UserModel
+                {
+                    Email = "aaa@gmail.com",
+                    UserPassword = "abc123",
+                    NickName = "Bill",
+                    FirstName = "Billy",
+                    LastName = "Last"
+                };
+
+            // body
+            userService.CreateUser(userModel);
+            bool isValid = userService.IsUserValid(EMAIL_TO_CHECK, PASSWORD_TO_CHECK);
+
+            // tear down
+            isValid.Should().Be(true);
         }
     }
 }

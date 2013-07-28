@@ -47,16 +47,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public AlbumModel GetAlbum(string userEmail, string albumName)
         {
-            AlbumModel result;
-
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                result = GetAlbum(user, albumName, unitOfWork);
+                return GetAlbum(user, albumName, unitOfWork);
             }
-
-            return result;
         }
     }
 }

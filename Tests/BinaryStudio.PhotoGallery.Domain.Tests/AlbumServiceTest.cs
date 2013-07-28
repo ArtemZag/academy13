@@ -2,18 +2,15 @@
 using System.Collections.ObjectModel;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
+using FluentAssertions;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
-using FluentAssertions;
 
-namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked
+namespace BinaryStudio.PhotoGallery.Domain.Tests
 {
     [TestFixture]
     public class AlbumServiceTest
     {
-        private IAlbumService albumService;
-        private IUserService userService;
-
         [SetUp]
         public void Setup()
         {
@@ -23,26 +20,29 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked
             userService = container.Resolve<IUserService>();
         }
 
+        private IAlbumService albumService;
+        private IUserService userService;
+
         [Test]
         public void AlbumShouldBeAdded()
         {
             // setup
             var userModel = new UserModel
-            {
-                Email = "test1@gmail.com",
-                UserPassword = "abc123",
-                NickName = "Nick",
-                FirstName = "First",
-                LastName = "Last",
-                Albums = new Collection<AlbumModel>()
-            };
+                {
+                    Email = "test1@gmail.com",
+                    UserPassword = "abc123",
+                    NickName = "Nick",
+                    FirstName = "First",
+                    LastName = "Last",
+                    Albums = new Collection<AlbumModel>()
+                };
 
             var albumModel = new AlbumModel
-            {
-                AlbumName = "name",
-                DateOfCreation = DateTime.Now,
-                Description = "description"
-            };
+                {
+                    AlbumName = "name",
+                    DateOfCreation = DateTime.Now,
+                    Description = "description"
+                };
 
             // body
             userService.CreateUser(userModel);
@@ -56,21 +56,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked
         public void AlbumShouldBeDeleted()
         {
             var userModel = new UserModel
-            {
-                Email = "test2@gmail.com",
-                UserPassword = "abc123",
-                NickName = "Nick",
-                FirstName = "First",
-                LastName = "Last",
-                Albums = new Collection<AlbumModel>()
-            };
+                {
+                    Email = "test2@gmail.com",
+                    UserPassword = "abc123",
+                    NickName = "Nick",
+                    FirstName = "First",
+                    LastName = "Last",
+                    Albums = new Collection<AlbumModel>()
+                };
 
             var albumModel = new AlbumModel
-            {
-                AlbumName = "name",
-                DateOfCreation = DateTime.Now,
-                Description = "description"
-            };
+                {
+                    AlbumName = "name",
+                    DateOfCreation = DateTime.Now,
+                    Description = "description"
+                };
 
             // body
             userService.CreateUser(userModel);
