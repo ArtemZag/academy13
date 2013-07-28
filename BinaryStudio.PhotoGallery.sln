@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.PhotoGallery.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.PhotoGallery.Domain.Tests", "Tests\BinaryStudio.PhotoGallery.Domain.Tests\BinaryStudio.PhotoGallery.Domain.Tests.csproj", "{F7272D8A-4A42-4292-AFD2-965BC40EFBAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MimeDetect", "MimeDetect\MimeDetect.csproj", "{4536B49B-9634-4B6A-B491-8E2DF9AA2E98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{F7272D8A-4A42-4292-AFD2-965BC40EFBAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7272D8A-4A42-4292-AFD2-965BC40EFBAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7272D8A-4A42-4292-AFD2-965BC40EFBAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4536B49B-9634-4B6A-B491-8E2DF9AA2E98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4536B49B-9634-4B6A-B491-8E2DF9AA2E98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4536B49B-9634-4B6A-B491-8E2DF9AA2E98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4536B49B-9634-4B6A-B491-8E2DF9AA2E98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
