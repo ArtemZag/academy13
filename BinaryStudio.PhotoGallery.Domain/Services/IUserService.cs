@@ -6,6 +6,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     {
         UserModel GetUser(string userEmail);
 
+        int GetUserId(string userEmail);
+
         void CreateUser(UserModel userModel, AuthInfoModel.ProviderType providerType = AuthInfoModel.ProviderType.Local);
 
         void DeleteUser(string userEmail);
