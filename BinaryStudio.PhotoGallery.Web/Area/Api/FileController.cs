@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -11,18 +12,18 @@ using BinaryStudio.PhotoGallery.Domain.Services;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-	[RoutePrefix("Api/Upload")]
-    public class UploadController : ApiController
+	[RoutePrefix("Api/File")]
+    public class FileController : ApiController
     {
         private readonly IUserService _userService;
 
-        public UploadController(IUserService userService)
+        public FileController(IUserService userService)
         {
             _userService = userService;
         }
 
-        [POST]
-        public async Task<HttpResponseMessage> Index()
+        [POST("Post")]
+        public async Task<HttpResponseMessage> Post()
         {
             // Check if the request contains multipart/form-data.
             if (!Request.Content.IsMimeMultipartContent())
@@ -52,8 +53,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 // This illustrates how to get the file names
                 foreach (MultipartFileData file in provider.FileData)
                 {
-                    var originalFileName = file.Headers.ContentDisposition.FileName.Replace("\"", "");
-                    File.Move(file.LocalFileName, string.Format("{0}/{1}", dirForSave, originalFileName));
+                    var originalFileName = string.Format("{0}/{1}", dirForSave, file.Headers.ContentDisposition.FileName.Replace("\"", ""));
+                    File.Move(file.LocalFileName, originalFileName);
                 }
             }
             catch (Exception ex)
