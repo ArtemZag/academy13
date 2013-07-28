@@ -1,5 +1,4 @@
-﻿using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Domain.Services;
+﻿using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using FluentAssertions;
 using Microsoft.Practices.Unity;
@@ -15,8 +14,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         [SetUp]
         public void Setup()
         {
-            System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
-
             IUnityContainer container = Bootstrapper.Initialise();
             userService = container.Resolve<IUserService>();
         }
