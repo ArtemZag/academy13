@@ -5,5 +5,7 @@
     ViewBag.Title = "Upload | Bingally";
 }
 
-
-
+<form action="../Api/Upload" enctype="multipart/form-data" method="POST">
+    <input name="data" type="file" accept="image/*" multiple />
+    <input type="submit" />
+</form>
