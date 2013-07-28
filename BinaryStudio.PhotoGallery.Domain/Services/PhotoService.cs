@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
@@ -43,7 +42,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        // todo: what about storage?
         public void DeletePhoto(PhotoModel photo)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

@@ -10,82 +10,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked.ModelRepositories
 {
     internal class TestUserRepository : IUserRepository
     {
-        private readonly List<UserModel> models;
-
         // for NSubstitute
         private readonly IUserRepository mockedRepository;
+        private readonly List<UserModel> models;
 
         public TestUserRepository(MockedContext mockedContext)
         {
             models = mockedContext.Users;
 
             mockedRepository = Substitute.For<IUserRepository>();
-
-            mockedRepository.Contains(Arg.Any<Expression<Func<UserModel, bool>>>())
-                      .Returns(info =>
-                      {
-                          bool result = false;
-
-                          var expression = (Expression<Func<UserModel, bool>>)info[0];
-                          Func<UserModel, bool> lambda = expression.Compile();
-
-                          foreach (var userModel in models)
-                          {
-                              result = lambda(userModel);
-                              if (result)
-                              {
-                                  break;
-                              }
-                          }
-
-                          return result;
-                      });
-
-            mockedRepository.Add(Arg.Any<UserModel>()).Returns(info =>
-            {
-                var user = (UserModel)info[0];
-
-                models.Add(user);
-
-                return user;
-            });
-
-            mockedRepository.Delete(Arg.Do<UserModel>(model =>
-                {
-                    int index = -1;
-
-                    for (int i = 0; i < models.Count; i++)
-                    {
-                        if (string.Equals(models[i].Email, model.Email))
-                        {
-                            index = i;
-                        }
-                    }
-                    
-                    if (index != -1)
-                    {
-                        models.RemoveAt(index);                        
-                    }
-                }));
-
-            mockedRepository.Find(Arg.Any<Expression<Func<UserModel, bool>>>())
-                            .Returns(info =>
-                                {
-                                    UserModel result = null;
-
-                                    var expression = (Expression<Func<UserModel, bool>>)info[0];
-                                    Func<UserModel, bool> lambda = expression.Compile();
-
-                                    foreach (var userModel in models)
-                                    {
-                                        if (lambda(userModel))
-                                        {
-                                            result = userModel;
-                                        }
-                                    }
-
-                                    return result;
-                                });
         }
 
         public void Dispose()
@@ -105,6 +38,26 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked.ModelRepositories
 
         public bool Contains(Expression<Func<UserModel, bool>> predicate)
         {
+            mockedRepository.Contains(Arg.Any<Expression<Func<UserModel, bool>>>())
+                            .Returns(info =>
+                                {
+                                    bool result = false;
+
+                                    var expression = (Expression<Func<UserModel, bool>>) info[0];
+                                    Func<UserModel, bool> lambda = expression.Compile();
+
+                                    foreach (UserModel userModel in models)
+                                    {
+                                        result = lambda(userModel);
+                                        if (result)
+                                        {
+                                            break;
+                                        }
+                                    }
+
+                                    return result;
+                                });
+
             return mockedRepository.Contains(predicate);
         }
 
@@ -115,16 +68,62 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked.ModelRepositories
 
         public UserModel Find(Expression<Func<UserModel, bool>> predicate)
         {
+            mockedRepository.Find(Arg.Any<Expression<Func<UserModel, bool>>>())
+                            .Returns(info =>
+                                {
+                                    UserModel result = null;
+
+                                    var expression = (Expression<Func<UserModel, bool>>) info[0];
+                                    Func<UserModel, bool> lambda = expression.Compile();
+
+                                    foreach (UserModel userModel in models)
+                                    {
+                                        if (lambda(userModel))
+                                        {
+                                            result = userModel;
+                                        }
+                                    }
+
+                                    return result;
+                                });
+
             return mockedRepository.Find(predicate);
         }
 
         public UserModel Add(UserModel item)
         {
+            mockedRepository.Add(Arg.Any<UserModel>()).Returns(info =>
+                {
+                    var user = (UserModel) info[0];
+
+                    models.Add(user);
+
+                    return user;
+                });
+
             return mockedRepository.Add(item);
         }
 
         public void Delete(UserModel item)
         {
+            mockedRepository.Delete(Arg.Do<UserModel>(model =>
+                {
+                    int index = -1;
+
+                    for (int i = 0; i < models.Count; i++)
+                    {
+                        if (string.Equals(models[i].Email, model.Email))
+                        {
+                            index = i;
+                        }
+                    }
+
+                    if (index != -1)
+                    {
+                        models.RemoveAt(index);
+                    }
+                }));
+
             mockedRepository.Delete(item);
         }
 

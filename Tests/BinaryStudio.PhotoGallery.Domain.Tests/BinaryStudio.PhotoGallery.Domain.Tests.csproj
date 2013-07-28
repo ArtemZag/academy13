@@ -76,7 +76,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Mocked\MockContext.cs" />
+    <Compile Include="Mocked\MockedContext.cs" />
+    <Compile Include="Mocked\ModelRepositories\TestPhotosRepository.cs" />
     <Compile Include="Mocked\TestUnitOfWork.cs" />
     <Compile Include="Mocked\ModelRepositories\TestUserRepository.cs" />
     <Compile Include="Mocked\TestUnitOfWorkFactory.cs" />
