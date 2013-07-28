@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
+using BinaryStudio.PhotoGallery.Domain.Utils;
 using BinaryStudio.PhotoGallery.Models;
 using System.Linq;
 
@@ -10,14 +11,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class CleanupTask : DbService, IPhotoCleanupTask
     {
-        private readonly IPhotoService photoService;
+        private readonly Storage storage;
 
-        private readonly IAlbumService albumService;
-
-        public CleanupTask(IUnitOfWorkFactory workFactory, IPhotoService photoService, IAlbumService albumService) : base(workFactory)
+        public CleanupTask(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
-            this.photoService = photoService;
-            this.albumService = albumService;
+            storage = new Storage(workFactory);
         }
 
         public void Execute()
@@ -39,6 +37,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             photosToCleanup.ForEach(CleanPhoto);
 
             DeleteDbRows(photosToCleanup);
+
+            CleanTemporaryPhotos();
+        }
+
+        private void CleanTemporaryPhotos()
+        {
+
         }
 
         private void CleanPhoto(PhotoModel photo)
@@ -49,14 +54,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private void CleanOriginal(PhotoModel photo)
         {
-            string path = photoService.GetOriginalPhotoPath(photo);
+            string path = storage.GetOriginalPhotoPath(photo);
 
             DeleteFile(path);
         }
 
         private void CleanThumbnails(PhotoModel photo)
         {
-            string thumbnailsDirectoryPath = photoService.GetThumbnailsPath(photo);
+            string thumbnailsDirectoryPath = storage.GetThumbnailsPath(photo);
             IEnumerable<string> thumbnailFormats = Directory.GetDirectories(thumbnailsDirectoryPath);
 
             foreach (var thumbnailFormatDirectory in thumbnailFormats)
@@ -83,7 +88,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private void CleanAlbum(AlbumModel album)
         {
-            string albumPath = albumService.GetAlbumPath(album);
+            string albumPath = storage.GetAlbumPath(album);
 
             DeleteFile(albumPath);
         }

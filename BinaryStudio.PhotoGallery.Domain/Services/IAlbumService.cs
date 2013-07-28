@@ -24,10 +24,5 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// Deletes specified album.
         /// </summary>
         void DeleteAlbum(string userEmail, string albumName);
-
-        /// <summary>
-        /// Returns path to album
-        /// </summary>
-        string GetAlbumPath(AlbumModel album);
     }
 }

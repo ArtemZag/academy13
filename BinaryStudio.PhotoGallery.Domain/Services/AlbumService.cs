@@ -37,16 +37,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public string GetAlbumPath(AlbumModel album)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(album.UserModelId, unitOfWork);
-
-                return PathHelper.BuildAlbumPath(user.Id, album.Id);
-            }
-        }
-
         public IEnumerable<AlbumModel> GetAlbums(string userEmail)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

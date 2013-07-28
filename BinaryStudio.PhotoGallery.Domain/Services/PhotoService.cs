@@ -92,38 +92,5 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     test.Add(new PhotoModel {PhotoThumbSource = PathHelper.ImageDir + "/test/" + i + ".jpg"});
             return test;
         }
-
-        public string GetAlbumPath(PhotoModel photo)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumModelId);
-                UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelId);
-
-                return PathHelper.BuildAlbumPath(user.Id, album.Id);
-            }
-        }
-
-        public string GetOriginalPhotoPath(PhotoModel photo)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
-                UserModel user = GetUser(album.UserModelId, unitOfWork);
-
-                return PathHelper.BuildOriginalPhotoPath(user.Id, album.Id, photo.PhotoName);
-            }
-        }
-
-        public string GetThumbnailsPath(PhotoModel photo)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
-                UserModel user = GetUser(album.UserModelId, unitOfWork);
-
-                return PathHelper.BuildThumbnailsPath(user.Id, album.Id);
-            }
-        }
     }
 }
