@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class PhotoCleaupTask : DbService, IPhotoCleanupTask
+    internal class PhotoCleanupTask : DbService, IPhotoCleanupTask
     {
-        private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
+        private readonly IPhotoService photoService;
 
-        public PhotoCleaupTask(IUnitOfWorkFactory workFactory) : base(workFactory)
+        public PhotoCleanupTask(IUnitOfWorkFactory workFactory, IPhotoService photoService) : base(workFactory)
         {
+            this.photoService = photoService;
         }
 
         public void Execute()
@@ -26,22 +29,42 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             photosToCleanup.ForEach(CleanPhoto);
         }
 
-        private void CleanPhoto(PhotoModel photoModel)
+        private void CleanPhoto(PhotoModel photo)
         {
-            CleanOriginal(photoModel);
-            CleanThumbnail(photoModel);
+            CleanOriginal(photo);
+            CleanThumbnails(photo);
         }
 
-        private void CleanOriginal(PhotoModel photoModel)
+        private void CleanOriginal(PhotoModel photo)
         {
-            // todo: what if album not exist in db
-            // then I can't to get album name
-            throw new NotImplementedException();
+            string path = photoService.GetOriginalPhotoPath(photo);
+
+            DeletePhoto(path);
         }
 
-        private void CleanThumbnail(PhotoModel photoModel)
+        private void CleanThumbnails(PhotoModel photo)
         {
-            throw new NotImplementedException();
+            string thumbnailsDirectoryPath = photoService.GetThumbnailsPath(photo);
+            IEnumerable<string> thumbnailsFormats = Directory.GetDirectories(thumbnailsDirectoryPath);
+
+            foreach (var thumbnailsFormatDirectory in thumbnailsFormats)
+            {
+                string thumbnailPath = Path.Combine(thumbnailsFormatDirectory, photo.PhotoName);
+
+                DeletePhoto(thumbnailPath);
+            }
+        }
+
+        private void DeletePhoto(string path)
+        {
+            try
+            {
+                File.Delete(path);
+            }
+            catch (Exception e)
+            {
+                throw new PhotoCleanupException(e);
+            }
         }
     }
 }

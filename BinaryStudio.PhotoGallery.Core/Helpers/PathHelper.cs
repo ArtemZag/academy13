@@ -42,7 +42,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return result;
         }
 
-        public static string GetAlbumPath(int userId, int albumId)
+        public static string BuildAlbumPath(int userId, int albumId)
         {
             var builder = new StringBuilder();
             builder.Append(PHOTOS_DIRECTORY_NAME)
@@ -54,9 +54,9 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return builder.ToString();
         }
 
-        public static string GetOriginalPhotoPath(int userId, int albumId, string name)
+        public static string BuildOriginalPhotoPath(int userId, int albumId, string name)
         {
-            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
                    .Append(name);
             // todo: what about extension? .jpg, .png etc. 
@@ -64,18 +64,18 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return builder.ToString();
         }
 
-        public static string GetThumbnailPath(int userId, int albumId)
+        public static string BuildThumbnailsPath(int userId, int albumId)
         {
-            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
                    .Append(THUMBNAIL_DIRECTORY_NAME);
 
             return builder.ToString();
         }
 
-        public static string GetCollagesPath(int userId, int albumId)
+        public static string BuildCollagesPath(int userId, int albumId)
         {
-            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
                    .Append(COLLAGES_DIRECTORY_NAME);
 

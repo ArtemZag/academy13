@@ -41,5 +41,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// Returns path to album that contains specified photo
         /// </summary>
         string GetAlbumPath(PhotoModel photo);
+
+        /// <summary>
+        /// Returns path to original photo
+        /// </summary>
+        string GetOriginalPhotoPath(PhotoModel photo);
+
+        /// <summary>
+        /// Returns path to thumbnails directory
+        /// </summary>
+        string GetThumbnailsPath(PhotoModel photo);
     }
 }

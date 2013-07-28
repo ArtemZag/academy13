@@ -27,6 +27,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return user;
         }
 
+        protected UserModel GetUser(int userId, IUnitOfWork unitOfWork)
+        {
+            return unitOfWork.Users.Find(model => model.Id == userId);
+        }
+
         protected AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
         {
             try
@@ -38,6 +43,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 throw new AlbumNotFoundException();
             }
+        }
+
+        protected AlbumModel GetAlbum(int albumId, IUnitOfWork unitOfWork)
+        {
+            return unitOfWork.Albums.Find(model => model.Id == albumId);
         }
     }
 }

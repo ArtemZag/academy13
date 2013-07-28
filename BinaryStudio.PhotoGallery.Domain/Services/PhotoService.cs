@@ -100,7 +100,29 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumModelId);
                 UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelId);
 
-                return PathHelper.GetAlbumPath(user.Id, album.Id);
+                return PathHelper.BuildAlbumPath(user.Id, album.Id);
+            }
+        }
+
+        public string GetOriginalPhotoPath(PhotoModel photo)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
+                UserModel user = GetUser(album.UserModelId, unitOfWork);
+
+                return PathHelper.BuildOriginalPhotoPath(user.Id, album.Id, photo.PhotoName);
+            }
+        }
+
+        public string GetThumbnailsPath(PhotoModel photo)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
+                UserModel user = GetUser(album.UserModelId, unitOfWork);
+
+                return PathHelper.BuildThumbnailsPath(user.Id, album.Id);
             }
         }
     }

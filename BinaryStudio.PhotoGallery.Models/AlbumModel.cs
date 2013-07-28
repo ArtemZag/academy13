@@ -28,6 +28,11 @@ namespace BinaryStudio.PhotoGallery.Models
         /// Gets or sets the album id.
         /// </summary>
         public int Id { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the album state.
+        /// </summary>
+        public bool IsDeleted { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the album.
