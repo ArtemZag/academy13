@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Models;
+﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Utils
 {
@@ -10,6 +11,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
 
         string GetOriginalPhotoPath(PhotoModel photo);
 
-        string GetThumbnailsPath(PhotoModel photo);
+        /// <summary>
+        /// Returns pathes for all formats in thumbnail directory
+        /// </summary>
+        IEnumerable<string> GetThumbnailFormatDirectories(PhotoModel photo);
+
+        /// <summary>
+        /// Returns pathes of temporary directories for each user
+        /// </summary>
+        IEnumerable<string> GetTemporaryDirectories();
     }
 }

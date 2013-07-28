@@ -1,4 +1,7 @@
-﻿using BinaryStudio.PhotoGallery.Core.Helpers;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -45,7 +48,29 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             }
         }
 
-        public string GetThumbnailsPath(PhotoModel photo)
+        public IEnumerable<string> GetThumbnailFormatDirectories(PhotoModel photo)
+        {
+            string thumbnailDirectoryPath = GetThumbnailsPath(photo);
+
+            return Directory.EnumerateDirectories(thumbnailDirectoryPath);
+        }
+
+        public IEnumerable<string> GetTemporaryDirectories()
+        {
+            IEnumerable<string> userDirectories = Directory.EnumerateDirectories(PathHelper.PHOTOS_DIRECTORY_NAME);
+
+            var temporaryPhotosDirectories = new Collection<string>();
+
+            foreach (var userDirectory in userDirectories)
+            {
+                string temporaryPhotosDirectory = Path.Combine(userDirectory, PathHelper.TEMPORARY_DIRECTORY_NAME);
+                temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
+            }
+
+            return temporaryPhotosDirectories;
+        }
+
+        private string GetThumbnailsPath(PhotoModel photo)
         {
             using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
             {

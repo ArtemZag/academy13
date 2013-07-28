@@ -7,7 +7,9 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
     {
         private const string DELIMITER = "//";
 
-        private const string PHOTOS_DIRECTORY_NAME = "photos";
+        public const string PHOTOS_DIRECTORY_NAME = "photos";
+        public const string TEMPORARY_DIRECTORY_NAME = "temporary";
+
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
         private const string COLLAGES_DIRECTORY_NAME = "collages";
 
@@ -78,6 +80,16 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
                    .Append(COLLAGES_DIRECTORY_NAME);
+
+            return builder.ToString();
+        }
+
+        public static string BuildTemporaryPhotosPath(int userId)
+        {
+            var builder = new StringBuilder();
+            builder.Append(userId)
+                   .Append(DELIMITER)
+                   .Append(TEMPORARY_DIRECTORY_NAME);
 
             return builder.ToString();
         }
