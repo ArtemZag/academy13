@@ -5,6 +5,7 @@ using BinaryStudio.PhotoGallery.Models;
 using FluentAssertions;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
+using System.Linq;
 
 namespace BinaryStudio.PhotoGallery.Domain.Tests
 {
@@ -75,14 +76,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             // body
             userService.CreateUser(userModel);
             albumService.CreateAlbum(userModel.Email, albumModel);
-            int countAfterAlbumCreation = userModel.Albums.Count;
+            int deletedAlbumsAfterCreation =
+                userModel.Albums.Select(model => model).Count(model => model.IsDeleted);
 
             albumService.DeleteAlbum(userModel.Email, albumModel.AlbumName);
-            int countAfterAlbumDeleting = userModel.Albums.Count;
+            int deletedAlbumsAfterDeleting = userModel.Albums.Select(model => model).Count(model => model.IsDeleted);
 
             // tear down
-            countAfterAlbumCreation.Should().Be(1);
-            countAfterAlbumDeleting.Should().Be(0);
+            deletedAlbumsAfterCreation.Should().Be(0);
+            deletedAlbumsAfterDeleting.Should().Be(1);
         }
     }
 }

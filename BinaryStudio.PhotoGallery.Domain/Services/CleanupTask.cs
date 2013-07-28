@@ -8,16 +8,23 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class PhotoCleanupTask : DbService, IPhotoCleanupTask
+    internal class CleanupTask : DbService, IPhotoCleanupTask
     {
         private readonly IPhotoService photoService;
 
-        public PhotoCleanupTask(IUnitOfWorkFactory workFactory, IPhotoService photoService) : base(workFactory)
+        public CleanupTask(IUnitOfWorkFactory workFactory, IPhotoService photoService) : base(workFactory)
         {
             this.photoService = photoService;
         }
 
         public void Execute()
+        {
+            CleanPhotos();
+
+            // albums
+        }
+
+        private void CleanPhotos()
         {
             List<PhotoModel> photosToCleanup;
 
@@ -33,6 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             CleanOriginal(photo);
             CleanThumbnails(photo);
+            // from db
         }
 
         private void CleanOriginal(PhotoModel photo)
@@ -45,11 +53,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         private void CleanThumbnails(PhotoModel photo)
         {
             string thumbnailsDirectoryPath = photoService.GetThumbnailsPath(photo);
-            IEnumerable<string> thumbnailsFormats = Directory.GetDirectories(thumbnailsDirectoryPath);
+            IEnumerable<string> thumbnailFormats = Directory.GetDirectories(thumbnailsDirectoryPath);
 
-            foreach (var thumbnailsFormatDirectory in thumbnailsFormats)
+            foreach (var thumbnailFormatDirectory in thumbnailFormats)
             {
-                string thumbnailPath = Path.Combine(thumbnailsFormatDirectory, photo.PhotoName);
+                string thumbnailPath = Path.Combine(thumbnailFormatDirectory, photo.PhotoName);
 
                 DeletePhoto(thumbnailPath);
             }

@@ -37,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             try
             {
                 return
-                    user.Albums.Select(model => model).First(model => string.Equals(model.AlbumName, albumName));
+                    user.Albums.Select(model => model).First(model => string.Equals(model.AlbumName, albumName) && !model.IsDeleted);
             }
             catch
             {
@@ -47,7 +47,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         protected AlbumModel GetAlbum(int albumId, IUnitOfWork unitOfWork)
         {
-            return unitOfWork.Albums.Find(model => model.Id == albumId);
+            return unitOfWork.Albums.Find(model => model.Id == albumId && !model.IsDeleted);
         }
     }
 }
