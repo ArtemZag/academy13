@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Winista.Mime;
 
 namespace BinaryStudio.PhotoGallery.Core.Helpers
 {
@@ -11,12 +8,25 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
     {
        public static string GetMimeTypeOfFile(string fileName)
        {
-           /*if (!File.Exists(fileName))
+           if (!File.Exists(fileName))
            {
                throw new FileNotFoundException(fileName + " not found");
-           }*/
+           }
 
-           return "image/png";
+           sbyte[] fileData;
+
+           using (var srcFile = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+           {
+               var data = new byte[srcFile.Length];
+               srcFile.Read(data, 0, (Int32) srcFile.Length);
+               fileData = SupportUtil.ToSByteArray(data);
+           }
+
+           var allMimeTypes = new MimeTypes("mime-types.xml");
+
+           var mimeType = allMimeTypes.GetMimeType(fileData);
+
+           return mimeType != null ? mimeType.Name : "unknown/unknown";
        }
 
        public static bool IsImageFile(string fileName)

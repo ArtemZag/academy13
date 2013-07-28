@@ -48,9 +48,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Winista.HtmlParser">
-      <HintPath>..\packages\Winista.HtmlParser.1.8.0\lib\Winista.HtmlParser.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
@@ -69,6 +66,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Helpers\mime-types.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="Winista.MimeDetect.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MimeDetect\MimeDetect.csproj">
+      <Project>{4536b49b-9634-4b6a-b491-8e2df9aa2e98}</Project>
+      <Name>MimeDetect</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
