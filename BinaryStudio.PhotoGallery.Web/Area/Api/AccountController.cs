@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
 using AttributeRouting;
 using System.Net.Http;
 using AttributeRouting.Web.Mvc;
@@ -57,9 +58,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 FormsAuthentication.SetAuthCookie(user.Email, false);
             }
-            catch(UserAlreadyExistException)
+            catch (UserAlreadyExistException ex)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
             return new HttpResponseMessage(HttpStatusCode.Created);

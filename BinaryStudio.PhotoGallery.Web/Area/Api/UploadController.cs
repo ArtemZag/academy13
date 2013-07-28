@@ -58,7 +58,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
             catch (Exception ex)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
             return new HttpResponseMessage(HttpStatusCode.Created);
