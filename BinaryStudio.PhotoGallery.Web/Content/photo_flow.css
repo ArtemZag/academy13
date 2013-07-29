@@ -20,9 +20,9 @@ body {
 	position: relative;
 	z-index: 0;
 	overflow: hidden;
-	-webkit-transition:All 1s ease;
+	/*-webkit-transition:All 1s ease;
 	-moz-transition:All 1s ease;
-	-o-transition:All 1s ease;
+	-o-transition:All 1s ease;*/
 }
 
 .photoContainer img {
