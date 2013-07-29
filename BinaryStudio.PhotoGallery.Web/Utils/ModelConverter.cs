@@ -34,7 +34,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             { 
                 PhotoThumbSource = PathHelper.GetThumbnailPath(viewModel.UserModelId, viewModel.AlbumModelId)
                                     +"/"+viewModel.PhotoName,
-                PhotoSource = PathHelper.GetAlbumPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                PhotoSource = PathHelper.BuildAlbumPath(viewModel.UserModelId, viewModel.AlbumModelId)
                                     +"/"+viewModel.PhotoName,
                 AlbumId = viewModel.AlbumModelId,
                 PhotoId = viewModel.Id

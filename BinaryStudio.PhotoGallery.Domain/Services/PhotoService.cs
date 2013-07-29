@@ -95,9 +95,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         AlbumModelId = 1111,
                         UserModelId = 1111
                     });
-            if (begin < 90)
-                for (int i = 0; i < 30; i++)
-                    test.Add(new PhotoModel {PhotoThumbSource = PathHelper.ImageDir + "/test/" + i + ".jpg"});
             return test;
         }
     }

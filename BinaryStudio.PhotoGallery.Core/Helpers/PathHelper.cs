@@ -7,7 +7,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
     {
         private const string DELIMITER = "//";
 
-        public const string PHOTOS_DIRECTORY_NAME = "photos";
+        public const string PHOTOS_DIRECTORY_NAME = "Photos";
         public const string TEMPORARY_DIRECTORY_NAME = "temporary";
 
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
@@ -47,8 +47,9 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
         public static string BuildAlbumPath(int userId, int albumId)
         {
             var builder = new StringBuilder();
-            builder.Append(PHOTOS_DIRECTORY_NAME)
             builder.Append(ImageDir)
+                   .Append(DELIMITER)
+                   .Append(PHOTOS_DIRECTORY_NAME)
                    .Append(DELIMITER)
                    .Append(userId)
                    .Append(DELIMITER)
@@ -63,26 +64,18 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             builder.Append(DELIMITER)
                    .Append(name);
             // todo: what about extension? .jpg, .png etc. 
+            return builder.ToString();
+        }
 
         public static string GetThumbnailPath(int userId, int albumId)
         {
-            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
                    .Append(THUMBNAIL_DIRECTORY_NAME);
 
             return builder.ToString();
         }
-        public static string GetThumbnailPath(int userId, int albumId)
-        {
-            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
-            builder.Append(THUMBNAIL_DIRECTORY_NAME);
-            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
-            builder.Append(DELIMITER)
-                   .Append(THUMBNAIL_DIRECTORY_NAME);
 
-
-            return builder.ToString();
-        }
         public static string BuildThumbnailsPath(int userId, int albumId)
         {
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
