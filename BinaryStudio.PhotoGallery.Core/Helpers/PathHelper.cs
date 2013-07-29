@@ -18,9 +18,9 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
         {
             get
             {
-                const string contentVirtualRoot = "~/Content";
+                const string CONTENT_VIRTUAL_ROOT = "~/Content";
 
-                return VirtualPathUtility.ToAbsolute(contentVirtualRoot);
+                return VirtualPathUtility.ToAbsolute(CONTENT_VIRTUAL_ROOT);
             }
         }
 
@@ -47,13 +47,12 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
         }
 
         /// <summary>
-        /// Returns path to directory (Content/Images/Photos) that contains users directories.
+        /// Returns path to directory (App/App_Data/Images/Photos) that contains users directories.
         /// </summary>
-        /// <returns></returns>
         public static string BuildPhotoDirectoryPath()
         {
             var builder = new StringBuilder();
-            builder.Append(ImageDir)
+            builder.Append(ContentDir)
                    .Append(DELIMITER)
                    .Append(PHOTOS_DIRECTORY_NAME);
 

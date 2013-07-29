@@ -21,7 +21,8 @@ namespace BinaryStudio.PhotoGallery.Web
             int dayFrequency = int.Parse(ConfigurationManager.AppSettings["PhotoCleanupDayFrequency"]);
             int hours = int.Parse(ConfigurationManager.AppSettings["PhotoCleanupHour"]);
 
-            Schedule<ICleanupTask>().ToRunEvery(dayFrequency).Days().At(hours, 0);
+            Schedule<ICleanupTask>().ToRunNow();
+            // Schedule<ICleanupTask>().ToRunEvery(dayFrequency).Days().At(hours, 0);
         }
 
         public override ITask GetTaskInstance<T>()
