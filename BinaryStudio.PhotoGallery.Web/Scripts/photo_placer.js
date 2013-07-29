@@ -1,8 +1,7 @@
 ﻿$(document).ready(function () {
     $("#photopreloader").hide();
     $(window).load(function() {
-        calcPhotoSizes();
-        $('div#photoWrapper > div.invisible').removeClass("invisible");   
+        prepareToShow();
     });
     $(window).resize(calcPhotoSizes);
     $(window).scroll(scrolled);
@@ -67,6 +66,11 @@
             }
         });
     }
+    
+    function prepareToShow() {
+        calcPhotoSizes();
+        $('div#photoWrapper > div.invisible').removeClass("invisible");
+    }
 
     function ajaxPhotoLoad() {
         $("#photopreloader").show();
@@ -77,11 +81,13 @@
         if (photos.length > 0) {
             $.each(photos, function() {
                 var elem = $("#photoWrapper");
-                elem.append('<div class="photoContainer invisible marked"><img src="' + this.PhotoThumbSource + '"/></div>');
+                elem.append('<div class="photoContainer invisible marked" onclick="location.href = \'../Home/ToPhoto/'
+                                                                        + this.AlbumId + "/" + this.PhotoId + '\'">' +
+                                '<img src="' + this.PhotoThumbSource + '"/>' +
+                            '</div>');
             });
             ajaxContainer = true;
-            calcPhotoSizes();
-            $('div#photoWrapper > div.invisible').removeClass("invisible");
+            prepareToShow();
             busy = false;
             startIndex += 30;
         } else {

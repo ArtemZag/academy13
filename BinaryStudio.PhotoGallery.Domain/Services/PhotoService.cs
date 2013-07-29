@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
@@ -43,7 +42,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        // todo: what about storage?
         public void DeletePhoto(PhotoModel photo)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -77,32 +75,27 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return 
-                    unitOfWork.Photos.Filter(model => model.UserModelID == user.ID)
+                return
+                    unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
+                              .Where(model => !model.IsDeleted)
                               .OrderBy(model => model.DateOfCreation)
-                              .ThenBy(model => model.ID)
+                              .ThenBy(model => model.Id)
                               .Skip(begin).Take(end - begin);
-            }
-            */
+            }*/
+
 
             // for test only!
             // todo: remove when real user photos will be added
             var test = new List<PhotoModel>();
             if (begin<90)
             for (var i = 0; i < 30; i++)
-                test.Add(new PhotoModel {PhotoThumbSource = PathHelper.ImageDir + "/test/" + i + ".jpg"});
+                test.Add(new PhotoModel
+                    {
+                        PhotoName =  i+".jpg",
+                        AlbumModelId = 1111,
+                        UserModelId = 1111
+                    });
             return test;
-        }
-
-        public string GetAlbumPath(PhotoModel photo)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumModelId);
-                UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelId);
-
-                return PathHelper.GetAlbumPath(user.Id, album.Id);
-            }
         }
     }
 }

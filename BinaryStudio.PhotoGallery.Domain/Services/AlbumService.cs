@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
+using System.Linq;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -29,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                user.Albums.Remove(album);
+                album.IsDeleted = true;
 
                 unitOfWork.SaveChanges();
             }
@@ -41,22 +43,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return user.Albums;
+                return user.Albums.Select(model => model).Where(model => !model.IsDeleted);
             }
         }
 
         public AlbumModel GetAlbum(string userEmail, string albumName)
         {
-            AlbumModel result;
-
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                result = GetAlbum(user, albumName, unitOfWork);
+                return GetAlbum(user, albumName, unitOfWork);
             }
-
-            return result;
         }
     }
 }

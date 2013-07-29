@@ -44,6 +44,12 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return Json( viewmodels.Select(ModelConverter.GetViewModel).ToList());
         }
 
+        [GET("ToPhoto/{albumId}/{photoId}")]
+        public ActionResult ToPhoto(int albumId, int photoId)
+        {
+            return View("Album",new AlbumViewModel());
+        }
+
         /// <summary>
         /// Gallery page
         /// </summary>
