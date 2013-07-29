@@ -1,15 +1,15 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Web;
 
 namespace BinaryStudio.PhotoGallery.Core.Helpers
 {
     public static class PathHelper
     {
-        private const string DELIMITER = "//";
+        private const string DELIMITER = @"/";
 
-        public const string PHOTOS_DIRECTORY_NAME = "Photos";
-        public const string TEMPORARY_DIRECTORY_NAME = "temporary";
-
+        private const string PHOTOS_DIRECTORY_NAME = "Photos";
+        private const string TEMPORARY_DIRECTORY_NAME = "temporary";
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
         private const string COLLAGES_DIRECTORY_NAME = "collages";
         private const string TEXTURES_DIRECTORY_NAME = "textures";
@@ -46,13 +46,24 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return result;
         }
 
-        public static string BuildAlbumPath(int userId, int albumId)
+        /// <summary>
+        /// Returns path to directory (Content/Images/Photos) that contains users directories.
+        /// </summary>
+        /// <returns></returns>
+        public static string BuildPhotoDirectoryPath()
         {
             var builder = new StringBuilder();
             builder.Append(ImageDir)
                    .Append(DELIMITER)
-                   .Append(PHOTOS_DIRECTORY_NAME)
-                   .Append(DELIMITER)
+                   .Append(PHOTOS_DIRECTORY_NAME);
+
+            return builder.ToString();
+        }
+
+        public static string BuildAlbumPath(int userId, int albumId)
+        {
+            var builder = new StringBuilder(BuildPhotoDirectoryPath());
+            builder.Append(DELIMITER)
                    .Append(userId)
                    .Append(DELIMITER)
                    .Append(albumId);
@@ -88,14 +99,9 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return builder.ToString();
         }
 
-        public static string BuildTemporaryPhotosPath(int userId)
+        public static string BuildTemporaryDirectoryPath(string userDirectoryPath)
         {
-            var builder = new StringBuilder();
-            builder.Append(userId)
-                   .Append(DELIMITER)
-                   .Append(TEMPORARY_DIRECTORY_NAME);
-
-            return builder.ToString();
+            return Path.Combine(userDirectoryPath, TEMPORARY_DIRECTORY_NAME);
         }
     }
 }

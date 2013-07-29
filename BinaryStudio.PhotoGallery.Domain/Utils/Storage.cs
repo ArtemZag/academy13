@@ -57,13 +57,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
 
         public IEnumerable<string> GetTemporaryDirectories()
         {
-            IEnumerable<string> userDirectories = Directory.EnumerateDirectories(PathHelper.PHOTOS_DIRECTORY_NAME);
+            string photoDirectoryPath = PathHelper.BuildPhotoDirectoryPath();
+            IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
 
             var temporaryPhotosDirectories = new Collection<string>();
 
-            foreach (var userDirectory in userDirectories)
+            foreach (var userDirectory in usersDirectories)
             {
-                string temporaryPhotosDirectory = Path.Combine(userDirectory, PathHelper.TEMPORARY_DIRECTORY_NAME);
+                string temporaryPhotosDirectory = PathHelper.BuildTemporaryDirectoryPath(userDirectory);
                 temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
             }
 

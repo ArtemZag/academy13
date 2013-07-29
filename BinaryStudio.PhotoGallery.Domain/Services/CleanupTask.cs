@@ -20,8 +20,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public void Execute()
         {
-            CleanPhotos();
-            CleanAlbums();
+            try
+            {
+                CleanPhotos();
+                CleanAlbums();
+            }
+            catch (Exception e)
+            {
+                throw new CleanupException(e);
+            }
         }
 
         private void CleanPhotos()
@@ -135,14 +142,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private void DeleteFile(string path)
         {
-            try
-            {
-                File.Delete(path);
-            }
-            catch (Exception e)
-            {
-                throw new CleanupException(e);
-            }
+            File.Delete(path);
         }
     }
 }
