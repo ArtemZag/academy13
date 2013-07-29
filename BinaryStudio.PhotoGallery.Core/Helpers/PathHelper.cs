@@ -12,6 +12,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
 
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
         private const string COLLAGES_DIRECTORY_NAME = "collages";
+        private const string TEXTURES_DIRECTORY_NAME = "textures";
 
         public static string ContentDir
         {
