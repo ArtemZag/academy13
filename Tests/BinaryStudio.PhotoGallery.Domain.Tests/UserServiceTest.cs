@@ -1,5 +1,4 @@
-﻿using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Domain.Services;
+﻿using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using FluentAssertions;
 using Microsoft.Practices.Unity;
@@ -10,25 +9,23 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     internal class UserServiceTest
     {
-        private IUserService userService;
-
         [SetUp]
         public void Setup()
         {
-            System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
-
             IUnityContainer container = Bootstrapper.Initialise();
             userService = container.Resolve<IUserService>();
         }
+
+        private IUserService userService;
 
         [Test]
         public void UserShoulBeAbsent()
         {
             // body
-            bool result = userService.IsUserExist("nononono@gmail.com");
+            bool isExist = userService.IsUserExist("nononono@gmail.com");
 
             // tear down
-            result.Should().Be(false);
+            isExist.Should().Be(false);
         }
 
         [Test]
@@ -36,20 +33,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         {
             // setup
             var userModel = new UserModel
-            {
-                Email = "bbb@gmail.com",
-                UserPassword = "abc123",
-                NickName = "Nick",
-                FirstName = "First",
-                LastName = "Last"
-            };
+                {
+                    Email = "bbb@gmail.com",
+                    UserPassword = "abc123",
+                    NickName = "Nick",
+                    FirstName = "First",
+                    LastName = "Last"
+                };
 
             // body
             userService.CreateUser(userModel);
-            bool checkingResult = userService.IsUserExist(userModel.Email);
+            bool isExist = userService.IsUserExist(userModel.Email);
 
             // tear down
-            checkingResult.Should().Be(true);
+            isExist.Should().Be(true);
         }
 
         [Test]
@@ -57,13 +54,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         {
             // setup
             var userModel = new UserModel
-            {
-                Email = "aaa@gmail.com",
-                UserPassword = "abc123",
-                NickName = "Bill",
-                FirstName = "Billy",
-                LastName = "Last"
-            };
+                {
+                    Email = "aaa@gmail.com",
+                    UserPassword = "abc123",
+                    NickName = "Bill",
+                    FirstName = "Billy",
+                    LastName = "Last"
+                };
 
             // body
             userService.CreateUser(userModel);
@@ -76,6 +73,54 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             isPresentAfterCreation.Should().Be(true);
 
             isPresentAfterDeleting.Should().Be(false);
+        }
+
+        [Test]
+        public void UserShouldBeNotValid()
+        {
+            // setup
+            const string EMAIL_TO_CHECK = "sss@gmail.com";
+            const string PASSWORD_TO_CHECK = "uuh ooh";
+
+            var userModel = new UserModel
+                {
+                    Email = "sss@gmail.com",
+                    UserPassword = "abc123",
+                    NickName = "Bill",
+                    FirstName = "Billy",
+                    LastName = "Last"
+                };
+
+            // body
+            userService.CreateUser(userModel);
+            bool isValid = userService.IsUserValid(EMAIL_TO_CHECK, PASSWORD_TO_CHECK);
+
+            // tear down
+            isValid.Should().Be(false);
+        }
+
+        [Test]
+        public void UserShouldBeValid()
+        {
+            // setup
+            const string EMAIL_TO_CHECK = "aaa@gmail.com";
+            const string PASSWORD_TO_CHECK = "abc123";
+
+            var userModel = new UserModel
+                {
+                    Email = "aaa@gmail.com",
+                    UserPassword = "abc123",
+                    NickName = "Bill",
+                    FirstName = "Billy",
+                    LastName = "Last"
+                };
+
+            // body
+            userService.CreateUser(userModel);
+            bool isValid = userService.IsUserValid(EMAIL_TO_CHECK, PASSWORD_TO_CHECK);
+
+            // tear down
+            isValid.Should().Be(true);
         }
     }
 }

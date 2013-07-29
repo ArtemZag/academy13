@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Exceptions\AlbumNotFoundException.cs" />
+    <Compile Include="Exceptions\CleanupException.cs" />
     <Compile Include="Exceptions\UserAlreadyExistException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,9 +69,11 @@
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\PhotoService.cs" />
     <Compile Include="Services\DbService.cs" />
-    <Compile Include="Services\PhotoCleaupTask.cs" />
+    <Compile Include="Services\CleanupTask.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="TestServiceClass.cs" />
+    <Compile Include="Utils\IStorage.cs" />
+    <Compile Include="Utils\Storage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.PhotoGallery.Core\BinaryStudio.PhotoGallery.Core.csproj">

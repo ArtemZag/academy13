@@ -1,4 +1,6 @@
-﻿using Microsoft.Practices.Unity;
+﻿using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Tests.Mocked;
+using Microsoft.Practices.Unity;
 
 namespace BinaryStudio.PhotoGallery.Domain.Tests
 {
@@ -14,8 +16,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
         private static void RegisterTypes(IUnityContainer container)
         {
+            container.RegisterType<IUnitOfWorkFactory, TestUnitOfWorkFactory>();
+
             Domain.Bootstrapper.RegisterTypes(container);
-            Database.Bootstrapper.RegisterTypes(container);
+
             Core.Bootstrapper.RegisterTypes(container);
         }
     }

@@ -6,6 +6,10 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
     public static class PathHelper
     {
         private const string DELIMITER = "//";
+
+        public const string PHOTOS_DIRECTORY_NAME = "photos";
+        public const string TEMPORARY_DIRECTORY_NAME = "temporary";
+
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
         private const string COLLAGES_DIRECTORY_NAME = "collages";
 
@@ -40,9 +44,10 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return result;
         }
 
-        public static string GetAlbumPath(int userId, int albumId)
+        public static string BuildAlbumPath(int userId, int albumId)
         {
             var builder = new StringBuilder();
+            builder.Append(PHOTOS_DIRECTORY_NAME)
             builder.Append(ImageDir)
                    .Append(DELIMITER)
                    .Append(userId)
@@ -52,6 +57,12 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return builder.ToString();
         }
 
+        public static string BuildOriginalPhotoPath(int userId, int albumId, string name)
+        {
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
+            builder.Append(DELIMITER)
+                   .Append(name);
+            // todo: what about extension? .jpg, .png etc. 
 
         public static string GetThumbnailPath(int userId, int albumId)
         {
@@ -61,11 +72,41 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
 
             return builder.ToString();
         }
-
-        public static string GetCollagesPath(int userId, int albumId)
+        public static string GetThumbnailPath(int userId, int albumId)
         {
             var builder = new StringBuilder(GetAlbumPath(userId, albumId));
-            builder.Append(COLLAGES_DIRECTORY_NAME);
+            builder.Append(THUMBNAIL_DIRECTORY_NAME);
+            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
+            builder.Append(DELIMITER)
+                   .Append(THUMBNAIL_DIRECTORY_NAME);
+
+
+            return builder.ToString();
+        }
+        public static string BuildThumbnailsPath(int userId, int albumId)
+        {
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
+            builder.Append(DELIMITER)
+                   .Append(THUMBNAIL_DIRECTORY_NAME);
+
+            return builder.ToString();
+        }
+
+        public static string BuildCollagesPath(int userId, int albumId)
+        {
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
+            builder.Append(DELIMITER)
+                   .Append(COLLAGES_DIRECTORY_NAME);
+
+            return builder.ToString();
+        }
+
+        public static string BuildTemporaryPhotosPath(int userId)
+        {
+            var builder = new StringBuilder();
+            builder.Append(userId)
+                   .Append(DELIMITER)
+                   .Append(TEMPORARY_DIRECTORY_NAME);
 
             return builder.ToString();
         }
