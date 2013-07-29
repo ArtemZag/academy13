@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -37,7 +36,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 // Get user ID from BD
                 var userId = _userService.GetUserId(User.Identity.Name);
 
-                // Find user folder 'temporary' for uploading files into it
+                // Create 'temporary' folder of user for uploading files into it
                 var dirForSave = HttpContext.Current.Server.MapPath(string.Format(@"~/App_Data/{0}/temporary", userId));
 
                 // Create directory, if it isn't exist
@@ -55,7 +54,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 foreach (MultipartFileData file in provider.FileData)
                 {
                     // 
-                    if (!FileHelper.IsImageFile(file.LocalFileName))
+                    if (!FormatHelper.IsImageFile(file.LocalFileName))
                     {
                         File.Delete(file.LocalFileName);
                         continue; // TODO need some exceptions for front-end side

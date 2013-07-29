@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Helpers\FormatHelper.cs" />
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\Randomizer.cs" />
     <Compile Include="NotificationsUtils\INotificationSender.cs" />
@@ -71,7 +71,6 @@
     <EmbeddedResource Include="Helpers\mime-types.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="Winista.MimeDetect.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MimeDetect\MimeDetect.csproj">

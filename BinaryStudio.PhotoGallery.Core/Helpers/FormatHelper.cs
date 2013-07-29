@@ -4,7 +4,7 @@ using Winista.Mime;
 
 namespace BinaryStudio.PhotoGallery.Core.Helpers
 {
-   public static class FileHelper
+   public static class FormatHelper
     {
        public static string GetMimeTypeOfFile(string fileName)
        {

@@ -5,7 +5,7 @@ using FluentAssertions;
 namespace BinaryStudio.PhotoGalery.Core.Tests
 {
     [TestFixture]
-    internal class FileHelperTests
+    internal class FormatHelperTests
     {
         [Test]
         public void FileShouldBeDetectedAsImageFile()
@@ -15,8 +15,8 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             var normalImageFile = string.Format(@"{0}\{1}", "Content", "img.jpg");
 
             // body
-            var isTextFormatReallyImage = FileHelper.IsImageFile(imageWithTxtExtension);
-            var isImageFormatReallyImage = FileHelper.IsImageFile(normalImageFile);
+            var isTextFormatReallyImage = FormatHelper.IsImageFile(imageWithTxtExtension);
+            var isImageFormatReallyImage = FormatHelper.IsImageFile(normalImageFile);
 
             // tear down
             isTextFormatReallyImage.Should().BeTrue();
@@ -31,8 +31,8 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             var textFile = string.Format(@"{0}\{1}", "Content", "text.txt");
 
             // body
-            var emptyFileIsImage = FileHelper.IsImageFile(emptyFile);
-            var textFileIsImage = FileHelper.IsImageFile(textFile);
+            var emptyFileIsImage = FormatHelper.IsImageFile(emptyFile);
+            var textFileIsImage = FormatHelper.IsImageFile(textFile);
 
             // tear down
             emptyFileIsImage.Should().BeFalse();
