@@ -1,9 +1,12 @@
-﻿using BinaryStudio.PhotoGallery.Models;
+﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     public interface IUserService
     {
+        IEnumerable<UserModel> GetAllUsers(); 
+        
         UserModel GetUser(string userEmail);
 
         int GetUserId(string userEmail);
@@ -12,7 +15,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         void DeleteUser(string userEmail);
 
-        bool IsUserValid(string userEmail, string enteredUserPassword);
+        bool IsUserValid(string userEmail, string userPassword);
 
         bool IsUserExist(string userEmail);
     }

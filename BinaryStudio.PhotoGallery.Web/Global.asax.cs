@@ -3,10 +3,9 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.App_Start;
 using FluentScheduler;
-using Microsoft.Practices.Unity;
+using PerpetuumSoft.Knockout;
 
 namespace BinaryStudio.PhotoGallery.Web
 {
@@ -16,6 +15,9 @@ namespace BinaryStudio.PhotoGallery.Web
     {
         protected void Application_Start()
         {
+            ModelBinders.Binders.DefaultBinder = new KnockoutModelBinder();
+            ModelBinders.Binders.DefaultBinder = new KnockoutModelBinder();
+            ModelBinders.Binders.DefaultBinder = new KnockoutModelBinder();
             AreaRegistration.RegisterAllAreas();
 
             BootstrapBundleConfig.RegisterBundles();
@@ -33,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Web
             Database.Bootstrapper.Test();
 
             // todo
-            //TaskManager.Initialize(new CleanupServiceRegistry());
+            // TaskManager.Initialize(new CleanupServiceRegistry());
         }
     }
 }

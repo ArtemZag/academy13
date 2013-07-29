@@ -1,7 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
+using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.Utils;
 
@@ -22,20 +26,35 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             _userService = userService;
         }
         /// <summary>
-        /// Main user page (flow of public pictures) [click on "bingally"]
+        /// Main user page (click on "bingally")
         /// </summary>
-		[GET]
-        public ActionResult Index()
+        /// <returns>page with flow of public pictures</returns>
+        [GET("Index/{photoNum}")]
+        public ActionResult Index(int photoNum = 0)
         {   
-            var viewmodels = _photoService.GetPhotos(User.Identity.Name, 0, 20);
+            var viewmodels = _photoService.GetPhotos(User.Identity.Name, 0, 30);
             return View(new InfoViewModel { UserEmail = User.Identity.Name, 
                                             Photos = viewmodels.Select(ModelConverter.GetViewModel).ToList()});
         }
 
+        [HttpPost]
+        public ActionResult Getphotos(int startIndex)
+        {
+            var viewmodels = _photoService.GetPhotos(User.Identity.Name, startIndex, 30+startIndex);
+            return Json( viewmodels.Select(ModelConverter.GetViewModel).ToList());
+        }
+
+        [GET("ToPhoto/{albumId}/{photoId}")]
+        public ActionResult ToPhoto(int albumId, int photoId)
+        {
+            return View("Album",new AlbumViewModel());
+        }
+
         /// <summary>
-        /// Gallery page, where all users photos, sorted by date
+        /// Gallery page
         /// </summary>
-        [GET]
+        /// <returns>page with all users photos, sorted by date</returns>
+        [GET("Gallery")]
         public ActionResult Gallery()
         {
             return View();
@@ -44,7 +63,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <summary>
         /// Album page
         /// </summary>
-        [GET]
+        /// <returns>page with all users albums</returns>
+        [GET("Albums")]
         public ActionResult Albums()
         {
             return View();
@@ -53,7 +73,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <summary>
         /// Gruops page
         /// </summary>
-        [GET]
+        /// <returns>page with all users groups</returns>
+        [GET("Groups")]
         public ActionResult Groups()
         {
             return View();

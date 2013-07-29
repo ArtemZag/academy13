@@ -16,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         void AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
 
         /// <summary>
-        /// Deletes 
+        /// Deletes specified photo
         /// </summary>
         void DeletePhoto(PhotoModel photo);
 

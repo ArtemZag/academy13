@@ -5,22 +5,25 @@
 		if (self.tagName.toUpperCase() != 'DIV') {
 			return;
 		}
+		var smaller = 100;
+		var larger = 230;
+		
 		$('.hidden-field').css('display', 'none');
-		if ($('.user-row', this).width() == 230) {
+		if ($('.user-row', this).hasClass('active')) {
 			$('.user-row', this).animate({
-				width: "100px"
-			}, 1000);
+				width: smaller
+			}, 1000).removeClass('active');
 		} else {
-			$('.user-row').animate({
-				width: "100px"
-			}, { duration: 1000, queue: false });
+			$('.active').animate({
+				width: smaller
+			}, { duration: 1000, queue: false }).removeClass('active');
 			$('.user-row', this).animate({
-				width: "230px"
-			}, { duration: 1000, queue: true });
+				width: larger
+			}, { duration: 1000, queue: true }).addClass('active');
+			
 			var actionDiv = $('.hidden-field').detach();
 			$('.user-main-info', this).after(actionDiv);
 			setTimeout(function () { actionDiv.css('display', 'block'); }, 1000);
-
 		}
 	});
 });

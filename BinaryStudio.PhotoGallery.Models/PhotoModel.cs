@@ -16,21 +16,15 @@ namespace BinaryStudio.PhotoGallery.Models
 
         public PhotoModel(int albumModelId, int userModelId)
         {
-            AlbumModelID = albumModelId;
-            UserModelID = userModelId;
+            AlbumModelId = albumModelId;
+            UserModelId = userModelId;
             DateOfCreation = DateTime.Now;
         }
 
         /// <summary>
         /// Gets or sets the photo ID.
         /// </summary>
-        public int ID { get; set; }
-
-        /// <summary>
-        /// Gets or sets a path to photo.  
-        /// todo: if we need more thumbnails - we should create a table of its.
-        /// </summary>
-        public string PhotoThumbSource { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the photo name.
@@ -58,8 +52,8 @@ namespace BinaryStudio.PhotoGallery.Models
         public bool IsDeleted { get; set; }
  
 
-        public int UserModelID { get; set; }
-        public int AlbumModelID { get; set; }
+        public int UserModelId { get; set; }
+        public int AlbumModelId { get; set; }
         public virtual ICollection<PhotoCommentModel> PhotoComments { get; set; }
         public virtual ICollection<PhotoTagModel> PhotoTags { get; set; } 
 

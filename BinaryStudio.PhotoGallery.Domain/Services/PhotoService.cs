@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -21,7 +19,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                photo.UserModelID = user.Id;
+                photo.UserModelId = user.Id;
                 album.Photos.Add(photo);
 
                 unitOfWork.SaveChanges();
@@ -44,7 +42,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        // todo: what about storage?
         public void DeletePhoto(PhotoModel photo)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -64,7 +61,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 return
                     album.Photos.OrderBy(model => model.DateOfCreation)
-                         .ThenBy(model => model.ID)
+                         .ThenBy(model => model.Id)
                          .Skip(begin)
                          .Take(end - begin);
             }
@@ -78,35 +75,27 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return 
-                    unitOfWork.Photos.Filter(model => model.UserModelID == user.ID)
+                return
+                    unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
+                              .Where(model => !model.IsDeleted)
                               .OrderBy(model => model.DateOfCreation)
-                              .ThenBy(model => model.ID)
+                              .ThenBy(model => model.Id)
                               .Skip(begin).Take(end - begin);
-            }
-            */
+            }*/
+
 
             // for test only!
             // todo: remove when real user photos will be added
             var test = new List<PhotoModel>();
-            for (int i = 1; i < 20; i++)
-                test.Add(new PhotoModel {PhotoThumbSource = PathHelper.ImageDir + "/test/" + i + ".jpg"});
-
+            if (begin<90)
+            for (var i = 0; i < 30; i++)
+                test.Add(new PhotoModel
+                    {
+                        PhotoName =  i+".jpg",
+                        AlbumModelId = 1111,
+                        UserModelId = 1111
+                    });
             return test;
-        }
-
-        private AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
-        {
-            try
-            {
-                return
-                    unitOfWork.Albums.Find(
-                        model => model.UserModelID == user.Id && string.Equals(model.AlbumName, albumName));
-            }
-            catch (Exception e)
-            {
-                throw new AlbumNotFoundException(e);
-            }
         }
     }
 }

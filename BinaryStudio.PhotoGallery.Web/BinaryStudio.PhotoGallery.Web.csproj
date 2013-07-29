@@ -62,6 +62,10 @@
     <Reference Include="AttributeRouting.Web.Mvc">
       <HintPath>..\packages\AttributeRouting.3.5.6\lib\net40\AttributeRouting.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="DelegateDecompiler, Version=0.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DelegateDecompiler.0.6.0.0\lib\net40-Client\DelegateDecompiler.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -83,6 +87,10 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PerpetuumSoft.Knockout, Version=0.5.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\kMVC.0.5.4\lib\net40\PerpetuumSoft.Knockout.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -176,7 +184,7 @@
     <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="App_Start\AttributeRoutingHttpConfig.cs" />
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
-    <Compile Include="Area\Api\AccountController.cs" />
+    <Compile Include="App_Start\Area\Api\AccountController.cs" />
     <Compile Include="Area\Api\FileController.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -184,6 +192,7 @@
     <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -191,6 +200,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceRegistry.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
+    <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="ViewModels\PhotoViewModel.cs" />
@@ -209,6 +219,35 @@
     <Content Include="Content\images\logo_big.png" />
     <Content Include="Content\images\logo_small.png" />
     <Content Include="Content\images\no_avatar.png" />
+    <Content Include="Content\images\rabbit.jpg" />
+    <Content Include="Content\images\textures\1.jpg" />
+    <Content Include="Content\images\textures\10.jpg" />
+    <Content Include="Content\images\textures\10c3574ce200t.jpg" />
+    <Content Include="Content\images\textures\11.jpg" />
+    <Content Include="Content\images\textures\14.jpg" />
+    <Content Include="Content\images\textures\15.jpg" />
+    <Content Include="Content\images\textures\16.jpg" />
+    <Content Include="Content\images\textures\19fc7777cda7t.jpg" />
+    <Content Include="Content\images\textures\234449--26138146-m750x740.jpg" />
+    <Content Include="Content\images\textures\3.jpg" />
+    <Content Include="Content\images\textures\3295bb46017d.jpg" />
+    <Content Include="Content\images\textures\37bb3576848ct.jpg" />
+    <Content Include="Content\images\textures\4.jpg" />
+    <Content Include="Content\images\textures\4f714fb43645.jpg" />
+    <Content Include="Content\images\textures\5.jpg" />
+    <Content Include="Content\images\textures\5aae83ac3dact.jpg" />
+    <Content Include="Content\images\textures\63d0f0f198cbt.jpg" />
+    <Content Include="Content\images\textures\8.jpg" />
+    <Content Include="Content\images\textures\8613500a4f70t.jpg" />
+    <Content Include="Content\images\textures\91cece674e36t.jpg" />
+    <Content Include="Content\images\textures\b908507a5dd6t.jpg" />
+    <Content Include="Content\images\textures\c1f030c1f523t.jpg" />
+    <Content Include="Content\images\textures\ec9700f3a374t.jpg" />
+    <Content Include="Content\images\textures\f211b8150cd2t.jpg" />
+    <Content Include="Content\images\textures\f9372241b72ct.jpg" />
+    <Content Include="Content\images\textures\image-846.jpg" />
+    <Content Include="Content\images\textures\tekstura1.jpg" />
+    <Content Include="Content\images\textures\Потрескавшаяся_стена_фон_04.jpg" />
     <Content Include="Content\main-layout.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.css" />
     <Content Include="Content\style-libs\bootstrap-responsive.min.css" />
@@ -227,7 +266,8 @@
     <Content Include="Content\upload-images.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\animation-storage.js" />
-    <Content Include="Scripts\auth-validate.js" />
+    <Content Include="Scripts\Authorization\messages.en-US.js" />
+    <Content Include="Scripts\Authorization\validation.js" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -245,9 +285,14 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
-    <Content Include="Scripts\auth-page.js" />
+    <Content Include="Scripts\Authorization\main.js" />
     <Content Include="Scripts\opentip-jquery.js" />
     <Content Include="Scripts\opentip-jquery.min.js" />
+    <Content Include="Scripts\knockout.mapping-latest.debug.js" />
+    <Content Include="Scripts\knockout.mapping-latest.js" />
+    <Content Include="Scripts\knockout.mapping-latest.debug.js" />
+    <Content Include="Scripts\knockout.mapping-latest.js" />
+    <Content Include="Scripts\perpetuum.knockout.js" />
     <Content Include="Scripts\photo_placer.js" />
     <Content Include="Scripts\upload-images.js" />
     <Content Include="Scripts\UserSlider.js" />
@@ -273,8 +318,9 @@
     <Content Include="Views\Home\Gallery.cshtml" />
     <Content Include="Views\Home\Groups.cshtml" />
     <Content Include="Views\AdminPanel\Index.cshtml" />
-    <Content Include="Views\Shared\_AfterLoginLayout.cshtml" />
+    <Content Include="Views\StaticContent\PageNotFound.cshtml" />
     <Content Include="Views\Upload\Index.cshtml" />
+    <Content Include="Views\Home\Album.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
