@@ -263,7 +263,7 @@
     <Content Include="Content\style-libs\dropzone.css" />
     <Content Include="Content\photo_flow.css" />
     <Content Include="Content\style-libs\opentip.css" />
-    <Content Include="Content\upload-images.css" />
+    <Content Include="Content\upload-page.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\Helpers\animation-storage.js" />
     <Content Include="Scripts\Authorization\validation.js" />
