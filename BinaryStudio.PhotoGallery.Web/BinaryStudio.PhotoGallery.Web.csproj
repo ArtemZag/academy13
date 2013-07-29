@@ -184,7 +184,7 @@
     <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="App_Start\AttributeRoutingHttpConfig.cs" />
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
-    <Compile Include="App_Start\Area\Api\AccountController.cs" />
+    <Compile Include="Area\Api\AccountController.cs" />
     <Compile Include="Area\Api\FileController.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -265,8 +265,7 @@
     <Content Include="Content\style-libs\opentip.css" />
     <Content Include="Content\upload-images.css" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\animation-storage.js" />
-    <Content Include="Scripts\Authorization\messages.en-US.js" />
+    <Content Include="Scripts\Helpers\animation-storage.js" />
     <Content Include="Scripts\Authorization\validation.js" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -324,6 +323,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\AdminPanel\" />
+    <Folder Include="Scripts\AlbumsPage\" />
+    <Folder Include="Scripts\FlowPage\" />
+    <Folder Include="Scripts\PhotosPage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
