@@ -1,0 +1,8 @@
+﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumViewModel
+@using BinaryStudio.PhotoGallery.Core.Helpers
+@{
+    Layout = null;
+    ViewBag.Title = "Your album | Bingally";
+    var img = PathHelper.ImageDir + "/nothing.png";
+}
+<img src="@img" style="cursor:pointer" onclick="location.href ='/Home/Index'"/>
