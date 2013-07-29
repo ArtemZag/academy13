@@ -26,18 +26,26 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private void CleanPhotos()
         {
-            List<PhotoModel> photosToCleanup;
-
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                photosToCleanup = unitOfWork.Photos.Filter(model => model.IsDeleted).ToList();
-            }
+            List<PhotoModel> photosToCleanup = GetPhotosForCleanup();
 
             photosToCleanup.ForEach(CleanPhoto);
-
             DeleteDbRows(photosToCleanup);
 
             CleanTemporaryPhotos();
+        }
+
+        private List<PhotoModel> GetPhotosForCleanup()
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Photos.Filter(model => model.IsDeleted).ToList();
+            }
+        }
+
+        private void CleanPhoto(PhotoModel photo)
+        {
+            CleanOriginal(photo);
+            CleanThumbnails(photo);
         }
 
         private void CleanTemporaryPhotos()
@@ -48,17 +56,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 var directory = new DirectoryInfo(temporaryDirectoryPath);
 
-                foreach (var file in directory.GetFiles())
-                {
-                    file.Delete();
-                }
+                DeleteFiles(directory);
             }
-        }
-
-        private void CleanPhoto(PhotoModel photo)
-        {
-            CleanOriginal(photo);
-            CleanThumbnails(photo);
         }
 
         private void CleanOriginal(PhotoModel photo)
@@ -72,9 +71,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             IEnumerable<string> thumbnailDirectories = storage.GetThumbnailFormatDirectories(photo);
 
-            foreach (var thumbnailFormatDirectory in thumbnailDirectories)
+            foreach (var formatDirectory in thumbnailDirectories)
             {
-                string thumbnailPath = Path.Combine(thumbnailFormatDirectory, photo.PhotoName);
+                string thumbnailPath = Path.Combine(formatDirectory, photo.Id + photo.Format);
 
                 DeleteFile(thumbnailPath);
             }
@@ -82,17 +81,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private void CleanAlbums()
         {
-            List<AlbumModel> albumsToCleanup;
-
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                albumsToCleanup = unitOfWork.Albums.Filter(model => model.IsDeleted).ToList();
-            }
+            List<AlbumModel> albumsToCleanup = GetAlbumsForCleanup();
 
             albumsToCleanup.ForEach(CleanAlbum);
 
             DeleteDbRows(albumsToCleanup);
         }
+
+        private List<AlbumModel> GetAlbumsForCleanup()
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Albums.Filter(model => model.IsDeleted).ToList();
+            }
+        } 
 
         private void CleanAlbum(AlbumModel album)
         {
@@ -120,6 +122,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     unitOfWork.Photos.Delete(photoModel);
                 }
+            }
+        }
+
+        private void DeleteFiles(DirectoryInfo directory)
+        {
+            foreach (var file in directory.GetFiles())
+            {
+                file.Delete();
             }
         }
 

@@ -19,6 +19,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             get
             {
                 const string contentVirtualRoot = "~/Content";
+
                 return VirtualPathUtility.ToAbsolute(contentVirtualRoot);
             }
         }
@@ -59,20 +60,12 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return builder.ToString();
         }
 
-        public static string BuildOriginalPhotoPath(int userId, int albumId, string name)
+        public static string BuildOriginalPhotoPath(int userId, int albumId, int photoId, string photoFormat)
         {
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
-                   .Append(name);
-            // todo: what about extension? .jpg, .png etc. 
-            return builder.ToString();
-        }
-
-        public static string GetThumbnailPath(int userId, int albumId)
-        {
-            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
-            builder.Append(DELIMITER)
-                   .Append(THUMBNAIL_DIRECTORY_NAME);
+                   .Append(photoId)
+                   .Append(photoFormat);
 
             return builder.ToString();
         }

@@ -32,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             var photoModel = new PhotoViewModel 
             { 
-                PhotoThumbSource = PathHelper.GetThumbnailPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                PhotoThumbSource = PathHelper.BuildThumbnailsPath(viewModel.UserModelId, viewModel.AlbumModelId)
                                     +"/"+viewModel.PhotoName,
                 PhotoSource = PathHelper.BuildAlbumPath(viewModel.UserModelId, viewModel.AlbumModelId)
                                     +"/"+viewModel.PhotoName,
