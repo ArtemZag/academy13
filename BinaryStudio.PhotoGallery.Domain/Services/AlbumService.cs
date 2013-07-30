@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
+using System.Linq;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class AlbumService : Service, IAlbumService
+    internal class AlbumService : DbService, IAlbumService
     {
         public AlbumService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
@@ -31,7 +30,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                user.Albums.Remove(album);
+                album.IsDeleted = true;
 
                 unitOfWork.SaveChanges();
             }
@@ -43,35 +42,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return user.Albums;
+                return user.Albums.Select(model => model).Where(model => !model.IsDeleted);
             }
         }
 
         public AlbumModel GetAlbum(string userEmail, string albumName)
         {
-            AlbumModel result;
-
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                result = GetAlbum(user, albumName, unitOfWork);
-            }
-
-            return result;
-        }
-
-        private AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
-        {
-            try
-            {
-                return 
-                    unitOfWork.Albums.Find(
-                        model => model.UserModelID == user.ID && string.Equals(model.AlbumName, albumName));
-            }
-            catch (Exception e)
-            {
-                throw new AlbumNotFoundException(e);
+                return GetAlbum(user, albumName, unitOfWork);
             }
         }
     }

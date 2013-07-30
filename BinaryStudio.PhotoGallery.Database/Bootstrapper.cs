@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using BinaryStudio.PhotoGallery.Database.ModelRepositories;
-using BinaryStudio.PhotoGallery.Models;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
@@ -14,6 +10,7 @@ namespace BinaryStudio.PhotoGallery.Database
             container.RegisterType<IUnitOfWorkFactory, UnitOfWorkFactory>(new ContainerControlledLifetimeManager());
         }
 
+        // todo: delete
         public static void Test()
         {
             //var unitOfWorkFactory = new UnitOfWorkFactory();

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BinaryStudio.PhotoGallery.Models
 {
@@ -10,26 +11,30 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the user id.
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the nick name of the user
         /// </summary>
+        [MaxLength(255)] // Standart RFC 5321
         public string Email { get; set; }
 
         /// <summary>
         /// Gets or sets the nick name of the user
         /// </summary>
+        [MaxLength(80)]
         public string NickName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the user.
         /// </summary>
+        [MaxLength(255)]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets the lastname of the user.
         /// </summary>
+        [MaxLength(255)]
         public string LastName { get; set; }
 
         /// <summary>

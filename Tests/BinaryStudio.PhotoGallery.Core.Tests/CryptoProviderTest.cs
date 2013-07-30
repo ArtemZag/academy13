@@ -1,5 +1,4 @@
-﻿using BinaryStudio.PhotoGallery.Core.NotificationsUtils;
-using BinaryStudio.PhotoGallery.Core.UserUtils;
+﻿using BinaryStudio.PhotoGallery.Core.UserUtils;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using FluentAssertions;

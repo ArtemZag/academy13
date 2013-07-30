@@ -1,4 +1,5 @@
-﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.RegistrationViewModel
+﻿@using System.Web.Optimization
+@model BinaryStudio.PhotoGallery.Web.ViewModels.RegistrationViewModel
 
 @{
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
@@ -13,12 +14,12 @@
 <div class="login-panel">
     <img src="~/Content/images/logo_big.png"/>
     <div class="well">
-        <form class="control-group form-horizontal pagination-centered" method="POST" action="../Account/Signin" autocomplete="off">
-            <input id="Email" name="Email" type="email" class="input-block-level" placeholder="E-mail address" />
-            <input id="Password" name="Password" type="password" class="input-block-level" placeholder="Password" />
-            <input type="password" id="PasswordConfirmation" class="input-block-level" name="ConfirmPassword" placeholder="Repeat password">
+        <form class="control-group form-horizontal pagination-centered" autocomplete="off">
+            <input type="email" id="Email" name="Email" class="input-block-level" maxlength="255" placeholder="E-mail address" />
+            <input type="password" id="Password" name="Password" class="input-block-level" maxlength="20" placeholder="Password" />
+            <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="input-block-level" maxlength="20" placeholder="Repeat password">
 
-            <button id="signup-button" type="button" class="btn btn-success effeckt-button zoom-in">
+            <button id="signup-button" type="submit" class="btn btn-success effeckt-button zoom-in">
                 <span class="effeckt-label">Sign up</span>
                 <span class="effeckt-spinner effeckt-spinner-green"></span>
             </button>
@@ -33,3 +34,7 @@
         </div>
     </div>
 </div>
+
+@Scripts.Render("~/bundles/scripts/jquery")
+@Scripts.Render("~/bundles/scripts/bootstrap")
+@Scripts.Render("~/bundles/scripts/jquery.validate")

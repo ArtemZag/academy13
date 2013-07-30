@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
         public AccountController(IUserService userService)
         {
-            this._userService = userService;
+            _userService = userService;
         }
 
         [GET("Signin/{service}")]

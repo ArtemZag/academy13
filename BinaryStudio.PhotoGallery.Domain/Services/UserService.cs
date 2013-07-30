@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Core.UserUtils;
+﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -6,13 +7,21 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class UserService : Service, IUserService
+    internal class UserService : DbService, IUserService
     {
         private readonly ICryptoProvider cryptoProvider;
 
         public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider) : base(workFactory)
         {
             this.cryptoProvider = cryptoProvider;
+        }
+
+        public IEnumerable<UserModel> GetAllUsers()
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Users.All();
+            }
         }
 
         public UserModel GetUser(string userEmail)
@@ -60,7 +69,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public bool IsUserValid(string userEmail, string enteredUserPassword)
+        public bool IsUserValid(string userEmail, string userPassword)
         {
             bool result;
 
@@ -70,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     UserModel user = GetUser(userEmail, unitOfWork);
 
-                    result = cryptoProvider.IsPasswordsEqual(enteredUserPassword, user.UserPassword, user.Salt);
+                    result = cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
                 }
             }
             catch (UserNotFoundException)

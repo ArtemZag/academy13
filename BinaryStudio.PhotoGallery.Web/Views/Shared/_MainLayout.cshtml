@@ -4,8 +4,8 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width" />
-        <link href="~/Content/main-layout.css" rel="stylesheet"/>
-         <link href="~/Content/photo_flow.css" rel="stylesheet" />
+        
+        @Styles.Render("~/Content/main-layout.css")
         @Styles.Render("~/bundles/styles/bootstrap")
         <title>@ViewBag.Title</title>
     </head>
@@ -46,9 +46,5 @@
             @RenderBody()
         </div>
     </body>
-    @Scripts.Render("~/bundles/scripts/jquery")
-    @Scripts.Render("~/bundles/scripts/bootstrap")
-    @Scripts.Render("~/Scripts/photo_placer.js")
-	@Scripts.Render("~/Scripts/UserSlider.js")
 </html>
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace BinaryStudio.PhotoGallery.Models
@@ -16,20 +15,24 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreation = DateTime.Now;
         }
 
-        public AlbumModel(string albumName, int ownerID)
+        public AlbumModel(string albumName, int ownerId)
         {
             AlbumName = albumName;
-            UserModelID = ownerID;
+            UserModelId = ownerId;
             DateOfCreation = DateTime.Now;
             Permissions = 111; // in moment, it is just for future
         }
-
         
 
         /// <summary>
         /// Gets or sets the album id.
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the album state.
+        /// </summary>
+        public bool IsDeleted { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the album.
@@ -51,7 +54,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// </summary>
         public int Permissions { get; set; } 
 
-        public int UserModelID { get; set; }
+        public int UserModelId { get; set; }
         public virtual ICollection<PhotoModel> Photos { get; set; }
         public virtual ICollection<AvailableGroupModel> AvailableGroups { get; set; }
         public virtual ICollection<AlbumTagModel> AlbumTags { get; set; }

@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/bundles/styles/bootstrap")
-    <link href="~/Content/auth-page.css" rel="stylesheet" />
+    @Styles.Render("~/bundles/styles/opentip")
+    @Styles.Render("~/Content/auth-page.css")
 </head>
     <body>
         <div id="full-screen-shadow"></div>
@@ -14,6 +15,9 @@
     </body>
     @Scripts.Render("~/bundles/scripts/jquery")
     @Scripts.Render("~/bundles/scripts/bootstrap")
+    @Scripts.Render("~/bundles/scripts/jquery.validate")
+    @Scripts.Render("~/bundles/scripts/opentip")
     @Scripts.Render("~/Scripts/animation-storage.js")
-    @Scripts.Render("~/Scripts/auth-page.js")
+    @Scripts.Render("~/Scripts/Authorization/main.js")
+    @Scripts.Render("~/Scripts/Authorization/validation.js")
 </html>

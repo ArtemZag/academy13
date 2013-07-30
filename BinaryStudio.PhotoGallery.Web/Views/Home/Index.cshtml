@@ -1,13 +1,30 @@
-﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.InfoViewModel
+﻿@using PerpetuumSoft.Knockout
+@using System.Web.Optimization
+@model BinaryStudio.PhotoGallery.Web.ViewModels.InfoViewModel
+@using BinaryStudio.PhotoGallery.Core.Helpers
+
+@*<script src="@Url.Content("~/Scripts/knockout-2.3.0.js")" type="text/javascript"></script> <!-- Use your version of knockout -->
+<script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"></script>*@
+@Scripts.Render("~/bundles/scripts/jquery")
+@Scripts.Render("~/bundles/scripts/bootstrap")
+@Scripts.Render("~/Scripts/photo_placer.js")
+@Styles.Render("~/Content/photo_flow.css")
+
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    var preloaderpath = TestPathHelper.ImageDir + "/photopreloader.gif";
+    var ko = Html.CreateKnockoutContext();  
+    
 }
-
+<img src="@preloaderpath" id="photopreloader" />
 <div id="photoWrapper">
-    @foreach (var photo in Model.Photos)
+    @foreach(var photo in Model.Photos)
     {
-        <div class="photoContainer">
+        <div class="photoContainer invisible" onclick="location.href = '../Home/ToPhoto/@photo.AlbumId/@photo.PhotoId'">
             <img src="@photo.PhotoThumbSource"/>
         </div>
-    }								
+    }  		
 </div>
+
+

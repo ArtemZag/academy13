@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
 using BinaryStudio.PhotoGallery.Models;
 
-
 namespace BinaryStudio.PhotoGallery.Database
 {
     public class DatabaseContext : DbContext, IDatabaseContext
