@@ -55,7 +55,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
             return builder.ToString();
         }
-        
+
         public IEnumerable<string> BuildTemporaryDirectoriesPathes()
         {
             string photoDirectoryPath = BuildPhotoDirectoryPath();
@@ -64,7 +64,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
             var temporaryPhotosDirectories = new Collection<string>();
 
-            foreach (var userDirectory in usersDirectories)
+            foreach (string userDirectory in usersDirectories)
             {
                 string temporaryPhotosDirectory = BuildTemporaryDirectoryPath(userDirectory);
                 temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
@@ -73,14 +73,14 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return temporaryPhotosDirectories;
         }
 
-        private string BuildTemporaryDirectoryPath(string userDirectoryPath)
-        {
-            return Path.Combine(userDirectoryPath, TEMPORARY_DIRECTORY_NAME);
-        }
-
         private string GetDataDirectory()
         {
             return VirtualPathUtility.ToAbsolute(DATA_VIRTUAL_ROOT);
+        }
+
+        private string BuildTemporaryDirectoryPath(string userDirectoryPath)
+        {
+            return Path.Combine(userDirectoryPath, TEMPORARY_DIRECTORY_NAME);
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using BinaryStudio.PhotoGallery.Core.PathUtils;
+﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Utils;
 using BinaryStudio.PhotoGallery.Models;

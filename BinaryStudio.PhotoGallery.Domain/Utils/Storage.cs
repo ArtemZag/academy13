@@ -12,12 +12,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
         private readonly IUnitOfWorkFactory workFactory;
         private IPathUtil pathUtil;
 
-        public IPathUtil PathUtil { set { pathUtil = value; }}
-
         public Storage(IUnitOfWorkFactory workFactory, IPathUtil pathUtil)
         {
             this.workFactory = workFactory;
             this.pathUtil = pathUtil;
+        }
+
+        public IPathUtil PathUtil
+        {
+            set { pathUtil = value; }
         }
 
         public string GetAlbumPath(AlbumModel album)
@@ -60,7 +63,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
 
             IEnumerable<string> thumnailFormatsPathes = Directory.EnumerateDirectories(thumbnailsDirectoryPath);
 
-            foreach (var thumbnailFormatPath in thumnailFormatsPathes)
+            foreach (string thumbnailFormatPath in thumnailFormatsPathes)
             {
                 string currentThumbnail = Path.Combine(thumbnailFormatPath, photo.Id + photo.Format);
 
