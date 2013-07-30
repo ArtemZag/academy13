@@ -78,13 +78,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private void CleanThumbnails(PhotoModel photo)
         {
-            IEnumerable<string> thumbnailDirectories = storage.GetThumbnailDirectoryPath(photo);
+            IEnumerable<string> thumbnailPathes = storage.GetThumnailsPathes(photo);
 
-            foreach (var formatDirectory in thumbnailDirectories)
+            foreach (var currentThumbnail in thumbnailPathes)
             {
-                string thumbnailPath = Path.Combine(formatDirectory, photo.Id + photo.Format);
-
-                DeleteFile(thumbnailPath);
+                DeleteFile(currentThumbnail);
             }
         }
 
