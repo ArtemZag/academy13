@@ -107,7 +107,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             string albumPath = storage.GetAlbumPath(album);
 
-            DeleteFile(albumPath);
+            Directory.Delete(albumPath, true);
         }
 
         private void DeleteDbRows(IEnumerable<AlbumModel> albumsToCleanup)

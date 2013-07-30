@@ -4,62 +4,32 @@ using System.Web;
 
 namespace BinaryStudio.PhotoGallery.Core.Helpers
 {
-    public static class PathHelper
+    internal class PathHelper : IPathHelper
     {
         private const string DELIMITER = @"/";
 
-        private const string PHOTOS_DIRECTORY_NAME = "Photos";
+        private const string PHOTOS_DIRECTORY_NAME = "photos";
         private const string TEMPORARY_DIRECTORY_NAME = "temporary";
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
-        private const string COLLAGES_DIRECTORY_NAME = "collages";
-        private const string TEXTURES_DIRECTORY_NAME = "textures";
 
-        public static string ContentDir
+        private const string DATA_VIRTUAL_ROOT = "~/App_Data";
+
+        public string DataDirectory
         {
-            get
-            {
-                const string CONTENT_VIRTUAL_ROOT = "~/Content";
-
-                return VirtualPathUtility.ToAbsolute(CONTENT_VIRTUAL_ROOT);
-            }
+            get { return VirtualPathUtility.ToAbsolute(DATA_VIRTUAL_ROOT); }
         }
 
-        public static string ImageDir
-        {
-            get { return string.Format("{0}/{1}", ContentDir, "Images"); }
-        }
-
-        public static string CssDir
-        {
-            get { return string.Format("{0}/{1}", ContentDir, "Css"); }
-        }
-
-        public static string ImageUrl(string imageFile)
-        {
-            string result = string.Format("{0}/{1}", ImageDir, imageFile);
-            return result;
-        }
-
-        public static string CssUrl(string cssFile)
-        {
-            string result = string.Format("{0}/{1}", CssDir, cssFile);
-            return result;
-        }
-
-        /// <summary>
-        /// Returns path to directory (App/App_Data/Images/Photos) that contains users directories.
-        /// </summary>
-        public static string BuildPhotoDirectoryPath()
+        public string BuildPhotoDirectoryPath()
         {
             var builder = new StringBuilder();
-            builder.Append(ContentDir)
+            builder.Append(DataDirectory)
                    .Append(DELIMITER)
                    .Append(PHOTOS_DIRECTORY_NAME);
 
             return builder.ToString();
         }
 
-        public static string BuildAlbumPath(int userId, int albumId)
+        public string BuildAlbumPath(int userId, int albumId)
         {
             var builder = new StringBuilder(BuildPhotoDirectoryPath());
             builder.Append(DELIMITER)
@@ -70,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return builder.ToString();
         }
 
-        public static string BuildOriginalPhotoPath(int userId, int albumId, int photoId, string photoFormat)
+        public string BuildOriginalPhotoPath(int userId, int albumId, int photoId, string photoFormat)
         {
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
@@ -80,7 +50,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return builder.ToString();
         }
 
-        public static string BuildThumbnailsPath(int userId, int albumId)
+        public string BuildThumbnailsPath(int userId, int albumId)
         {
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
@@ -89,16 +59,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return builder.ToString();
         }
 
-        public static string BuildCollagesPath(int userId, int albumId)
-        {
-            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
-            builder.Append(DELIMITER)
-                   .Append(COLLAGES_DIRECTORY_NAME);
-
-            return builder.ToString();
-        }
-
-        public static string BuildTemporaryDirectoryPath(string userDirectoryPath)
+        public string BuildTemporaryDirectoryPath(string userDirectoryPath)
         {
             return Path.Combine(userDirectoryPath, TEMPORARY_DIRECTORY_NAME);
         }

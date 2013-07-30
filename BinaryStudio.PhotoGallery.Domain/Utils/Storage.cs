@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             {
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return PathHelper.BuildAlbumPath(user.Id, album.Id);
+                return TestPathHelper.BuildAlbumPath(user.Id, album.Id);
             }
         }
 
@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumModelId);
                 UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelId);
 
-                return PathHelper.BuildAlbumPath(user.Id, album.Id);
+                return TestPathHelper.BuildAlbumPath(user.Id, album.Id);
             }
         }
 
@@ -44,7 +44,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return PathHelper.BuildOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
+                return TestPathHelper.BuildOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
             }
         }
 
@@ -57,14 +57,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
 
         public IEnumerable<string> GetTemporaryDirectories()
         {
-            string photoDirectoryPath = PathHelper.BuildPhotoDirectoryPath();
+            string photoDirectoryPath = TestPathHelper.BuildPhotoDirectoryPath();
             IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
 
             var temporaryPhotosDirectories = new Collection<string>();
 
             foreach (var userDirectory in usersDirectories)
             {
-                string temporaryPhotosDirectory = PathHelper.BuildTemporaryDirectoryPath(userDirectory);
+                string temporaryPhotosDirectory = TestPathHelper.BuildTemporaryDirectoryPath(userDirectory);
                 temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
             }
 
@@ -78,7 +78,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return PathHelper.BuildThumbnailsPath(user.Id, album.Id);
+                return TestPathHelper.BuildThumbnailsPath(user.Id, album.Id);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Core.NotificationsUtils;
+﻿using BinaryStudio.PhotoGallery.Core.Helpers;
+using BinaryStudio.PhotoGallery.Core.NotificationsUtils;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using Microsoft.Practices.Unity;
 
@@ -10,6 +11,7 @@ namespace BinaryStudio.PhotoGallery.Core
         {
             container.RegisterType<INotificationSender, NotificationSender>();
             container.RegisterType<ICryptoProvider, CryptoProvider>();
+            container.RegisterType<IPathHelper, PathHelper>();
         }
     }
 }
