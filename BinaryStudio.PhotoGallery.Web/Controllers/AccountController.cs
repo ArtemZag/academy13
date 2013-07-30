@@ -1,17 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.ObjectModel;
 using System.Web.Mvc;
 using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils;
+using BinaryStudio.PhotoGallery.Core;
+using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
-using BinaryStudio.PhotoGallery.Core.Helpers;
-using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {

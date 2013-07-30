@@ -57,17 +57,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="NotificationsUtils\INotificationSender.cs" />
     <Compile Include="PathUtils\IPathUtil.cs" />
     <Compile Include="PathUtils\PathUtil.cs" />
     <Compile Include="PathUtils\DeprecatedPathUtil.cs" />
     <Compile Include="Randomizer.cs" />
-    <Compile Include="NotificationsUtils\INotificationSender.cs" />
     <Compile Include="PhotoUtils\IAsyncPhotoProcessor.cs" />
+    <Compile Include="SocialNetworkUtils\Facebook\FB.cs" />
+    <Compile Include="SocialNetworkUtils\Facebook\IFacebook.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFB.cs" />
     <Compile Include="SocialNetworkUtils\Vkontakte\IVK.cs" />
     <Compile Include="SocialNetworkUtils\Vkontakte\VK.cs" />
     <Compile Include="SocialNetworkUtils\ISocialNetwork.cs" />
-    <Compile Include="NotificationsUtils\INotificationSender.cs" />
     <Compile Include="SocialNetworkUtils\ISocialNetworkFactory.cs" />
     <Compile Include="SocialNetworkUtils\SocialNetworkFactory.cs" />
     <Compile Include="UserUtils\CryptoProvider.cs" />
@@ -76,7 +77,6 @@
     <Compile Include="PhotoUtils\AsyncPhotoProcessor.cs" />
     <Compile Include="PhotoUtils\PhotoProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SocialNetworkUtils\Facebook\Facebook.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
