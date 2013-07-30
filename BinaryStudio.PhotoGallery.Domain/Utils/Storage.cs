@@ -75,18 +75,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
 
         public IEnumerable<string> GetTemporaryDirectoriesPathes()
         {
-            string photoDirectoryPath = pathUtil.BuildPhotoDirectoryPath();
-            IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
-
-            var temporaryPhotosDirectories = new Collection<string>();
-
-            foreach (var userDirectory in usersDirectories)
-            {
-                string temporaryPhotosDirectory = pathUtil.BuildTemporaryDirectoryPath(userDirectory);
-                temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
-            }
-
-            return temporaryPhotosDirectories;
+            return pathUtil.BuildTemporaryDirectoriesPathes();
         }
 
         private string GetThumbnailsDirectoryPath(PhotoModel photo)

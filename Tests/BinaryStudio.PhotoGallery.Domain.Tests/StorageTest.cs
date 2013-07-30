@@ -53,13 +53,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                             return albumPath + @"\" + photoId + photoFormat;
                         });
 
-            pathUtil.BuildTemporaryDirectoryPath(Arg.Any<string>()).Returns(info =>
-                {
-                    var userDirectoryPath = (string) info[0];
-
-                    return Path.Combine(userDirectoryPath, "temporary");
-                });
-
             storage.PathUtil = pathUtil;
             FillRepository();
         }
@@ -105,16 +98,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             // tear down
             originalPhotoPath.Should().Be(@"App_Data\photos\1\1\1.png");
-        }
-
-        [Test]
-        public void ShouldReturnCorrectTemporaryPathes()
-        {
-            // body
-            IEnumerable<string> temporaryPathes = storage.GetTemporaryDirectoriesPathes();
-
-            // tear down
-            temporaryPathes.Should().Contain(@"App_Data\photos\1\temporary");
         }
 
         private void FillRepository()

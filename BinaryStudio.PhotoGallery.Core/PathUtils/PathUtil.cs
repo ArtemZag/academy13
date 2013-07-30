@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 using System.Web;
 
@@ -14,15 +16,10 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         private const string DATA_VIRTUAL_ROOT = @"~\App_Data";
 
-        public string DataDirectory
-        {
-            get { return VirtualPathUtility.ToAbsolute(DATA_VIRTUAL_ROOT); }
-        }
-
         public string BuildPhotoDirectoryPath()
         {
             var builder = new StringBuilder();
-            builder.Append(DataDirectory)
+            builder.Append(GetDataDirectory())
                    .Append(DELIMITER)
                    .Append(PHOTOS_DIRECTORY_NAME);
 
@@ -58,10 +55,32 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
             return builder.ToString();
         }
+        
+        public IEnumerable<string> BuildTemporaryDirectoriesPathes()
+        {
+            string photoDirectoryPath = BuildPhotoDirectoryPath();
 
-        public string BuildTemporaryDirectoryPath(string userDirectoryPath)
+            IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
+
+            var temporaryPhotosDirectories = new Collection<string>();
+
+            foreach (var userDirectory in usersDirectories)
+            {
+                string temporaryPhotosDirectory = BuildTemporaryDirectoryPath(userDirectory);
+                temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
+            }
+
+            return temporaryPhotosDirectories;
+        }
+
+        private string BuildTemporaryDirectoryPath(string userDirectoryPath)
         {
             return Path.Combine(userDirectoryPath, TEMPORARY_DIRECTORY_NAME);
+        }
+
+        private string GetDataDirectory()
+        {
+            return VirtualPathUtility.ToAbsolute(DATA_VIRTUAL_ROOT);
         }
     }
 }
