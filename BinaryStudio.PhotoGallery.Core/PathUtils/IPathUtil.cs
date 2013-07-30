@@ -1,6 +1,6 @@
-﻿namespace BinaryStudio.PhotoGallery.Core.Helpers
+﻿namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
-    public interface IPathHelper
+    public interface IPathUtil
     {
         string DataDirectory { get; }
 

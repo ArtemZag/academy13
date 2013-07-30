@@ -1,4 +1,4 @@
-﻿using BinaryStudio.PhotoGallery.Core.Helpers;
+﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
@@ -32,9 +32,9 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             var photoModel = new PhotoViewModel 
             { 
-                PhotoThumbSource = TestPathHelper.BuildThumbnailsPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                PhotoThumbSource = DeprecatedPathUtil.BuildThumbnailsPath(viewModel.UserModelId, viewModel.AlbumModelId)
                                     +"/"+viewModel.PhotoName,
-                PhotoSource = TestPathHelper.BuildAlbumPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                PhotoSource = DeprecatedPathUtil.BuildAlbumPath(viewModel.UserModelId, viewModel.AlbumModelId)
                                     +"/"+viewModel.PhotoName,
                 AlbumId = viewModel.AlbumModelId,
                 PhotoId = viewModel.Id

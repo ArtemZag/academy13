@@ -2,9 +2,9 @@
 using System.Text;
 using System.Web;
 
-namespace BinaryStudio.PhotoGallery.Core.Helpers
+namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
-    internal class PathHelper : IPathHelper
+    internal class PathUtil : IPathUtil
     {
         private const string DELIMITER = @"/";
 

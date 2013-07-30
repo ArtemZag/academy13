@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using BinaryStudio.PhotoGallery.Core.Helpers;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -10,12 +10,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
     internal class Storage : IStorage
     {
         private readonly IUnitOfWorkFactory workFactory;
-        private readonly IPathHelper pathHelper;
+        private IPathUtil pathUtil;
 
-        public Storage(IUnitOfWorkFactory workFactory, IPathHelper pathHelper)
+        public IPathUtil PathUtil { set { pathUtil = value; }}
+
+        public Storage(IUnitOfWorkFactory workFactory, IPathUtil pathUtil)
         {
             this.workFactory = workFactory;
-            this.pathHelper = pathHelper;
+            this.pathUtil = pathUtil;
         }
 
         public string GetAlbumPath(AlbumModel album)
@@ -24,7 +26,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             {
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return pathHelper.BuildAlbumPath(user.Id, album.Id);
+                return pathUtil.BuildAlbumPath(user.Id, album.Id);
             }
         }
 
@@ -35,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumModelId);
                 UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelId);
 
-                return pathHelper.BuildAlbumPath(user.Id, album.Id);
+                return pathUtil.BuildAlbumPath(user.Id, album.Id);
             }
         }
 
@@ -46,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return pathHelper.BuildOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
+                return pathUtil.BuildOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
             }
         }
 
@@ -59,14 +61,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
 
         public IEnumerable<string> GetTemporaryDirectories()
         {
-            string photoDirectoryPath = pathHelper.BuildPhotoDirectoryPath();
+            string photoDirectoryPath = pathUtil.BuildPhotoDirectoryPath();
             IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
 
             var temporaryPhotosDirectories = new Collection<string>();
 
             foreach (var userDirectory in usersDirectories)
             {
-                string temporaryPhotosDirectory = pathHelper.BuildTemporaryDirectoryPath(userDirectory);
+                string temporaryPhotosDirectory = pathUtil.BuildTemporaryDirectoryPath(userDirectory);
                 temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
             }
 
@@ -80,7 +82,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return pathHelper.BuildThumbnailsPath(user.Id, album.Id);
+                return pathUtil.BuildThumbnailsPath(user.Id, album.Id);
             }
         }
 

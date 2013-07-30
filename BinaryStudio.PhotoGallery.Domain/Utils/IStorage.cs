@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using BinaryStudio.PhotoGallery.Core.Helpers;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Utils
@@ -21,5 +21,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
         /// Returns pathes of temporary directories for each user. 
         /// </summary>
         IEnumerable<string> GetTemporaryDirectories();
+
+        /// <summary>
+        /// For tests.
+        /// </summary>
+        IPathUtil PathUtil { set; }
     }
 }

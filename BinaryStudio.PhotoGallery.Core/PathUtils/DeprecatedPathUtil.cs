@@ -2,12 +2,12 @@
 using System.Text;
 using System.Web;
 
-namespace BinaryStudio.PhotoGallery.Core.Helpers
+namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
     /// <summary>
     /// Deprecated
     /// </summary>
-    public static class TestPathHelper
+    public static class DeprecatedPathUtil
     {
         private const string DELIMITER = @"/";
 

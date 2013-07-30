@@ -11,7 +11,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class CleanupTask : DbService, ICleanupTask
     {
-        private readonly IStorage storage;
+        private IStorage storage;
+
+        public IStorage Storage { set { storage = value; }}
 
         public CleanupTask(IUnitOfWorkFactory workFactory, IStorage storage) : base(workFactory)
         {
