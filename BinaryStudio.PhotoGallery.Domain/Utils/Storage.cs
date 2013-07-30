@@ -52,14 +52,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             }
         }
 
-        public IEnumerable<string> GetThumbnailFormatDirectories(PhotoModel photo)
+        public IEnumerable<string> GetThumbnailDirectoryPath(PhotoModel photo)
         {
             string thumbnailDirectoryPath = GetThumbnailsPath(photo);
 
             return Directory.EnumerateDirectories(thumbnailDirectoryPath);
         }
 
-        public IEnumerable<string> GetTemporaryDirectories()
+        public IEnumerable<string> GetTemporaryDirectoriesPathes()
         {
             string photoDirectoryPath = pathUtil.BuildPhotoDirectoryPath();
             IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);

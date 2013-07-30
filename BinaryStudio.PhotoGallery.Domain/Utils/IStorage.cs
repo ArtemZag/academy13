@@ -13,14 +13,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
         string GetOriginalPhotoPath(PhotoModel photo);
 
         /// <summary>
-        /// Returns pathes for all format directories in /thumbnail directory.
+        /// Returns pathes for all format directories in photos/userId/albumId/thumbnail directory.
         /// </summary>
-        IEnumerable<string> GetThumbnailFormatDirectories(PhotoModel photo);
+        IEnumerable<string> GetThumbnailDirectoryPath(PhotoModel photo);
 
         /// <summary>
         /// Returns pathes of temporary directories for each user. 
         /// </summary>
-        IEnumerable<string> GetTemporaryDirectories();
+        IEnumerable<string> GetTemporaryDirectoriesPathes();
 
         /// <summary>
         /// For tests.

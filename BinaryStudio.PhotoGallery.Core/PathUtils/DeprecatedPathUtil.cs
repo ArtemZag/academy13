@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
     /// </summary>
     public static class DeprecatedPathUtil
     {
-        private const string DELIMITER = @"/";
+        private const string DELIMITER = @"\";
 
         private const string PHOTOS_DIRECTORY_NAME = "Photos";
         private const string TEMPORARY_DIRECTORY_NAME = "temporary";
@@ -19,7 +19,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         {
             get
             {
-                const string CONTENT_VIRTUAL_ROOT = "~/Content";
+                const string CONTENT_VIRTUAL_ROOT = @"~\Content";
 
                 return VirtualPathUtility.ToAbsolute(CONTENT_VIRTUAL_ROOT);
             }

@@ -59,7 +59,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private void CleanTemporaryPhotos()
         {
-            IEnumerable<string> temporaryPhotosDirectories = storage.GetTemporaryDirectories();
+            IEnumerable<string> temporaryPhotosDirectories = storage.GetTemporaryDirectoriesPathes();
 
             foreach (var temporaryDirectoryPath in temporaryPhotosDirectories)
             {
@@ -78,7 +78,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private void CleanThumbnails(PhotoModel photo)
         {
-            IEnumerable<string> thumbnailDirectories = storage.GetThumbnailFormatDirectories(photo);
+            IEnumerable<string> thumbnailDirectories = storage.GetThumbnailDirectoryPath(photo);
 
             foreach (var formatDirectory in thumbnailDirectories)
             {
