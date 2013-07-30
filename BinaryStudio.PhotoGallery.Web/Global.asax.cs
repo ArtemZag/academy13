@@ -35,7 +35,8 @@ namespace BinaryStudio.PhotoGallery.Web
             Database.Bootstrapper.Test();
 
             // todo
-            // TaskManager.Initialize(new CleanupServiceRegistry());
+            // TaskManager.Initialize(new CleanupRegistry());
+            // TaskManager.Initialize(new UsersMonitorRegistry());
         }
     }
 }
