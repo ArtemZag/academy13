@@ -29,35 +29,66 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             pathUtil = Substitute.For<IPathUtil>();
 
             pathUtil.BuildPhotoDirectoryPath().Returns(info => @"App_Data/photos");
+
+            pathUtil.BuildAlbumPath(Arg.Any<int>(), Arg.Any<int>()).Returns(info =>
+            {
+                var userId = (int)info[0];
+                var albumId = (int)info[1];
+
+                return pathUtil.BuildPhotoDirectoryPath() + "/" + userId + "/" + albumId;
+            });
+
+            pathUtil.BuildOriginalPhotoPath(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>())
+                    .Returns(info
+                             =>
+                        {
+                            var userId = (int) info[0];
+                            var albuId = (int) info[1];
+                            var photoId = (int) info[2];
+                            var photoFormat = (string) info[3];
+
+                            string albumPath = pathUtil.BuildAlbumPath(userId, albuId);
+
+                            return albumPath + "/" + photoId + photoFormat;
+                        });
+
+            storage.PathUtil = pathUtil;
+            FillRepository();
         }
 
         [Test]
         public void ShouldReturnCorrectAlbumPath()
         {
             // setup
-            FillRepository();
-
             var album = new AlbumModel
                 {
                     Id = 1,
                     UserModelId = 1
                 };
 
-            pathUtil.BuildAlbumPath(Arg.Any<int>(), Arg.Any<int>()).Returns(info =>
-                {
-                    var userId = (int) info[0];
-                    var albumId = (int) info[1];
-
-                    return pathUtil.BuildPhotoDirectoryPath() + "/" + userId + "/" + albumId;
-                });
-
-            storage.PathUtil = pathUtil;
-
             // body
             string albumPath = storage.GetAlbumPath(album);
 
             // tear down
             albumPath.Should().Be("App_Data/photos/1/1");
+        }
+
+        [Test]
+        public void ShouldReturnPathToOriginalPhoto()
+        {
+            // setup
+            var photo = new PhotoModel
+            {
+                Id = 1,
+                AlbumModelId = 1,
+                Format = ".png"
+            };
+
+            // body
+            string originalPhotoPath = storage.GetOriginalPhotoPath(photo);
+
+            // tear down
+            originalPhotoPath.Should().Be("App_Data/photos/1/1/1.png");
         }
 
         private void FillRepository()
@@ -69,7 +100,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                         Id = 1
                     };
 
+                var album = new AlbumModel
+                    {
+                        Id = 1,
+                        UserModelId = 1
+                    };
+
                 unitOfWork.Users.Add(user);
+                unitOfWork.Albums.Add(album);
             }
         }
     }
