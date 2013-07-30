@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
@@ -11,6 +12,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     public class CleanupTaskTest
     {
+        private ICleanupTask cleanupTask;
+        private IUnitOfWorkFactory workFactory;
+        private IPathHelper pathHelper;
+
         [SetUp]
         public void Setup()
         {
@@ -18,10 +23,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             cleanupTask = container.Resolve<ICleanupTask>();
             workFactory = container.Resolve<IUnitOfWorkFactory>();
-        }
 
-        private ICleanupTask cleanupTask;
-        private IUnitOfWorkFactory workFactory;
+            
+        }
 
         private void FillRepository()
         {

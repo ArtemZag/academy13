@@ -10,10 +10,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
     internal class Storage : IStorage
     {
         private readonly IUnitOfWorkFactory workFactory;
+        private readonly IPathHelper pathHelper;
 
-        public Storage(IUnitOfWorkFactory workFactory)
+        public Storage(IUnitOfWorkFactory workFactory, IPathHelper pathHelper)
         {
             this.workFactory = workFactory;
+            this.pathHelper = pathHelper;
         }
 
         public string GetAlbumPath(AlbumModel album)
@@ -22,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             {
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return TestPathHelper.BuildAlbumPath(user.Id, album.Id);
+                return pathHelper.BuildAlbumPath(user.Id, album.Id);
             }
         }
 
@@ -33,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumModelId);
                 UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelId);
 
-                return TestPathHelper.BuildAlbumPath(user.Id, album.Id);
+                return pathHelper.BuildAlbumPath(user.Id, album.Id);
             }
         }
 
@@ -44,7 +46,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return TestPathHelper.BuildOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
+                return pathHelper.BuildOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
             }
         }
 
@@ -57,14 +59,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
 
         public IEnumerable<string> GetTemporaryDirectories()
         {
-            string photoDirectoryPath = TestPathHelper.BuildPhotoDirectoryPath();
+            string photoDirectoryPath = pathHelper.BuildPhotoDirectoryPath();
             IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
 
             var temporaryPhotosDirectories = new Collection<string>();
 
             foreach (var userDirectory in usersDirectories)
             {
-                string temporaryPhotosDirectory = TestPathHelper.BuildTemporaryDirectoryPath(userDirectory);
+                string temporaryPhotosDirectory = pathHelper.BuildTemporaryDirectoryPath(userDirectory);
                 temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
             }
 
@@ -78,7 +80,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return TestPathHelper.BuildThumbnailsPath(user.Id, album.Id);
+                return pathHelper.BuildThumbnailsPath(user.Id, album.Id);
             }
         }
 
