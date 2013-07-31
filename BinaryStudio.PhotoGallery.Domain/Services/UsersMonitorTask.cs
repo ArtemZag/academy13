@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -9,11 +8,28 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         private const int MAX_INACTIVITY_PERIOD = 15;
 
         /// <summary>
-        /// Represents key-value pair, where key - userEmail, value - period of inactivity in minutes.
+        ///     Represents key-value pair, where key - userEmail, value - period of inactivity in minutes.
         /// </summary>
         private readonly ConcurrentDictionary<string, int> users = new ConcurrentDictionary<string, int>();
 
-        public int Period { get; set; }
+        private int period;
+
+        public UsersMonitorTask()
+        {
+            period = 2;
+        }
+
+        public int Period
+        {
+            get { return period; }
+            set
+            {
+                if (value > 0)
+                {
+                    period = value;
+                }
+            }
+        }
 
         public void Execute()
         {

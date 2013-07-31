@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using FluentScheduler;
 
@@ -7,9 +6,8 @@ namespace BinaryStudio.PhotoGallery.Web
 {
     internal class UsersMonitorRegistry : Registry
     {
-        private readonly IUsersMonitorTask usersMonitor;
-
         private readonly int monitorPeriod;
+        private readonly IUsersMonitorTask usersMonitor;
 
         public UsersMonitorRegistry(IUsersMonitorTask usersMonitor)
         {
