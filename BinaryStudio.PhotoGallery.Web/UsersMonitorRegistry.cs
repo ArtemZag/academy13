@@ -9,9 +9,9 @@ namespace BinaryStudio.PhotoGallery.Web
     {
         private readonly IUsersMonitorTask usersMonitor;
 
-        public UsersMonitorRegistry()
+        public UsersMonitorRegistry(IUsersMonitorTask usersMonitor)
         {
-            usersMonitor = DependencyResolver.Current.GetService<IUsersMonitorTask>();
+            this.usersMonitor = usersMonitor;
 
             Register();
         }

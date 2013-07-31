@@ -9,9 +9,9 @@ namespace BinaryStudio.PhotoGallery.Web
     {
         private readonly ICleanupTask cleanupTask;
 
-        public CleanupRegistry()
+        public CleanupRegistry(ICleanupTask cleanupTask)
         {
-            cleanupTask = DependencyResolver.Current.GetService<ICleanupTask>();
+            this.cleanupTask = cleanupTask;
 
             Register();
         }

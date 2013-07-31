@@ -3,8 +3,10 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.App_Start;
 using FluentScheduler;
+using Microsoft.Practices.Unity;
 using PerpetuumSoft.Knockout;
 
 namespace BinaryStudio.PhotoGallery.Web
@@ -28,15 +30,16 @@ namespace BinaryStudio.PhotoGallery.Web
 
             AttributeRoutingConfig.Start();
 
-            Bootstrapper.Initialise();
+            IUnityContainer container = Bootstrapper.Initialise();
             System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
 
             // todo: delete
             Database.Bootstrapper.Test();
 
             // todo
-            // TaskManager.Initialize(new CleanupRegistry());
-            // TaskManager.Initialize(new UsersMonitorRegistry());
+            // use container
+            // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
+            // TaskManager.Initialize(new UsersMonitorRegistry(container.Resolve<IUsersMonitorTask>()));
         }
     }
 }

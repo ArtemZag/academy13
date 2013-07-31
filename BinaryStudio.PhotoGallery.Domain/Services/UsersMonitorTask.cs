@@ -14,6 +14,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         /// <summary>
         /// Represents key-value pair, where key - userEmail, value - period of inactivity in minutes. 
+        /// todo: concurrent 
         /// </summary>
         private readonly Dictionary<string, int> users = new Dictionary<string, int>();
         
