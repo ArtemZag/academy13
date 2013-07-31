@@ -55,15 +55,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             }
         }
 
-        public IEnumerable<string> GetThumnailsPathes(PhotoModel photo)
+        public IEnumerable<string> GetThumnailsPaths(PhotoModel photo)
         {
             var result = new Collection<string>();
 
             string thumbnailsDirectoryPath = GetThumbnailsDirectoryPath(photo);
 
-            IEnumerable<string> thumnailFormatsPathes = Directory.EnumerateDirectories(thumbnailsDirectoryPath);
+            IEnumerable<string> thumnailFormatsPaths = Directory.EnumerateDirectories(thumbnailsDirectoryPath);
 
-            foreach (string thumbnailFormatPath in thumnailFormatsPathes)
+            foreach (string thumbnailFormatPath in thumnailFormatsPaths)
             {
                 string currentThumbnail = Path.Combine(thumbnailFormatPath, photo.Id + photo.Format);
 
@@ -76,9 +76,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             return result;
         }
 
-        public IEnumerable<string> GetTemporaryDirectoriesPathes()
+        public IEnumerable<string> GetTemporaryDirectoriesPaths()
         {
-            return pathUtil.BuildTemporaryDirectoriesPathes();
+            return pathUtil.BuildTemporaryDirectoriesPaths();
         }
 
         private string GetThumbnailsDirectoryPath(PhotoModel photo)

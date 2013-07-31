@@ -56,7 +56,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        public IEnumerable<string> BuildTemporaryDirectoriesPathes()
+        public IEnumerable<string> BuildTemporaryDirectoriesPaths()
         {
             string photoDirectoryPath = BuildPhotoDirectoryPath();
 

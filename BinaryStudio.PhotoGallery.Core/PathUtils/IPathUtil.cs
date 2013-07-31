@@ -12,6 +12,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         string BuildThumbnailsPath(int userId, int albumId);
 
-        IEnumerable<string> BuildTemporaryDirectoriesPathes();
+        IEnumerable<string> BuildTemporaryDirectoriesPaths();
     }
 }

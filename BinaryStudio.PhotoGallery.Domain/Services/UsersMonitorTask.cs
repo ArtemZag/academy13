@@ -52,7 +52,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public void SetOnline(string userEmail)
         {
-            users[userEmail] = 0;
+            if (users.ContainsKey(userEmail))
+            {
+                users[userEmail] = 0;
+            }
+            else
+            {
+                users.Add(userEmail, 0);                
+            }
         }
 
         public void SetOffline(string userEmail)
