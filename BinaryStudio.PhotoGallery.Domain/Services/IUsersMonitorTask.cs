@@ -5,6 +5,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     public interface IUsersMonitorTask : ITask
     {
         /// <summary>
+        /// Update period in minutes of users statuses.
+        /// </summary>
+        int Period { get; set; }
+
+        /// <summary>
         /// Marks and updates status of specified user as online.
         /// </summary>
         void SetOnline(string userEmail);

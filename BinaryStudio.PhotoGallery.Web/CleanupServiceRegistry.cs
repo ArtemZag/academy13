@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using FluentScheduler;
 

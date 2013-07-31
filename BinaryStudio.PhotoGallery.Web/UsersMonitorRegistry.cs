@@ -9,17 +9,20 @@ namespace BinaryStudio.PhotoGallery.Web
     {
         private readonly IUsersMonitorTask usersMonitor;
 
+        private readonly int monitorPeriod;
+
         public UsersMonitorRegistry(IUsersMonitorTask usersMonitor)
         {
+            monitorPeriod = int.Parse(ConfigurationManager.AppSettings["UsersMonitorMinutesPeriod"]);
+
             this.usersMonitor = usersMonitor;
+            this.usersMonitor.Period = monitorPeriod;
 
             Register();
         }
 
         private void Register()
         {
-            int monitorPeriod = int.Parse(ConfigurationManager.AppSettings["UsersMonitorPeriod"]);
-
             Schedule<IUsersMonitorTask>().ToRunEvery(monitorPeriod).Minutes();
         }
 
