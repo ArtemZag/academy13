@@ -73,7 +73,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return temporaryPhotosDirectories;
         }
 
-        private string GetDataDirectory()
+        public string GetDataDirectory()
         {
             return VirtualPathUtility.ToAbsolute(DATA_VIRTUAL_ROOT);
         }

@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Helpers\FormatHelper.cs" />
     <Compile Include="NotificationsUtils\INotificationSender.cs" />
     <Compile Include="PathUtils\IPathUtil.cs" />
     <Compile Include="PathUtils\PathUtil.cs" />
