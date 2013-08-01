@@ -12,33 +12,33 @@
     </head>
     <body>
         <nav class="navbar navbar-fixed-top">
-            <a href="../Home/Index" class="brand"><img src="~/Content/images/logo_small.png"/></a>
+            <a href="~/Home/Index" class="brand"><img src="~/Content/images/logo_small.png"/></a>
             <ul class="nav">
-                <li><a href="../Home/Gallery">Gallery</a></li>
-                <li><a href="../Home/Albums">Albums</a></li>
-                <li><a href="../Home/Groups">Groups</a></li>
+                <li><a href="~/Home/Gallery">Gallery</a></li>
+                <li><a href="~/Home/Albums">Albums</a></li>
+                <li><a href="~/Home/Groups">Groups</a></li>
             </ul>
             <ul class="nav pull-right">
                 <li class="navbar-search">
-                    <form action="../Search" method="GET" class="form-search">
+                    <form action="~/Search" method="GET" class="form-search">
                         <div class="input-append">
                             <input type="search" class="search-query" placeholder="Enter keyword">
                             <button type="button" class="btn btn-info">Search</button>
                         </div>
                     </form>
                 </li>
-                <li><a href="../Upload" class="btn btn-success">Upload</a></li>
+                <li><a href="~/Upload" class="btn btn-success">Upload</a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         <strong>@User.Identity.Name</strong>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="../AdminPanel/Index">Administration</a></li>
-                        <li><a href="../Home/News">Notifications</a></li>
-                        <li><a href="../Account/Settings">Settings</a></li>
+                        <li><a href="~/AdminPanel/Index">Administration</a></li>
+                        <li><a href="~/Home/News">Notifications</a></li>
+                        <li><a href="~/Account/Settings">Settings</a></li>
                         <li class="divider"></li>
-                        <li><a href="../Account/Signout">Sign out</a></li>
+                        <li><a href="~/Account/Signout">Sign out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -47,7 +47,5 @@
             @RenderBody()
         </div>
     </body>
-    @Scripts.Render("~/bundles/scripts/jquery")
-    @Scripts.Render("~/bundles/scripts/bootstrap")
 </html>
 
