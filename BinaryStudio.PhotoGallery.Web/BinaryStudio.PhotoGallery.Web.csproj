@@ -265,7 +265,6 @@
     <Content Include="Content\style-libs\opentip.css" />
     <Content Include="Content\upload-page.css" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\Helpers\animation-storage.js" />
     <Content Include="Scripts\Authorization\validation.js" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -277,6 +276,7 @@
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\dropzone.js" />
     <Content Include="Scripts\dropzone.min.js" />
+    <Content Include="Scripts\Helpers\animation.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
