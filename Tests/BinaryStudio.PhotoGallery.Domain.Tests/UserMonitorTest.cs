@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace BinaryStudio.PhotoGallery.Domain.Tests
 {
     [TestFixture]
-    public class UserMonitorTest
+    internal class UserMonitorTest
     {
         [SetUp]
         public void Setup()
