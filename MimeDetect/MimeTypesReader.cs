@@ -7,79 +7,81 @@
 // ***************************************************************
 // 
 // ***************************************************************
+
 using System;
 using System.Xml;
 
 namespace Winista.Mime
 {
-	/// <summary>
-	/// Summary description for MimeTypesReader.
-	/// </summary>
-	public sealed class MimeTypesReader
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		public MimeTypesReader()
-		{
-		}
+    /// <summary>
+    /// Summary description for MimeTypesReader.
+    /// </summary>
+    public sealed class MimeTypesReader
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="xmlFileStream"></param>
+        /// <returns></returns>
+        internal MimeType[] Read(System.IO.Stream xmlFileStream)
+        {
+            var document = new System.Xml.XmlDocument();
 
-		internal MimeType[] Read(System.String filepath)
-		{
-			MimeType[] types = null;
-			System.Xml.XmlDocument document = new System.Xml.XmlDocument();
-			document.Load(filepath);
+            document.Load(xmlFileStream);
 
-			types = Visit(document);
-			return types;
-			
-		}
+            return Visit(document);
+        }
 
-		/// <summary>Scan through the document. </summary>
-		private MimeType[] Visit(System.Xml.XmlDocument document)
+
+        /// <summary>Scan through the document. </summary>
+		private MimeType[] Visit(XmlDocument document)
 		{
 			MimeType[] types = null;
-			System.Xml.XmlElement element = (System.Xml.XmlElement) document.DocumentElement;
+			var element = document.DocumentElement;
+
 			if ((element != null) && element.Name.Equals("mime-types"))
 			{
 				types = ReadMimeTypes(element);
 			}
-			return (types == null) ? (new MimeType[0]) : types;
+			return types ?? (new MimeType[0]);
 		}
 
-		private MimeType[] ReadMimeTypes(System.Xml.XmlElement element)
+		private MimeType[] ReadMimeTypes(XmlElement element)
 		{
-			System.Collections.ArrayList types = new System.Collections.ArrayList();
-			System.Xml.XmlNodeList nodes = element.ChildNodes;
-			for (int i = 0; i < nodes.Count; i++)
+		    var types = new System.Collections.ArrayList();
+			var nodes = element.ChildNodes;
+
+			for (var i = 0; i < nodes.Count; i++)
 			{
-				System.Xml.XmlNode node = nodes.Item(i);
-				if (System.Convert.ToInt16(node.NodeType) == (short) System.Xml.XmlNodeType.Element)
-				{
-					System.Xml.XmlElement nodeElement = (System.Xml.XmlElement) node;
-					if (nodeElement.Name.Equals("mime-type"))
-					{
-						MimeType type = ReadMimeType(nodeElement);
-						if (type != null)
-						{
-							types.Add(type);
-						}
-					}
-				}
+				var node = nodes.Item(i);
+			    if (Convert.ToInt16(node.NodeType) != (short) XmlNodeType.Element) continue;
+
+			    var nodeElement = (XmlElement) node;
+
+			    if (!nodeElement.Name.Equals("mime-type")) continue;
+
+			    var type = ReadMimeType(nodeElement);
+
+			    if (type != null)
+			    {
+			        types.Add(type);
+			    }
 			}
             return (MimeType[])SupportUtil.ToArray(types, new MimeType[types.Count]);
 		}
 
 		/// <summary>Read Element named mime-type. </summary>
-		private MimeType ReadMimeType(System.Xml.XmlElement element)
+		private MimeType ReadMimeType(XmlElement element)
 		{
-			System.String name = null;
-			System.String description = null;
+			string name = null;
+			string description = null;
 			MimeType type = null;
-			System.Xml.XmlNamedNodeMap attrs = (System.Xml.XmlAttributeCollection) element.Attributes;
-			for (int i = 0; i < attrs.Count; i++)
+			var attrs = element.Attributes;
+
+			for (var i = 0; i < attrs.Count; i++)
 			{
-				System.Xml.XmlAttribute attr = (System.Xml.XmlAttribute) attrs.Item(i);
+				var attr = (XmlAttribute) attrs.Item(i);
+
 				if (attr.Name.Equals("name"))
 				{
 					name = attr.Value;
@@ -102,57 +104,58 @@ namespace Winista.Mime
 			catch (MimeTypeException mte)
 			{
 				// Mime Type not valid... just ignore it
-				System.Diagnostics.Trace.WriteLine(mte.ToString() + " ... Ignoring!");
+				System.Diagnostics.Trace.WriteLine(mte + " ... Ignoring!");
 				return null;
 			}
 
 			type.Description = description;
 			
-			System.Xml.XmlNodeList nodes = element.ChildNodes;
+			var nodes = element.ChildNodes;
 			for (int i = 0; i < nodes.Count; i++)
 			{
-				System.Xml.XmlNode node = nodes.Item(i);
-				if (System.Convert.ToInt16(node.NodeType) == (short) System.Xml.XmlNodeType.Element)
-				{
-					System.Xml.XmlElement nodeElement = (System.Xml.XmlElement) node;
-					if (nodeElement.Name.Equals("ext"))
-					{
-						ReadExt(nodeElement, type);
-					}
-					else if (nodeElement.Name.Equals("magic"))
-					{
-						ReadMagic(nodeElement, type);
-					}
-				}
+				var node = nodes.Item(i);
+			    if (Convert.ToInt16(node.NodeType) != (short) XmlNodeType.Element) continue;
+
+			    var nodeElement = (XmlElement) node;
+			    if (nodeElement.Name.Equals("ext"))
+			    {
+			        ReadExt(nodeElement, type);
+			    }
+			    else if (nodeElement.Name.Equals("magic"))
+			    {
+			        ReadMagic(nodeElement, type);
+			    }
 			}
+
 			return type;
 		}
 
 		/// <summary>Read Element named ext. </summary>
-		private void  ReadExt(System.Xml.XmlElement element, MimeType type)
+		private static void  ReadExt(XmlElement element, MimeType type)
 		{
-			System.Xml.XmlNodeList nodes = element.ChildNodes;
-			for (int i = 0; i < nodes.Count; i++)
+			var nodes = element.ChildNodes;
+			for (var i = 0; i < nodes.Count; i++)
 			{
-				System.Xml.XmlNode node = nodes.Item(i);
-				if (System.Convert.ToInt16(node.NodeType) == (short) System.Xml.XmlNodeType.Text)
+				var node = nodes.Item(i);
+				if (Convert.ToInt16(node.NodeType) == (short) XmlNodeType.Text)
 				{
-					type.AddExtension(((System.Xml.XmlText) node).Data);
+					type.AddExtension(((XmlText) node).Data);
 				}
 			}
 		}
 
 		/// <summary>Read Element named magic. </summary>
-		private void  ReadMagic(System.Xml.XmlElement element, MimeType mimeType)
+		private static void ReadMagic(XmlElement element, MimeType mimeType)
 		{
-			// element.getValue();
-			System.String offset = null;
-			System.String content = null;
-			System.String type = null;
-			System.Xml.XmlNamedNodeMap attrs = (System.Xml.XmlAttributeCollection) element.Attributes;
-			for (int i = 0; i < attrs.Count; i++)
+			string offset = null;
+			string content = null;
+			string type = null;
+			var attrs = element.Attributes;
+
+			for (var i = 0; i < attrs.Count; i++)
 			{
-				System.Xml.XmlAttribute attr = (System.Xml.XmlAttribute) attrs.Item(i);
+				var attr = (XmlAttribute) attrs.Item(i);
+
 				if (attr.Name.Equals("offset"))
 				{
 					offset = attr.Value;
@@ -160,7 +163,7 @@ namespace Winista.Mime
 				else if (attr.Name.Equals("type"))
 				{
 					type = attr.Value;
-                    if (String.Compare(type, "byte", true) == 0)
+                    if (string.Compare(type, "byte", true) == 0)
                     {
                         type = "System.Byte";
                     }
@@ -170,9 +173,10 @@ namespace Winista.Mime
 					content = attr.Value;
 				}
 			}
+
 			if ((offset != null) && (content != null))
 			{
-				mimeType.AddMagic(System.Int32.Parse(offset), type, content);
+				mimeType.AddMagic(Int32.Parse(offset), type, content);
 			}
 		}
 	}

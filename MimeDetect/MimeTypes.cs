@@ -8,6 +8,10 @@
 // 
 // ***************************************************************
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Pipes;
 
 namespace Winista.Mime
 {
@@ -18,22 +22,22 @@ namespace Winista.Mime
     {
         #region Class Members
         /// <summary>The default <code>application/octet-stream</code> MimeType </summary>
-		public const System.String DEFAULT = "application/octet-stream";
+		public const string DEFAULT = "application/octet-stream";
 		
 		/// <summary>All the registered MimeTypes </summary>
-		private System.Collections.ArrayList types = new System.Collections.ArrayList();
+		private readonly ArrayList _types = new ArrayList();
 		
 		/// <summary>All the registered MimeType indexed by name </summary>
-		private System.Collections.Hashtable typesIdx = new System.Collections.Hashtable();
+		private readonly Hashtable _typesIdx = new Hashtable();
 
 		/// <summary>MimeTypes indexed on the file extension </summary>
-		private System.Collections.IDictionary extIdx = new System.Collections.Hashtable();
+		private readonly IDictionary _extIdx = new Hashtable();
 		
 		/// <summary>List of MimeTypes containing a magic char sequence </summary>
-		private System.Collections.IList magicsIdx = new System.Collections.ArrayList();
+		private readonly IList _magicsIdx = new ArrayList();
 		
 		/// <summary>The minimum length of data to provide to check all MimeTypes </summary>
-		private int m_iMinLength = 0;
+		private int _minLength = 0;
        
 
         /// <summary> My registered instances
@@ -46,11 +50,24 @@ namespace Winista.Mime
         #endregion
 
         /// <summary>Should never be instanciated from outside </summary>
-		public MimeTypes(System.String strFilepath)
-		{
-			MimeTypesReader reader = new MimeTypesReader();
-            Add(reader.Read(strFilepath));
-		}
+		public MimeTypes(string strFilepath)
+        {
+            MimeType[] mimeTypes;
+
+            using (var fileStream = new FileStream(strFilepath, FileMode.Open, FileAccess.Read))
+            {
+                var reader = new MimeTypesReader();
+                mimeTypes = reader.Read(fileStream);
+            }
+            
+            this.Add(mimeTypes);
+        }
+
+	    public MimeTypes(Stream xmlFileStream)
+	    {
+	        var reader = new MimeTypesReader();
+            this.Add(reader.Read(xmlFileStream));
+	    }
 
 		/// <summary> Return the minimum length of data to provide to analyzing methods
 		/// based on the document's content in order to check all the known
@@ -62,7 +79,7 @@ namespace Winista.Mime
 		{
 			get
 			{
-				return m_iMinLength;
+				return _minLength;
 			}
 			
 		}
@@ -72,7 +89,7 @@ namespace Winista.Mime
 		/// </param>
 		/// <returns> A MimeTypes instance for the specified filepath xml file.
 		/// </returns>
-		public static MimeTypes Get(System.String filepath)
+		public static MimeTypes Get(string filepath)
 		{
 			MimeTypes instance = null;
 			lock (instances.SyncRoot)
@@ -94,7 +111,7 @@ namespace Winista.Mime
 		/// <returns> the Mime Content Type of the specified document URL, or
 		/// <code>null</code> if none is found.
 		/// </returns>
-		public MimeType GetMimeType(System.Uri url)
+		public MimeType GetMimeType(Uri url)
 		{
 			return GetMimeType(url.AbsolutePath);
 		}
@@ -105,19 +122,18 @@ namespace Winista.Mime
 		/// <returns> the Mime Content Type of the specified document name, or
 		/// <code>null</code> if none is found.
 		/// </returns>
-		public MimeType GetMimeType(System.String name)
+		public MimeType GetMimeType(string name)
 		{
-			MimeType[] founds = GetMimeTypes(name);
+			var founds = GetMimeTypes(name);
+
 			if ((founds == null) || (founds.Length < 1))
 			{
 				// No mapping found, just return null
 				return null;
 			}
-			else
-			{
-				// Arbitraly returns the first mapping
-				return founds[0];
-			}
+		    
+            // Arbitraly returns the first mapping
+		    return founds[0];
 		}
 
 		/// <summary> Find the Mime Content Type of a stream from its content.
@@ -143,9 +159,8 @@ namespace Winista.Mime
 			{
 				return null;
 			}
-			System.Collections.IEnumerator iter = magicsIdx.GetEnumerator();
-			MimeType type = null;
-			// TODO: This is a very naive first approach (scanning all the magic
+			var iter = _magicsIdx.GetEnumerator();
+		    // TODO: This is a very naive first approach (scanning all the magic)
 			//       bytes since one is matching.
 			//       A first improvement could be to use a search path on the magic
 			//       bytes.
@@ -153,13 +168,15 @@ namespace Winista.Mime
 			//       (the longuest) magic sequence (not the first that is matching).
 			while (iter.MoveNext())
 			{
-				type = (MimeType) iter.Current;
-				if (type.Matches(data))
+			    var type = (MimeType) iter.Current;
+
+			    if (type.Matches(data))
 				{
 					return type;
 				}
 			}
-			return null;
+
+		    return null;
 		}
 
 		/// <summary> Find the Mime Content Type of a document from its name and its content.
@@ -174,12 +191,13 @@ namespace Winista.Mime
 		/// </returns>
 		/// <seealso cref="#getMinLength()">
 		/// </seealso>
-		public MimeType GetMimeType(System.String name, sbyte[] data)
+		public MimeType GetMimeType(string name, sbyte[] data)
 		{
 			
 			// First, try to get the mime-type from the name
 			MimeType mimeType = null;
-			MimeType[] mimeTypes = GetMimeTypes(name);
+			var mimeTypes = GetMimeTypes(name);
+
 			if (mimeTypes == null)
 			{
 				// No mime-type found, so trying to analyse the content
@@ -201,56 +219,61 @@ namespace Winista.Mime
 		}
 
 		/// <summary> Return a MimeType from its name.</summary>
-		public MimeType ForName(System.String name)
+		public MimeType ForName(string name)
 		{
-			return (MimeType) typesIdx[name];
+			return (MimeType) _typesIdx[name];
 		}
 
 		/// <summary> Add the specified mime-types in the repository.</summary>
-		/// <param name="types">are the mime-types to add.
+		/// <param name="mimeTypes">are the mime-types to add.
 		/// </param>
-		internal void Add(MimeType[] types)
+		internal void Add(MimeType[] mimeTypes)
 		{
-			if (types == null)
+		    if (mimeTypes == null)
 			{
-				return ;
+				return;
 			}
-			for (int i = 0; i < types.Length; i++)
-			{
-				Add(types[i]);
-			}
+
+		    foreach (var type in mimeTypes)
+		    {
+		        Add(type);
+		    }
 		}
 
-		/// <summary> Add the specified mime-type in the repository.</summary>
+	    /// <summary> Add the specified mime-type in the repository.</summary>
 		/// <param name="type">is the mime-type to add.
 		/// </param>
 		internal void Add(MimeType type)
 		{
-			typesIdx[type.Name] = type;
-			types.Add(type);
+			_typesIdx[type.Name] = type;
+			_types.Add(type);
+
 			// Update minLentgth
-			m_iMinLength = System.Math.Max(m_iMinLength, type.MinLength);
+			_minLength = System.Math.Max(_minLength, type.MinLength);
+
 			// Update the extensions index...
-			System.String[] exts = type.Extensions;
+			var exts = type.Extensions;
+
 			if (exts != null)
 			{
-				for (int i = 0; i < exts.Length; i++)
+				foreach (string ext in exts)
 				{
-					System.Collections.IList list = (System.Collections.IList) extIdx[exts[i]];
-					if (list == null)
-					{
-						// No type already registered for this extension...
-						// So, create a list of types
-						list = new System.Collections.ArrayList();
-						extIdx[exts[i]] = list;
-					}
-					list.Add(type);
+				    var list = (IList) _extIdx[ext];
+
+				    if (list == null)
+				    {
+				        // No type already registered for this extension...
+				        // So, create a list of types
+				        list = new ArrayList();
+				        _extIdx[ext] = list;
+				    }
+				    list.Add(type);
 				}
 			}
 			// Update the magics index...
 			if (type.HasMagic())
 			{
-				magicsIdx.Add(type);
+				_magicsIdx.Add(type);
 			}
 		}
 
@@ -259,17 +282,21 @@ namespace Winista.Mime
 		/// </summary>
 		private MimeType[] GetMimeTypes(System.String name)
 		{
-			System.Collections.IList mimeTypes = null;
-			int index = name.LastIndexOf((System.Char) '.');
+			IList mimeTypes = null;
+
+			var index = name.LastIndexOf('.');
+
 			if ((index != - 1) && (index != name.Length - 1))
 			{
 				// There's an extension, so try to find
 				// the corresponding mime-types
-				System.String ext = name.Substring(index + 1);
-				mimeTypes = (System.Collections.IList) extIdx[ext];
+				var ext = name.Substring(index + 1);
+				mimeTypes = (IList) _extIdx[ext];
 			}
 			
-			return (mimeTypes != null)?(MimeType[]) SupportUtil.ToArray(mimeTypes, new MimeType[mimeTypes.Count]):null;
+			return (mimeTypes != null)
+                ? (MimeType[]) SupportUtil.ToArray(mimeTypes, new MimeType[mimeTypes.Count])
+                : null;
 		}
 	}
 }

@@ -19,34 +19,34 @@ namespace Winista.Mime
 	{
 		#region Private Members
 		/// <summary>The primary and sub types separator </summary>
-		private const System.String SEPARATOR = "/";
+		private const String SEPARATOR = "/";
 		
 		/// <summary>The parameters separator </summary>
-		private const System.String PARAMS_SEP = ";";
+		private const String PARAMS_SEP = ";";
 		
 		/// <summary>Special characters not allowed in content types. </summary>
-		private const System.String SPECIALS = "()<>@,;:\\\"/[]?=";
+		private const String SPECIALS = "()<>@,;:\\\"/[]?=";
 				
 		/// <summary>The Mime-Type full name </summary>
-		private System.String m_strName = null;
+		private String _strName = null;
 		
 		/// <summary>The Mime-Type primary type </summary>
-		private System.String m_strPrimary = null;
+		private String _strPrimary = null;
 		
 		/// <summary>The Mime-Type sub type </summary>
-		private System.String m_strSub = null;
+		private String _strSub = null;
 		
 		/// <summary>The Mime-Type description </summary>
-		private System.String m_strDescription = null;
+		private String _strDescription = null;
 		
 		/// <summary>The Mime-Type associated extensions </summary>
-		private System.Collections.ArrayList m_collExtensions = null;
+		private ArrayList _collExtensions = null;
 		
 		/// <summary>The magic bytes associated to this Mime-Type </summary>
-		private System.Collections.ArrayList m_collMagics = null;
+		private ArrayList _collMagics = null;
 		
 		/// <summary>The minimum length of data to provides for magic analyzis </summary>
-		private Int32 m_iMinLength = 0;
+		private Int32 _minLength = 0;
 
 		#endregion
 
@@ -88,33 +88,33 @@ namespace Winista.Mime
 		/// <summary> Return the name of this mime-type.</summary>
 		/// <returns> the name of this mime-type.
 		/// </returns>
-		public System.String Name
+		public string Name
 		{
 			get
 			{
-				return m_strName;
+				return _strName;
 			}
 			
 		}
 		/// <summary> Return the primary type of this mime-type.</summary>
 		/// <returns> the primary type of this mime-type.
 		/// </returns>
-		public System.String PrimaryType
+		public string PrimaryType
 		{
 			get
 			{
-				return m_strPrimary;
+				return _strPrimary;
 			}
 			
 		}
 		/// <summary> Return the sub type of this mime-type.</summary>
 		/// <returns> the sub type of this mime-type.
 		/// </returns>
-		public System.String SubType
+		public string SubType
 		{
 			get
 			{
-				return m_strSub;
+				return _strSub;
 			}
 			
 		}
@@ -123,18 +123,18 @@ namespace Winista.Mime
 		/// <returns> the description of this mime-type.
 		/// </returns>
 		/// <summary> Set the description of this mime-type.</summary>
-		/// <param name="description">the description of this mime-type.
+		/// <param name="Description">the description of this mime-type.
 		/// </param>
-		internal System.String Description
+		internal string Description
 		{
 			get
 			{
-				return m_strDescription;
+				return _strDescription;
 			}
 			
 			set
 			{
-				this.m_strDescription = value;
+				this._strDescription = value;
 			}
 			
 		}
@@ -145,7 +145,7 @@ namespace Winista.Mime
 		{
 			get
 			{
-				return (System.String[]) SupportUtil.ToArray(m_collExtensions, new System.String[m_collExtensions.Count]);
+				return (System.String[]) SupportUtil.ToArray(_collExtensions, new System.String[_collExtensions.Count]);
 			}
 			
 		}
@@ -153,7 +153,7 @@ namespace Winista.Mime
 		{
 			get
 			{
-				return m_iMinLength;
+				return _minLength;
 			}
 			
 		}
@@ -171,12 +171,12 @@ namespace Winista.Mime
 		/// <throws>  MimeTypeException if something wrong occurs during the </throws>
 		/// <summary>         parsing/cleaning of the specified type.
 		/// </summary>
-		public static System.String Clean(System.String type)
+		public static string Clean(string type)
 		{
 			return (new MimeType(type)).Name;
 		}
 
-		public override System.String ToString()
+		public override string ToString()
 		{
 			return Name;
 		}
@@ -191,13 +191,13 @@ namespace Winista.Mime
 		/// <returns> <code>true</code> if this mime-type is equal to the object
 		/// argument; <code>false</code> otherwise.
 		/// </returns>
-		public  override bool Equals(System.Object obj)
+		public  override bool Equals(object obj)
 		{
 			try
 			{
 				return ((MimeType) obj).Name.Equals(this.Name);
 			}
-			catch (System.Exception e)
+			catch
 			{
 				return false;
 			}
@@ -221,7 +221,7 @@ namespace Winista.Mime
 		/// </param>
 		internal void AddExtension(System.String ext)
 		{
-			m_collExtensions.Add(ext);
+			_collExtensions.Add(ext);
 		}
 		
 		internal void AddMagic(int offset, System.String type, System.String magic)
@@ -234,14 +234,14 @@ namespace Winista.Mime
 			Magic m = new Magic(this, offset, type, magic);
 			if (m != null)
 			{
-				m_collMagics.Add(m);
-				m_iMinLength = System.Math.Max(m_iMinLength, m.Size());
+				_collMagics.Add(m);
+				_minLength = System.Math.Max(_minLength, m.Size());
 			}
 		}
 		
 		internal bool HasMagic()
 		{
-			return (m_collMagics.Count > 0);
+			return (_collMagics.Count > 0);
 		}
 		
 		public bool Matches(System.String url)
@@ -251,7 +251,7 @@ namespace Winista.Mime
 			if ((index != - 1) && (index < url.Length - 1))
 			{
 				// There's an extension, so try to find if it matches mines
-				match = m_collExtensions.Contains(url.Substring(index + 1));
+				match = _collExtensions.Contains(url.Substring(index + 1));
 			}
 			return match;
 		}
@@ -264,9 +264,9 @@ namespace Winista.Mime
 			}
 			
 			Magic tested = null;
-			for (int i = 0; i < m_collMagics.Count; i++)
+			for (int i = 0; i < _collMagics.Count; i++)
 			{
-				tested = (Magic) m_collMagics[i];
+				tested = (Magic) _collMagics[i];
 				if (tested.Matches(data))
 				{
 					return true;
@@ -297,11 +297,11 @@ namespace Winista.Mime
 			}
 			
 			// All is ok, assign values
-			this.m_strName = primary + SEPARATOR + clearedSub;
-			this.m_strPrimary = primary;
-			this.m_strSub = clearedSub;
-			this.m_collExtensions = new System.Collections.ArrayList();
-			this.m_collMagics = new System.Collections.ArrayList();
+			this._strName = primary + SEPARATOR + clearedSub;
+			this._strPrimary = primary;
+			this._strSub = clearedSub;
+			this._collExtensions = new System.Collections.ArrayList();
+			this._collMagics = new System.Collections.ArrayList();
 		}
 
 		/// <summary>Checks if the specified primary or sub type is valid. </summary>

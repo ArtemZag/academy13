@@ -7,8 +7,8 @@
 // ***************************************************************
 // 
 // ***************************************************************
+
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Winista.Mime
@@ -22,15 +22,15 @@ namespace Winista.Mime
         /// <returns>The transformed array</returns>
         public static sbyte[] ToSByteArray(byte[] byteArray)
         {
-            sbyte[] sbyteArray = null;
-            if (byteArray != null)
+            if (byteArray == null) return null;
+
+            var sbyteArray = new sbyte[byteArray.Length];
+
+            for (var index = 0; index < byteArray.Length; index++)
             {
-                sbyteArray = new sbyte[byteArray.Length];
-                for (int index = 0; index < byteArray.Length; index++)
-                {
-                    sbyteArray[index] = (sbyte)byteArray[index];
-                }
+                sbyteArray[index] = (sbyte)byteArray[index];
             }
+
             return sbyteArray;
         }
 
@@ -39,9 +39,9 @@ namespace Winista.Mime
         /// </summary>
         /// <param name="sourceString">The string to be converted</param>
         /// <returns>The new array of bytes</returns>
-        public static byte[] ToByteArray(System.String sourceString)
+        public static byte[] ToByteArray(string sourceString)
         {
-            return System.Text.UTF8Encoding.UTF8.GetBytes(sourceString);
+            return Encoding.UTF8.GetBytes(sourceString);
         }
 
         /// <summary>
@@ -49,15 +49,15 @@ namespace Winista.Mime
         /// </summary>
         /// <param name="tempObjectArray">Array to convert.</param>
         /// <returns>An array of byte type elements.</returns>
-        public static byte[] ToByteArray(System.Object[] tempObjectArray)
+        public static byte[] ToByteArray(object[] tempObjectArray)
         {
-            byte[] byteArray = null;
-            if (tempObjectArray != null)
-            {
-                byteArray = new byte[tempObjectArray.Length];
-                for (int index = 0; index < tempObjectArray.Length; index++)
-                    byteArray[index] = (byte)tempObjectArray[index];
-            }
+            if (tempObjectArray == null) return null;
+
+            var byteArray = new byte[tempObjectArray.Length];
+
+            for (var index = 0; index < tempObjectArray.Length; index++)
+                byteArray[index] = (byte)tempObjectArray[index];
+
             return byteArray;
         }
 
@@ -66,14 +66,14 @@ namespace Winista.Mime
         /// </summary>
         /// <param name="objects">The array into which the elements of the collection will be stored.</param>
         /// <returns>The array containing all the elements of the collection.</returns>
-        public static System.Object[] ToArray(System.Collections.ICollection c, System.Object[] objects)
+        public static Object[] ToArray(System.Collections.ICollection c, Object[] objects)
         {
-            int index = 0;
+            var index = 0;
 
-            System.Type type = objects.GetType().GetElementType();
-            System.Object[] objs = (System.Object[])Array.CreateInstance(type, c.Count);
+            var type = objects.GetType().GetElementType();
+            var objs = (Object[])Array.CreateInstance(type, c.Count);
 
-            System.Collections.IEnumerator e = c.GetEnumerator();
+            var e = c.GetEnumerator();
 
             while (e.MoveNext())
                 objs[index++] = e.Current;
@@ -92,13 +92,13 @@ namespace Winista.Mime
         /// <returns>An array of byte type elements.</returns>
         public static byte[] ToByteArray(sbyte[] tempObjectArray)
         {
-            byte[] byteArray = null;
-            if (tempObjectArray != null)
-            {
-                byteArray = new byte[tempObjectArray.Length];
-                for (int index = 0; index < tempObjectArray.Length; index++)
-                    byteArray[index] = (byte)tempObjectArray[index];
-            }
+            if (tempObjectArray == null) return null;
+
+            var byteArray = new byte[tempObjectArray.Length];
+
+            for (var index = 0; index < tempObjectArray.Length; index++)
+                byteArray[index] = (byte)tempObjectArray[index];
+
             return byteArray;
         }
     }
