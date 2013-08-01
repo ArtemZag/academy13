@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
+using System.Reflection;
 
 namespace Winista.Mime
 {
@@ -49,24 +50,37 @@ namespace Winista.Mime
 		private static System.Collections.IDictionary instances = new System.Collections.Hashtable();
         #endregion
 
+        /// <summary>
+        /// Read mime types from embedded resource file 'mime-types.xml'
+        /// </summary>
+	    public MimeTypes()
+	    {
+            var assembly = Assembly.GetExecutingAssembly();
+            const string resourceName = "Winista.Mime.mime-types.xml";
+
+            var stream = assembly.GetManifestResourceStream(resourceName);
+
+            this.Add(GeMimeTypes(stream));
+	    }
+
         /// <summary>Should never be instanciated from outside </summary>
 		public MimeTypes(string strFilepath)
         {
-            MimeType[] mimeTypes;
-
             using (var fileStream = new FileStream(strFilepath, FileMode.Open, FileAccess.Read))
             {
-                var reader = new MimeTypesReader();
-                mimeTypes = reader.Read(fileStream);
+                this.Add(GeMimeTypes(fileStream));
             }
-            
-            this.Add(mimeTypes);
         }
 
 	    public MimeTypes(Stream xmlFileStream)
 	    {
-	        var reader = new MimeTypesReader();
-            this.Add(reader.Read(xmlFileStream));
+            this.Add(GeMimeTypes(xmlFileStream));
+	    }
+
+        private static MimeType[] GeMimeTypes(Stream xmlFileStream)
+	    {
+            var reader = new MimeTypesReader();
+            return reader.Read(xmlFileStream);
 	    }
 
 		/// <summary> Return the minimum length of data to provide to analyzing methods

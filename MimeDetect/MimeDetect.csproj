@@ -71,9 +71,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="mime-types.xml">
+    <EmbeddedResource Include="mime-types.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

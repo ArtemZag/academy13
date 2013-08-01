@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
                fileData = SupportUtil.ToSByteArray(data);
            }
 
-           var allMimeTypes = new MimeTypes("mime-types.xml");
+           var allMimeTypes = new MimeTypes();
 
            var mimeType = allMimeTypes.GetMimeType(fileData);
 

@@ -54,7 +54,7 @@ namespace Winista.Mime
 		/// <summary> Creates a MimeType from a String.</summary>
 		/// <param name="name">the MIME content type String.
 		/// </param>
-		public MimeType(System.String name)
+		public MimeType(String name)
 		{
 			if (name == null || name.Length <= 0)
 			{
