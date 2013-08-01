@@ -58,7 +58,12 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Helpers\FormatHelper.cs" />
+    <Compile Include="Helpers\IFormatHelper.cs" />
+    <Compile Include="IOUtils\FileWrapper.cs" />
+    <Compile Include="IOUtils\IFileWrapper.cs" />
     <Compile Include="NotificationsUtils\INotificationSender.cs" />
+    <Compile Include="IOUtils\DirectoryWrapper.cs" />
+    <Compile Include="IOUtils\IDirectoryWrapper.cs" />
     <Compile Include="PathUtils\IPathUtil.cs" />
     <Compile Include="PathUtils\PathUtil.cs" />
     <Compile Include="PathUtils\DeprecatedPathUtil.cs" />
@@ -86,6 +91,10 @@
     <ProjectReference Include="..\BinaryStudio.PhotoGallery.Models\BinaryStudio.PhotoGallery.Models.csproj">
       <Project>{489D5695-2C0E-4D21-B8BB-2814F9E49FF0}</Project>
       <Name>BinaryStudio.PhotoGallery.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MimeDetect\MimeDetect.csproj">
+      <Project>{4536b49b-9634-4b6a-b491-8e2df9aa2e98}</Project>
+      <Name>MimeDetect</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,35 +4,35 @@ using Winista.Mime;
 
 namespace BinaryStudio.PhotoGallery.Core.Helpers
 {
-   public static class FormatHelper
+    public class FormatHelper : IFormatHelper
     {
-       public static string GetMimeTypeOfFile(string fileName)
-       {
-           if (!File.Exists(fileName))
-           {
-               throw new FileNotFoundException(fileName + " not found");
-           }
+        public string GetMimeTypeOfFile(string fileName)
+        {
+            if (!File.Exists(fileName))
+            {
+                throw new FileNotFoundException(fileName + " not found");
+            }
 
-           sbyte[] fileData;
+            sbyte[] fileData;
 
-           using (var srcFile = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-           {
-               var data = new byte[srcFile.Length];
-               srcFile.Read(data, 0, (Int32) srcFile.Length);
-               fileData = SupportUtil.ToSByteArray(data);
-           }
+            using (var srcFile = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                var data = new byte[srcFile.Length];
+                srcFile.Read(data, 0, (Int32) srcFile.Length);
+                fileData = SupportUtil.ToSByteArray(data);
+            }
 
-           var allMimeTypes = new MimeTypes();
+            var allMimeTypes = new MimeTypes();
 
-           var mimeType = allMimeTypes.GetMimeType(fileData);
+            var mimeType = allMimeTypes.GetMimeType(fileData);
 
-           return mimeType != null ? mimeType.Name : "unknown/unknown";
-       }
+            return mimeType != null ? mimeType.Name : "unknown/unknown";
+        }
 
-       public static bool IsImageFile(string fileName)
-       {
-           var fileMime = GetMimeTypeOfFile(fileName);
-           return fileMime.StartsWith("image/");
-       }
+        public bool IsImageFile(string fileName)
+        {
+            var fileMime = GetMimeTypeOfFile(fileName);
+            return fileMime.StartsWith("image/");
+        }
     }
 }
