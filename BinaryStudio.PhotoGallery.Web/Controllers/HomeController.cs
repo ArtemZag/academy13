@@ -30,18 +30,28 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// </summary>
         /// <returns>page with flow of public pictures</returns>
         [GET("Index/{photoNum}")]
-        public ActionResult Index(int photoNum = 0)
+        public ActionResult Index()
         {   
             var viewmodels = _photoService.GetPhotos(User.Identity.Name, 0, 30);
             return View(new InfoViewModel { UserEmail = User.Identity.Name, 
                                             Photos = viewmodels.Select(ModelConverter.GetViewModel).ToList()});
         }
 
+        //[POST("GetPhotosViaAjax")]
+        //public ActionResult GetPhotosViaAjax(int startIndex = 0, int endIndex = 30)
+        //{
+        //    gModel.Photos.AddRange(_photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
+        //                                        .Select(ModelConverter.GetViewModel).ToList());
+        //    gModel.PortionSubmit = true;
+        //    return Json(gModel);
+        //}
+
         [HttpPost]
-        public ActionResult Getphotos(int startIndex)
+        public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
         {
-            var viewmodels = _photoService.GetPhotos(User.Identity.Name, startIndex, 30+startIndex);
-            return Json( viewmodels.Select(ModelConverter.GetViewModel).ToList());
+            var photos = _photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
+                                  .Select(ModelConverter.GetViewModel).ToList();
+            return Json(photos);
         }
 
         [GET("ToPhoto/{albumId}/{photoId}")]

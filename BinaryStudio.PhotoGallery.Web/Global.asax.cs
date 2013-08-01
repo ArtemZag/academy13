@@ -22,6 +22,8 @@ namespace BinaryStudio.PhotoGallery.Web
 
             BootstrapBundleConfig.RegisterBundles();
 
+            ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
+
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

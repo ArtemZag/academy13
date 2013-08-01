@@ -1,12 +1,13 @@
-﻿@using PerpetuumSoft.Knockout
+﻿@using Newtonsoft.Json
+@using PerpetuumSoft.Knockout
 @using System.Web.Optimization
 @model BinaryStudio.PhotoGallery.Web.ViewModels.InfoViewModel
 @using BinaryStudio.PhotoGallery.Core.Helpers
 
-@*<script src="@Url.Content("~/Scripts/knockout-2.3.0.js")" type="text/javascript"></script> <!-- Use your version of knockout -->
+<script src="@Url.Content("~/Scripts/knockout-2.3.0.js")" type="text/javascript"></script> <!-- Use your version of knockout -->
 <script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"></script>*@
-@Scripts.Render("~/bundles/scripts/jquery")
+<script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")" type="text/javascript"></script> <!-- Use your version of jQuery -->
 @Scripts.Render("~/bundles/scripts/bootstrap")
 @Scripts.Render("~/Scripts/photo_placer.js")
 @Styles.Render("~/Content/photo_flow.css")
@@ -14,17 +15,110 @@
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     var preloaderpath = PathHelper.ImageDir + "/photopreloader.gif";
-    var ko = Html.CreateKnockoutContext();  
-    
+    var ko = Html.CreateKnockoutContext();
 }
 <img src="@preloaderpath" id="photopreloader" />
 <div id="photoWrapper">
-    @foreach(var photo in Model.Photos)
+    @using(var photos = ko.Foreach(it => it.Photos))
     {
-        <div class="photoContainer invisible" onclick="location.href = '../Home/ToPhoto/@photo.AlbumId/@photo.PhotoId'">
-            <img src="@photo.PhotoThumbSource"/>
+        <div class="photoContainer invisible">
+            <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
         </div>
-    }  		
+    }
 </div>
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#photopreloader").hide();
+        $(window).load(function() {
+            prepareToShow();
+        });
+        $(window).resize(calcPhotoSizes);
+        $(window).scroll(scrolled);
+        //the start index of photo to get
+    
+        var scrHeight = $(window).height();
+        var startIndex = 30;
+        var busy = false;
 
+        function scrolled() {
+            if (!busy) {
+                busy = true;
+                var underScroll = $(this).scrollTop();
+                var phWrapHeight = $("div#photoWrapper").height();
+                var scrollPos = scrHeight + underScroll;
+
+                if (phWrapHeight - scrollPos < 300) {
+                    ajaxPhotoLoad();
+                } else {
+                    busy = false;
+                }
+                    
+            }
+        }
+
+        // todo: Maby needs to refactor, external variable. 
+        var ajaxContainer = false;
+
+        function calcPhotoSizes() {
+            var width = 0;
+            var firstElemInRow = 0;
+            var margins = 0;
+            console.log("calcphotosizes");
+            var wrapperWidth = $('div#photoWrapper').width();
+            var marginPhotoCont = parseInt($('.photoContainer').css('margin-left'))
+                + parseInt($('.photoContainer').css('margin-right'));
+            var photos;
+            
+            photos = $('div.photoContainer > img');
+
+            jQuery.each(photos, function (indPh) {
+                width += this.width;
+                margins += marginPhotoCont;
+                if (width > wrapperWidth - margins) {
+                    var coef = (wrapperWidth - margins) / width;
+                    for (var indSub = firstElemInRow; indSub <= indPh; indSub++) {
+                        $(photos[indSub]).closest(".photoContainer").css('width', (photos[indSub].width * coef) - 0.2);
+                    }
+                    firstElemInRow = indPh + 1;
+                    width = 0;
+                    margins = 0;
+                }
+                else if (indPh == photos.length - 1) {
+                    for (indSub = firstElemInRow; indSub <= indPh; indSub++) {
+                        $(photos[indSub]).closest(".photoContainer")
+                            .css('width', photos[indSub].width);
+                    }
+                }
+            });
+        }
+    
+        function prepareToShow() {
+            calcPhotoSizes();
+            console.log("herePrepare");
+            $('div#photoWrapper > div.invisible').removeClass("invisible");
+        }
+
+        function ajaxPhotoLoad() {
+            $("#photopreloader").show();
+            $.post("@Url.Action("GetPhotosViaAjax","Home")", {startIndex : startIndex, endIndex : startIndex+30}, getPhotos);
+        }
+
+        function getPhotos(photos) {
+            if (photos.length > 0) {
+                window.viewModel.Photos(window.viewModelJs.Photos.concat(photos));
+                ajaxContainer = true;
+                prepareToShow();
+                busy = false;
+                startIndex += 30;
+            } else {
+                $(window).unbind("scroll");
+            }
+            $("#photopreloader").hide();
+        }
+
+    });
+    var Test;
+</script>
+
+@ko.Apply(Model)
