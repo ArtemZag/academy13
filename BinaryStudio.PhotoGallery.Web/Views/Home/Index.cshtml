@@ -106,7 +106,8 @@
 
         function getPhotos(photos) {
             if (photos.length > 0) {
-                window.viewModel.Photos(window.viewModelJs.Photos.concat(photos));
+                window.viewModelJs.Photos = window.viewModelJs.Photos.concat(photos);
+                window.viewModel.Photos(window.viewModelJs.Photos);
                 ajaxContainer = true;
                 prepareToShow();
                 busy = false;
