@@ -198,7 +198,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceRegistry.cs" />
+    <Compile Include="CleanupServiceRegistry.cs" />
+    <Compile Include="UsersMonitorRegistry.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />

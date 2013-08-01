@@ -1,6 +1,6 @@
 ﻿namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
 {
-    class Facebook
+    public interface IFB : ISocialNetwork
     {
     }
 }

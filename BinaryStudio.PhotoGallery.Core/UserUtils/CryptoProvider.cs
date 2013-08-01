@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-using BinaryStudio.PhotoGallery.Core.Helpers;
 
 namespace BinaryStudio.PhotoGallery.Core.UserUtils
 {
     public class CryptoProvider : ICryptoProvider
     {
         private const int SALT_SIZE = 32;
-
-        private readonly Randomizer _randomizer = new Randomizer();
 
         public bool IsPasswordsEqual(string enteredPassword, string encryptedPasswordFromDb, string salt)
         {
@@ -18,7 +15,7 @@ namespace BinaryStudio.PhotoGallery.Core.UserUtils
 
         public string GetNewSalt()
         {
-            return _randomizer.GetString(SALT_SIZE);
+            return Randomizer.GetString(SALT_SIZE);
         }
 
         public string CreateHashForPassword(string password, string salt)

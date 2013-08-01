@@ -11,7 +11,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class CleanupTask : DbService, ICleanupTask
     {
-        private readonly IStorage storage;
+        private IStorage storage;
+
+        public IStorage Storage { set { storage = value; }}
 
         public CleanupTask(IUnitOfWorkFactory workFactory, IStorage storage) : base(workFactory)
         {
@@ -20,38 +22,32 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public void Execute()
         {
-            CleanPhotos();
-            CleanAlbums();
+            try
+            {
+                CleanPhotos();
+                CleanAlbums();
+            }
+            catch (Exception e)
+            {
+                throw new CleanupException(e);
+            }
         }
 
         private void CleanPhotos()
         {
-            List<PhotoModel> photosToCleanup;
-
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                photosToCleanup = unitOfWork.Photos.Filter(model => model.IsDeleted).ToList();
-            }
+            List<PhotoModel> photosToCleanup = GetPhotosForCleanup();
 
             photosToCleanup.ForEach(CleanPhoto);
-
             DeleteDbRows(photosToCleanup);
 
             CleanTemporaryPhotos();
         }
 
-        private void CleanTemporaryPhotos()
+        private List<PhotoModel> GetPhotosForCleanup()
         {
-            IEnumerable<string> temporaryPhotosDirectories = storage.GetTemporaryDirectories();
-
-            foreach (var temporaryDirectoryPath in temporaryPhotosDirectories)
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var directory = new DirectoryInfo(temporaryDirectoryPath);
-
-                foreach (var file in directory.GetFiles())
-                {
-                    file.Delete();
-                }
+                return unitOfWork.Photos.Filter(model => model.IsDeleted).ToList();
             }
         }
 
@@ -59,6 +55,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             CleanOriginal(photo);
             CleanThumbnails(photo);
+        }
+
+        private void CleanTemporaryPhotos()
+        {
+            IEnumerable<string> temporaryPhotosDirectories = storage.GetTemporaryDirectoriesPaths();
+
+            foreach (var temporaryDirectoryPath in temporaryPhotosDirectories)
+            {
+                var directory = new DirectoryInfo(temporaryDirectoryPath);
+
+                DeleteFiles(directory);
+            }
         }
 
         private void CleanOriginal(PhotoModel photo)
@@ -70,35 +78,36 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private void CleanThumbnails(PhotoModel photo)
         {
-            IEnumerable<string> thumbnailDirectories = storage.GetThumbnailFormatDirectories(photo);
+            IEnumerable<string> thumbnailPaths = storage.GetThumnailsPaths(photo);
 
-            foreach (var thumbnailFormatDirectory in thumbnailDirectories)
+            foreach (var currentThumbnail in thumbnailPaths)
             {
-                string thumbnailPath = Path.Combine(thumbnailFormatDirectory, photo.PhotoName);
-
-                DeleteFile(thumbnailPath);
+                DeleteFile(currentThumbnail);
             }
         }
 
         private void CleanAlbums()
         {
-            List<AlbumModel> albumsToCleanup;
-
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                albumsToCleanup = unitOfWork.Albums.Filter(model => model.IsDeleted).ToList();
-            }
+            List<AlbumModel> albumsToCleanup = GetAlbumsForCleanup();
 
             albumsToCleanup.ForEach(CleanAlbum);
 
             DeleteDbRows(albumsToCleanup);
         }
 
+        private List<AlbumModel> GetAlbumsForCleanup()
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Albums.Filter(model => model.IsDeleted).ToList();
+            }
+        } 
+
         private void CleanAlbum(AlbumModel album)
         {
             string albumPath = storage.GetAlbumPath(album);
 
-            DeleteFile(albumPath);
+            Directory.Delete(albumPath, true);
         }
 
         private void DeleteDbRows(IEnumerable<AlbumModel> albumsToCleanup)
@@ -123,16 +132,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        private void DeleteFiles(DirectoryInfo directory)
+        {
+            foreach (var file in directory.GetFiles())
+            {
+                file.Delete();
+            }
+        }
+
         private void DeleteFile(string path)
         {
-            try
-            {
-                File.Delete(path);
-            }
-            catch (Exception e)
-            {
-                throw new CleanupException(e);
-            }
+            File.Delete(path);
         }
     }
 }

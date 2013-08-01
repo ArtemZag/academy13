@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Text;
 
-namespace BinaryStudio.PhotoGallery.Core.Helpers
+namespace BinaryStudio.PhotoGallery.Core
 {
     // this class can implement other functions for generate something
     // that's why it was renamed to Randomizer
-    internal class Randomizer
+    public static class Randomizer
     {
-        private readonly Random _random = new Random();
+        private static readonly Random _random = new Random();
         private const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 
-        public string GetString(int size)
+        public static string GetString(int size)
         {
             var stringBuilder = new StringBuilder(size);
 
@@ -21,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             return stringBuilder.ToString();
         }
 
-        public int GetNumber(int maxNumber)
+        public static int GetNumber(int maxNumber)
         {
             return _random.Next(maxNumber);
         }

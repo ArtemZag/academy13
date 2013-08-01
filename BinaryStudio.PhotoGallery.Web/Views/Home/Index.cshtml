@@ -1,6 +1,8 @@
-﻿@using PerpetuumSoft.Knockout
+﻿@using BinaryStudio.PhotoGallery.Core.PathUtils
+@using PerpetuumSoft.Knockout
 @using System.Web.Optimization
 @model BinaryStudio.PhotoGallery.Web.ViewModels.InfoViewModel
+@using BinaryStudio.PhotoGallery.Core.PathUtils
 
 @*<script src="@Url.Content("~/Scripts/knockout-2.3.0.js")" type="text/javascript"></script> <!-- Use your version of knockout -->
 <script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"></script>
@@ -12,8 +14,7 @@
 
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    ViewBag.Title = "Users flow | Bingally";
-    var preloaderpath = PathHelper.ImageDir + "/photopreloader.gif";
+    var preloaderpath = DeprecatedPathUtil.ImageDir + "/photopreloader.gif";
     var ko = Html.CreateKnockoutContext();  
     
 }
@@ -28,7 +29,3 @@
 </div>
 
 
-
-@Scripts.Render("~/bundles/scripts/jquery")
-@Scripts.Render("~/bundles/scripts/bootstrap")
-@Scripts.Render("~/Scripts/photo_placer.js")
