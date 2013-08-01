@@ -54,11 +54,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 foreach (MultipartFileData file in provider.FileData)
                 {
                     // 
-                    /*if (!FormatHelper.IsImageFile(file.LocalFileName))
+                    if (!FormatHelper.IsImageFile(file.LocalFileName))
                     {
                         File.Delete(file.LocalFileName);
                         continue; // TODO need some exceptions for front-end side
-                    }*/
+                    }
 
                     var originalFileName = file.Headers.ContentDisposition.FileName.Replace("\"", "");
                     var newFilePath = string.Format("{0}/{1}", dirForSave, originalFileName);

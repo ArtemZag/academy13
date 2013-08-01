@@ -7,12 +7,13 @@
         addRemoveLinks: true,
         clickable: true,
         enqueueForUpload: true,
-        acceptedFiles: 'image/*'
+        acceptedFiles: 'image/*',
+
     };
     
     var dropzone = new Dropzone('.dropzone', dropzoneOptions);
     
-    dropzone.on("success", function(file, response) {
+/*    dropzone.on("success", function(file, response) {
 //        console.log(file);
 //        console.log(response);
 //        file.serverId = response.id;
@@ -31,5 +32,5 @@
 //            return;
 //        }
 //        $.get("../file/delete/" + file.serverId);
-    });
+    });*/
 });
