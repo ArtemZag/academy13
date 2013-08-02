@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
+using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -69,11 +71,30 @@ namespace BinaryStudio.PhotoGallery.Database
                     });
 
                 // Adding 100 photos from different users to album with ID 2(Academy)
-                for (int i = 0; i < 100; i++)
+                /*for (int i = 0; i < 100; i++)
                 {
                     unitOfWork.Photos.Add(2, random.Next(1, 7));
-                }
+                }*/
                 unitOfWork.SaveChanges();
+
+                ///////////////////////////////////////////////////////
+                for (int i = 0; i < 29; i++)
+                {
+                    var comm = new Collection<PhotoCommentModel>();
+                    for (int j = 0; j < Randomizer.GetNumber(10); j++)
+                    {
+                        comm.Add(new PhotoCommentModel(7,Randomizer.GetNumber(i),Randomizer.GetString(20),null));
+                    }
+                    unitOfWork.Photos.Add(new PhotoModel(3, 7){PhotoName = i + ".jpg",PhotoComments = comm});
+                }
+                
+                unitOfWork.Albums.Add(new AlbumModel("Test", 7));
+
+
+
+
+                unitOfWork.SaveChanges();
+
             }
 
             base.Seed(databaseContext);

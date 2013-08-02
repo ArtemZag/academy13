@@ -1,0 +1,72 @@
+﻿@using System.Web.Optimization
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@Scripts.Render("~/bundles/scripts/jquery")
+<script src="~/Scripts/knockout-2.3.0.js"></script>
+<script src="~/Scripts/PhotoPage/photo.js"></script>
+<script src="~/Scripts/PhotoPage/photoViewModel.js"></script>
+@Styles.Render("~/Content/photo-page/photo-page.css")
+
+
+<div id="leftSideMenuButton"></div>
+
+<div id="photoSegment">
+	
+    <div id="prevPhotoButton" data-bind="click: ShowPrevPhoto"><img id="prevPhotoButtonArrow"src="../../Content/images/2.png" width="85%"/></div>
+    <div id="photo" @*data-binding="foreach: Photos"*@>
+
+            <img id="mainPhoto" src="~/Content/images/rabbit.jpg" data-bind="click: ShowNextPhoto"/>
+     	
+    </div>
+    
+
+</div>
+
+
+
+<div id="actionSegment">
+    <div id="commentBlock" data-bind="foreach: self.comms">
+        
+        <div class="comment" >
+            <div class="commentInfo">
+                <div class="userPhoto">
+                    <img src="" alt="userFace" width="100%" height="100%"/>
+                </div>
+                <div class="userInfo">
+                    <div class="userName" data-bind="text: com.userfInfo.FirstName">
+                        Towstonog Alexander
+                    </div>
+                    <div class="dateOfCreating" data-bind="text: com.dateOfCreating">
+                        8/2/2013
+                    </div>
+
+                </div>
+                
+                <div class="rating">15</div>
+            </div>
+            <div class="commentText" data-bind="text: text">
+                lkahfkjh kjash kjfash khsalk jhsadkjfh kjsafh lksadjh fkjah klhsakj ksah kjsadfh kajshd kfjas
+            </div>
+            <div class="commentFooter">Answer</div>
+        </div>
+        
+        
+        
+    </div>
+
+
+	<div id="activityBlock">
+		<div>dgfdg</div>
+
+
+
+	</div>
+
+
+
+</div>
+

@@ -190,6 +190,8 @@
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PhotoCommentController.cs" />
+    <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -201,9 +203,17 @@
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
+    <Compile Include="ViewModels\PhotoPage\PhotoCommentViewModel.cs" />
+    <Compile Include="ViewModels\PhotoPage\PhotoPageViewModel.cs" />
     <Compile Include="ViewModels\PhotoViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
+    <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
+    <Content Include="Content\photo-page\off-screen-nav-autoprefixed.css" />
+    <Content Include="Content\photo-page\off-screen-nav.css" />
+    <Content Include="Scripts\off-screen-nav.js" />
+    <Content Include="Scripts\PhotoPage\photo.js" />
+    <Content Include="Content\photo-page\photo-page.css" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -289,6 +299,7 @@
     <Content Include="Scripts\knockout.mapping-latest.debug.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\perpetuum.knockout.js" />
+    <Content Include="Scripts\PhotoPage\photoViewModel.js" />
     <Content Include="Scripts\photo_placer.js" />
     <Content Include="Scripts\UserSlider.js" />
     <Content Include="Web.config">
@@ -315,6 +326,7 @@
     <Content Include="Views\AdminPanel\Index.cshtml" />
     <Content Include="Views\StaticContent\PageNotFound.cshtml" />
     <Content Include="Views\Home\Album.cshtml" />
+    <Content Include="Views\Photo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
