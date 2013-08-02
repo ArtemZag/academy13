@@ -20,8 +20,8 @@
 
     var baseURL = window.location.origin;
 
-    addClickEventTo($("#signin-button"), baseURL + 'Api/Account/Signin');
-    addClickEventTo($("#signup-button"), baseURL + 'Api/Account/Signup');
+    addClickEventTo($("#signin-button"), baseURL + '/Api/Account/Signin');
+    addClickEventTo($("#signup-button"), baseURL + '/Api/Account/Signup');
 
     loginPanel.find('input[type=email], input[type=password]')
         .on('focus', function() {
