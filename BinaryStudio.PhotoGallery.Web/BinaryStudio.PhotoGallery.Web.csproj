@@ -283,6 +283,7 @@
     <Content Include="Scripts\dropzone.js" />
     <Content Include="Scripts\dropzone.min.js" />
     <Content Include="Scripts\Helpers\animation.js" />
+    <Content Include="Scripts\Helpers\utils.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -300,6 +301,7 @@
     <Content Include="Scripts\perpetuum.knockout.js" />
     <Content Include="Scripts\photo_placer.js" />
     <Content Include="Scripts\UploadPage\main.js" />
+    <Content Include="Scripts\UploadPage\upload.js" />
     <Content Include="Scripts\UserSlider.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
