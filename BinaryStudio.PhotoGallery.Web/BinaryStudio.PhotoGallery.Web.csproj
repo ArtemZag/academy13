@@ -332,7 +332,6 @@
     <Folder Include="Scripts\AdminPanel\" />
     <Folder Include="Scripts\AlbumsPage\" />
     <Folder Include="Scripts\FlowPage\" />
-    <Folder Include="Scripts\PhotosPage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
