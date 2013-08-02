@@ -79,12 +79,18 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Scripts\jquery-2.0.3.min.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BinaryStudio.PhotoGallery.Core\BinaryStudio.PhotoGallery.Core.csproj">
       <Project>{91126D20-A9B5-49BE-9043-E3E8DCAE3628}</Project>
       <Name>BinaryStudio.PhotoGallery.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Scripts\jquery-2.0.3.js" />
+    <Content Include="Scripts\jquery-2.0.3.min.js" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

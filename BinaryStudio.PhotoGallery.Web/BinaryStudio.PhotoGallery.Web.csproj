@@ -189,6 +189,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
+    <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceRegistry.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
+    <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
@@ -209,6 +211,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Content\albums-page.css" />
     <Content Include="Content\auth-page.css" />
     <Content Include="Content\images\cherdak.png" />
     <Content Include="Content\images\loading_blue.gif" />
@@ -261,6 +264,7 @@
     <Content Include="Content\photo_flow.css" />
     <Content Include="Content\style-libs\opentip.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\albums.js" />
     <Content Include="Scripts\animation-storage.js" />
     <Content Include="Scripts\Authorization\messages.en-US.js" />
     <Content Include="Scripts\Authorization\validation.js" />
@@ -315,6 +319,7 @@
     <Content Include="Views\AdminPanel\Index.cshtml" />
     <Content Include="Views\StaticContent\PageNotFound.cshtml" />
     <Content Include="Views\Home\Album.cshtml" />
+    <Content Include="Views\Albums\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

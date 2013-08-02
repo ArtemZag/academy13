@@ -40,6 +40,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [HttpPost]
         public ActionResult Getphotos(int startIndex)
         {
+            
             var viewmodels = _photoService.GetPhotos(User.Identity.Name, startIndex, 30+startIndex);
             return Json( viewmodels.Select(ModelConverter.TestGetViewModel).ToList());
         }
