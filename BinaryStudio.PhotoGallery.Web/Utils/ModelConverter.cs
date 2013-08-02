@@ -33,9 +33,9 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             var photoModel = new PhotoViewModel
                 {
-                PhotoThumbSource = DeprecatedPathUtil.BuildThumbnailsPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                PhotoThumbSource = DeprecatedPathUtil.BuildThumbnailsPath(model.UserModelId, model.AlbumModelId)
                                        + "/" + model.PhotoName,
-                PhotoSource = DeprecatedPathUtil.BuildAlbumPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                PhotoSource = DeprecatedPathUtil.BuildAlbumPath(model.UserModelId, model.AlbumModelId)
                                   + "/" + model.PhotoName,
                     AlbumId = model.AlbumModelId,
                     PhotoId = model.Id
@@ -49,9 +49,9 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return new PhotoViewModel
                 {
                     PhotoThumbSource =
-                        TestPathHelper.BuildThumbnailsPath(photoModel.UserModelId, photoModel.AlbumModelId)
+                        DeprecatedPathUtil.BuildThumbnailsPath(photoModel.UserModelId, photoModel.AlbumModelId)
                         + "/" + photoModel.PhotoName,
-                    PhotoSource = TestPathHelper.BuildAlbumPath(photoModel.UserModelId, photoModel.AlbumModelId)
+                    PhotoSource = DeprecatedPathUtil.BuildAlbumPath(photoModel.UserModelId, photoModel.AlbumModelId)
                                   + "/" + photoModel.PhotoName,
                     AlbumId = photoModel.AlbumModelId,
                     PhotoId = photoModel.Id

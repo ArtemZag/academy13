@@ -63,7 +63,8 @@
 
     function SetComments(comm) {
 
-        var comms = $.map(comm, function (item) { return new Comment(item); });
+        comms = $.map(comm, function (item) { return new Comment(item); });
+        PhotoViewModel.comms = comms;
     }
 
 
@@ -86,8 +87,8 @@
     };
 
     $('#prevPhotoButton').hover(function() {
-        $('#prevPhotoButtonArrow').css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0});
+        $('#prevPhotoButtonArrow').css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 400);
     }, function() {
-        $('#prevPhotoButtonArrow').css({ opacity: 0.0, visibility: "visible" }).animate({ opacity: 0.0 });
+        $('#prevPhotoButtonArrow').css({ opacity: 0.0, visibility: "visible" }).animate({ opacity: 0.0 }, 500);
         });
 });
