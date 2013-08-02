@@ -186,6 +186,7 @@
     <Compile Include="App_Start\AttributeRoutingHttpConfig.cs" />
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
     <Compile Include="Area\Api\AccountController.cs" />
+    <Compile Include="Area\Api\AlbumController.cs" />
     <Compile Include="Area\Api\FileController.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -314,8 +315,8 @@
     <Content Include="Views\Shared\_MainLayout.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Account\RemindPass.cshtml" />
-    <Content Include="Views\Home\Settings.cshtml" />
-    <Content Include="Views\Home\Albums.cshtml" />
+    <Content Include="Views\Settings\Settings.cshtml" />
+    <Content Include="Views\Album\Index.cshtml" />
     <Content Include="Views\Home\Gallery.cshtml" />
     <Content Include="Views\Home\Groups.cshtml" />
     <Content Include="Views\AdminPanel\Index.cshtml" />
