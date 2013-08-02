@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="CryptoProviderTests.cs" />
+    <Compile Include="FileWrapperTests.cs" />
     <Compile Include="FormatHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PhotoProcessorTests.cs" />
