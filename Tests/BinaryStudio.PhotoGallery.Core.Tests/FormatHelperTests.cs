@@ -7,6 +7,14 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
     [TestFixture]
     internal class FormatHelperTests
     {
+        private FormatHelper _formatHelper;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _formatHelper = new FormatHelper();
+        }
+
         [Test]
         public void FileShouldBeDetectedAsImageFile()
         {
@@ -15,8 +23,8 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             var normalImageFile = string.Format(@"{0}\{1}", "Content", "img.jpg");
 
             // body
-            var isTextFormatReallyImage = FormatHelper.IsImageFile(imageWithTxtExtension);
-            var isImageFormatReallyImage = FormatHelper.IsImageFile(normalImageFile);
+            var isTextFormatReallyImage = _formatHelper.IsImageFile(imageWithTxtExtension);
+            var isImageFormatReallyImage =_formatHelper.IsImageFile(normalImageFile);
 
             // tear down
             isTextFormatReallyImage.Should().BeTrue();
@@ -31,8 +39,8 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             var textFile = string.Format(@"{0}\{1}", "Content", "text.txt");
 
             // body
-            var emptyFileIsImage = FormatHelper.IsImageFile(emptyFile);
-            var textFileIsImage = FormatHelper.IsImageFile(textFile);
+            var emptyFileIsImage = _formatHelper.IsImageFile(emptyFile);
+            var textFileIsImage = _formatHelper.IsImageFile(textFile);
 
             // tear down
             emptyFileIsImage.Should().BeFalse();
