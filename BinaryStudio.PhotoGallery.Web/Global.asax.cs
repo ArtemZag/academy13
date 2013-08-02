@@ -16,8 +16,6 @@ namespace BinaryStudio.PhotoGallery.Web
         protected void Application_Start()
         {
             ModelBinders.Binders.DefaultBinder = new KnockoutModelBinder();
-            ModelBinders.Binders.DefaultBinder = new KnockoutModelBinder();
-            ModelBinders.Binders.DefaultBinder = new KnockoutModelBinder();
             AreaRegistration.RegisterAllAreas();
 
             BootstrapBundleConfig.RegisterBundles();
