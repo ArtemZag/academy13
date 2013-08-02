@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text;
 using Facebook;
-using BinaryStudio.PhotoGallery.Core.Helpers;
 
 
 namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook

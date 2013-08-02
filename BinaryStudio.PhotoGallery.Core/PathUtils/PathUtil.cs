@@ -2,17 +2,17 @@
 using System.Text;
 using System.Web;
 
-namespace BinaryStudio.PhotoGallery.Core.Helpers
+namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
-    internal class PathHelper : IPathHelper
+    internal class PathUtil : IPathUtil
     {
-        private const string DELIMITER = @"/";
+        private const string DELIMITER = @"\";
 
         private const string PHOTOS_DIRECTORY_NAME = "photos";
         private const string TEMPORARY_DIRECTORY_NAME = "temporary";
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
 
-        private const string DATA_VIRTUAL_ROOT = "~/App_Data";
+        private const string DATA_VIRTUAL_ROOT = @"~\App_Data";
 
         public string DataDirectory
         {

@@ -2,14 +2,14 @@
 using System.Text;
 using System.Web;
 
-namespace BinaryStudio.PhotoGallery.Core.Helpers
+namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
     /// <summary>
     /// Deprecated
     /// </summary>
-    public static class TestPathHelper
+    public static class DeprecatedPathUtil
     {
-        private const string DELIMITER = @"/";
+        private const string DELIMITER = @"\";
 
         private const string PHOTOS_DIRECTORY_NAME = "Photos";
         private const string TEMPORARY_DIRECTORY_NAME = "temporary";
@@ -19,7 +19,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
         {
             get
             {
-                const string CONTENT_VIRTUAL_ROOT = "~/Content";
+                const string CONTENT_VIRTUAL_ROOT = @"~\Content";
 
                 return VirtualPathUtility.ToAbsolute(CONTENT_VIRTUAL_ROOT);
             }

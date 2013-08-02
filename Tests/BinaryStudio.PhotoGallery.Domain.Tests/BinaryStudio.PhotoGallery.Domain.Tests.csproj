@@ -92,6 +92,7 @@
     <Compile Include="Mocked\ModelRepositories\TestUserRepository.cs" />
     <Compile Include="Mocked\TestUnitOfWorkFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StorageTest.cs" />
     <Compile Include="UserServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>

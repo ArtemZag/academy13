@@ -11,7 +11,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class CleanupTask : DbService, ICleanupTask
     {
-        private readonly IStorage storage;
+        private IStorage storage;
+
+        public IStorage Storage { set { storage = value; }}
 
         public CleanupTask(IUnitOfWorkFactory workFactory, IStorage storage) : base(workFactory)
         {
@@ -57,7 +59,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private void CleanTemporaryPhotos()
         {
-            IEnumerable<string> temporaryPhotosDirectories = storage.GetTemporaryDirectories();
+            IEnumerable<string> temporaryPhotosDirectories = storage.GetTemporaryDirectoriesPathes();
 
             foreach (var temporaryDirectoryPath in temporaryPhotosDirectories)
             {
@@ -76,13 +78,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private void CleanThumbnails(PhotoModel photo)
         {
-            IEnumerable<string> thumbnailDirectories = storage.GetThumbnailFormatDirectories(photo);
+            IEnumerable<string> thumbnailPathes = storage.GetThumnailsPathes(photo);
 
-            foreach (var formatDirectory in thumbnailDirectories)
+            foreach (var currentThumbnail in thumbnailPathes)
             {
-                string thumbnailPath = Path.Combine(formatDirectory, photo.Id + photo.Format);
-
-                DeleteFile(thumbnailPath);
+                DeleteFile(currentThumbnail);
             }
         }
 

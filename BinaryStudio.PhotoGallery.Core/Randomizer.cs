@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace BinaryStudio.PhotoGallery.Core.Helpers
+namespace BinaryStudio.PhotoGallery.Core
 {
     // this class can implement other functions for generate something
     // that's why it was renamed to Randomizer
