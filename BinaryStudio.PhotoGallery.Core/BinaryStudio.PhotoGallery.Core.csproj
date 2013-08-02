@@ -73,6 +73,10 @@
     <Compile Include="SocialNetworkUtils\Facebook\FB.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFacebook.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFB.cs" />
+    <Compile Include="SocialNetworkUtils\Github\Github.cs" />
+    <Compile Include="SocialNetworkUtils\Github\IGithub.cs" />
+    <Compile Include="SocialNetworkUtils\Twitter\ITwitter.cs" />
+    <Compile Include="SocialNetworkUtils\Twitter\Twitter.cs" />
     <Compile Include="SocialNetworkUtils\Vkontakte\IVK.cs" />
     <Compile Include="SocialNetworkUtils\Vkontakte\VK.cs" />
     <Compile Include="SocialNetworkUtils\ISocialNetwork.cs" />
@@ -98,6 +102,7 @@
       <Name>MimeDetect</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
