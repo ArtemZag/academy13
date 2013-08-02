@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
 
 namespace BinaryStudio.PhotoGallery.Core.NotificationsUtils

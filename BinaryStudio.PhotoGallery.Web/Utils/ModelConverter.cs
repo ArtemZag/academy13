@@ -1,4 +1,4 @@
-﻿using BinaryStudio.PhotoGallery.Core.Helpers;
+﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
@@ -28,13 +28,13 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return userModel;
         }
 
-        public static PhotoViewModel GetViewModel(PhotoModel viewModel)
+        public static PhotoViewModel TestGetViewModel(PhotoModel viewModel)
         {
             var photoModel = new PhotoViewModel 
             { 
-                PhotoThumbSource = PathHelper.GetThumbnailPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                PhotoThumbSource = DeprecatedPathUtil.BuildThumbnailsPath(viewModel.UserModelId, viewModel.AlbumModelId)
                                     +"/"+viewModel.PhotoName,
-                PhotoSource = PathHelper.BuildAlbumPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                PhotoSource = DeprecatedPathUtil.BuildAlbumPath(viewModel.UserModelId, viewModel.AlbumModelId)
                                     +"/"+viewModel.PhotoName,
                 AlbumId = viewModel.AlbumModelId,
                 PhotoId = viewModel.Id

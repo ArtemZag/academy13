@@ -1,0 +1,19 @@
+﻿@using System.Web.Optimization
+
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "Upload | Bingally";
+}
+
+@Styles.Render("~/bundles/styles/dropzone")
+@Styles.Render("~/Content/upload-page.css")
+
+<div id="dropzone-container">
+    <form  action="~/Api/File" class="dropzone dz-clickable" enctype="multipart/form-data" method="POST"></form>
+</div>
+
+@Scripts.Render("~/bundles/scripts/jquery")
+@Scripts.Render("~/bundles/scripts/bootstrap")
+@Scripts.Render("~/bundles/scripts/dropzone")
+
+@Scripts.Render("~/Scripts/UploadPage/main.js")

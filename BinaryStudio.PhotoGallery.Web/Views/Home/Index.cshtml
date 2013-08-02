@@ -14,9 +14,12 @@
 
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    var preloaderpath = PathHelper.ImageDir + "/photopreloader.gif";
+    ViewBag.Title = "User flow | Bingally";
+    var preloaderpath = DeprecatedPathUtil.ImageDir + "/photopreloader.gif";
     var ko = Html.CreateKnockoutContext();
+    
 }
+
 <img src="@preloaderpath" id="photopreloader" />
 <div id="photoWrapper">
     @using(var photos = ko.Foreach(it => it.Photos))
@@ -28,3 +31,4 @@
 </div>
 
 @ko.Apply(Model)
+@Scripts.Render("~/Scripts/photo_placer.js")

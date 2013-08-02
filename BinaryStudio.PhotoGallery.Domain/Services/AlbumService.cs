@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 using System.Linq;

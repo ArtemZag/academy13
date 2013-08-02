@@ -40,8 +40,15 @@
     <Reference Include="EntityFramework">
       <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="FizzWare.NBuilder">
+      <HintPath>..\..\packages\NBuilder.3.0.1.1\lib\FizzWare.NBuilder.dll</HintPath>
+    </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentScheduler, Version=1.1.36.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\BinaryStudio.PhotoGallery.Web\bin\FluentScheduler.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
@@ -78,10 +85,15 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="AlbumServiceTest.cs" />
     <Compile Include="Mocked\MockedContext.cs" />
+    <Compile Include="Mocked\ModelRepositories\TestAlbumRepository.cs" />
+    <Compile Include="Mocked\ModelRepositories\TestPhotoRepository.cs" />
     <Compile Include="Mocked\TestUnitOfWork.cs" />
     <Compile Include="Mocked\ModelRepositories\TestUserRepository.cs" />
     <Compile Include="Mocked\TestUnitOfWorkFactory.cs" />
+    <Compile Include="PhotoServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StorageTest.cs" />
+    <Compile Include="UserMonitorTest.cs" />
     <Compile Include="UserServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +116,9 @@
       <Project>{489d5695-2c0e-4d21-b8bb-2814f9e49ff0}</Project>
       <Name>BinaryStudio.PhotoGallery.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

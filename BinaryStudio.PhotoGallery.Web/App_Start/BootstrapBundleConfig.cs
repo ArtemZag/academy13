@@ -30,6 +30,10 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
             BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/opentip").Include(
                 "~/Scripts/opentip-jquery.js"
                 ));
+
+            BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/knockout").Include(
+                "~/Scripts/knockout.js"
+                ));
             
 
             BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/bootstrap").Include(

@@ -8,11 +8,16 @@
 
 body
 {
+	background-color: whitesmoke !important;
 	min-height: 100%;
 }
 
 .navbar-search form {
     margin: 0;
+}
+
+.nav li a.btn:hover {
+    background-color: #7bb33d!important;
 }
 
 .navbar {
@@ -24,11 +29,16 @@ body
 .brand {
     position: relative;
     height: 40px;
+    margin-left: 0px!important;
     padding: 5px 10px!important;
 }
 
 .brand img {
     height: inherit;
+}
+
+.nav li a.btn {
+    padding: 4px 12px!important;
 }
 
 .nav > li {
@@ -55,7 +65,8 @@ body
 
 .user-container {
 	padding: 20px;
-	width: 80%;
+	width: 70%;
+	float: left;
 }
 
 .user-row {
@@ -120,4 +131,50 @@ a span {
 
 .hidden-field input[type="button"] {
 	margin-top: 10px;
+}
+
+.user-info {
+	width: 22%;
+	background: #f3f3f3; /* Для старых браузров */
+    background: -moz-linear-gradient(-225deg, #f1f1f1, #d3d3d3); 
+    background: -webkit-gradient(linear, left top, right bottom, 
+                color-stop(0%,#f1f1f1), color-stop(100%, #d3d3d3));
+    background: -webkit-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: -o-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: -ms-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	position: fixed;
+	left: 73%;
+	height: 380px;
+	margin: 20px 20px 0px 0px;
+	padding: 20px;
+}
+
+.delete-queue-info {
+	width: 22%;
+	background: #f3f3f3; /* Для старых браузров */
+    background: -moz-linear-gradient(-225deg, #f1f1f1, #d3d3d3); 
+    background: -webkit-gradient(linear, left top, right bottom, 
+                color-stop(0%,#f1f1f1), color-stop(100%, #d3d3d3));
+    background: -webkit-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: -o-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: -ms-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	position: fixed;
+	left: 73%;
+	top: 480px;
+	height: 80px;
+	margin: 20px 20px 0px 0px;
+	text-align: center;
+	padding: 20px;
+}
+
+.delete-queue-info span {
+	line-height: 3em;
 }
