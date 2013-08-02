@@ -1,102 +1,96 @@
-﻿
-//$(document).ready(function () {
-//    $("#photopreloader").hide();
-//    $(window).load(function() {
-//        prepareToShow();
-//    });
-//    $(window).resize(calcPhotoSizes);
-//    $(window).scroll(scrolled);
-//    //the start index of photo to get
+﻿$(document).ready(function () {
+    $("#photopreloader").hide();
+    $(window).load(function() {
+        prepareToShow();
+        scrolled();
+    });
+    $(window).on('resize', function () {
+        $LastRow = calcPhotoSizes($('#photoWrapper'), $("div.photoContainer > img"), marginsOfPhotoCont);
+    });
+    $(window).scroll(scrolled);
+
+    var $LastRow = new Array();
+    var busy = false;
+    var scrHeight = $(window).height();
+
+    function scrolled() {
+        if (!busy) {
+            busy = true;
+            var underScroll = $(this).scrollTop();
+            var phWrapHeight = $("#photoWrapper").height();
+            var scrollPos = scrHeight + underScroll;
+
+            if (phWrapHeight - scrollPos < 300) {
+                ajaxPhotoLoad();
+            } else {
+                busy = false;
+            }
+                    
+        }
+    }
     
-//    var startIndex = 30;
-//    var scrHeight = $(window).height();
+    var marginsOfPhotoCont = parseInt($('.photoContainer').css('margin-left'))
+            + parseInt($('.photoContainer').css('margin-right'));
+
+    function calcPhotoSizes($container, $photos, marginPhotoCont) {
+        console.log("calcphotosizes");
+        var width = 0;
+        var firstElemInRow = 0;
+        var margins = 0;
+        var wrapperWidth = $container.width();
+        var $lastRow = $();
+
+        jQuery.each($photos, function (indPh) {
+            width += this.width;
+            margins += marginPhotoCont;
+            if (width > wrapperWidth - margins) {
+                var coef = (wrapperWidth - margins) / width;
+                for (var indSub = firstElemInRow; indSub <= indPh; indSub++) {
+                    $($photos[indSub]).closest("div").css('width', ($photos[indSub].width * coef) - 0.2);
+                    $($photos[indSub]).closest("div").addClass("resized");
+                }
+                firstElemInRow = indPh + 1;
+                width = 0;
+                margins = 0;
+            }
+            else if (indPh == $photos.length - 1) {
+                for (indSub = firstElemInRow; indSub <= indPh; indSub++) {
+                    $($photos[indSub]).closest("div")
+                        .css('width', $photos[indSub].width);
+                    $lastRow.push($photos[indSub]);
+                }
+            }
+
+        });
+        return ($lastRow);
+    }
     
-//    var busy = false;
+    function prepareToShow() {
+        var $newPhotoContainers = $('#photoWrapper > div.invisible');
+        var $photos = $newPhotoContainers.find("img:first");
+        $photos = $.merge($LastRow, $photos);
+        $LastRow = calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
+        $newPhotoContainers.removeClass("invisible");
+    }
 
-//    function scrolled() {
-//        if (!busy) {
-//            var underScroll = $(this).scrollTop();
-//            var phWrapHeight = $("div#photoWrapper").height();
-//            var scrollPos = scrHeight + underScroll;
+    var photoPortion = 30;
+    var startIndex = photoPortion;
 
-//            if (phWrapHeight - scrollPos < 300) {
-//                busy = true;
-//                ajaxPhotoLoad();
-//            }
-//        }
-//    }
+    function ajaxPhotoLoad() {
+        $("#photopreloader").show();
+        $.post("/Home/GetPhotosViaAjax", { startIndex: startIndex, endIndex: startIndex + photoPortion }, getPhotos);
+    }
 
-//    // todo: Maby needs to refactor, external variable. 
-//    var ajaxContainer = false;
+    function getPhotos(photos) {
+        if (photos.length > 0) {
+            ko.utils.arrayPushAll(window.viewModel.Photos, photos);
+            prepareToShow();
+            busy = false;
+            startIndex += photoPortion;
+        } else {
+            $(window).unbind("scroll");
+        }
+        $("#photopreloader").hide();
+    }
 
-//    function calcPhotoSizes() {
-//        var width = 0;
-//        var firstElemInRow = 0;
-//        var margins = 0;
-//        console.log("calcphotosizes");
-//        var wrapperWidth = $('div#photoWrapper').width();
-//        var marginPhotoCont = parseInt($('.photoContainer').css('margin-left'))
-//                            + parseInt($('.photoContainer').css('margin-right'));
-//        var photos;
-//        if (!ajaxContainer) {
-//            photos = $('div.photoContainer > img');
-//        } else {
-//            ajaxContainer = false;
-//            photos = $('div.photoContainer.marked > img');
-//            $(photos).closest('div').removeClass("marked");
-//        }
-            
-//        jQuery.each(photos, function (indPh) {
-//            width += this.width;
-//            margins += marginPhotoCont;
-//            if (width > wrapperWidth - margins) {
-//                var coef = (wrapperWidth - margins) / width;
-//                for (var indSub = firstElemInRow; indSub <= indPh; indSub++) {
-//                    $(photos[indSub]).closest(".photoContainer").css('width', (photos[indSub].width * coef) - 0.2);
-//                }
-//                firstElemInRow = indPh + 1;
-//                width = 0;
-//                margins = 0;
-//            }
-//            else if (indPh == photos.length - 1) {
-//                for (indSub = firstElemInRow; indSub <= indPh; indSub++) {
-//                    $(photos[indSub]).closest(".photoContainer")
-//                        .css('width', photos[indSub].width)
-//                        .addClass("marked");
-//                }
-//            }
-//        });
-//    }
-    
-//    function prepareToShow() {
-//        calcPhotoSizes();
-//        $('div#photoWrapper > div.invisible').removeClass("invisible");
-//    }
-
-//    function ajaxPhotoLoad() {
-//        $("#photopreloader").show();
-//        $.post("/Home/Index/GetPhotosByAjax", { startIndex: startIndex }, getPhotos);
-//    }
-
-//    function getPhotos(photos) {
-//        console.log("herein");
-//        if (photos.length > 0) {
-//            //$.each(photos, function() {
-//            //    var elem = $("#photoWrapper");
-//            //    elem.append('<div class="photoContainer invisible marked" onclick="location.href = \'../Home/ToPhoto/'
-//            //                                                            + this.AlbumId + "/" + this.PhotoId + '\'">' +
-//            //                    '<img src="' + this.PhotoThumbSource + '"/>' +
-//            //                '</div>');
-//            //});
-//            ajaxContainer = true;
-//            prepareToShow();
-//            busy = false;
-//            startIndex += 30;
-//        } else {
-//            $(window).unbind("scroll");
-//        }
-//        $("#photopreloader").hide();
-//    }
-
-//});
-
+});
