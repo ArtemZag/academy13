@@ -96,3 +96,4 @@ Thumbs.db
 Desktop.ini
 BinaryStudio.PhotoGallery.Web/App_Data/BinaryStudio.PhotoGallery.Database.DatabaseContext.mdf
 BinaryStudio.PhotoGallery.Web/App_Data/BinaryStudio.PhotoGallery.Database.DatabaseContext_log.ldf
+BinaryStudio.PhotoGallery.Web/Content/images/Photos/*
