@@ -10,7 +10,7 @@ using FluentAssertions;
 namespace BinaryStudio.PhotoGallery.Domain.Tests
 {
     [TestFixture]
-    public class StorageTest
+    internal class StorageTest
     {
         private IStorage storage;
         private IUnitOfWorkFactory workFactory;
