@@ -50,7 +50,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
         {
             var photos = _photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
-                                  .Select(ModelConverter.GetViewModel).ToList();
+                                  .Select(ModelConverter.TestGetViewModel).ToList();
             return Json(photos);
         }
 
