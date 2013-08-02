@@ -13,12 +13,12 @@
     
     var dropzone = new Dropzone('.dropzone', dropzoneOptions);
     
-/*    dropzone.on("success", function(file, response) {
-//        console.log(file);
-//        console.log(response);
-//        file.serverId = response.id;
+    dropzone.on("success", function (file, response) {
+        console.log(file);
+        console.log(response);
     });
-
+    
+/*
     dropzone.on("addedfile", function (file) {
 //        console.log("new file added");
 //        if (!file.serverId) {

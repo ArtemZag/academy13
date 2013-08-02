@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Hosting;
 using System.Web.Http;
 using AttributeRouting;
-using System.Security.Cryptography;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Core.IOUtils;
