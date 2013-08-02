@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Web;
+using System.Web.Hosting;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
@@ -73,9 +74,14 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return temporaryPhotosDirectories;
         }
 
-        public string GetDataDirectory()
+        private string GetDataDirectory()
         {
             return VirtualPathUtility.ToAbsolute(DATA_VIRTUAL_ROOT);
+        }
+
+        public string GetAbsoluteRoot()
+        {
+            return HostingEnvironment.MapPath(DATA_VIRTUAL_ROOT);
         }
 
         private string BuildTemporaryDirectoryPath(string userDirectoryPath)

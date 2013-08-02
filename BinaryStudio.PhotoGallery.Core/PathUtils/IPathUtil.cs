@@ -14,6 +14,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         IEnumerable<string> BuildTemporaryDirectoriesPaths();
 
-        string GetDataDirectory();
+        string GetAbsoluteRoot();
     }
 }

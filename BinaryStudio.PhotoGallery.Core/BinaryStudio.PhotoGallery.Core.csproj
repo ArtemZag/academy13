@@ -59,6 +59,7 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Helpers\FormatHelper.cs" />
     <Compile Include="Helpers\IFormatHelper.cs" />
+    <Compile Include="IOUtils\FileRenameException.cs" />
     <Compile Include="IOUtils\FileWrapper.cs" />
     <Compile Include="IOUtils\IFileWrapper.cs" />
     <Compile Include="NotificationsUtils\INotificationSender.cs" />
