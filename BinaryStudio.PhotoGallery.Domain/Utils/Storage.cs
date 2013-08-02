@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using BinaryStudio.PhotoGallery.Core.Helpers;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -10,12 +10,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
     internal class Storage : IStorage
     {
         private readonly IUnitOfWorkFactory workFactory;
-        private readonly IPathHelper pathHelper;
+        private IPathUtil pathUtil;
 
-        public Storage(IUnitOfWorkFactory workFactory, IPathHelper pathHelper)
+        public Storage(IUnitOfWorkFactory workFactory, IPathUtil pathUtil)
         {
             this.workFactory = workFactory;
-            this.pathHelper = pathHelper;
+            this.pathUtil = pathUtil;
+        }
+
+        public IPathUtil PathUtil
+        {
+            set { pathUtil = value; }
         }
 
         public string GetAlbumPath(AlbumModel album)
@@ -24,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             {
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return pathHelper.BuildAlbumPath(user.Id, album.Id);
+                return pathUtil.BuildAlbumPath(user.Id, album.Id);
             }
         }
 
@@ -35,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumModelId);
                 UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelId);
 
-                return pathHelper.BuildAlbumPath(user.Id, album.Id);
+                return pathUtil.BuildAlbumPath(user.Id, album.Id);
             }
         }
 
@@ -46,41 +51,44 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return pathHelper.BuildOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
+                return pathUtil.BuildOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
             }
         }
 
-        public IEnumerable<string> GetThumbnailFormatDirectories(PhotoModel photo)
+        public IEnumerable<string> GetThumnailsPaths(PhotoModel photo)
         {
-            string thumbnailDirectoryPath = GetThumbnailsPath(photo);
+            var result = new Collection<string>();
 
-            return Directory.EnumerateDirectories(thumbnailDirectoryPath);
-        }
+            string thumbnailsDirectoryPath = GetThumbnailsDirectoryPath(photo);
 
-        public IEnumerable<string> GetTemporaryDirectories()
-        {
-            string photoDirectoryPath = pathHelper.BuildPhotoDirectoryPath();
-            IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
+            IEnumerable<string> thumnailFormatsPaths = Directory.EnumerateDirectories(thumbnailsDirectoryPath);
 
-            var temporaryPhotosDirectories = new Collection<string>();
-
-            foreach (var userDirectory in usersDirectories)
+            foreach (string thumbnailFormatPath in thumnailFormatsPaths)
             {
-                string temporaryPhotosDirectory = pathHelper.BuildTemporaryDirectoryPath(userDirectory);
-                temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
+                string currentThumbnail = Path.Combine(thumbnailFormatPath, photo.Id + photo.Format);
+
+                if (File.Exists(currentThumbnail))
+                {
+                    result.Add(currentThumbnail);
+                }
             }
 
-            return temporaryPhotosDirectories;
+            return result;
         }
 
-        private string GetThumbnailsPath(PhotoModel photo)
+        public IEnumerable<string> GetTemporaryDirectoriesPaths()
+        {
+            return pathUtil.BuildTemporaryDirectoriesPaths();
+        }
+
+        private string GetThumbnailsDirectoryPath(PhotoModel photo)
         {
             using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
             {
                 AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
                 UserModel user = GetUser(album.UserModelId, unitOfWork);
 
-                return pathHelper.BuildThumbnailsPath(user.Id, album.Id);
+                return pathUtil.BuildThumbnailsPath(user.Id, album.Id);
             }
         }
 

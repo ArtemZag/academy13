@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -46,7 +45,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                unitOfWork.Photos.Find(photo).IsDeleted = true;
+                PhotoModel photoToDelete = unitOfWork.Photos.Find(model => model.Id == photo.Id);
+                photoToDelete.IsDeleted = true;
 
                 unitOfWork.SaveChanges();
             }

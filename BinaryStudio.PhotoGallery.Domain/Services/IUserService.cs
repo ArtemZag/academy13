@@ -9,6 +9,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         
         UserModel GetUser(string userEmail);
 
+        int GetUserId(string userEmail);
+
         void CreateUser(UserModel userModel, AuthInfoModel.ProviderType providerType = AuthInfoModel.ProviderType.Local);
 
         void DeleteUser(string userEmail);
@@ -16,5 +18,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         bool IsUserValid(string userEmail, string userPassword);
 
         bool IsUserExist(string userEmail);
+
+        bool IsUserExist(string authProvider, string token);
     }
 }

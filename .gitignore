@@ -94,5 +94,6 @@ Thumbs.db
 
 # Folder config file
 Desktop.ini
-BinaryStudio.PhotoGallery.Web/App_Data/BinaryStudio.PhotoGallery.Database.DatabaseContext.mdf
-BinaryStudio.PhotoGallery.Web/App_Data/BinaryStudio.PhotoGallery.Database.DatabaseContext_log.ldf
+
+#
+BinaryStudio.PhotoGallery.Web/App_Data/*

@@ -32,6 +32,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public int GetUserId(string userEmail)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Users.Find(user => user.Email == userEmail).Id;
+            }
+        }
+
         public void CreateUser(UserModel user, AuthInfoModel.ProviderType provider)
         {
             if (IsUserExist(user.Email))
@@ -97,6 +105,22 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 IUserRepository userRepository = unitOfWork.Users;
 
                 return userRepository.Contains(model => string.Equals(model.Email, userEmail));
+            }
+        }
+
+        /// <summary>
+        /// Checks if there is a user with given token
+        /// </summary>
+        /// <param name="authProvider">[facebook][google]</param>
+        /// <param name="token">Token for authorization</param>
+        /// <returns></returns>
+        public bool IsUserExist(string authProvider, string token)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                IAuthInfoRepository authInfoRepository = unitOfWork.AuthInfos;
+
+                return authInfoRepository.Contains(model => string.Equals(model.AuthProvider, authProvider)&&string.Equals(model.AuthProviderToken, token));
             }
         }
     }

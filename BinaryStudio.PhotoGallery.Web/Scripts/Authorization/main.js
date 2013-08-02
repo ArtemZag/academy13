@@ -7,7 +7,7 @@
 
     shadow.fadeIn();
     
-    move(loginPanel,
+    Bingally.animation(loginPanel, "move",
         {
             direction: 'top',
             method: 'show',
@@ -15,11 +15,13 @@
         },
         function() {
             changePanel.show();
-            move(changePanel, { direction: 'top', method: 'show', animTime: 510 });
+            Bingally.animation(changePanel, "move", { direction: 'top', method: 'show', animTime: 510 });
         });
 
-    addClickEventTo($("#signin-button"), '../Api/Account/Signin');
-    addClickEventTo($("#signup-button"), '../Api/Account/Signup');
+    var baseURL = window.location.origin;
+
+    addClickEventTo($("#signin-button"), baseURL + '/Api/Account/Signin');
+    addClickEventTo($("#signup-button"), baseURL + 'Api/Account/Signup');
 
     loginPanel.find('input[type=email], input[type=password]')
         .on('focus', function() {
@@ -43,8 +45,8 @@
             
             $.post(address, submitButton.parent().serialize())
                 .done(function () {
-                    move(loginPanel, { direction: 'top', method: 'hide', animTime: 500 });
-                    move(changePanel,
+                    Bingally.animation(loginPanel, "move", { direction: 'top', method: 'hide', animTime: 500 });
+                    Bingally.animation(changePanel, "move",
                         {
                             direction: 'top',
                             method: 'hide',
@@ -52,7 +54,7 @@
                         },
                         function() {
                             shadow.fadeOut(500, function() {
-                                window.location = '../Home/Index';
+                                window.location = baseURL + '/Home/Index';
                             });
                         });
                 })

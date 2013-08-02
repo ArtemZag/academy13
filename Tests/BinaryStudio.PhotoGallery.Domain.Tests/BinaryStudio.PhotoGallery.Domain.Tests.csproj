@@ -84,14 +84,16 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="AlbumServiceTest.cs" />
-    <Compile Include="CleanupTaskTest.cs" />
     <Compile Include="Mocked\MockedContext.cs" />
     <Compile Include="Mocked\ModelRepositories\TestAlbumRepository.cs" />
     <Compile Include="Mocked\ModelRepositories\TestPhotoRepository.cs" />
     <Compile Include="Mocked\TestUnitOfWork.cs" />
     <Compile Include="Mocked\ModelRepositories\TestUserRepository.cs" />
     <Compile Include="Mocked\TestUnitOfWorkFactory.cs" />
+    <Compile Include="PhotoServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StorageTest.cs" />
+    <Compile Include="UserMonitorTest.cs" />
     <Compile Include="UserServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>

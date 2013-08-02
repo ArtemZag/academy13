@@ -81,7 +81,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked.ModelRepositories
 
             if (index != -1)
             {
-                models.RemoveAt(index);
+                models[index].IsDeleted = true;
             }
         }
 
