@@ -42,7 +42,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return user.Albums.Select(model => model).Where(model => !model.IsDeleted);
+                return user.Albums.Select(model => model).Where(model => !model.IsDeleted).ToList();
             }
         }
 

@@ -63,15 +63,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     album.Photos.OrderBy(model => model.DateOfCreation)
                          .ThenBy(model => model.Id)
                          .Skip(begin)
-                         .Take(end - begin);
+                         .Take(end - begin)
+                         .ToList();
             }
         }
 
         public IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end)
         {
             // real code block 
-            /*
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            
+            /*using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
@@ -80,7 +81,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                               .Where(model => !model.IsDeleted)
                               .OrderBy(model => model.DateOfCreation)
                               .ThenBy(model => model.Id)
-                              .Skip(begin).Take(end - begin);
+                              .Skip(begin)
+                              .Take(end - begin)
+                              .ToList();
             }*/
 
 
