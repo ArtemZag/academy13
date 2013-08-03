@@ -5,9 +5,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     public interface IUserService
     {
-        IEnumerable<UserModel> GetAllUsers(); 
-        
+        IEnumerable<UserModel> GetAllUsers();
+
         UserModel GetUser(string userEmail);
+
+        int GetUserId(string userEmail);
 
         void CreateUser(UserModel userModel, AuthInfoModel.ProviderType providerType = AuthInfoModel.ProviderType.Local);
 
@@ -16,5 +18,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         bool IsUserValid(string userEmail, string userPassword);
 
         bool IsUserExist(string userEmail);
+
+        bool IsUserExist(string authProvider, string token);
     }
 }

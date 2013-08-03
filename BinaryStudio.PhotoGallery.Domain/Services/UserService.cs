@@ -4,6 +4,7 @@ using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
+using System.Linq;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -20,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Users.All();
+                return unitOfWork.Users.All().ToList();
             }
         }
 
@@ -29,6 +30,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 return GetUser(userEmail, unitOfWork);
+            }
+        }
+
+        public int GetUserId(string userEmail)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Users.Find(user => user.Email == userEmail).Id;
             }
         }
 
@@ -97,6 +106,25 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 IUserRepository userRepository = unitOfWork.Users;
 
                 return userRepository.Contains(model => string.Equals(model.Email, userEmail));
+            }
+        }
+
+        /// <summary>
+        ///     Checks if there is a user with given token
+        /// </summary>
+        /// <param name="authProvider">[facebook][google]</param>
+        /// <param name="token">Token for authorization</param>
+        /// <returns></returns>
+        public bool IsUserExist(string authProvider, string token)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                IAuthInfoRepository authInfoRepository = unitOfWork.AuthInfos;
+
+                return
+                    authInfoRepository.Contains(
+                        model =>
+                        string.Equals(model.AuthProvider, authProvider) && string.Equals(model.AuthProviderToken, token));
             }
         }
     }

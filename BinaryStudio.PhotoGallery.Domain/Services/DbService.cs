@@ -1,8 +1,10 @@
-﻿using System;
+﻿using System.Linq;
+using System.Runtime.CompilerServices;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
-using System.Linq;
+
+[assembly: InternalsVisibleTo("BinaryStudio.PhotoGallery.Domain.Tests")]
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -32,7 +34,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             try
             {
                 return
-                    user.Albums.Select(model => model).First(model => string.Equals(model.AlbumName, albumName) && !model.IsDeleted);
+                    user.Albums.Select(model => model)
+                        .First(model => string.Equals(model.AlbumName, albumName) && !model.IsDeleted);
             }
             catch
             {

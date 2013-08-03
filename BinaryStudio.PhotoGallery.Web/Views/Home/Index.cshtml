@@ -1,30 +1,33 @@
-﻿@using Newtonsoft.Json
+﻿@using BinaryStudio.PhotoGallery.Core.PathUtils
 @using PerpetuumSoft.Knockout
 @using System.Web.Optimization
 @model BinaryStudio.PhotoGallery.Web.ViewModels.InfoViewModel
-@using BinaryStudio.PhotoGallery.Core.Helpers
 
 <script src="@Url.Content("~/Scripts/knockout-2.3.0.js")" type="text/javascript"></script> <!-- Use your version of knockout -->
 <script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")" type="text/javascript"></script> <!-- Use your version of jQuery -->
+@Scripts.Render("~/bundles/scripts/bootstrap")
+@Scripts.Render("~/Scripts/photo_placer.js")
 @Styles.Render("~/Content/photo_flow.css")
 
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    var preloaderpath = PathHelper.ImageDir + "/photopreloader.gif";
+    ViewBag.Title = "User flow | Bingally";
+    var preloaderpath = DeprecatedPathUtil.ImageDir + "/photopreloader.gif";
     var ko = Html.CreateKnockoutContext();
+    
 }
+
 <img src="@preloaderpath" id="photopreloader" />
 <div id="photoWrapper">
     @using(var photos = ko.Foreach(it => it.Photos))
     {
-        <div class="photoContainer invisible" onclick="location.href ='Album/PhotoView/@photos.Model.AlbumId/@photos.Model.PhotoId/'">
+        <div class="photoContainer invisible" onclick="location.href =''">
             <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
         </div>
     }
 </div>
 
-@Scripts.Render("~/bundles/scripts/bootstrap")
-@Scripts.Render("~/Scripts/photo_placer.js")
 @ko.Apply(Model)
+@Scripts.Render("~/Scripts/photo_placer.js")

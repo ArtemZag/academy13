@@ -4,13 +4,14 @@
     {
         void CreateThumbnailsIfNotExist();
         void DeleteThumbnails();
+        string[] GetTextures();
         void DeleteThumbnailForSpecifiedOriginalFile(string name);
         void DeleteThumbnailsIfOriginalNotExist();
         void SyncOriginalAndThumbnailImages();
         string[] GetRandomThumbnail(int howMany);
         string[] GetThumbnails(string searchPattern = "*.*");
-        string MakePrewiew(int width, int rows);
-        string[] GetPrewiews();
+        string MakeCollage(int width, int rows, int margin);
+        string[] GetCollages();
         void SetUpForRandomEnumerable(string[] arr);
     }
 }

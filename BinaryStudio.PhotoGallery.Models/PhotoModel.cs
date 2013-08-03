@@ -32,6 +32,11 @@ namespace BinaryStudio.PhotoGallery.Models
         public string PhotoName { get; set; }
 
         /// <summary>
+        /// Gets or sets format of photo. 
+        /// </summary>
+        public string Format { get; set; }
+
+        /// <summary>
         /// Gets or sets the description of photo.
         /// </summary>
         public string Description { get; set; }

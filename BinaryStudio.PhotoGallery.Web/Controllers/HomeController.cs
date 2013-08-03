@@ -34,14 +34,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {   
             var viewmodels = _photoService.GetPhotos(User.Identity.Name, 0, 30);
             return View(new InfoViewModel { UserEmail = User.Identity.Name, 
-                                            Photos = viewmodels.Select(ModelConverter.GetViewModel).ToList()});
+                                            Photos = viewmodels.Select(ModelConverter.TestGetViewModel).ToList()});
         }
 
         [HttpPost]
         public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
         {
             var photos = _photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
-                                  .Select(ModelConverter.GetViewModel).ToList();
+                                  .Select(ModelConverter.TestGetViewModel).ToList();
             return Json(photos);
         }
 

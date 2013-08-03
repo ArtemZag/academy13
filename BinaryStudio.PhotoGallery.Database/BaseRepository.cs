@@ -7,7 +7,7 @@ using BinaryStudio.PhotoGallery.Database.Exceptions;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    abstract class BaseRepository<TItem> : IBaseRepository<TItem> where TItem : class
+    abstract internal class BaseRepository<TItem> : IBaseRepository<TItem> where TItem : class
     {
         protected DatabaseContext Context = null;
 

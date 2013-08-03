@@ -24,7 +24,16 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         // путь к папке с превью
         private readonly string pathToThumbnail;
 
-        public AsyncPhotoProcessor(string relativePathToAlbumIdFolder, int maxHeight)
+        // путь к папке с collages
+        private readonly string pathToCollages;
+
+        //путь к текстурам collages;
+        private readonly string texturesPath;
+
+        //генератор случайных чисел для класса, ибо он часто используется
+        private readonly Random rnd;
+
+        public AsyncPhotoProcessor(string relativePathToAlbumIdFolder, string texturesPath, int maxHeight)
         {
             this.maxHeight = maxHeight;
 
@@ -42,14 +51,22 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             if (!Directory.Exists(relativePath))
                 throw new DirectoryNotFoundException(string.Format("Directory {0} must exist", relativePath));
 
+            this.texturesPath = texturesPath;
+            if (texturesPath == null)
+                throw new NullReferenceException("Textures path is null");
+
+            if (!Directory.Exists(texturesPath))
+                throw new DirectoryNotFoundException(string.Format("Directory {0} must exist", texturesPath));
+
             pathToThumbnail = string.Format(@"{0}\thumbnail\{1}", relativePath, maxHeight);
+            pathToCollages = string.Format(@"{0}\collages", relativePath);
+            rnd = new Random((int)DateTime.Now.Ticks);
         }
 
-        // создаёт миниатюры, заданного в конструкторе размера, для файлов миниатюры которых отсутствуют
+        // создаёт превью, заданного в конструкторе размера, для файлов превью которых отсутствуют
         public void CreateThumbnailsIfNotExist()
         {
             CreateDirectoryIfNotExists(pathToThumbnail);
-
             string[] files = Directory.GetFiles(relativePath);
 
             Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
@@ -60,9 +77,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
                                  // получаем путь к thumbnail изображения
                                  string pathToThumbnailOfImage = Path.Combine(pathToThumbnail, string.Format("{0}.jpg", imageName));
-                                 
-                                 // если на диске есть thumbnail для текущего изображения то читаем его
-                                 
+
                                  // если на диске нет thumbnail для текущего изображения то создадим его и сохраним на диске
                                  if (!File.Exists(pathToThumbnailOfImage))
                                  {
@@ -81,7 +96,11 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         {
             Directory.Delete(Path.GetDirectoryName(pathToThumbnail), true);
         }
-
+        //текстуры для collages
+        public string[] GetTextures()
+        {
+            return Directory.GetFiles(texturesPath);
+        }
         // удаляет миниатюру заданного размера для исходного файла
         public void DeleteThumbnailForSpecifiedOriginalFile(string name)
         {
@@ -93,6 +112,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         // удаляет миниатюру заданного размера для отсутствующих исходных файлов
         public void DeleteThumbnailsIfOriginalNotExist()
         {
+            CreateDirectoryIfNotExists(pathToThumbnail);
             string[] files = Directory.GetFiles(pathToThumbnail);
 
             Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
@@ -110,13 +130,12 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                              });
         }
 
-        // синхронизирует миниатюры заданного размера и исходные файлы
-        // удаляет ненужные миниатюры (исходные файлы для них не существуют) и
-        // создаёт для тех для которых ещё не были созданы
+        // синхронизирует превью заданного размера и исходные файлы
+        // удаляет ненужные превью (исходные файлы для них не существуют) и
+        // создаёт для тех исходников картинок,превью для которых ещё не были созданы
         public void SyncOriginalAndThumbnailImages()
         {
             DeleteThumbnailsIfOriginalNotExist();
-
             CreateThumbnailsIfNotExist();
         }
 
@@ -140,37 +159,70 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             return files;
         }
-
-        public string MakePrewiew(int width, int rows)
+        //застелить текстурой фон колажа(collage)
+        private void TileTheImage(Graphics grfx, string imgPath, int width, int heigth)
         {
-            SetUpForRandomEnumerable(GetThumbnails());
             int iter = 0;
             int sumWidth = 0;
-            Image img = new Bitmap(width, rows * maxHeight);
-            Graphics grfx = Graphics.FromImage(img);
+            Image imgTexture = Image.FromFile(imgPath);
+            while (true)
+            {
+                grfx.DrawImageUnscaled(imgTexture, sumWidth, iter);
+                sumWidth += imgTexture.Width;
+                if (sumWidth >= width)
+                {
+                    sumWidth = 0;
+                    iter += imgTexture.Height;
+                    if (iter >= heigth)
+                        break;
+                }
+            }
+        }
+        //застелить колаж(collage) миниатюрами
+        private void TileTheImage(Graphics grfx, IEnumerator<string> rndImages, int width, int heigth, int margin)
+        {
+            int iter = margin;
+            int sumWidth = margin;
             foreach (var file in this)
             {
                 Image thumbImage = Image.FromFile(file);
                 grfx.DrawImageUnscaled(thumbImage, sumWidth, iter);
-                sumWidth += thumbImage.Width;
+                sumWidth += thumbImage.Width + margin;
                 if (sumWidth >= width)
                 {
-                    sumWidth = 0;
-                    iter += maxHeight;
-                    if (iter >= rows * maxHeight)
+                    sumWidth = margin;
+                    iter += maxHeight + margin;
+                    if (iter >= heigth)
                         break;
                 }
             }
-            //имя для prewiew; ???? 
-            string result = string.Format(@"{0}\@_@_@{1}.jpg", pathToThumbnail, Path.GetRandomFileName());
+        }
+        public string MakeCollage(int width, int rows, int margin)
+        {
+            SetUpForRandomEnumerable(GetThumbnails());
+
+            Image img = new Bitmap(width, rows * maxHeight + (rows + 1) * margin);
+            Graphics grfx = Graphics.FromImage(img);
+
+            string[] textutes = GetTextures();
+            TileTheImage(grfx, textutes[rnd.Next(0, textutes.Length)], img.Width, img.Height);
+            TileTheImage(grfx, GetEnumerator(), img.Width, img.Height, margin);
+
+            string collageName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+
+            string result = string.Format(@"{0}\{1}.jpg", pathToCollages, collageName);
+            CreateDirectoryIfNotExists(pathToCollages);
             img.Save(result, ImageFormat.Jpeg);
 
             return result;
         }
-        public string[] GetPrewiews()
+        public string[] GetCollages()
         {
-            // ????? 
-            return GetThumbnails("@_@_@????????????.jpg");
+            string[] files = Directory.GetFiles(pathToCollages);
+            if (files == null || files.Length == 0)
+                throw new FileNotFoundException("Файлы не найдены!");
+
+            return files;
         }
 
         private string[] GetRandomPaths(string[] files, int howMany)
@@ -185,7 +237,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                 Enumerable.Range(0, length).ToList();
 
             //иначе формируем список и удаляем из него пока не останется то количество картинок которое нам нужно
-            var rnd = new Random((int)DateTime.Now.Ticks);
             for (int iter = 0; iter < length - howMany; iter++)
             {
                 int index = rnd.Next(0, length - iter);
@@ -210,7 +261,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             List<int> indexes =
                 Enumerable.Range(0, length).ToList();
 
-            var rnd = new Random((int)DateTime.Now.Ticks);
             for (int iter = 0; iter < length; iter++)
             {
                 int index = rnd.Next(0, length - iter);

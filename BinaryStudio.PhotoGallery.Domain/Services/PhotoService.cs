@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -46,7 +45,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                unitOfWork.Photos.Find(photo).IsDeleted = true;
+                PhotoModel photoToDelete = unitOfWork.Photos.Find(model => model.Id == photo.Id);
+                photoToDelete.IsDeleted = true;
 
                 unitOfWork.SaveChanges();
             }
@@ -63,15 +63,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     album.Photos.OrderBy(model => model.DateOfCreation)
                          .ThenBy(model => model.Id)
                          .Skip(begin)
-                         .Take(end - begin);
+                         .Take(end - begin)
+                         .ToList();
             }
         }
 
         public IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end)
         {
             // real code block 
-            /*
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            
+            /*using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
@@ -80,21 +81,23 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                               .Where(model => !model.IsDeleted)
                               .OrderBy(model => model.DateOfCreation)
                               .ThenBy(model => model.Id)
-                              .Skip(begin).Take(end - begin);
+                              .Skip(begin)
+                              .Take(end - begin)
+                              .ToList();
             }*/
 
 
             // for test only!
             // todo: remove when real user photos will be added
             var test = new List<PhotoModel>();
-            if (begin<90)
-            for (var i = 0; i < 30; i++)
-                test.Add(new PhotoModel
-                    {
-                        PhotoName =  i+".jpg",
-                        AlbumModelId = 1111,
-                        UserModelId = 1111
-                    });
+            if (begin < 90)
+                for (int i = 0; i < 30; i++)
+                    test.Add(new PhotoModel
+                        {
+                            PhotoName = i + ".jpg",
+                            AlbumModelId = 1111,
+                            UserModelId = 1111
+                        });
             return test;
         }
     }
