@@ -66,14 +66,10 @@
     <Compile Include="SupportUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="mime-types.dtd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="mime-types.dtd" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="mime-types.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="mime-types.xml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

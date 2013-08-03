@@ -1,11 +1,15 @@
 ﻿$(function () {
+    var inputEmail = $('#Email');
+    var emailTip = new Opentip(inputEmail, '', { showOn: null, extends: 'alert', target: true });
+    inputEmail.data('opentip', emailTip);
 
-    var emailTip = new Opentip("#Email", '', { showOn: null, extends: "alert", target: true });
-    var passwordTip = new Opentip($("#Password"), '', { showOn: null, extends: "alert", target: true });
-    var confirmPasswordTip = null;
+    var inputPassword = $('#Password');    
+    var passwordTip = new Opentip(inputPassword, '', { showOn: null, extends: 'alert', target: true });
+    inputPassword.data('opentip', passwordTip);
     
-    if ($("#ConfirmPassword").length != 0) {
-        confirmPasswordTip = new Opentip("#ConfirmPassword", '', { showOn: null, extends: "alert", target: true });
+    if ($('#ConfirmPassword').length != 0) {
+        var confirmPasswordTip = new Opentip(this, '', { showOn: null, extends: 'alert', target: true });
+        $(this).data('opentip', confirmPasswordTip);
     }
     
     $('form').validate({
@@ -37,34 +41,20 @@
             }
         },
         errorPlacement: function (error, element) {
-            var tip = null;
+            var tip = element.data('opentip');
 
-            switch (element.attr("name")) {
-                case "Email":
-                    tip = emailTip;
-                    break;
-                case "Password":
-                    tip = passwordTip;
-                    break;
-                case "ConfirmPassword":
-                    tip = confirmPasswordTip;
-                    break;
+            if (tip != null)
+            {
+                tip.setContent(error.text());
+                tip.show();
             }
-            
-            tip.setContent(error.text());
-            tip.show();
         },
         success: function (label, element) {
-            switch ($(element).attr("name")) {
-                case "Email":
-                    emailTip.hide();
-                    break;
-                case "Password":
-                    passwordTip.hide();
-                    break;
-                case "ConfirmPassword":
-                    confirmPasswordTip.hide();
-                    break;
+            var tip = $(element).data('opentip');
+
+            if (tip != null)
+            {
+                tip.hide();
             }
         }
     });
