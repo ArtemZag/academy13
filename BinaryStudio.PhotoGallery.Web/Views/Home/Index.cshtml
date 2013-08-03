@@ -8,8 +8,6 @@
 <script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")" type="text/javascript"></script> <!-- Use your version of jQuery -->
-@Scripts.Render("~/bundles/scripts/bootstrap")
-@Scripts.Render("~/Scripts/photo_placer.js")
 @Styles.Render("~/Content/photo_flow.css")
 
 @{
@@ -21,10 +19,12 @@
 <div id="photoWrapper">
     @using(var photos = ko.Foreach(it => it.Photos))
     {
-        <div class="photoContainer invisible" onclick="location.href =''">
+        <div class="photoContainer invisible" onclick="location.href ='Album/PhotoView/@photos.Model.AlbumId/@photos.Model.PhotoId/'">
             <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
         </div>
     }
 </div>
 
+@Scripts.Render("~/bundles/scripts/bootstrap")
+@Scripts.Render("~/Scripts/photo_placer.js")
 @ko.Apply(Model)

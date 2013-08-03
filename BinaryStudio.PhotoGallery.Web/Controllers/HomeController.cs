@@ -37,27 +37,12 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                                             Photos = viewmodels.Select(ModelConverter.GetViewModel).ToList()});
         }
 
-        //[POST("GetPhotosViaAjax")]
-        //public ActionResult GetPhotosViaAjax(int startIndex = 0, int endIndex = 30)
-        //{
-        //    gModel.Photos.AddRange(_photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
-        //                                        .Select(ModelConverter.GetViewModel).ToList());
-        //    gModel.PortionSubmit = true;
-        //    return Json(gModel);
-        //}
-
         [HttpPost]
         public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
         {
             var photos = _photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
                                   .Select(ModelConverter.GetViewModel).ToList();
             return Json(photos);
-        }
-
-        [GET("ToPhoto/{albumId}/{photoId}")]
-        public ActionResult ToPhoto(int albumId, int photoId)
-        {
-            return View("Album",new AlbumViewModel());
         }
 
         /// <summary>
