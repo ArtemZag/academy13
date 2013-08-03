@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using FluentAssertions;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
-using System.Linq;
 
 namespace BinaryStudio.PhotoGallery.Domain.Tests
 {

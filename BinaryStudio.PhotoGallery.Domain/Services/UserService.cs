@@ -4,6 +4,7 @@ using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
+using System.Linq;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -20,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Users.All();
+                return unitOfWork.Users.All().ToList();
             }
         }
 
@@ -109,7 +110,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         /// <summary>
-        /// Checks if there is a user with given token
+        ///     Checks if there is a user with given token
         /// </summary>
         /// <param name="authProvider">[facebook][google]</param>
         /// <param name="token">Token for authorization</param>
@@ -120,7 +121,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 IAuthInfoRepository authInfoRepository = unitOfWork.AuthInfos;
 
-                return authInfoRepository.Contains(model => string.Equals(model.AuthProvider, authProvider)&&string.Equals(model.AuthProviderToken, token));
+                return
+                    authInfoRepository.Contains(
+                        model =>
+                        string.Equals(model.AuthProvider, authProvider) && string.Equals(model.AuthProviderToken, token));
             }
         }
     }

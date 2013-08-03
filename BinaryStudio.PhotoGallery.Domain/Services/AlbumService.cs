@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
-using System.Linq;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {

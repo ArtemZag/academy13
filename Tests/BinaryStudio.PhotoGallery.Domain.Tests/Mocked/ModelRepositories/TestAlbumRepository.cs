@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked.ModelRepositories
 {
     internal class TestAlbumRepository : IAlbumRepository
     {
-        private readonly List<AlbumModel> models; 
+        private readonly List<AlbumModel> models;
 
         public TestAlbumRepository(MockedContext context)
         {
@@ -73,7 +73,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked.ModelRepositories
 
             for (int i = 0; i < models.Count; i++)
             {
-                if (string.Equals(models[i].Id, item.Id))
+                if (Equals(models[i].Id, item.Id))
                 {
                     index = i;
                 }
@@ -96,6 +96,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked.ModelRepositories
         }
 
         public int Count { get; private set; }
+
         public void Add(string albumName, int ownerId)
         {
             throw new NotImplementedException();
