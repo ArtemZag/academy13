@@ -58,11 +58,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                return
-                    album.Photos.OrderBy(model => model.DateOfCreation)
-                         .ThenBy(model => model.Id)
-                         .Skip(begin)
-                         .Take(end - begin);
+                return album.Photos.OrderBy(model => model.DateOfCreation)
+                            .ThenBy(model => model.Id)
+                            .Skip(begin)
+                            .Take(end - begin).ToList();
             }
         }
 
