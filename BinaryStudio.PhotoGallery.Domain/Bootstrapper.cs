@@ -14,6 +14,7 @@ namespace BinaryStudio.PhotoGallery.Domain
             container.RegisterType<ICleanupTask, CleanupTask>(new ContainerControlledLifetimeManager());
             container.RegisterType<IStorage, Storage>(new ContainerControlledLifetimeManager());
             container.RegisterType<IUsersMonitorTask, UsersMonitorTask>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ISearchService, SearchService>(new ContainerControlledLifetimeManager());
         }
     }
 }
