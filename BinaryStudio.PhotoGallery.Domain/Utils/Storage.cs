@@ -9,18 +9,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
 {
     internal class Storage : IStorage
     {
+        private readonly IPathUtil pathUtil;
         private readonly IUnitOfWorkFactory workFactory;
-        private IPathUtil pathUtil;
 
         public Storage(IUnitOfWorkFactory workFactory, IPathUtil pathUtil)
         {
             this.workFactory = workFactory;
             this.pathUtil = pathUtil;
-        }
-
-        public IPathUtil PathUtil
-        {
-            set { pathUtil = value; }
         }
 
         public string GetAlbumPath(AlbumModel album)

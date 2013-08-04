@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Domain.Tests.Mocked;
 using BinaryStudio.PhotoGallery.Models;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -19,10 +21,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         {
             IUnityContainer container = Bootstrapper.Initialise();
 
-            photoService = container.Resolve<IPhotoService>();
-            userService = container.Resolve<IUserService>();
-            albumService = container.Resolve<IAlbumService>();
-            workFactory = container.Resolve<IUnitOfWorkFactory>();
+            var cryptoProvider = container.Resolve<ICryptoProvider>();
+            workFactory = new TestUnitOfWorkFactory();
+
+            photoService = new PhotoService(workFactory);
+            userService = new UserService(workFactory, cryptoProvider);
+            albumService = new AlbumService(workFactory);
         }
 
         private IPhotoService photoService;
@@ -111,20 +115,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             IEnumerable<PhotoModel> photosToFill = GetListOfPhotos();
 
             var user = new UserModel
-            {
-                Id = 2,
-                Email = "some1@gmail.com",
-                UserPassword = "abc123",
-                Albums = new Collection<AlbumModel>()
-            };
+                {
+                    Id = 2,
+                    Email = "some1@gmail.com",
+                    UserPassword = "abc123",
+                    Albums = new Collection<AlbumModel>()
+                };
 
             var album = new AlbumModel
-            {
-                Id = 2,
-                UserModelId = 2,
-                AlbumName = "albumName",
-                Photos = new Collection<PhotoModel>()
-            };
+                {
+                    Id = 2,
+                    UserModelId = 2,
+                    AlbumName = "albumName",
+                    Photos = new Collection<PhotoModel>()
+                };
 
             userService.CreateUser(user);
             albumService.CreateAlbum(user.Email, album);

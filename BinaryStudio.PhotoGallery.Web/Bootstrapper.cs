@@ -1,5 +1,6 @@
 using System.Web.Http;
 using System.Web.Mvc;
+using BinaryStudio.PhotoGallery.Web.Utils;
 using Microsoft.Practices.Unity;
 using Unity.Mvc4;
 
@@ -29,7 +30,10 @@ namespace BinaryStudio.PhotoGallery.Web
         {
             // register all your components with the container here
             // it is NOT necessary to register your controllers
-            // e.g. container.RegisterType<ITestService, TestService>();    
+            // e.g. container.RegisterType<ITestService, TestService>();   
+
+            container.RegisterType<IModelConverter, ModelConverter>();
+
             Domain.Bootstrapper.RegisterTypes(container);
             Database.Bootstrapper.RegisterTypes(container);
             Core.Bootstrapper.RegisterTypes(container);
