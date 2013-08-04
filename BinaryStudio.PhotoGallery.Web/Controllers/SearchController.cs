@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {

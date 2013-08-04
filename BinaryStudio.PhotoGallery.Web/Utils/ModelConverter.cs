@@ -1,6 +1,7 @@
 ﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
 namespace BinaryStudio.PhotoGallery.Web.Utils
 {
@@ -33,6 +34,16 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             };
 
             return userModel;
+        }
+
+        public SearchedUserViewModel GetViewModel(UserModel model)
+        {
+            return new SearchedUserViewModel
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Department = model.Department
+                };
         }
 
         public PhotoViewModel TestGetViewModel(PhotoModel viewModel)

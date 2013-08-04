@@ -16,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     {
         private readonly IPhotoService photoService;
         private readonly IUserService userService;
-        private IModelConverter modelConverter;
+        private readonly IModelConverter modelConverter;
 
         public HomeController(IUserService userService, IPhotoService photoService, IModelConverter modelConverter)
         {
@@ -56,7 +56,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
         {
             IEnumerable<PhotoViewModel> photos = photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
-                                                              .Select(modelConverter.TestGetViewModel);
+                                                             .Select(modelConverter.TestGetViewModel).ToList();
             return Json(photos);
         }
 
