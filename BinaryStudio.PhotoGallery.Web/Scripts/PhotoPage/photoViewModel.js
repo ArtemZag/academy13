@@ -13,9 +13,9 @@
 
     function Comment(data) {
         var com = this;
+        
         com.text = ko.observable(data.Text);
 
-        /*com.dateOfCreating = ko.observable(data.DateOfCreating);*/
         var date = new Date(parseInt(data.DateOfCreating.substr(6)));
         com.dateOfCreating = ko.observable(date.toLocaleString());
         
@@ -48,6 +48,13 @@
             i--;
             GetPhotos();
             
+        };
+
+        self.SaveUserData = function() {
+            var data_to_send = { userData: ko.toJSON(self) };
+            $.post("/PhotoComment/AddPhotoComment", data_to_send, function(data) {
+                alert("Your data has been posted to the server!");
+            });
         };
     }
 
