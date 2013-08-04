@@ -16,11 +16,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     {
         private readonly IPhotoService photoService;
         private readonly IUserService userService;
+        private IModelConverter modelConverter;
 
-        public HomeController(IUserService userService, IPhotoService photoService)
+        public HomeController(IUserService userService, IPhotoService photoService, IModelConverter modelConverter)
         {
             this.photoService = photoService;
             this.userService = userService;
+            this.modelConverter = modelConverter;
         }
 
         /// <summary>
@@ -31,11 +33,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult Index()
         {
             IEnumerable<PhotoModel> viewmodels = photoService.GetPhotos(User.Identity.Name, 0, 30);
-            return View(new InfoViewModel
+
+            var infoViewModel = new InfoViewModel
                 {
                     UserEmail = User.Identity.Name,
-                    Photos = viewmodels.Select(ModelConverter.TestGetViewModel).ToList()
-                });
+                    Photos = viewmodels.Select(modelConverter.TestGetViewModel).ToList()
+                };
+
+            return View(infoViewModel);
         }
 
         //[POST("GetPhotosViaAjax")]
@@ -51,7 +56,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
         {
             IEnumerable<PhotoViewModel> photos = photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
-                                                              .Select(ModelConverter.TestGetViewModel);
+                                                              .Select(modelConverter.TestGetViewModel);
             return Json(photos);
         }
 

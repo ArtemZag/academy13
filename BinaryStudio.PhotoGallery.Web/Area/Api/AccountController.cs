@@ -17,9 +17,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     {
         private readonly IUserService userService;
 
-        public AccountController(IUserService userService)
+        private readonly IModelConverter modelConverter;
+
+        public AccountController(IUserService userService, IModelConverter modelConverter)
         {
             this.userService = userService;
+            this.modelConverter = modelConverter;
         }
 
         [POST]
@@ -52,7 +55,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                var user = ModelConverter.GetModel(viewModel);
+                var user = modelConverter.GetModel(viewModel);
 
                 userService.CreateUser(user);
 
