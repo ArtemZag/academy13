@@ -209,8 +209,6 @@
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
-    <Content Include="Content\photo-page\off-screen-nav-autoprefixed.css" />
-    <Content Include="Content\photo-page\off-screen-nav.css" />
     <Content Include="Scripts\off-screen-nav.js" />
     <Content Include="Scripts\PhotoPage\photo.js" />
     <Content Include="Content\photo-page\photo-page.css" />

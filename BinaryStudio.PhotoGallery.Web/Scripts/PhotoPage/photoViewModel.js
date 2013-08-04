@@ -1,16 +1,33 @@
 ﻿$(document).ready(function() {
 
     var photoArray = new Array();
-    var i =0 ;
+    var i = 0;
+    
+
+    function User(data) {
+        var u = this;
+        u.firstName = ko.observable(data.OwnerFirstName);
+        u.lastName = ko.observable(data.OwnerLastName);
+        u.photoSource = ko.observable(data.OwnerPhotoSource);
+    }
 
     function Comment(data) {
         var com = this;
         com.text = ko.observable(data.Text);
-        com.dateOfCreating = ko.observable(data.DateOfCreating);
-        com.rating = ko.observable(data.Rating);
-        com.userInfo = ko.observableArray();
-    }
 
+        /*com.dateOfCreating = ko.observable(data.DateOfCreating);*/
+        var date = new Date(parseInt(data.DateOfCreating.substr(6)));
+        com.dateOfCreating = ko.observable(date.toLocaleString());
+        
+        com.rating = ko.observable(data.Rating);
+        com.userInfo = ko.observable(new User(data.UserInfo));
+
+        com.GetUserName = ko.computed(function() {
+            return com.userInfo().firstName() + " " + com.userInfo().lastName();
+        },
+            this);
+    }
+    
     function PhotoViewModel() {
         var self = this;
         self.PhotoID = ko.observable();
@@ -19,8 +36,8 @@
         self.Description = ko.observable();
         self.src = ko.observable();
         self.IsVisible = ko.observable();
-        
-        self.comms = ko.observableArray([]);
+        /*self.comms = typeof(self.comms) !== 'undefined' ? self.comms : [];*/
+        self.comms = ko.observableArray();
 
         self.ShowNextPhoto = function() {
             GetPhotos();
@@ -34,7 +51,8 @@
         };
     }
 
-    ko.applyBindings(new PhotoViewModel);
+    var model = new PhotoViewModel();
+    ko.applyBindings(model);
 
 
 
@@ -62,15 +80,16 @@
     }
 
     function SetComments(comm) {
-
-        comms = $.map(comm, function (item) { return new Comment(item); });
-        PhotoViewModel.comms = comms;
+        model.comms.destroyAll();
+        $.each(comm, function(k, item) {
+            model.comms.push(new Comment(item));
+        });
     }
 
 
     function SetPhotoSize(w, h) {
         var width = $(window).width();
-        var height = $(window).height();
+        var height = $(window).height() - 50;
 
         if (w > h) {
             width = width * 0.81;
