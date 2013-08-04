@@ -2,7 +2,7 @@
 using BinaryStudio.PhotoGallery.Domain.Services;
 using FluentScheduler;
 
-namespace BinaryStudio.PhotoGallery.Web
+namespace BinaryStudio.PhotoGallery.Web.Registers
 {
     internal class UsersMonitorRegistry : Registry
     {

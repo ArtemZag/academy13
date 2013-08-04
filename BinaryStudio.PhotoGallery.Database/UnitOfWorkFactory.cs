@@ -1,6 +1,6 @@
 ﻿namespace BinaryStudio.PhotoGallery.Database
 {
-    public class UnitOfWorkFactory : IUnitOfWorkFactory
+    internal class UnitOfWorkFactory : IUnitOfWorkFactory
     {
         public IUnitOfWork GetUnitOfWork()
         {

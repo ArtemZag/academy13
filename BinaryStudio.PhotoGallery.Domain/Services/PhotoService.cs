@@ -62,7 +62,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return album.Photos.OrderBy(model => model.DateOfCreation)
                             .ThenBy(model => model.Id)
                             .Skip(begin)
-                            .Take(end - begin).ToList();
+                         .Take(end - begin)
+                         .ToList();
             }
         }
 
@@ -76,7 +77,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                               .Where(model => !model.IsDeleted)
                               .OrderBy(model => model.DateOfCreation)
                               .ThenBy(model => model.Id)
-                              .Skip(begin).Take(end - begin);
+                              .Skip(begin)
 
                 // Maaak: here is fix for lazy loading of data, 
                 //        when DbContext is already disposed(using block), but result is not generated yet
@@ -87,14 +88,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             // for test only!
             // todo: remove when real user photos will be added
             /*var test = new List<PhotoModel>();
-            if (begin<90)
-            for (var i = 0; i < 30; i++)
-                test.Add(new PhotoModel
-                    {
-                        PhotoName =  i+".jpg",
-                        AlbumModelId = 1111,
-                        UserModelId = 1111
-                    });
+            if (begin < 90)
+                for (int i = 0; i < 30; i++)
+                    test.Add(new PhotoModel
+                        {
+                            PhotoName = i + ".jpg",
+                            AlbumModelId = 1111,
+                            UserModelId = 1111
+                        });
             return test;*/
         }
     }

@@ -15,11 +15,14 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     [RoutePrefix("Api/Account")]
     public class AccountController : ApiController
     {
-        private readonly IUserService _userService;
+        private readonly IUserService userService;
 
-        public AccountController(IUserService userService)
+        private readonly IModelConverter modelConverter;
+
+        public AccountController(IUserService userService, IModelConverter modelConverter)
         {
-            _userService = userService;
+            this.userService = userService;
+            this.modelConverter = modelConverter;
         }
 
         [POST]
@@ -30,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
-            var userNotValid = !_userService.IsUserValid(viewModel.Email, viewModel.Password);
+            var userNotValid = !userService.IsUserValid(viewModel.Email, viewModel.Password);
 
             if (userNotValid)
             {
@@ -52,9 +55,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                var user = ModelConverter.GetModel(viewModel);
+                var user = modelConverter.GetModel(viewModel);
 
-                _userService.CreateUser(user);
+                userService.CreateUser(user);
 
                 FormsAuthentication.SetAuthCookie(user.Email, false);
             }

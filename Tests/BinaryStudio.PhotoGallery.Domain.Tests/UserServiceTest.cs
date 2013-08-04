@@ -1,4 +1,6 @@
-﻿using BinaryStudio.PhotoGallery.Domain.Services;
+﻿using BinaryStudio.PhotoGallery.Core.UserUtils;
+using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Domain.Tests.Mocked;
 using BinaryStudio.PhotoGallery.Models;
 using FluentAssertions;
 using Microsoft.Practices.Unity;
@@ -13,7 +15,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         public void Setup()
         {
             IUnityContainer container = Bootstrapper.Initialise();
-            userService = container.Resolve<IUserService>();
+
+            var cryptoProvider = container.Resolve<ICryptoProvider>(); // mock? 
+            var unitOfWorkFactory = new TestUnitOfWorkFactory();
+
+            userService = new UserService(unitOfWorkFactory, cryptoProvider);
         }
 
         private IUserService userService;

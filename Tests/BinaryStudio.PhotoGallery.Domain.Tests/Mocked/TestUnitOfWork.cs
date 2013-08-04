@@ -6,11 +6,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked
 {
     internal class TestUnitOfWork : IUnitOfWork
     {
-        private readonly MockedContext mockedContext;
-
-        private readonly IUserRepository usersRepository;
         private readonly IAlbumRepository albumRepository;
+        private readonly MockedContext mockedContext;
         private readonly IPhotoRepository photoRepository;
+        private readonly IUserRepository usersRepository;
 
         public TestUnitOfWork(MockedContext mockedContext)
         {
@@ -38,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked
 
         public IAlbumRepository Albums
         {
-            get { return albumRepository;  }
+            get { return albumRepository; }
         }
 
         public IPhotoRepository Photos

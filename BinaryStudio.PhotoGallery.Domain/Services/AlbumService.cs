@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
-using System.Linq;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -42,7 +42,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return user.Albums.Select(model => model).Where(model => !model.IsDeleted);
+                return user.Albums.Select(model => model).Where(model => !model.IsDeleted).ToList();
             }
         }
 

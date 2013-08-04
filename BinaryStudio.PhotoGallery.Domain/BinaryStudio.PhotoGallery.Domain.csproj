@@ -76,6 +76,8 @@
     <Compile Include="Services\PhotoService.cs" />
     <Compile Include="Services\DbService.cs" />
     <Compile Include="Services\CleanupTask.cs" />
+    <Compile Include="Services\ISearchService.cs" />
+    <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\IUsersMonitorTask.cs" />
     <Compile Include="Services\UsersMonitorTask.cs" />

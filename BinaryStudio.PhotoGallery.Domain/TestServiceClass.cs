@@ -1,5 +1,4 @@
 ﻿using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain
 {

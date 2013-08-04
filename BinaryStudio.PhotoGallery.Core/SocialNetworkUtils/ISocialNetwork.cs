@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-
 namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils
 {
     public interface ISocialNetwork
