@@ -8,11 +8,11 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 {
     internal class ModelConverter : IModelConverter
     {
-        private readonly IPathUtil pathUtil;
+        private readonly IPathUtil _pathUtil;
 
         public ModelConverter(IPathUtil pathUtil)
         {
-            this.pathUtil = pathUtil;
+            this._pathUtil = pathUtil;
         }
 
         public UserModel GetModel(RegistrationViewModel viewModel)
@@ -37,7 +37,12 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return userModel;
         }
 
-        public static PhotoViewModel TestGetViewModel(PhotoModel model)
+        public SearchedUserViewModel GetViewModel(UserModel model)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /*public static PhotoViewModel TestGetViewModel(PhotoModel model)
         {
             return new SearchedUserViewModel
                 {
@@ -45,15 +50,15 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     LastName = model.LastName,
                     Department = model.Department
                 };
-        }
+        }*/
 
         public PhotoViewModel TestGetViewModel(PhotoModel viewModel)
         {
             var photoModel = new PhotoViewModel
             {
-                PhotoThumbSource = pathUtil.BuildThumbnailsPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                PhotoThumbSource = _pathUtil.BuildThumbnailsPath(viewModel.UserModelId, viewModel.AlbumModelId)
                                     + @"\" + viewModel.PhotoName,
-                PhotoSource = pathUtil.BuildAlbumPath(viewModel.UserModelId, viewModel.AlbumModelId)
+                PhotoSource = _pathUtil.BuildAlbumPath(viewModel.UserModelId, viewModel.AlbumModelId)
                                     + @"\" + viewModel.PhotoName,
                 AlbumId = viewModel.AlbumModelId,
                 PhotoId = viewModel.Id
@@ -62,21 +67,21 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return photoModel;
         }
 
-        public static PhotoViewModel GetViewModel(PhotoModel photoModel)
+        public PhotoViewModel GetViewModel(PhotoModel photoModel)
         {
-            return new PhotoViewModel
+            var photo = new PhotoViewModel
                 {
-                    PhotoThumbSource =
-                        DeprecatedPathUtil.BuildThumbnailsPath(photoModel.UserModelId, photoModel.AlbumModelId)
-                        + "/" + photoModel.PhotoName,
-                    PhotoSource = DeprecatedPathUtil.BuildAlbumPath(photoModel.UserModelId, photoModel.AlbumModelId)
-                                  + "/" + photoModel.PhotoName,
+                    PhotoThumbSource = _pathUtil.BuildThumbnailsPath(photoModel.UserModelId, photoModel.AlbumModelId)
+                                    + @"\" + photoModel.PhotoName,
+                    PhotoSource = _pathUtil.BuildAlbumPath(photoModel.UserModelId, photoModel.AlbumModelId)
+                                        + @"\" + photoModel.PhotoName,
                     AlbumId = photoModel.AlbumModelId,
                     PhotoId = photoModel.Id
                 };
+            return photo;
         }
 
-        public static PhotoCommentViewModel GetViewModel(PhotoCommentModel photoCommentModel, UserModel userModel)
+        public PhotoCommentViewModel GetViewModel(PhotoCommentModel photoCommentModel, UserModel userModel)
         {
             return new PhotoCommentViewModel
                 {
