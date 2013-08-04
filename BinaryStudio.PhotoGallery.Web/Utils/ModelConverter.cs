@@ -68,6 +68,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                             OwnerLastName = userModel.LastName
                         },
                         Rating   = photoCommentModel.Rating,
+                        DateOfCreating = photoCommentModel.DateOfCreating,
                         // this shit needs fixing
                         Reply = photoCommentModel.Reply,
                         Text = photoCommentModel.Text
