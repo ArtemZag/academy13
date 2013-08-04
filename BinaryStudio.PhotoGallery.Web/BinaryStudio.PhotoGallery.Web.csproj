@@ -203,6 +203,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
+    <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="CleanupServiceRegistry.cs" />
     <Compile Include="UsersMonitorRegistry.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
+    <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
@@ -226,6 +228,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\admin-page.css" />
+    <Content Include="Content\albums-page.css" />
     <Content Include="Content\auth-page.css" />
     <Content Include="Content\images\cherdak.png" />
     <Content Include="Content\images\loading_blue.gif" />
@@ -279,6 +282,7 @@
     <Content Include="Content\style-libs\opentip.css" />
     <Content Include="Content\upload-page.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\AlbumsPage\albums.js" />
     <Content Include="Scripts\Authorization\validation.js" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -336,11 +340,11 @@
     <Content Include="Views\Upload\Index.cshtml" />
     <Content Include="Views\Home\Album.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\Albums\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\AdminPanel\" />
-    <Folder Include="Scripts\AlbumsPage\" />
     <Folder Include="Scripts\FlowPage\" />
   </ItemGroup>
   <ItemGroup>
