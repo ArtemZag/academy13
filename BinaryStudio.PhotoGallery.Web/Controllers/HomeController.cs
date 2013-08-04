@@ -19,11 +19,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     {
         private readonly IPhotoService _photoService;
         private readonly IUserService _userService;
+        private readonly IModelConverter _modelConverter;
 
-        public HomeController(IUserService userService, IPhotoService photoService)
+        public HomeController(IUserService userService, IPhotoService photoService, IModelConverter modelConverter)
         {
             _photoService = photoService;
             _userService = userService;
+            _modelConverter = modelConverter;
         }
         /// <summary>
         /// Main user page (click on "bingally")
@@ -33,15 +35,18 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult Index()
         {   
             var viewmodels = _photoService.GetPhotos(User.Identity.Name, 0, 30);
-            return View(new InfoViewModel { UserEmail = User.Identity.Name, 
-                                            Photos = viewmodels.Select(ModelConverter.TestGetViewModel).ToList()});
+            return View(new InfoViewModel
+            {
+                UserEmail = User.Identity.Name,
+                Photos = viewmodels.Select(_modelConverter.TestGetViewModel).ToList()
+            });
         }
 
         [HttpPost]
         public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
         {
             var photos = _photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
-                                  .Select(ModelConverter.TestGetViewModel).ToList();
+                                  .Select(_modelConverter.TestGetViewModel);
             return Json(photos);
         }
 
