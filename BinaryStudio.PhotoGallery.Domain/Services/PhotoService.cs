@@ -74,10 +74,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
                 var result = unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
-                              .Where(model => !model.IsDeleted)
-                              .OrderBy(model => model.DateOfCreation)
-                              .ThenBy(model => model.Id)
-                              .Skip(begin)
+                                       .Where(model => !model.IsDeleted)
+                                       .OrderBy(model => model.DateOfCreation)
+                                       .ThenBy(model => model.Id)
+                                       .Skip(begin);
 
                 // Maaak: here is fix for lazy loading of data, 
                 //        when DbContext is already disposed(using block), but result is not generated yet

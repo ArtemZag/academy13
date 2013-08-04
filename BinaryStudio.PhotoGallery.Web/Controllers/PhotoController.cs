@@ -8,6 +8,7 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Utils;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -17,11 +18,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     {
         private IPhotoService _photoService;
         private IUserService _userService;
+        private readonly IModelConverter _modelConverter;
 
-        public PhotoController(IUserService userService, IPhotoService photoService)
+        public PhotoController(IUserService userService, IPhotoService photoService, IModelConverter modelConverter)
         {
             _userService = userService;
             _photoService = photoService;
+            _modelConverter = modelConverter;
         }
 
 
@@ -29,9 +32,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult GetPhotos(string albumName, int begin, int last)
         {
             var photoModels = _photoService.GetPhotos(User.Identity.Name, albumName, begin, last);
-          
 
-            return Json(photoModels.Select(ModelConverter.GetViewModel).ToList());
+            return Json(photoModels.Select(model => _modelConverter.GetViewModel(model)).ToList());
         }
 
         [GET("photo{photoID}")]
