@@ -36,7 +36,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="FluentScheduler">
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentScheduler, Version=1.1.36.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentScheduler.1.1.36\lib\net40\FluentScheduler.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity">
@@ -66,13 +70,15 @@
     <Compile Include="Services\PhotoCommentService.cs" />
     <Compile Include="Services\IAlbumService.cs" />
     <Compile Include="Services\IPhotoCommentService.cs" />
-    <Compile Include="Services\IPhotoCleanupTask.cs" />
+    <Compile Include="Services\ICleanupTask.cs" />
     <Compile Include="Services\IPhotoService.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\PhotoService.cs" />
     <Compile Include="Services\DbService.cs" />
     <Compile Include="Services\CleanupTask.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\IUsersMonitorTask.cs" />
+    <Compile Include="Services\UsersMonitorTask.cs" />
     <Compile Include="TestServiceClass.cs" />
     <Compile Include="Utils\IStorage.cs" />
     <Compile Include="Utils\Storage.cs" />

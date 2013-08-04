@@ -1,6 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 using System.Web;
+using System.Web.Hosting;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
@@ -14,15 +17,10 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         private const string DATA_VIRTUAL_ROOT = @"~\App_Data";
 
-        public string DataDirectory
-        {
-            get { return VirtualPathUtility.ToAbsolute(DATA_VIRTUAL_ROOT); }
-        }
-
         public string BuildPhotoDirectoryPath()
         {
             var builder = new StringBuilder();
-            builder.Append(DataDirectory)
+            builder.Append(GetDataDirectory())
                    .Append(DELIMITER)
                    .Append(PHOTOS_DIRECTORY_NAME);
 
@@ -59,7 +57,34 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        public string BuildTemporaryDirectoryPath(string userDirectoryPath)
+        public IEnumerable<string> BuildTemporaryDirectoriesPaths()
+        {
+            string photoDirectoryPath = BuildPhotoDirectoryPath();
+
+            IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
+
+            var temporaryPhotosDirectories = new Collection<string>();
+
+            foreach (string userDirectory in usersDirectories)
+            {
+                string temporaryPhotosDirectory = BuildTemporaryDirectoryPath(userDirectory);
+                temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
+            }
+
+            return temporaryPhotosDirectories;
+        }
+
+        private string GetDataDirectory()
+        {
+            return VirtualPathUtility.ToAbsolute(DATA_VIRTUAL_ROOT);
+        }
+
+        public string GetAbsoluteRoot()
+        {
+            return HostingEnvironment.MapPath(DATA_VIRTUAL_ROOT);
+        }
+
+        private string BuildTemporaryDirectoryPath(string userDirectoryPath)
         {
             return Path.Combine(userDirectoryPath, TEMPORARY_DIRECTORY_NAME);
         }

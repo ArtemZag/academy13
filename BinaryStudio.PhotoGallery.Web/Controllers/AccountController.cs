@@ -29,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     // recheck user (maybe it was deleted, while cookie is truth)
-                    var userExist = this._userService.IsUserExist(User.Identity.Name);
+                    var userExist = _userService.IsUserExist(User.Identity.Name);
 
                     if (userExist)
                     {
@@ -44,8 +44,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             {
                 return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
             }
-
-
+            
             return View(new AuthorizationViewModel());
         }
 
@@ -57,7 +56,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     // recheck user (maybe it was deleted, while cookie is truth)
-                    var userExist = this._userService.IsUserExist(User.Identity.Name);
+                    var userExist = _userService.IsUserExist(User.Identity.Name);
 
                     if (userExist)
                     {
@@ -71,6 +70,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             {
                 return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
             }
+
             return View(new RegistrationViewModel());
         }
 
@@ -123,7 +123,6 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
 
         [GET]
         public ActionResult SignOut()

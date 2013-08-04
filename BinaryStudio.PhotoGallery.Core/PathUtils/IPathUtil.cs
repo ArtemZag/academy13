@@ -1,9 +1,9 @@
-﻿namespace BinaryStudio.PhotoGallery.Core.PathUtils
+﻿using System.Collections.Generic;
+
+namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
     public interface IPathUtil
     {
-        string DataDirectory { get; }
-
         string BuildPhotoDirectoryPath();
 
         string BuildAlbumPath(int userId, int albumId);
@@ -12,6 +12,8 @@
 
         string BuildThumbnailsPath(int userId, int albumId);
 
-        string BuildTemporaryDirectoryPath(string userDirectoryPath);
+        IEnumerable<string> BuildTemporaryDirectoriesPaths();
+
+        string GetAbsoluteRoot();
     }
 }

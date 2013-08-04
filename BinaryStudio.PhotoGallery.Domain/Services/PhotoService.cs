@@ -45,7 +45,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                unitOfWork.Photos.Find(photo).IsDeleted = true;
+                PhotoModel photoToDelete = unitOfWork.Photos.Find(model => model.Id == photo.Id);
+                photoToDelete.IsDeleted = true;
 
                 unitOfWork.SaveChanges();
             }

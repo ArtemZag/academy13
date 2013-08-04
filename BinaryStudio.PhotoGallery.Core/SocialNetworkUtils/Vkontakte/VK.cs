@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Vkontakte
 {

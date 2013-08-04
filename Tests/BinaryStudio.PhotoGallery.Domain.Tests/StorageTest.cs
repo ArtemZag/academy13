@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using BinaryStudio.PhotoGallery.Core.PathUtils;
+﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Utils;
 using BinaryStudio.PhotoGallery.Models;
@@ -12,7 +10,7 @@ using FluentAssertions;
 namespace BinaryStudio.PhotoGallery.Domain.Tests
 {
     [TestFixture]
-    public class StorageTest
+    internal class StorageTest
     {
         private IStorage storage;
         private IUnitOfWorkFactory workFactory;
@@ -52,13 +50,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
                             return albumPath + @"\" + photoId + photoFormat;
                         });
-
-            pathUtil.BuildTemporaryDirectoryPath(Arg.Any<string>()).Returns(info =>
-                {
-                    var userDirectoryPath = (string) info[0];
-
-                    return Path.Combine(userDirectoryPath, "temporary");
-                });
 
             storage.PathUtil = pathUtil;
             FillRepository();
@@ -105,16 +96,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             // tear down
             originalPhotoPath.Should().Be(@"App_Data\photos\1\1\1.png");
-        }
-
-        [Test]
-        public void ShouldReturnCorrectTemporaryPathes()
-        {
-            // body
-            IEnumerable<string> temporaryPathes = storage.GetTemporaryDirectoriesPathes();
-
-            // tear down
-            temporaryPathes.Should().Contain(@"App_Data\photos\1\temporary");
         }
 
         private void FillRepository()

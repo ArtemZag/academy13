@@ -72,7 +72,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="CryptoProviderTest.cs" />
+    <Compile Include="CryptoProviderTests.cs" />
+    <Compile Include="FileWrapperTests.cs" />
+    <Compile Include="FormatHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PhotoProcessorTests.cs" />
   </ItemGroup>
@@ -85,6 +87,20 @@
       <Project>{91126D20-A9B5-49BE-9043-E3E8DCAE3628}</Project>
       <Name>BinaryStudio.PhotoGallery.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\imageAsText.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Content\empty">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="Content\img.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\text.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

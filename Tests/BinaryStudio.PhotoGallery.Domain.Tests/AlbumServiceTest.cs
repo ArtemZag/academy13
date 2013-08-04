@@ -10,7 +10,7 @@ using System.Linq;
 namespace BinaryStudio.PhotoGallery.Domain.Tests
 {
     [TestFixture]
-    public class AlbumServiceTest
+    internal class AlbumServiceTest
     {
         [SetUp]
         public void Setup()

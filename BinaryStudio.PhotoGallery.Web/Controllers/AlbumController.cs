@@ -7,7 +7,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class AlbumController : Controller
     {
 		[HttpGet]
-        public ActionResult Albums()
+        public ActionResult Index()
 		{
 		    string name = User.Identity.Name;
             

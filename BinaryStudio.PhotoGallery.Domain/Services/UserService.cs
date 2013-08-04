@@ -40,6 +40,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public int GetUserId(string userEmail)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Users.Find(user => user.Email == userEmail).Id;
+            }
+        }
+
         public void CreateUser(UserModel user, AuthInfoModel.ProviderType provider)
         {
             if (IsUserExist(user.Email))

@@ -28,12 +28,13 @@ body {
 .photoContainer img {
 	height:200px;
 	max-width: none;
-	-moz-opacity: 0.50;
-	opacity: 0.50;
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	-webkit-transition:All 1s ease;
+	-moz-opacity: 0.70;
+	opacity: 0.70;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	-webkit-transition:All 0.8s ease;
 	-moz-transition:All 1s ease;
 	-o-transition:All 1s ease;
+	transition: All 1s ease;
 	border-radius:5px;
 }
 
@@ -43,10 +44,10 @@ body {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
 	height:250px;
 	background-color:#ffffff;
-	padding:10px;
+	/*padding:20px;*/
 	border:1px solid #CCCCCC;
-	margin-left: -50px;
-	margin-top: -50px;
+	margin-left: -30px;
+	margin-top: -30px;
 
 }
 .photoContainer:hover{
@@ -54,9 +55,9 @@ body {
     z-index: 10;
 	cursor: pointer;
 	   /*свечение*/
-  -webkit-box-shadow: 0px 0px 20px rgba(255,255,255,0.8);
-  -moz-box-shadow: 0px 0px 20px rgba(255,255,255,0.8);
-  box-shadow: 0px 0px 20px rgba(255,255,255,0.8);
+	-webkit-box-shadow: 0px 0px 20px rgba(55,55,55,0.8);
+	-moz-box-shadow: 0px 0px 20px rgba(55,55,55,0.8);
+	box-shadow: 0px 0px 20px rgba(55,55,55,0.8);
 }
 #photopreloader {
 	display: block;

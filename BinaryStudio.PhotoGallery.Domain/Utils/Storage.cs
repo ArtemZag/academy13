@@ -12,12 +12,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
         private readonly IUnitOfWorkFactory workFactory;
         private IPathUtil pathUtil;
 
-        public IPathUtil PathUtil { set { pathUtil = value; }}
-
         public Storage(IUnitOfWorkFactory workFactory, IPathUtil pathUtil)
         {
             this.workFactory = workFactory;
             this.pathUtil = pathUtil;
+        }
+
+        public IPathUtil PathUtil
+        {
+            set { pathUtil = value; }
         }
 
         public string GetAlbumPath(AlbumModel album)
@@ -52,15 +55,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             }
         }
 
-        public IEnumerable<string> GetThumnailsPathes(PhotoModel photo)
+        public IEnumerable<string> GetThumnailsPaths(PhotoModel photo)
         {
             var result = new Collection<string>();
 
             string thumbnailsDirectoryPath = GetThumbnailsDirectoryPath(photo);
 
-            IEnumerable<string> thumnailFormatsPathes = Directory.EnumerateDirectories(thumbnailsDirectoryPath);
+            IEnumerable<string> thumnailFormatsPaths = Directory.EnumerateDirectories(thumbnailsDirectoryPath);
 
-            foreach (var thumbnailFormatPath in thumnailFormatsPathes)
+            foreach (string thumbnailFormatPath in thumnailFormatsPaths)
             {
                 string currentThumbnail = Path.Combine(thumbnailFormatPath, photo.Id + photo.Format);
 
@@ -73,20 +76,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             return result;
         }
 
-        public IEnumerable<string> GetTemporaryDirectoriesPathes()
+        public IEnumerable<string> GetTemporaryDirectoriesPaths()
         {
-            string photoDirectoryPath = pathUtil.BuildPhotoDirectoryPath();
-            IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
-
-            var temporaryPhotosDirectories = new Collection<string>();
-
-            foreach (var userDirectory in usersDirectories)
-            {
-                string temporaryPhotosDirectory = pathUtil.BuildTemporaryDirectoryPath(userDirectory);
-                temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
-            }
-
-            return temporaryPhotosDirectories;
+            return pathUtil.BuildTemporaryDirectoriesPaths();
         }
 
         private string GetThumbnailsDirectoryPath(PhotoModel photo)

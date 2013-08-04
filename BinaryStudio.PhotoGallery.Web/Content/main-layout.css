@@ -8,7 +8,7 @@
 
 body
 {
-	background-color: #2E2E2E !important;
+	background-color: whitesmoke !important;
 	min-height: 100%;
 	margin: 0px;
 	padding: 0px;
@@ -17,6 +17,10 @@ body
 
 .navbar-search form {
     margin: 0;
+}
+
+.nav li a.btn:hover {
+    background-color: #7bb33d!important;
 }
 
 .navbar {
@@ -28,11 +32,16 @@ body
 .brand {
     position: relative;
     height: 40px;
+    margin-left: 0px!important;
     padding: 5px 10px!important;
 }
 
 .brand img {
     height: inherit;
+}
+
+.nav li a.btn {
+    padding: 4px 12px!important;
 }
 
 .nav > li {
