@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
+using System.Text;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Models;
@@ -78,16 +79,30 @@ namespace BinaryStudio.PhotoGallery.Database
                 unitOfWork.SaveChanges();
 
                 ///////////////////////////////////////////////////////
+
+                var generatedRandomComment = new StringBuilder();
+
                 for (int i = 0; i < 29; i++)
                 {
                     var comm = new Collection<PhotoCommentModel>();
-                    for (int j = 0; j < Randomizer.GetNumber(10); j++)
+
+                    var upper = i == 0 ? 100 : Randomizer.GetNumber(10);
+
+
+                    for (var j = 0; j < upper; j++)
                     {
-                        comm.Add(new PhotoCommentModel(7,Randomizer.GetNumber(i),Randomizer.GetString(20),null));
+                        generatedRandomComment.Clear();
+                        for (var k = 0; k < Randomizer.GetNumber(32); k++)
+                        {
+                            generatedRandomComment.Append(Randomizer.GetString(Randomizer.GetNumber(64)));
+                            generatedRandomComment.Append(" ");
+                        }
+                        comm.Add(new PhotoCommentModel(7, Randomizer.GetNumber(i), generatedRandomComment.ToString(),
+                                                       null) {Rating = Randomizer.GetNumber(64)});
                     }
-                    unitOfWork.Photos.Add(new PhotoModel(3, 7){PhotoName = i + ".jpg",PhotoComments = comm});
+                    unitOfWork.Photos.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm});
                 }
-                
+
                 unitOfWork.Albums.Add(new AlbumModel("Test", 7));
 
 
