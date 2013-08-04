@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Domain.Tests.Mocked;
 using BinaryStudio.PhotoGallery.Models;
 using FluentAssertions;
 using Microsoft.Practices.Unity;
@@ -17,8 +19,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         {
             IUnityContainer container = Bootstrapper.Initialise();
 
-            albumService = container.Resolve<IAlbumService>();
-            userService = container.Resolve<IUserService>();
+            var cryptoProvidrer = container.Resolve<ICryptoProvider>();
+            var workFactory = new TestUnitOfWorkFactory();
+
+            albumService = new AlbumService(workFactory);
+            userService = new UserService(workFactory, cryptoProvidrer);
         }
 
         private IAlbumService albumService;
