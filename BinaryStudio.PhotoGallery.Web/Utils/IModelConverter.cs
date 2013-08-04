@@ -13,10 +13,8 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         SearchedUserViewModel GetViewModel(UserModel model);
 
-        PhotoViewModel GetViewModel(PhotoModel photoModel);
-
         PhotoCommentViewModel GetViewModel(PhotoCommentModel photoCommentModel, UserModel userModel);
 
-        PhotoViewModel TestGetViewModel(PhotoModel viewModel);
+        PhotoViewModel GetViewModel(PhotoModel viewModel);
     }
 }

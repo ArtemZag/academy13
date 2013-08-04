@@ -42,17 +42,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             throw new System.NotImplementedException();
         }
 
-        /*public static PhotoViewModel TestGetViewModel(PhotoModel model)
-        {
-            return new SearchedUserViewModel
-                {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    Department = model.Department
-                };
-        }*/
-
-        public PhotoViewModel TestGetViewModel(PhotoModel viewModel)
+        public PhotoViewModel GetViewModel(PhotoModel viewModel)
         {
             var photoModel = new PhotoViewModel
             {
@@ -67,31 +57,18 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return photoModel;
         }
 
-        public PhotoViewModel GetViewModel(PhotoModel photoModel)
-        {
-            var photo = new PhotoViewModel
-                {
-                    PhotoThumbSource = _pathUtil.BuildThumbnailsPath(photoModel.UserModelId, photoModel.AlbumModelId)
-                                    + @"\" + photoModel.PhotoName,
-                    PhotoSource = _pathUtil.BuildAlbumPath(photoModel.UserModelId, photoModel.AlbumModelId)
-                                        + @"\" + photoModel.PhotoName,
-                    AlbumId = photoModel.AlbumModelId,
-                    PhotoId = photoModel.Id
-                };
-            return photo;
-        }
-
         public PhotoCommentViewModel GetViewModel(PhotoCommentModel photoCommentModel, UserModel userModel)
         {
             return new PhotoCommentViewModel
                 {
-                    UserInfo = new UserInfoViewModel()
+                    UserInfo = new UserInfoViewModel
                         {
                             OwnerFirstName = userModel.FirstName,
                             OwnerLastName = userModel.LastName
                         },
                         Rating   = photoCommentModel.Rating,
                         DateOfCreating = photoCommentModel.DateOfCreating,
+
                         // this shit needs fixing
                         Reply = photoCommentModel.Reply,
                         Text = photoCommentModel.Text

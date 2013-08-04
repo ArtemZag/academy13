@@ -69,18 +69,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end)
         {
-            // real code block 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
+
                 var result = unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
                                        .Where(model => !model.IsDeleted)
                                        .OrderBy(model => model.DateOfCreation)
                                        .ThenBy(model => model.Id)
-                                       .Skip(begin);
+                                       .Skip(begin)
+                                       .Take(end - begin);
 
-                // Maaak: here is fix for lazy loading of data, 
-                //        when DbContext is already disposed(using block), but result is not generated yet
                 return result.ToList();
             }
 

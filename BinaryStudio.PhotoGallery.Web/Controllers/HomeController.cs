@@ -34,19 +34,22 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("Index/{photoNum}")]
         public ActionResult Index()
         {   
-            var viewmodels = _photoService.GetPhotos(User.Identity.Name, 0, 30);
-            return View(new InfoViewModel
-            {
-                UserEmail = User.Identity.Name,
-                Photos = viewmodels.Select(_modelConverter.TestGetViewModel).ToList()
-            });
+            var photoModels = _photoService.GetPhotos(User.Identity.Name, 0, 30);
+
+            var infoViewModel = new InfoViewModel
+                {
+                    UserEmail = User.Identity.Name,
+                    Photos = photoModels.Select(_modelConverter.GetViewModel).ToList()
+                };
+
+            return View(infoViewModel);
         }
 
         [HttpPost]
         public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
         {
             var photos = _photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
-                                  .Select(_modelConverter.TestGetViewModel);
+                                  .Select(_modelConverter.GetViewModel);
             return Json(photos);
         }
 
