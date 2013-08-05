@@ -1,0 +1,32 @@
+﻿body {
+    overflow: auto;
+}
+.layer1 {
+    background-color: whitesmoke;
+    float: left; 
+    overflow: hidden;
+    width: 400px;
+    border-radius: 20px;
+    border: 4px double green;
+    padding: 10px;
+   }
+.layer2 {
+    background-color: coral; 
+    overflow: hidden;
+    float: right; 
+    border-radius: 20px;
+    border: 4px dashed indianred;
+    padding: 10px;
+   }
+.albumContainer {
+    border: 3px dotted chocolate;
+    float:left;
+    height:200px;
+    margin:5px;
+    width:300px;
+    background-color: aqua;
+    border-radius: 10px;
+}
+.clear {
+    clear: left; /* Отмена обтекания */
+   }
