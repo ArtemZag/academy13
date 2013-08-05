@@ -9,11 +9,11 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 {
     internal class ModelConverter : IModelConverter
     {
-        private readonly IPathUtil _pathUtil;
+        private readonly IPathUtil pathUtil;
 
         public ModelConverter(IPathUtil pathUtil)
         {
-            _pathUtil = pathUtil;
+            this.pathUtil = pathUtil;
         }
 
         public UserModel GetModel(RegistrationViewModel registrationViewModel)
@@ -50,10 +50,10 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     // todo: UserModelId in photoModel != userId which album contain this photo
                     // is PhotoSource necessary in PhotoViewModel?!
                     PhotoSource =
-                        _pathUtil.BuildOriginalPhotoPath(photoModel.UserModelId, photoModel.AlbumModelId, photoModel.Id,
+                        pathUtil.BuildOriginalPhotoPath(photoModel.UserModelId, photoModel.AlbumModelId, photoModel.Id,
                                                          photoModel.Format),
 
-                    PhotoThumbSource = _pathUtil.BuildThumbnailsPath(photoModel.UserModelId, photoModel.AlbumModelId)
+                    PhotoThumbSource = pathUtil.BuildThumbnailsPath(photoModel.UserModelId, photoModel.AlbumModelId)
                                        + @"\" + photoModel.PhotoName + photoModel.Format,
 
                     AlbumId = photoModel.AlbumModelId,

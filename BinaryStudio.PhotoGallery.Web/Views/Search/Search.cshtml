@@ -1,8 +1,31 @@
-﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.Search.SearchViewModel
+﻿@using System.Web.Optimization
+@model BinaryStudio.PhotoGallery.Web.ViewModels.Search.SearchViewModel
+
+
+@Styles.Render("~/Content/search.css")
 
 @{
-    ViewBag.Title = "Search";
+    ViewBag.Title = "Search | Bingally";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+         
+<div class="container">
+         
+    <div class="span12">
 
-<h2>@Html.LabelFor(model => model.SearchQuery)</h2>
+        	<form class="form-search center">
+	        	<div class="input-append">
+	        	    <input type="text" class="span5 search-query">
+	        	    <button type="submit" class="btn btn-primary">Search</button>
+	        	</div>
+        	</form>
+         </div>
+        
+    <div class="row">
+   
+        <div class="span6">
+            <h2>Under construction..</h2>
+        </div>
+   
+    </div><!-- .row -->
+ </div><!-- .container -->

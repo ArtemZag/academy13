@@ -227,6 +227,7 @@
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
+    <Content Include="Content\search.css" />
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchedUserViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
