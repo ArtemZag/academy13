@@ -10,11 +10,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class UserService : DbService, IUserService
     {
-        private readonly ICryptoProvider cryptoProvider;
+        private readonly ICryptoProvider _cryptoProvider;
 
         public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider) : base(workFactory)
         {
-            this.cryptoProvider = cryptoProvider;
+            _cryptoProvider = cryptoProvider;
         }
 
         public IEnumerable<UserModel> GetAllUsers()
@@ -22,6 +22,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 return unitOfWork.Users.All().ToList();
+            }
+        }
+
+        public UserModel GetUser(int userID)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Users.Find(user => user.Id == userID);
             }
         }
 
@@ -50,8 +58,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
             if (provider == AuthInfoModel.ProviderType.Local)
             {
-                user.Salt = cryptoProvider.GetNewSalt();
-                user.UserPassword = cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
+                user.Salt = _cryptoProvider.GetNewSalt();
+                user.UserPassword = _cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
             }
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -88,7 +96,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     UserModel user = GetUser(userEmail, unitOfWork);
 
-                    result = cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
+                    result = _cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
                 }
             }
             catch (UserNotFoundException)
