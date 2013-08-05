@@ -224,6 +224,8 @@
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
+    <Compile Include="ViewModels\UsersListViewModel.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -314,7 +316,7 @@
     <Content Include="Scripts\photo_placer.js" />
     <Content Include="Scripts\UploadPage\main.js" />
     <Content Include="Scripts\UploadPage\upload.js" />
-    <Content Include="Scripts\UserSlider.js" />
+    <Content Include="Scripts\AdminPanel\UserSlider.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -344,7 +346,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\AdminPanel\" />
     <Folder Include="Scripts\AlbumsPage\" />
     <Folder Include="Scripts\FlowPage\" />
   </ItemGroup>

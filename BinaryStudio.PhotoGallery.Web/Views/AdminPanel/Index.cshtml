@@ -1,28 +1,31 @@
 ﻿@using System.Web.Optimization
-@model IEnumerable<BinaryStudio.PhotoGallery.Models.UserModel>
+@using BinaryStudio.PhotoGallery.Models
+@using PerpetuumSoft.Knockout
+@model BinaryStudio.PhotoGallery.Web.ViewModels.UsersListViewModel
 
+
+<script type="text/javascript" src="~/Scripts/knockout-2.3.0.debug.js"></script>
+<script type="text/javascript" src="~/Scripts/knockout.mapping-latest.debug.js"></script>
 @{
 	Layout = "~/Views/Shared/_MainLayout.cshtml";
 	ViewBag.Title = "Administration | Bingally";
 }
-
+@{
+    var ko = Html.CreateKnockoutContext();
+}
 
 <div class="user-container">
-	@for (int i = 0; i < 10; i++)
+	@using (var user = ko.Foreach(model => model.UserViewModels))
 	{
-		foreach (var user in @Model)
-		{
-			<a href="">
-				<div class="user-row">
-					<div class="user-main-info">
-						<img scr="~/Content/images/no_avatar.png" alt="@user.LastName" />
-						<span>User: @user.LastName</span>
-						<span class="user-status">Offline</span>
-					</div>
+		<a href="">
+			<div class="user-row">
+				<div class="user-main-info">
+					<img src="~/Content/images/no_avatar.png" @user.Bind.Attr("alt",g=>g.Email) />
+					<span @user.Bind.Text(g=> "User: "+g.FirstName+" "+ g.LastName)></span>
+					<span @user.Bind.Text(g=> g.IsOnline == true ? "Online" : "Offline").Style("color", g => g.IsOnline == true ? "green" : "red")>Offline</span>
 				</div>
-
-			</a>
-		}
+			</div>
+		</a>
 	}
 </div>
 <div class="user-info">
@@ -52,9 +55,16 @@
 	<input type="button" class="btn" value="Confirm deleting"/>
 </div>
 <div class="hidden-field">
-	<input type="button" class="btn" value="Reset Password" onclick="alert('Password has been reset! Notification was send!'); e.preventDefault();"/>
+	<input type="button" class="btn" value="Reset Password" data-bind="click: ResetPass"/>
 	<input type="button" class="btn" value="Another action" onclick="alert('Another admin action!'); e.preventDefault();" />
 	<input type="button" class="btn" value="And another" onclick="alert('And another admin action!'); e.preventDefault();" />
 </div>
-
-@Scripts.Render("~/Scripts/UserSlider.js")
+@ko.Initialize(Model)
+<script type="text/javascript">
+	viewModel.ResetPass = function() {
+		alert("The password has been reset. Notification was sent by mail.");
+	}
+</script>
+@ko.Apply(Model)
+@Scripts.Render("~/bundles/scripts/jquery")
+@Scripts.Render("~/Scripts/AdminPanel/UserSlider.js")
