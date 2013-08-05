@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
+using BinaryStudio.PhotoGallery.Core;
+using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Utils;
@@ -12,8 +14,7 @@ using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    [Authorize]
-    [RoutePrefix("Album")]
+    [RoutePrefix("Photo")]
     public class PhotoController : Controller
     {
         private IPhotoService _photoService;
@@ -36,10 +37,20 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return Json(photoModels.Select(model => _modelConverter.GetViewModel(model)).ToList());
         }
 
-        [GET("photo{photoID}")]
+        [HttpPost]
+        public ActionResult FbSync(string photoID)
+        {
+            var photoModel = _photoService.GetPhoto(Int32.Parse(photoID));
+            var photoPath = new List<string>();
+
+            return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
+            //FB.AddPhotosToAlbum(photoPath,"MakTest",);
+        }
+
+        [GET("{photoID}")]
         public ActionResult Index(string photoID)
         {
-
+            ViewBag.photoID = photoID;
             return View();
         }
 

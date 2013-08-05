@@ -2,7 +2,6 @@
 
     var photoArray = new Array();
     var i = 0;
-    
 
     function User(data) {
         var u = this;
@@ -53,9 +52,24 @@
         self.SaveUserData = function() {
             var data_to_send = { userData: ko.toJSON(self) };
             $.post("/PhotoComment/AddPhotoComment", data_to_send, function(data) {
-                alert("Your data has been posted to the server!");
+
             });
         };
+
+        self.fbSync = function () {
+            $.post("/Photo/FbSync", { photoID: "2" });
+        };
+        self.ShowLeftSideMenu = function() {
+            $("#leftSideMenu").css("-webkit-transform", "translateX(300px)").animate("-webkit-transform", "translateX(300px)", 300);
+            /*$("#photoSegment").css("-webkit-transform", "rotateY(-30deg)").animate("-webkit-transform", "rotateY(-30px)", 300);*/
+           /* $("#photoSegment").css("-webkit-transform", "translateX(300px)").animate("-webkit-transform", "translateX(300px)", 300);*/
+        };
+        self.HideLeftSideMenu = function () {
+            $("#leftSideMenu").css("-webkit-transform", "translateX(-300px)").animate("-webkit-transform", "translateX(-300px)", 300);
+            /*$("#photoSegment").css("-webkit-transform", "rotateY(30deg)").animate("-webkit-transform", "rotateY(30px)", 300);*/
+            /*$("#photoSegment").css("-webkit-transform", "translateX(-300px)").animate("-webkit-transform", "translateX(-300px)", 300);*/
+        };
+        
     }
 
     var model = new PhotoViewModel();
@@ -116,5 +130,7 @@
         $('#prevPhotoButtonArrow').css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 400);
     }, function() {
         $('#prevPhotoButtonArrow').css({ opacity: 0.0, visibility: "visible" }).animate({ opacity: 0.0 }, 500);
-        });
+    });
+
+    GetPhotos();
 });

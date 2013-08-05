@@ -36,5 +36,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="begin">Beginning of the interval.</param>
         /// <param name="end">Ending of the interval.</param>
         IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="photoID"></param>
+        /// <returns></returns>
+        PhotoModel GetPhoto(int photoID);
     }
 }

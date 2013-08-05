@@ -11,8 +11,14 @@
 <script src="~/Scripts/PhotoPage/photo.js"></script>
 <script src="~/Scripts/PhotoPage/photoViewModel.js"></script>
 @Styles.Render("~/Content/photo-page/photo-page.css")
-
-<div id="leftSideMenuButton"></div>
+<div id="leftSideMenu" data-bind="event: { mouseout: HideLeftSideMenu }">
+    <ul> Menu
+        <li>item1</li>
+        <li>item2</li>
+        <li>item3</li>
+    </ul>
+</div>
+<div id="leftSideMenuButton" data-bind="event: { mouseover: ShowLeftSideMenu }"></div>
 
 <div id="photoSegment">
 
@@ -20,7 +26,13 @@
         <img id="prevPhotoButtonArrow" src="../../Content/images/2.png" width="85%" /></div>
     <div id="photo">
 
-        <img id="mainPhoto" src="~/Content/images/rabbit.jpg" data-bind="click: ShowNextPhoto" />
+        <img id="mainPhoto" src="" data-bind="click: ShowNextPhoto" />
+        <div id="cosialNetworkSync">
+            <div id="facebookSyncButton" data-bind="click: fbSync">f</div>
+            <div id="vkSyncButton">vk</div>
+            <div id="twetterSyncButton">t</div>
+        </div>
+        
 
     </div>
 
@@ -31,6 +43,7 @@
 
 <div id="actionSegment">
     <div id="commentBlock">
+        
         <div id="addComment">
             <div class="addCommentForm">
 
@@ -61,8 +74,9 @@
                 </div>
                 <div class="commentText" data-bind="text: text">
                 </div>
-                <div class="commentFooter">Answer</div>
+                <div class="commentFooter">Reply</div>
             </div>
+            <hr/>
         </div>
         @*need to fix, but it is idea*@
         <hr @*data-bind="if: ($root.comms().length-1) != $index"*@/>
@@ -72,7 +86,45 @@
 
 
     <div id="activityBlock">
-        <div></div>
+        
+       <span>Fresh photos from friends</span>
+        <div id="friendPhotos">
+
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/0.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/1.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/2.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/3.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/4.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/5.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/6.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/7.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/8.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/9.jpg"/>
+
+
+        </div>
+
+        <span>Photos by tags</span>
+        <div id="tagPhotos">
+
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/10.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/11.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/12.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/13.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/14.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/15.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/16.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/17.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/18.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/19.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/20.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/21.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/22.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/23.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/24.jpg"/>
+
+
+        </div>
 
 
 

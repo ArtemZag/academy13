@@ -98,5 +98,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         });
             return test;*/
         }
+
+        public PhotoModel GetPhoto(int photoID)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Photos.Find(photo => photo.Id == photoID);
+            }
+        }
     }
 }
