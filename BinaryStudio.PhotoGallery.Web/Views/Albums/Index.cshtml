@@ -7,20 +7,16 @@
 
 @Scripts.Render("~/bundles/scripts/jquery")
 @Scripts.Render("~/bundles/scripts/bootstrap")
-@Scripts.Render("~/Scripts/Albums/albums.js")
+@Scripts.Render("~/Scripts/AlbumsPage/albums.js")
 @Styles.Render("~/Content/albums-page.css")
 
-<div class="layer1">
-    @for (int i = 0; i < 5; i++)
-    {
-        <div class="albumContainer">Lorem ipsum</div>
-    }
+<div class="albumContainer" id="container">
+    
 </div>
 
-<div class="layer2">
-    @for (int i = 0; i < 10; i++)
-    {
-        <p>Ut wisis enimad minim veniam</p>
-    } 
+<div class="info" id="inf">
+    <div>
+        <p><img src="~/Content/images/rabbit.jpg" width="100px" height="75px"/></p>
+        <p>User name:@Model.UserEmail</p>
+    </div>
 </div>
-<div class="clear"></div>

@@ -1,32 +1,34 @@
 ﻿body {
     overflow: auto;
 }
-.layer1 {
-    background-color: whitesmoke;
-    float: left; 
-    overflow: hidden;
-    width: 400px;
-    border-radius: 20px;
-    border: 4px double green;
+
+.albumContainer {
+    background-color:silver;
     padding: 10px;
-   }
-.layer2 {
-    background-color: coral; 
+    margin:10px;
+    overflow: auto;
+    float: left;
+}
+
+.album {
+    background-color: whitesmoke;
+    float: left;
+    overflow: auto;
+    border-radius: 10px;
+    border: 4px double green;
+    margin: 20px;
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.info {
+    background-color: darkgrey; 
     overflow: hidden;
     float: right; 
     border-radius: 20px;
     border: 4px dashed indianred;
     padding: 10px;
-   }
-.albumContainer {
-    border: 3px dotted chocolate;
-    float:left;
-    height:200px;
-    margin:5px;
-    width:300px;
-    background-color: aqua;
-    border-radius: 10px;
+       -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
 .clear {
     clear: left; /* Отмена обтекания */
    }

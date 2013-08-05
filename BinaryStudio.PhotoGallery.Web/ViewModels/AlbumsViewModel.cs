@@ -7,6 +7,8 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
     public class AlbumsViewModel
     {
+        public string UserEmail { get; set; }
 
+        public ICollection<AlbumViewModel> Models { get; set; }
     }
 }
