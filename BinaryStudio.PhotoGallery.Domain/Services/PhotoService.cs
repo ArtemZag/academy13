@@ -59,43 +59,36 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                return
-                    album.Photos.OrderBy(model => model.DateOfCreation)
-                         .ThenBy(model => model.Id)
-                         .Skip(begin)
-                         .Take(end - begin);
+                return album.Photos.OrderBy(model => model.DateOfCreation)
+                            .ThenBy(model => model.Id)
+                            .Skip(begin)
+                            .Take(end - begin);
             }
         }
 
         public IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end)
         {
-            // real code block 
-            /*
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return
-                    unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
-                              .Where(model => !model.IsDeleted)
-                              .OrderBy(model => model.DateOfCreation)
-                              .ThenBy(model => model.Id)
-                              .Skip(begin).Take(end - begin);
-            }*/
+                IQueryable<PhotoModel> result = unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
+                                                          .Where(model => !model.IsDeleted)
+                                                          .OrderBy(model => model.DateOfCreation)
+                                                          .ThenBy(model => model.Id)
+                                                          .Skip(begin)
+                                                          .Take(end - begin);
 
+                return result.ToList();
+            }
+        }
 
-            // for test only!
-            // todo: remove when real user photos will be added
-            var test = new List<PhotoModel>();
-            if (begin<90)
-            for (var i = 0; i < 30; i++)
-                test.Add(new PhotoModel
-                    {
-                        PhotoName =  i+".jpg",
-                        AlbumModelId = 1111,
-                        UserModelId = 1111
-                    });
-            return test;
+        public PhotoModel GetPhoto(int photoID)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Photos.Find(photo => photo.Id == photoID);
+            }
         }
     }
 }

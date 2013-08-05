@@ -28,12 +28,13 @@
                     
         }
     }
-    
-    var marginsOfPhotoCont = parseInt($('.photoContainer').css('margin-left'))
-            + parseInt($('.photoContainer').css('margin-right'));
 
+    var marginsOfPhotoCont = parseInt($('.photoContainer').css('margin-left'))
+                             + parseInt($('.photoContainer').css('margin-right'))
+                             + parseInt($('.photoContainer').css("border-left-width"))
+                             + parseInt($('.photoContainer').css("border-right-width"));
+     
     function calcPhotoSizes($container, $photos, marginPhotoCont) {
-        console.log("calcphotosizes");
         var width = 0;
         var firstElemInRow = 0;
         var margins = 0;

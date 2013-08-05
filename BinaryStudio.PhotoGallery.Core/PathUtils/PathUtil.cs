@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Web;
@@ -15,7 +16,12 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private const string TEMPORARY_DIRECTORY_NAME = "temporary";
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
 
-        private const string DATA_VIRTUAL_ROOT = @"~\App_Data";
+        private readonly string dataVirtualRoot;
+
+        public PathUtil()
+        {
+            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
+        }
 
         public string BuildPhotoDirectoryPath()
         {
@@ -76,12 +82,12 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         private string GetDataDirectory()
         {
-            return VirtualPathUtility.ToAbsolute(DATA_VIRTUAL_ROOT);
+            return VirtualPathUtility.ToAbsolute(dataVirtualRoot);
         }
 
         public string GetAbsoluteRoot()
         {
-            return HostingEnvironment.MapPath(DATA_VIRTUAL_ROOT);
+            return HostingEnvironment.MapPath(dataVirtualRoot);
         }
 
         private string BuildTemporaryDirectoryPath(string userDirectoryPath)
