@@ -7,14 +7,14 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 {
     public interface IModelConverter
     {
-        UserModel GetModel(RegistrationViewModel viewModel);
+        UserModel GetModel(RegistrationViewModel registrationViewModel);
 
-        UserModel GetModel(AuthorizationViewModel viewModel);
+        UserModel GetModel(AuthorizationViewModel authorizationViewModel);
 
-        SearchedUserViewModel GetViewModel(UserModel model);
+        SearchedUserViewModel GetViewModel(UserModel userModel);
 
         PhotoCommentViewModel GetViewModel(PhotoCommentModel photoCommentModel, UserModel userModel);
 
-        PhotoViewModel GetViewModel(PhotoModel viewModel);
+        PhotoViewModel GetViewModel(PhotoModel photoModel);
     }
 }

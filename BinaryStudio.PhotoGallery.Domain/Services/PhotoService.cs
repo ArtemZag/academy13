@@ -62,8 +62,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return album.Photos.OrderBy(model => model.DateOfCreation)
                             .ThenBy(model => model.Id)
                             .Skip(begin)
-                         .Take(end - begin)
-                         .ToList();
+                            .Take(end - begin);
             }
         }
 
@@ -73,29 +72,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                var result = unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
-                                       .Where(model => !model.IsDeleted)
-                                       .OrderBy(model => model.DateOfCreation)
-                                       .ThenBy(model => model.Id)
-                                       .Skip(begin)
-                                       .Take(end - begin);
+                IQueryable<PhotoModel> result = unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
+                                                          .Where(model => !model.IsDeleted)
+                                                          .OrderBy(model => model.DateOfCreation)
+                                                          .ThenBy(model => model.Id)
+                                                          .Skip(begin)
+                                                          .Take(end - begin);
 
                 return result.ToList();
             }
-
-
-            // for test only!
-            // todo: remove when real user photos will be added
-            /*var test = new List<PhotoModel>();
-            if (begin < 90)
-                for (int i = 0; i < 30; i++)
-                    test.Add(new PhotoModel
-                        {
-                            PhotoName = i + ".jpg",
-                            AlbumModelId = 1111,
-                            UserModelId = 1111
-                        });
-            return test;*/
         }
     }
 }
