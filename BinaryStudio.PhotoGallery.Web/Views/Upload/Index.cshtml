@@ -8,6 +8,15 @@
 @Styles.Render("~/bundles/styles/dropzone")
 @Styles.Render("~/Content/upload-page.css")
 
+<div id="foto-select">
+    <select disabled>
+        <option value="0" selected>Default album</option>
+        <option value="1">Akademie 2013</option>
+        <option value="2">Something else</option>
+    </select>
+    <button class="btn btn-danger" disabled>Save fotos</button>
+</div>
+
 <div id="dropzone-container">
     <form  action="~/Api/File" class="dropzone dz-clickable" enctype="multipart/form-data" method="POST"></form>
 </div>

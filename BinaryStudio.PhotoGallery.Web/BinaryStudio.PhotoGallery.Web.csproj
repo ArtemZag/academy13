@@ -234,6 +234,8 @@
     <Content Include="Content\images\logo_small.png" />
     <Content Include="Content\images\no_avatar.png" />
     <Content Include="Content\images\rabbit.jpg" />
+    <Content Include="Content\images\rabbit1.jpg" />
+    <Content Include="Content\images\rabbit2.png" />
     <Content Include="Content\images\textures\1.jpg" />
     <Content Include="Content\images\textures\10.jpg" />
     <Content Include="Content\images\textures\10c3574ce200t.jpg" />

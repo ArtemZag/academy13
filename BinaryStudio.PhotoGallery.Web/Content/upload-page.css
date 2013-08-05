@@ -1,5 +1,5 @@
 ﻿#dropzone-container {
-    top: 60px;
+    top: 110px;
     bottom: 10px;
     left: 10px;
     right: 10px;
@@ -11,4 +11,28 @@
     min-height: 200px!important;
     min-width: 500px;
     height: 100%;
+}
+
+#foto-select {
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    right: 10px;
+    min-height: 10px;
+    min-width: 500px;
+    height: 40px;
+    width: 0 auto;
+    background: linen;
+    border: 1px solid mistyrose;
+    border-radius: 5px;
+}
+
+#foto-select select {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 5px;
+}
+
+#foto-select button {
+    margin: 0px!important;
 }
