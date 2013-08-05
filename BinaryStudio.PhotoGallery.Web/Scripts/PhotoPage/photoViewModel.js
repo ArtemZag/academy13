@@ -43,10 +43,9 @@
         };
 
         self.ShowPrevPhoto = function() {
-            i--;
-            i--;
+            i > 1 ? i -= 2 : i--;
             GetPhotos();
-            
+
         };
 
         self.SaveUserData = function() {
