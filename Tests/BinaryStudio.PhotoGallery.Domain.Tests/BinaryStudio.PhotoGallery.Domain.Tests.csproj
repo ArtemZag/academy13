@@ -118,11 +118,11 @@
       <Name>BinaryStudio.PhotoGallery.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
