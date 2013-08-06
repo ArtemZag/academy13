@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Helpers;
-using System.Web.Http;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
@@ -11,17 +6,16 @@ using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
-using Newtonsoft.Json;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    [System.Web.Mvc.Authorize]
+    [Authorize]
     [RoutePrefix("PhotoComment")]
     public class PhotoCommentController : Controller
     {
-        private IPhotoCommentService _photoCommentService;
-        private IUserService _userService;
-        private IModelConverter _modelConverter;
+        private readonly IPhotoCommentService _photoCommentService;
+        private readonly IUserService _userService;
+        private readonly IModelConverter _modelConverter;
 
         public PhotoCommentController(IUserService userService, IPhotoCommentService photoCommentService, IModelConverter modelConverter)
         {

@@ -7,10 +7,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class PhotoService : DbService, IPhotoService
     {
-        private IUserService _userService;
-        public PhotoService(IUnitOfWorkFactory workFactory, IUserService userService) : base(workFactory)
+        public PhotoService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
-            _userService = userService;
         }
 
         public void AddPhoto(string userEmail, string albumName, PhotoModel photo)
@@ -64,7 +62,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return album.Photos.OrderBy(model => model.DateOfCreation)
                             .ThenBy(model => model.Id)
                             .Skip(begin)
-                            .Take(end - begin);
+                            .Take(end - begin)
+                            .ToList();
             }
         }
 
@@ -74,27 +73,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                IQueryable<PhotoModel> result = unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
+                return unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
                                                           .Where(model => !model.IsDeleted)
                                                           .OrderBy(model => model.DateOfCreation)
                                                           .ThenBy(model => model.Id)
                                                           .Skip(begin)
-                                                          .Take(end - begin);
-
-                return result.ToList();
+                                                          .Take(end - begin)
+                                                          .ToList();
             }
         }
 
         public PhotoModel GetPhoto(string userEmail, int photoID)
         {
-            PhotoModel photoModel = null;
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                //needs verification of permissions 
-                //var userID = _userService.GetUserId(userEmail);
-
-                photoModel = unitOfWork.Photos.Find(photoID);
-                return photoModel;
+                return unitOfWork.Photos.Find(photoID);
             }
         }
 
