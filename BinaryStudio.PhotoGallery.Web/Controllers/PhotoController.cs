@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
@@ -15,16 +13,21 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class PhotoController : Controller
     {
         private readonly IPhotoService _photoService;
-        private IUserService _userService;
         private readonly IModelConverter _modelConverter;
 
-        public PhotoController(IUserService userService, IPhotoService photoService, IModelConverter modelConverter)
+        public PhotoController(IPhotoService photoService, IModelConverter modelConverter)
         {
-            _userService = userService;
             _photoService = photoService;
             _modelConverter = modelConverter;
         }
 
+        [HttpPost]
+        public ActionResult GetPhoto(int photoID)
+        {
+            var photoModel = _photoService.GetPhoto(User.Identity.Name, photoID);
+
+            return Json(_modelConverter.GetViewModel(photoModel));
+        }
 
         [HttpPost]
         public ActionResult GetPhotos(string albumName, int begin, int last)
@@ -37,16 +40,16 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [HttpPost]
         public ActionResult FbSync(string photoID)
         {
-            var photoModel = _photoService.GetPhoto(Int32.Parse(photoID));
+           /* var photoModel = _photoService.GetPhoto(Int32.Parse(photoID));
             var photoPath = new List<string>();
-
+*/
             return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
             //FB.AddPhotosToAlbum(photoPath,"MakTest",);
         }
         [GET("{photoID}")]
         public ActionResult Index(string photoID)
         {
-            ViewBag.photoID = photoID;
+            ViewBag.PhotoID = photoID;
             return View();
         }
     }

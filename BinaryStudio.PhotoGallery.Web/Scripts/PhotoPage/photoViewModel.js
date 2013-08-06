@@ -3,6 +3,7 @@
     var photoArray = new Array();
     var i = 0;
 
+
     function User(data) {
         var u = this;
         u.firstName = ko.observable(data.OwnerFirstName);
@@ -78,28 +79,27 @@
     ko.applyBindings(model);
 
 
+    var id = document.getElementById("hiddenPhotoID").value;
+    model.PhotoID(id);
 
 
 
 
-
-    function GetPhotos() {
-        var photoList;
-        $.post("/Photo/GetPhotos", { albumName: "Test", begin: i, last: i+1 }, SetPhoto);
+    function GetPhotos(photoID) {
+        $.post("/Photo/GetPhoto", { photoID: photoID}, SetPhoto);
         i++;
-        return photoList;
     }
 
     function SetPhoto(photo) {
-        model.PhotoID(photo[0].PhotoId);
+        model.PhotoID(photo.PhotoId);
         var img = new Image();
         img.onload = function() {
             SetPhotoSize(this.width, this.height);
         };
-        img.src = photo[0].PhotoThumbSource;
+        img.src = photo.PhotoThumbSource;
 
         $("#mainPhoto").attr("src", img.src);
-        $.post("/PhotoComment/GetPhotoComments", { photoID: photo[0].PhotoId, begin: 0, last: 50 }, SetComments);
+        $.post("/PhotoComment/GetPhotoComments", { photoID: photo.PhotoId, begin: 0, last: 50 }, SetComments);
     }
 
     function SetComments(comm) {
@@ -134,5 +134,5 @@
         $('#prevPhotoButtonArrow').css({ opacity: 0.0, visibility: "visible" }).animate({ opacity: 0.0 }, 500);
     });
 
-    GetPhotos();
+    GetPhotos(model.PhotoID());
 });
