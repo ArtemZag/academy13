@@ -324,6 +324,7 @@
     <Content Include="Scripts\perpetuum.knockout.js" />
     <Content Include="Scripts\PhotoPage\photoViewModel.js" />
     <Content Include="Scripts\photo_placer.js" />
+    <Content Include="Scripts\Search\search.js" />
     <Content Include="Scripts\UploadPage\main.js" />
     <Content Include="Scripts\UploadPage\upload.js" />
     <Content Include="Scripts\UserSlider.js" />

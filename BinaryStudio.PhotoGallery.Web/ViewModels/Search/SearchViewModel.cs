@@ -6,7 +6,8 @@
         {
             Photos,
             Albums,
-            Users
+            Users,
+            Comments
         }
 
         public string SearchQuery { get; set; }
