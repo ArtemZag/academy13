@@ -40,8 +40,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="userEmail"></param>
         /// <param name="photoID"></param>
         /// <returns></returns>
-        PhotoModel GetPhoto(int photoID);
+        PhotoModel GetPhoto(string userEmail, int photoID);
     }
 }

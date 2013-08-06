@@ -7,8 +7,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class PhotoService : DbService, IPhotoService
     {
-        public PhotoService(IUnitOfWorkFactory workFactory) : base(workFactory)
+        private IUserService _userService;
+        public PhotoService(IUnitOfWorkFactory workFactory, IUserService userService) : base(workFactory)
         {
+            _userService = userService;
         }
 
         public void AddPhoto(string userEmail, string albumName, PhotoModel photo)
@@ -83,12 +85,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public PhotoModel GetPhoto(int photoID)
+        public PhotoModel GetPhoto(string userEmail, int photoID)
         {
+            PhotoModel photoModel = null;
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Photos.Find(photo => photo.Id == photoID);
+                //needs verification of permissions 
+                //var userID = _userService.GetUserId(userEmail);
+
+                photoModel = unitOfWork.Photos.Find(photoID);
+                return photoModel;
             }
         }
+
     }
 }
