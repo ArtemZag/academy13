@@ -1,15 +1,11 @@
 ﻿$(document).ready(function() {
 
-    function appendSearch() {
-
-    }
-
     function searchViewModel() {
 
         var self = this;
 
-        self.SearchType = ko.observable("Photos");
-        self.SearchQuery = ko.observable();
+        self.searchType = ko.observable("Photos");
+        self.searchQuery = ko.observable();
 
 
         self.interval = 10;
@@ -19,12 +15,10 @@
         self.search = function() {
 
             switch (self.SearchType) {
-            
-                case "Photos":
-                    // clear div data
+            case "Photos":
+                // clear div data
                     // build string
                 break;
-                
             default:
             }
         };
@@ -35,4 +29,4 @@
     }
 
     ko.applyBindings(searchViewModel);
-})
+});
