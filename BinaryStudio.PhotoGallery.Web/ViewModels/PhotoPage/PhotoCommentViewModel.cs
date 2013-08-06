@@ -9,6 +9,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage
         public DateTime DateOfCreating { get; set; }
         public string Text { get; set; }
         public int Rating { get; set; }
-        public PhotoCommentModel Reply { get; set; }
+        public int Reply { get; set; }
     }
 }

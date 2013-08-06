@@ -25,5 +25,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return result.ToList();
             }
         }
+
+        public void AddPhotoComment(PhotoCommentModel newPhotoCommentModel)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                unitOfWork.PhotoComments.Add(newPhotoCommentModel);
+                unitOfWork.SaveChanges();
+            }
+        }
     }
 }

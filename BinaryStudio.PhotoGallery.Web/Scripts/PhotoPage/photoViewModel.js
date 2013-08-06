@@ -27,6 +27,7 @@
             this);
     }
     
+    
     function PhotoViewModel() {
         var self = this;
         self.PhotoID = ko.observable();
@@ -35,8 +36,9 @@
         self.Description = ko.observable();
         self.src = ko.observable();
         self.IsVisible = ko.observable();
-        /*self.comms = typeof(self.comms) !== 'undefined' ? self.comms : [];*/
+
         self.comms = ko.observableArray();
+        self.newComment = ko.observable();
 
         self.ShowNextPhoto = function() {
             GetPhotos();
@@ -48,16 +50,17 @@
 
         };
 
-        self.SaveUserData = function() {
-            var data_to_send = { userData: ko.toJSON(self) };
-            $.post("/PhotoComment/AddPhotoComment", data_to_send, function(data) {
-
+        self.AddComment = function() {
+            var dataToSend = { userData: ko.toJSON(self.newComment) };
+            $.post("/PhotoComment/AddPhotoComment", {NewComment: self.newComment(), PhotoID: self.PhotoID()}, function(data) {
+                SetComments(data);
             });
         };
 
         self.fbSync = function () {
             $.post("/Photo/FbSync", { photoID: "2" });
         };
+        
         self.ShowLeftSideMenu = function() {
             $("#leftSideMenu").css("-webkit-transform", "translateX(300px)").animate("-webkit-transform", "translateX(300px)", 300);
             /*$("#photoSegment").css("-webkit-transform", "rotateY(-30deg)").animate("-webkit-transform", "rotateY(-30px)", 300);*/
@@ -88,7 +91,7 @@
     }
 
     function SetPhoto(photo) {
-        
+        model.PhotoID(photo[0].PhotoId);
         var img = new Image();
         img.onload = function() {
             SetPhotoSize(this.width, this.height);

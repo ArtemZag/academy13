@@ -47,9 +47,9 @@
         <div id="addComment">
             <div class="addCommentForm">
 
-                <input id="newCommentInputFild" placeholder="Input your comment" />
+                <input id="newCommentInputFild" data-bind="value: newComment" placeholder="Input your comment" />
 
-                <div id="newCommentAddButton" data-bind="click: SaveUserData">
+                <div id="newCommentAddButton" data-bind="click: AddComment">
                     <span>Add</span>
                 </div>
             </div>
