@@ -2,30 +2,57 @@
 @model BinaryStudio.PhotoGallery.Web.ViewModels.Search.SearchViewModel
 
 
-@Styles.Render("~/Content/search.css")
-
 @{
     ViewBag.Title = "Search | Bingally";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+
+@Scripts.Render("~/bundles/scripts/jquery")
+<script src="~/Scripts/knockout-2.3.0.js"></script>
+<script src="~/Scripts/knockout.mapping-latest.debug.js"></script>
+
+<script src="~/Scripts/Search/search.js"></script>
+
+@Styles.Render("~/Content/search.css")
+
          
 <div class="container">
          
     <div class="span12">
 
-        	<form class="form-search center">
-	        	<div class="input-append">
-	        	    <input type="text" class="span5 search-query">
-	        	    <button type="submit" class="btn btn-primary">Search</button>
-	        	</div>
-        	</form>
-         </div>
+        <form class="form-search center">
+            <div class="input-append">
+                <input type="text" class="span5 search-query" data-bind="text: SearchQuery">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+        
+        <div class="center">
+            <label class="radio inline">
+                <input type="radio" name="searchBy" value="Photos" data-bind="checked: SearchType" checked>
+                Photos
+            </label>
+            <label class="radio inline">
+                <input type="radio" name="searchBy" value="Albums" data-bind="checked: SearchType">
+                Albums
+            </label>
+            <label class="radio inline">
+                <input type="radio" name="searchBy" value="Users" data-bind="checked: SearchType">
+                Users
+            </label>
+            <label class="radio inline">
+                <input type="radio" name="searchBy" value="Comments" data-bind="checked: SearchType">
+                Comments
+            </label>
+        </div>
+
+    </div>
         
     <div class="row">
    
         <div class="span6">
-            <h2>Under construction..</h2>
+            
         </div>
    
     </div><!-- .row -->
- </div><!-- .container -->
+</div><!-- .container -->
