@@ -10,13 +10,27 @@
 @Scripts.Render("~/Scripts/AlbumsPage/albums.js")
 @Styles.Render("~/Content/albums-page.css")
 
-<div class="albumContainer" id="container">
+<table>
+    <tr>
+        <td class="mainArea">
+            <div class="albumContainer" id="container">
     
-</div>
+            </div>
+        </td>
+        <td class="infoArea">
+            <div class="info" id="userInformation">
+                    <p>
+                        <div class="avatarContainer">
+                            <img class="avatar" src="~/Content/images/rabbit.jpg"/>
+                        </div>
+                    </p>
+            </div>
+        </td>
+    </tr>
+</table>
 
-<div class="info" id="inf">
-    <div>
-        <p><img src="~/Content/images/rabbit.jpg" width="100px" height="75px"/></p>
-        <p>User name:@Model.UserEmail</p>
-    </div>
-</div>
+
+
+
+
+

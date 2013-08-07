@@ -1,34 +1,89 @@
 ﻿body {
     overflow: auto;
 }
+table {
+    min-width: 700px;
+}
+hr {
+    color: #b22222;
+  
+}
+.avatar {  
+    width:100px;
+    height: 75px;
+    overflow: hidden;
+}
+
+.avatarContainer {
+    width:100px;
+    height: 75px;
+    overflow: hidden;
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.avatarContainer:hover {
+    -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+}
+
+.avatar:hover {
+    -webkit-transform: scale(1.1);
+}
+
+.info {
+    background-color: darkgrey;
+    overflow: auto;
+    border-radius: 20px;
+    border: 4px dashed indianred;
+    padding: 10px;
+    margin: 10px;
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.painting {
+    width: 100%;
+    height: 100%;
+}
+
+.collage {
+    width: 100%;
+    height: 100%;
+}
+
+.infoArea {
+    vertical-align: top;
+    background: #5f9ea0;
+    width: 20%;
+    padding: 10px;
+    margin:10px;
+}
+
+p.textStyle {
+    color: black;
+    -webkit-transition: color 2s ease;
+    font-size: medium;
+}
+
+p.textStyle:hover {
+    color: #ff0000;
+    -webkit-transition: color 0.6s ease;
+}
 
 .albumContainer {
     background-color:silver;
-    padding: 10px;
-    margin:10px;
     overflow: auto;
-    float: left;
+    float: right;
 }
 
 .album {
-    background-color: whitesmoke;
     float: left;
     overflow: auto;
     border-radius: 10px;
     border: 4px double green;
     margin: 20px;
-    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-.info {
-    background-color: darkgrey; 
-    overflow: hidden;
-    float: right; 
-    border-radius: 20px;
-    border: 4px dashed indianred;
-    padding: 10px;
-       -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 256px;
+    height: 192px;
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
-.clear {
-    clear: left; /* Отмена обтекания */
-   }
+.album:hover {
+    -webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 1);   
+}

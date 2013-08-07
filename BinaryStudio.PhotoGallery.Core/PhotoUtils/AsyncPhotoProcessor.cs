@@ -65,6 +65,10 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             pathToCollages = string.Format(@"{0}\collages", relativePath);
             rnd = new Random((int)DateTime.Now.Ticks);
         }
+        public string GetUserAvatar()
+        {
+            return ImageFormatHelper.GetImages(Path.Combine(pathToUsers, userId.ToString())).FirstOrDefault();
+        }
 
         private void CreateDirectoryIfNotExists(string path)
         {
@@ -77,7 +81,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             CreateDirectoryIfNotExists(pathToThumbnail);
             bool created = false;
             object syncRoot = new object();
-            IEnumerable<string> files = Directory.GetFiles(relativePath);
+            IEnumerable<string> files = ImageFormatHelper.GetImages(relativePath);
 
             Parallel.ForEach(files, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount},
                              path =>
@@ -108,7 +112,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             CreateDirectoryIfNotExists(pathToThumbnail);
             bool deleted = false;
             object syncRoot = new object();
-            IEnumerable<string> files = Directory.GetFiles(pathToThumbnail);
+            IEnumerable<string> files = ImageFormatHelper.GetImages(pathToThumbnail);
 
             Parallel.ForEach(files, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount},
                              path =>
@@ -145,8 +149,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         {
             if (Directory.Exists(pathToCollages))
             {
-                string[] file = Directory.GetFiles(pathToCollages);
-                return file[0];
+                return ((List<string>) ImageFormatHelper.GetImages(pathToCollages))[0];
             }
             return MakeCollage(width, rows);
         }
@@ -156,8 +159,8 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             string fullPath = Path.Combine(pathToUsers, userId.ToString(), albumId.ToString(),"thumbnail" ,maxHeight.ToString());
             if (Directory.Exists(fullPath))
             {
-                string[] files = Directory.GetFiles(fullPath);
-                if (files == null || files.Length == 0)
+                IEnumerable<string> files = ImageFormatHelper.GetImages(fullPath);
+                if (files == null || !files.Any())
                     throw new FileNotFoundException("Файлы не найдены!");
 
                 return files;

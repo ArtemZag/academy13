@@ -234,6 +234,7 @@
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
     <Content Include="Content\search.css" />
+    <Content Include="Content\Users\0\avatar.jpg" />
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchedUserViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
@@ -253,7 +254,6 @@
     <Content Include="Content\Users\0\0\vetton_ru_24.jpg" />
     <Content Include="Content\Users\0\0\vetton_ru_29.jpg" />
     <Content Include="Content\Users\0\0\vetton_ru_32.jpg" />
-    <Content Include="Content\Users\0\0\vetton_ru_47.jpg" />
     <Content Include="Content\Users\0\0\vetton_ru_77.jpg" />
     <Content Include="Content\Users\0\1\vetton_ru_152.jpg" />
     <Content Include="Content\Users\0\1\vetton_ru_153.jpg" />
