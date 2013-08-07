@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/main-layout.css")
         @Styles.Render("~/bundles/styles/bootstrap")
+        @Styles.Render("~/Content/jquery.pnotify.default.css")
+        @Styles.Render("~/Content/jquery.pnotify.default.icons.css")
         <title>@ViewBag.Title</title>
     </head>
     <body>
@@ -38,5 +40,22 @@
             @RenderBody()
         </div>
     </body>
+    
+    @Scripts.Render("~/Scripts/jquery.pnotify.min.js")
+    
+    <script type="text/javascript">
+        function ShowNotify() {
+            $.pnotify({
+                title: 'Новая фотография',
+                text: 'Пользователь useremail добавил фотографию photoname',
+                addclass: 'custom',
+                icon: 'photo_icon',
+                opacity: .8,
+                delay:6000
+                //nonblock: true,
+                //nonblock_opacity: .2
+            });
+        }
+    </script>
 </html>
 

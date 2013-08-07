@@ -5,7 +5,9 @@ using System.Web.Routing;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Web.App_Start;
 using Microsoft.Practices.Unity;
+using Owin;
 using PerpetuumSoft.Knockout;
+using Microsoft.AspNet.SignalR;
 
 namespace BinaryStudio.PhotoGallery.Web
 {
@@ -34,9 +36,14 @@ namespace BinaryStudio.PhotoGallery.Web
             // todo: delete
             Database.Bootstrapper.Test();
 
+
             // todo
             // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
             // TaskManager.Initialize(new UsersMonitorRegistry(container.Resolve<IUsersMonitorTask>()));
+        }
+        public void Configuration(IAppBuilder app)
+        {
+            app.MapHubs();
         }
     }
 }
