@@ -36,6 +36,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public AlbumModel GetAlbumByID(int albumID)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Albums.Find(albumID);
+            }
+        }
+
         public IEnumerable<AlbumModel> GetAlbums(string userEmail)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

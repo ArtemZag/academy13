@@ -14,7 +14,7 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreating = DateTime.Now;
         }
 
-        public PhotoCommentModel(int userModelID,  int photoModelID, string text, PhotoCommentModel reply)
+        public PhotoCommentModel(int userModelID,  int photoModelID, string text, int reply)
         {
             Reply = reply;
             Text = text;
@@ -48,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets if user reply in other comment.
         /// </summary>
-        public PhotoCommentModel Reply { get; set; }
+        public int Reply { get; set; }
 
         public int PhotoModelID  { get; set; }
         public int UserModelID { get; set; }

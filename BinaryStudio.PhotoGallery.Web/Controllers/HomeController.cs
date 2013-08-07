@@ -1,73 +1,56 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Utils;
-using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
+    using BinaryStudio.PhotoGallery.Web.ViewModels;
+
     [Authorize] // Only authorized users can access this controller
-    [RoutePrefix("Home")]
+	[RoutePrefix("Home")]
     public class HomeController : Controller
     {
-        private readonly IPhotoService photoService;
-        private readonly IUserService userService;
-        private IModelConverter modelConverter;
+        private readonly IPhotoService _photoService;
+        private readonly IUserService _userService;
+        private readonly IModelConverter _modelConverter;
 
         public HomeController(IUserService userService, IPhotoService photoService, IModelConverter modelConverter)
         {
-            this.photoService = photoService;
-            this.userService = userService;
-            this.modelConverter = modelConverter;
+            _photoService = photoService;
+            _userService = userService;
+            _modelConverter = modelConverter;
         }
-
         /// <summary>
-        ///     Main user page (click on "bingally")
+        /// Main user page (click on "bingally")
         /// </summary>
         /// <returns>page with flow of public pictures</returns>
         [GET("Index/{photoNum}")]
         public ActionResult Index()
-        {
-            IEnumerable<PhotoModel> viewmodels = photoService.GetPhotos(User.Identity.Name, 0, 30);
+        {   
+            var photoModels = _photoService.GetPhotos(User.Identity.Name, 0, 30);
 
             var infoViewModel = new InfoViewModel
                 {
                     UserEmail = User.Identity.Name,
-                    Photos = viewmodels.Select(modelConverter.TestGetViewModel).ToList()
+                    Photos = photoModels.Select(_modelConverter.GetViewModel).ToList()
                 };
 
             return View(infoViewModel);
         }
 
-        //[POST("GetPhotosViaAjax")]
-        //public ActionResult GetPhotosViaAjax(int startIndex = 0, int endIndex = 30)
-        //{
-        //    gModel.Photos.AddRange(_photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
-        //                                        .Select(ModelConverter.GetViewModel).ToList());
-        //    gModel.PortionSubmit = true;
-        //    return Json(gModel);
-        //}
-
         [HttpPost]
         public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
         {
-            IEnumerable<PhotoViewModel> photos = photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
-                                                              .Select(modelConverter.TestGetViewModel);
+            var photos = _photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
+                                  .Select(_modelConverter.GetViewModel);
             return Json(photos);
         }
 
-        [GET("ToPhoto/{albumId}/{photoId}")]
-        public ActionResult ToPhoto(int albumId, int photoId)
-        {
-            return View("Album", new AlbumViewModel());
-        }
-
         /// <summary>
-        ///     Gallery page
+        /// Gallery page
         /// </summary>
         /// <returns>page with all users photos, sorted by date</returns>
         [GET("Gallery")]
@@ -77,7 +60,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         }
 
         /// <summary>
-        ///     Album page
+        /// Album page
         /// </summary>
         /// <returns>page with all users albums</returns>
         [GET("Albums")]
@@ -87,7 +70,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         }
 
         /// <summary>
-        ///     Gruops page
+        /// Gruops page
         /// </summary>
         /// <returns>page with all users groups</returns>
         [GET("Groups")]

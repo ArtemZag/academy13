@@ -204,9 +204,12 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
+    <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PhotoCommentController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -217,15 +220,23 @@
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
     <Compile Include="Utils\IModelConverter.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
-    <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
+    <Compile Include="ViewModels\PhotoPage\NewCommentViewModel.cs" />
+    <Compile Include="ViewModels\PhotoPage\PhotoCommentViewModel.cs" />
+    <Compile Include="ViewModels\PhotoPage\PhotoPageViewModel.cs" />
     <Compile Include="ViewModels\PhotoViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
-    <Compile Include="ViewModels\SearchViewModel.cs" />
+    <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
+    <Content Include="Content\search.css" />
+    <Content Include="Scripts\off-screen-nav.js" />
+    <Compile Include="ViewModels\Search\SearchedUserViewModel.cs" />
+    <Compile Include="ViewModels\Search\SearchViewModel.cs" />
+    <Content Include="Scripts\PhotoPage\photo.js" />
+    <Content Include="Content\photo-page\photo-page.css" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -313,7 +324,9 @@
     <Content Include="Scripts\knockout.mapping-latest.debug.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\perpetuum.knockout.js" />
+    <Content Include="Scripts\PhotoPage\photoViewModel.js" />
     <Content Include="Scripts\photo_placer.js" />
+    <Content Include="Scripts\Search\search.js" />
     <Content Include="Scripts\UploadPage\main.js" />
     <Content Include="Scripts\UploadPage\upload.js" />
     <Content Include="Scripts\AdminPanel\UserSlider.js" />
@@ -340,7 +353,8 @@
     <Content Include="Views\Home\Groups.cshtml" />
     <Content Include="Views\AdminPanel\Index.cshtml" />
     <Content Include="Views\Upload\Index.cshtml" />
-    <Content Include="Views\Home\Album.cshtml" />
+    <Content Include="Views\Album\PhotoView.cshtml" />
+    <Content Include="Views\Photo\Index.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Search\Search.cshtml" />
   </ItemGroup>

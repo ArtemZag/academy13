@@ -6,10 +6,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     public interface IAlbumService
     {
         /// <summary>
-        ///     Gets users album specified by name.
+        ///     Gets user's album specified by name.
         /// </summary>
         AlbumModel GetAlbum(string userEmail, string albumName);
-
+        
+        /// <summary>
+        /// Gets user's album specified by id.
+        /// </summary>
+        /// <param name="albumID">Album ID</param>
+        /// <returns></returns>
+        AlbumModel GetAlbumByID(int albumID);
+        
         /// <summary>
         ///     Gets all albums for specified user.
         /// </summary>

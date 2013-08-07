@@ -1,8 +1,70 @@
-﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.SearchViewModel
+﻿@using System.Web.Optimization
+@model BinaryStudio.PhotoGallery.Web.ViewModels.Search.SearchViewModel
+
 
 @{
-    ViewBag.Title = "Search";
+    ViewBag.Title = "Search | Bingally";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-<h2>@Html.LabelFor(model => model.SearchQuery)</h2>
+@Scripts.Render("~/bundles/scripts/jquery")
+<script src="~/Scripts/knockout-2.3.0.js"> </script>
+<script src="~/Scripts/knockout.mapping-latest.debug.js"> </script>
+
+<script src="~/Scripts/Search/search.js"> </script>
+
+@Styles.Render("~/Content/search.css")
+
+         
+<div class="container">
+         
+    <div class="span12">
+
+        <form class="form-search center" data-bind="submit: search">
+            <div class="input-append">
+                <input type="text" class="span5 search-query" data-bind="text: searchQuery">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+        
+        <div class="center">
+            <input type="radio" name="searchBy" value="Photos" id="Photos" data-bind="checked: searchType" checked>
+            <label for="Photos">Photos</label>
+                
+            <input type="radio" name="searchBy" value="Albums" id="Albums" data-bind="checked: searchType">
+            <label for="Albums">Albums</label>
+            
+            <input type="radio" name="searchBy" value="Users" id="Users" data-bind="checked: searchType">
+            <label for="Users">Users</label>
+            
+            <input type="radio" name="searchBy" value="Comments" id="Comments" data-bind="checked: searchType">
+            <label for="Comments">Comments</label>
+        </div>
+
+    </div>
+        
+    <div class="row">
+        
+        <div class="span8">
+            
+            <div class="span7 founded-item">
+                <img class="user-avatar" src="~/Content/images/no_avatar.png"/> 
+                <h4>Artyom Zagorodnuk</h4>
+                <br/>
+                <h5>.NET Department</h5>
+            </div>
+            <div class="span7 founded-item">
+                <h2>Search result item</h2>
+            </div>
+            <div class="span7 founded-item">
+                <h2>Search result item</h2>
+            </div>
+
+        </div>  
+        
+        <div class="span4 search-panel">There will be search params</div>
+        
+
+   
+    </div><!-- .row -->
+</div><!-- .container -->

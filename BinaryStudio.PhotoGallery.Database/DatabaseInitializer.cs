@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
+using System.Text;
+using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    public class DatabaseInitializer : DropCreateDatabaseAlways<DatabaseContext>
+    public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
     {
         protected override void Seed(DatabaseContext databaseContext)
         {
@@ -69,11 +72,44 @@ namespace BinaryStudio.PhotoGallery.Database
                     });
 
                 // Adding 100 photos from different users to album with ID 2(Academy)
-                for (int i = 0; i < 100; i++)
+                /*for (int i = 0; i < 100; i++)
                 {
                     unitOfWork.Photos.Add(2, random.Next(1, 7));
-                }
+                }*/
                 unitOfWork.SaveChanges();
+
+                ///////////////////////////////////////////////////////
+
+                var generatedRandomComment = new StringBuilder();
+
+                for (int i = 0; i < 29; i++)
+                {
+                    var comm = new Collection<PhotoCommentModel>();
+
+                    var upper = i == 0 ? 100 : Randomizer.GetNumber(10);
+
+
+                    for (var j = 0; j < upper; j++)
+                    {
+                        generatedRandomComment.Clear();
+                        for (var k = 0; k < Randomizer.GetNumber(32); k++)
+                        {
+                            generatedRandomComment.Append(Randomizer.GetString(Randomizer.GetNumber(64)));
+                            generatedRandomComment.Append(" ");
+                        }
+                        comm.Add(new PhotoCommentModel(7, Randomizer.GetNumber(i), generatedRandomComment.ToString(),
+                                                       -1) {Rating = Randomizer.GetNumber(64)});
+                    }
+                    unitOfWork.Photos.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm});
+                }
+
+                unitOfWork.Albums.Add(new AlbumModel("Test", 7));
+
+
+
+
+                unitOfWork.SaveChanges();
+
             }
 
             base.Seed(databaseContext);
