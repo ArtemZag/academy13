@@ -48,7 +48,57 @@
 
         </div>  
         
-        <div class="span4 search-panel">There will be search params</div>
+        <div class="span4 search-panel">
+            
+            <!-- Search photos by -->
+            <p>Search photos by..</p>
+            <div class="offset1">
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchPhotosByName"> name
+                </label>
+            
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchPhotosByTags"> tags
+                </label>
+                
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchPhotosByDescription"> description
+                </label>
+            </div>
+
+            <!-- Search albums by -->
+            <p>Search albums by..</p>
+            <div class="offset1">
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchAlbumsByName"> name
+                </label>
+            
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchAlbumsByTags"> tags
+                </label>
+                
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchAlbumsByDescription"> description
+                </label>
+            </div>
+            
+            <!-- Search users by -->
+            <p>Search users by..</p>
+            <div class="offset1">
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchUsersByName"> name
+                </label>
+
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchUserByDepartment"> department
+                </label>
+            </div>
+            
+            <!-- Search comments -->
+            <label class="checkbox">
+                <input type="checkbox" data-bind="checked: isSearchByComments"> Search by comments
+            </label>
+        </div>
         
 
    

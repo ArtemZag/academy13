@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
 
     function searchViewModel() {
 
@@ -10,10 +10,6 @@
 
         self.searchQuery = ko.observable();
 
-        self.isSearchUsersByName = ko.observable(false);
-        self.isSearchUserByDepartment = ko.observable(false);
-        self.isSearchUserByNickname = ko.observable(false);
-
         self.isSearchPhotosByName = ko.observable(false);
         self.isSearchPhotosByTags = ko.observable(false);
         self.isSearchPhotosByDescription = ko.observable(false);
@@ -22,16 +18,19 @@
         self.isSearchAlbumsByTags = ko.observable(false);
         self.isSearchAlbumsByDescription = ko.observable(false);
 
+        self.isSearchUsersByName = ko.observable(false);
+        self.isSearchUserByDepartment = ko.observable(false);
+
         self.isSearchByComments = ko.observable(false);
 
-        self.search = function () {
+        self.isSearchAlbumsByDescription = ko.computed(function () {
+            return true;
+        }, this);
 
-        };
-
-        self.appendSearch = function () {
+        self.search = function() {
 
         };
     }
 
-    ko.applyBindings(searchViewModel);
+    ko.applyBindings(new searchViewModel());
 });
