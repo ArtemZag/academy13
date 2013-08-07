@@ -124,7 +124,8 @@
         model.src(photo.PhotoThumbSource);
 
         $("#mainPhoto").attr("src", img.src);
-        /*window.history.pushState({ }, "", urlPath);*/
+        //needs fixing
+        window.history.pushState("", "", "http://localhost:57367/photo/"+model.PhotoID());
         $.post("/PhotoComment/GetPhotoComments", { photoID: photo.PhotoId, begin: 0, last: 50 }, SetComments);
     }
 
