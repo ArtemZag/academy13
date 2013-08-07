@@ -30,6 +30,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="albumID"></param>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        IEnumerable<PhotoModel> GetPhotos(string userEmail, int albumID, int begin, int end);
+
+        /// <summary>
         ///     Returns specified interval of users photos.
         /// </summary>
         /// <param name="userEmail">Users email.</param>
@@ -40,9 +50,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="userEmail"></param>
         /// <param name="photoID"></param>
         /// <returns></returns>
-        PhotoModel GetPhoto(string userEmail, int photoID);
+        PhotoModel GetPhoto(int photoID);
     }
 }

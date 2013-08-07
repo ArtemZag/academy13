@@ -26,7 +26,7 @@
         <img id="prevPhotoButtonArrow" src="../../Content/images/2.png" width="85%" /></div>
     <div id="photo">
         <input id="hiddenPhotoID" type="hidden" value="@ViewBag.PhotoID"/>
-        <img id="mainPhoto" src="" alt="" data-bind="click: ShowNextPhoto" />
+        <img id="mainPhoto" src="" alt="" data-bind="attr: { src: src }, click: ShowNextPhoto" />
         <div id="cosialNetworkSync">
             <div id="facebookSyncButton" data-bind="click: fbSync">f</div>
             <div id="vkSyncButton">vk</div>

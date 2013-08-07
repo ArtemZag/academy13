@@ -1,7 +1,7 @@
 ﻿$(document).ready(function() {
 
     var photoArray = new Array();
-    var i = 0;
+    var photoIndex = 0;
 
 
     function User(data) {
@@ -41,13 +41,16 @@
         self.comms = ko.observableArray();
         self.newComment = ko.observable();
 
-        self.ShowNextPhoto = function() {
-            GetPhotos();
+        self.ShowNextPhoto = function () {
+            photoIndex < (photoArray.length - 1)? photoIndex++ : null;
+            /*GetPhotos(++photoIndex);*/
+            SetPhoto(photoArray[photoIndex]);
         };
 
         self.ShowPrevPhoto = function() {
-            i > 1 ? i -= 2 : i--;
-            GetPhotos();
+            photoIndex > 0 ? photoIndex -- : null;
+            /*GetPhotos(photoIndex);*/
+            SetPhoto(photoArray[photoIndex]);
 
         };
 
@@ -85,20 +88,40 @@
 
 
 
-    function GetPhotos(photoID) {
-        $.post("/Photo/GetPhoto", { photoID: photoID}, SetPhoto);
-        i++;
+    function GetPhotos(index) {
+        $.post("/Photo/GetPhoto", { photoID: model.PhotoID(), offset: index}, SetPhoto);
+    }
+
+    function GetFirstPhoto(index) {
+        $.post("/Photo/GetPhoto", { photoID: model.PhotoID(), offset: index }, GetAllPhotosFromAlbum);
+    }
+    function GetAllPhotosFromAlbum(photo) {
+        
+        $.post("/Photo/GetPhotosIDFromAlbum", { albumID: photo.AlbumId, begin: 0, end: 1000}, SetPhotoArray);
+    }
+
+    function SetPhotoArray(photos) {
+        $.each(photos, function(index, value) {
+            photoArray[index] = value;
+        });
+        
+        photoIndex = photoArray.indexOf(photoArray[model.PhotoID() - 1]);
+        SetPhoto(photoArray[photoIndex]);
     }
 
     function SetPhoto(photo) {
         model.PhotoID(photo.PhotoId);
+        model.AlbumID(photo.AlbumID);
         var img = new Image();
         img.onload = function() {
             SetPhotoSize(this.width, this.height);
+            
         };
         img.src = photo.PhotoThumbSource;
+        model.src(photo.PhotoThumbSource);
 
         $("#mainPhoto").attr("src", img.src);
+        /*window.history.pushState({ }, "", urlPath);*/
         $.post("/PhotoComment/GetPhotoComments", { photoID: photo.PhotoId, begin: 0, last: 50 }, SetComments);
     }
 
@@ -134,5 +157,5 @@
         $('#prevPhotoButtonArrow').css({ opacity: 0.0, visibility: "visible" }).animate({ opacity: 0.0 }, 500);
     });
 
-    GetPhotos(model.PhotoID());
+    GetFirstPhoto(0);
 });
