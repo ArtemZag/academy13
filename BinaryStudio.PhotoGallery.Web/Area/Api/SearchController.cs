@@ -23,7 +23,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             this.modelConverter = modelConverter;
         }
 
-        [GET]
+        [HttpGet]
         public HttpResponseMessage Search([FromBody] SearchViewModel searchViewModel)
         {
             HttpResponseMessage responseMessage = null;
