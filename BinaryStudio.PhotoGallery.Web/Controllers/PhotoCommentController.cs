@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             foreach (var photoCommentModel in photoCommentModels)
             {
-                var userModel = _userService.GetUser(photoCommentModel.UserModelID);
+                var userModel = _userService.GetUser(photoCommentModel.UserModelId);
                 photoCommentViewModel.Add(_modelConverter.GetViewModel(photoCommentModel, userModel));
             }
 
@@ -56,7 +56,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             foreach (var photoCommentModel in photoCommentModels)
             {
-                var userModel = _userService.GetUser(photoCommentModel.UserModelID);
+                var userModel = _userService.GetUser(photoCommentModel.UserModelId);
                 photoCommentViewModel.Add(_modelConverter.GetViewModel(photoCommentModel, userModel));
             }
 
