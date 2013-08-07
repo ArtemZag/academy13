@@ -13,12 +13,12 @@
 
     function Comment(data) {
         var com = this;
-        
+
         com.text = ko.observable(data.Text);
 
         var date = new Date(parseInt(data.DateOfCreating.substr(6)));
         com.dateOfCreating = ko.observable(date.toLocaleString());
-        
+
         com.rating = ko.observable(data.Rating);
         com.userInfo = ko.observable(new User(data.UserInfo));
 
@@ -27,8 +27,8 @@
         },
             this);
     }
-    
-    
+
+
     function PhotoViewModel() {
         var self = this;
         self.PhotoID = ko.observable();
@@ -41,41 +41,48 @@
         self.comms = ko.observableArray();
         self.newComment = ko.observable();
 
-        self.ShowNextPhoto = function () {
-            photoIndex < (photoArray.length - 1)? photoIndex++ : null;
+        self.ShowNextPhoto = function() {
+            photoIndex < (photoArray.length - 1) ? photoIndex++ : null;
             /*GetPhotos(++photoIndex);*/
             SetPhoto(photoArray[photoIndex]);
         };
 
         self.ShowPrevPhoto = function() {
-            photoIndex > 0 ? photoIndex -- : null;
+            photoIndex > 0 ? photoIndex-- : null;
             /*GetPhotos(photoIndex);*/
             SetPhoto(photoArray[photoIndex]);
 
         };
 
         self.AddComment = function() {
-            var dataToSend = { userData: ko.toJSON(self.newComment) };
-            $.post("/PhotoComment/AddPhotoComment", {NewComment: self.newComment(), PhotoID: self.PhotoID()}, function(data) {
+            $.post("/PhotoComment/AddPhotoComment", { NewComment: self.newComment(), PhotoID: self.PhotoID() }, function(data) {
                 SetComments(data);
             });
         };
 
-        self.fbSync = function () {
+        self.fbSync = function() {
             $.post("/Photo/FbSync", { photoID: "2" });
         };
-        
-        self.ShowLeftSideMenu = function() {
-            $("#leftSideMenu").css("-webkit-transform", "translateX(300px)").animate("-webkit-transform", "translateX(300px)", 300);
-            /*$("#photoSegment").css("-webkit-transform", "rotateY(-30deg)").animate("-webkit-transform", "rotateY(-30px)", 300);*/
-           /* $("#photoSegment").css("-webkit-transform", "translateX(300px)").animate("-webkit-transform", "translateX(300px)", 300);*/
+
+        self.ShowLeftSideMenu = function () {
+            $("body").css("backgound-color", "black");
+            $("#photoSegment").css({ "-webkit-transform-origin": "0% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-20deg)" })
+                          .animate({ "-webkit-transform-origin": "0% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-20deg)" }, 500);
+            
+            $("#actionSegment").css({ "-webkit-transform-origin": "0% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-20deg)" })
+                           .animate({ "-webkit-transform-origin": "0% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-20deg)" }, 500);
+            $("#leftSideMenu").css("-webkit-transform", "translateX(300px)").animate("-webkit-transform", "translateX(0px)", 500);
         };
+        
         self.HideLeftSideMenu = function () {
-            $("#leftSideMenu").css("-webkit-transform", "translateX(-300px)").animate("-webkit-transform", "translateX(-300px)", 300);
-            /*$("#photoSegment").css("-webkit-transform", "rotateY(30deg)").animate("-webkit-transform", "rotateY(30px)", 300);*/
-            /*$("#photoSegment").css("-webkit-transform", "translateX(-300px)").animate("-webkit-transform", "translateX(-300px)", 300);*/
+            $("#photoSegment").css({ "-webkit-transform-origin": "0px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
+                          .animate({ "-webkit-transform-origin": "0px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
+            
+            $("#actionSegment").css({ "-webkit-transform-origin": "0px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
+                           .animate({ "-webkit-transform-origin": "0px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
+            $("#leftSideMenu").css("-webkit-transform", "translateX(-300px)").animate("-webkit-transform", "translateX(0px)", 500);
         };
-        
+
     }
 
     var model = new PhotoViewModel();
@@ -87,24 +94,20 @@
 
 
 
-
-    function GetPhotos(index) {
-        $.post("/Photo/GetPhoto", { photoID: model.PhotoID(), offset: index}, SetPhoto);
-    }
-
     function GetFirstPhoto(index) {
         $.post("/Photo/GetPhoto", { photoID: model.PhotoID(), offset: index }, GetAllPhotosFromAlbum);
     }
+
     function GetAllPhotosFromAlbum(photo) {
-        
-        $.post("/Photo/GetPhotosIDFromAlbum", { albumID: photo.AlbumId, begin: 0, end: 1000}, SetPhotoArray);
+
+        $.post("/Photo/GetPhotosIDFromAlbum", { albumID: photo.AlbumId, begin: 0, end: 1000 }, SetPhotoArray);
     }
 
     function SetPhotoArray(photos) {
         $.each(photos, function(index, value) {
             photoArray[index] = value;
         });
-        
+
         photoIndex = photoArray.indexOf(photoArray[model.PhotoID() - 1]);
         SetPhoto(photoArray[photoIndex]);
     }
@@ -115,7 +118,7 @@
         var img = new Image();
         img.onload = function() {
             SetPhotoSize(this.width, this.height);
-            
+
         };
         img.src = photo.PhotoThumbSource;
         model.src(photo.PhotoThumbSource);
@@ -149,10 +152,12 @@
 
         $("#photo").css("width", width);
         $("#photo").css("height", height);
-    };
+    }
+
+    ;
 
     $('#prevPhotoButton').hover(function() {
-        $('#prevPhotoButtonArrow').css({opacity: 0.0, visibility: "visible"}).animate({opacity: 1.0}, 400);
+        $('#prevPhotoButtonArrow').css({ opacity: 0.0, visibility: "visible" }).animate({ opacity: 1.0 }, 400);
     }, function() {
         $('#prevPhotoButtonArrow').css({ opacity: 0.0, visibility: "visible" }).animate({ opacity: 0.0 }, 500);
     });
