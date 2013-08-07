@@ -33,18 +33,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             int begin = searchViewModel.Begin;
             int end = searchViewModel.End;
 
-            switch (searchViewModel.Type)
-            {
-                case SearchViewModel.SearchType.Users:
-
-                    IEnumerable<SearchedUserViewModel> searchResult =
-                        searchService.SearchUsers(query, begin,
-                                                  end).Select(modelConverter.GetViewModel);
-
-                    responseMessage = Request.CreateResponse(HttpStatusCode.OK, searchResult);
-
-                    break;
-            }
+            // todo
 
             return responseMessage;
         }
