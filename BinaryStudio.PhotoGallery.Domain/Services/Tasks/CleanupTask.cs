@@ -7,7 +7,7 @@ using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Utils;
 using BinaryStudio.PhotoGallery.Models;
 
-namespace BinaryStudio.PhotoGallery.Domain.Services
+namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
 {
     internal class CleanupTask : DbService, ICleanupTask
     {

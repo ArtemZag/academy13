@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BinaryStudio.PhotoGallery.Domain.Services
+namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     public interface ISearchService
     {

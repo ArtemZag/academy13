@@ -1,4 +1,4 @@
-﻿namespace BinaryStudio.PhotoGallery.Domain.Services
+﻿namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     public class SearchArguments
     {
