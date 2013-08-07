@@ -1,0 +1,136 @@
+﻿@using System.Web.Optimization
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@Scripts.Render("~/bundles/scripts/jquery")
+<script src="~/Scripts/knockout-2.3.0.js"></script>
+<script src="~/Scripts/knockout.mapping-latest.debug.js"></script>
+<script src="~/Scripts/PhotoPage/photo.js"></script>
+<script src="~/Scripts/PhotoPage/photoViewModel.js"></script>
+@Styles.Render("~/Content/photo-page/photo-page.css")
+<div id="leftSideMenu" data-bind="event: { mouseout: HideLeftSideMenu }">
+    <ul> Menu
+        <li>item1</li>
+        <li>item2</li>
+        <li>item3</li>
+    </ul>
+</div>
+<div id="leftSideMenuButton" data-bind="event: { mouseover: ShowLeftSideMenu }"></div>
+
+<div id="photoSegment">
+
+    <div id="prevPhotoButton" data-bind="click: ShowPrevPhoto">
+        <img id="prevPhotoButtonArrow" src="../../Content/images/2.png" width="85%" /></div>
+    <div id="photo">
+
+        <img id="mainPhoto" src="" data-bind="click: ShowNextPhoto" />
+        <div id="cosialNetworkSync">
+            <div id="facebookSyncButton" data-bind="click: fbSync">f</div>
+            <div id="vkSyncButton">vk</div>
+            <div id="twetterSyncButton">t</div>
+        </div>
+        
+
+    </div>
+
+
+</div>
+
+
+
+<div id="actionSegment">
+    <div id="commentBlock">
+        
+        <div id="addComment">
+            <div class="addCommentForm">
+
+                <input id="newCommentInputFild" placeholder="Input your comment" />
+
+                <div id="newCommentAddButton" data-bind="click: SaveUserData">
+                    <span>Add</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div data-bind="foreach: comms">
+            <div class="comment">
+                <div class="commentInfo">
+                    <div class="userPhoto">
+                        <img src="" alt="userFace" width="100%" height="100%" />
+                    </div>
+                    <div class="userInfo">
+                        <div class="userName" data-bind="text: GetUserName">
+                        </div>
+                        <div class="dateOfCreating" data-bind="text: dateOfCreating">
+                        </div>
+
+                    </div>
+
+                    <div class="rating" data-bind="text: rating"></div>
+                </div>
+                <div class="commentText" data-bind="text: text">
+                </div>
+                <div class="commentFooter">Reply</div>
+            </div>
+            <hr/>
+        </div>
+        @*need to fix, but it is idea*@
+        <hr @*data-bind="if: ($root.comms().length-1) != $index"*@/>
+
+
+    </div>
+
+
+    <div id="activityBlock">
+        
+       <span>Fresh photos from friends</span>
+        <div id="friendPhotos">
+
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/0.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/1.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/2.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/3.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/4.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/5.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/6.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/7.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/8.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/9.jpg"/>
+
+
+        </div>
+
+        <span>Photos by tags</span>
+        <div id="tagPhotos">
+
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/10.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/11.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/12.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/13.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/14.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/15.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/16.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/17.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/18.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/19.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/20.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/21.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/22.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/23.jpg"/>
+            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/24.jpg"/>
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
