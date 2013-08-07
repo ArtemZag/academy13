@@ -38,11 +38,6 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return userModel;
         }
 
-        public SearchedUserViewModel GetViewModel(UserModel userModel)
-        {
-            throw new NotImplementedException();
-        }
-
         public PhotoViewModel GetViewModel(PhotoModel photoModel)
         {
             var viewModel = new PhotoViewModel

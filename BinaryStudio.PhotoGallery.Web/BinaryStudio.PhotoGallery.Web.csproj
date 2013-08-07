@@ -233,7 +233,6 @@
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\search.css" />
     <Content Include="Scripts\off-screen-nav.js" />
-    <Compile Include="ViewModels\Search\SearchedUserViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
     <Content Include="Scripts\PhotoPage\photo.js" />
     <Content Include="Content\photo-page\photo-page.css" />
