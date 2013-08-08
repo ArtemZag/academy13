@@ -57,7 +57,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     //        Look at PhotoModel to check the meaning of property UserModelID
                     PhotoSource = 
                         _pathUtil.BuildOriginalPhotoPath(albumModel.UserModelId, photoModel.AlbumModelId, 
-                                                         photoModel.Id,photoModel.Format),
+                                                         photoModel.PhotoName, photoModel.Format),
 
                     // Maaak: I think needs refactoring. Or another method,
                     //        that will create a path by only one parameter - photoID
