@@ -23,10 +23,6 @@
 
         self.isSearchByComments = ko.observable(false);
 
-        self.isSearchAlbumsByDescription = ko.computed(function () {
-            return true;
-        }, this);
-
         self.search = function() {
 
         };
