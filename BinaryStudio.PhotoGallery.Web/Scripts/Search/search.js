@@ -25,6 +25,7 @@
 
         self.search = function() {
 
+            alert(jQuery.isPlainObject(new searchViewModel()));
         };
     }
 
