@@ -7,6 +7,7 @@ using System.Web;
 using Microsoft.AspNet.SignalR;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
+using BinaryStudio.PhotoGallery.Domain.Services;
 
 namespace BinaryStudio.PhotoGallery.Web.Hubs
 {
@@ -17,20 +18,35 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
         public HashSet<string> ConnectionIds { get; set; }
     }
 
+
     [Authorize]
     public class NotificationsHub : Hub
     {
         private static readonly ConcurrentDictionary<string, User> Users
         = new ConcurrentDictionary<string, User>();
 
+        private readonly IPhotoService _photoService;
+        private readonly IUserService _userService;
+
+        public NotificationsHub(IUserService userService, IPhotoService photoService)
+        {
+            _photoService = photoService;
+            _userService = userService;
+        }
+
         public void PhotoAdded()
         {
             User user;
             Users.TryGetValue(Context.User.Identity.Name, out user);
+            var uModel = _userService.GetUser(Context.User.Identity.Name);
+
             if (user != null)
             {
                 Clients.AllExcept(user.ConnectionIds.ToArray())
-                       .broadcastNotification(NotificationTitles.PhotoAdded, Context.User.Identity.Name, "photoname");
+                       .broadcastNotification(
+                            NotificationTitles.PhotoAdded, 
+                            String.Format("{0} {1}", uModel.FirstName, uModel.LastName), "photoname"
+                       );
             }
 
         }
