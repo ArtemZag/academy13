@@ -31,6 +31,7 @@
 
     function PhotoViewModel() {
         var self = this;
+        
         self.PhotoID = ko.observable();
         self.AlbumID = ko.observable();
         self.OwnerID = ko.observable();
@@ -113,17 +114,15 @@
     function SetPhoto(photo) {
         model.PhotoID(photo.PhotoId);
         model.AlbumID(photo.AlbumID);
+        
         var img = new Image();
-        img.onload = function() {
-            SetPhotoSize(this.width, this.height);
-
-        };
+        img.onload = function() { SetPhotoSize(this.width, this.height); };
         img.src = photo.PhotoThumbSource;
-        model.src(photo.PhotoThumbSource);
+        model.src(img.src);
 
-        $("#mainPhoto").attr("src", img.src);
-        //needs fixing
-        window.history.pushState("", "", "/photo/"+model.PhotoID());
+        // todo: needs fixing
+        window.history.pushState("", "", "/photo/" + model.PhotoID());
+        
         $.post("/PhotoComment/GetPhotoComments", { photoID: photo.PhotoId, begin: 0, last: 50 }, SetComments);
     }
 
