@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                     return result.BuildPhotoDirectoryPath() + @"\" + userId + @"\" + albumId;
                 });
 
-            result.BuildOriginalPhotoPath(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<string>())
+            result.BuildOriginalPhotoPath(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>())
                   .Returns(info
                            =>
                       {
