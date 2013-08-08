@@ -41,9 +41,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
                 }
             }
 
-            return result.GroupBy(item => new { item.Id }).Select(items => new PhotoFoundItem
+            return result.GroupBy(item => new { item.Id, item.UserModelId, item.AlbumId, item.PhotoName }).Select(items => new PhotoFoundItem
             {
                 Id = items.Key.Id,
+                UserModelId = items.Key.UserModelId,
+                AlbumId = items.Key.AlbumId,
+                PhotoName = items.Key.PhotoName,
                 Relevance = items.Sum(item => item.Relevance)
             });
         }
@@ -59,7 +62,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
                     UserModelId = model.UserModelId,
                     AlbumId = model.AlbumModelId,
                     PhotoName = model.PhotoName,
-                    Relevance = GetRelevanceNumberByName(searchQuery, model)
+                    Relevance = GetRelevanceByName(searchQuery, model) // todo: throws "is not supported in linq to entities"
                 }).Where(item => item.Relevance != 0);
         }
 
@@ -74,7 +77,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
                     UserModelId = model.UserModelId,
                     AlbumId = model.AlbumModelId,
                     PhotoName = model.PhotoName,
-                    Relevance = GetRelevanceNumberByDescription(searchQuery, model)
+                    Relevance = GetRelevanceByDescription(searchQuery, model) // todo: throws "is not supported in linq to entities"
                 }).Where(item => item.Relevance != 0);
         }
 
@@ -115,14 +118,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
             return result;
         }
 
-        private int GetRelevanceNumberByName(string searchQuery, PhotoModel photoModel)
+        private int GetRelevanceByName(string searchQuery, PhotoModel photoModel)
         {
             string[] splittedQuery = searchQuery.SplitBySpace();
 
             return splittedQuery.Sum(queryPart => Regex.Matches(photoModel.PhotoName, queryPart).Count);
         }
 
-        private int GetRelevanceNumberByDescription(string searchQuery, PhotoModel photoModel)
+        private int GetRelevanceByDescription(string searchQuery, PhotoModel photoModel)
         {
             string[] splittedQuery = searchQuery.SplitBySpace();
 

@@ -1,5 +1,6 @@
 ﻿using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Items;
 using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Domain.Utils;
 using Microsoft.Practices.Unity;
@@ -18,6 +19,7 @@ namespace BinaryStudio.PhotoGallery.Domain
             container.RegisterType<IStorage, Storage>(new ContainerControlledLifetimeManager());
             container.RegisterType<IUsersMonitorTask, UsersMonitorTask>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISearchService, SearchService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IPhotoSearchService, PhotoSearchService>(new ContainerControlledLifetimeManager());
         }
     }
 }
