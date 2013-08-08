@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using BinaryStudio.PhotoGallery.Database;
 
-namespace BinaryStudio.PhotoGallery.Domain.Services
+namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     internal class SearchService : DbService, ISearchService
     {

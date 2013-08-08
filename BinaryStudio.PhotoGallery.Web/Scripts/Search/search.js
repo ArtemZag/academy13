@@ -4,29 +4,33 @@
 
         var self = this;
 
-        self.searchType = ko.observable("Photos");
-        self.searchQuery = ko.observable();
-
-
         self.interval = 10;
         self.begin = 0;
         self.end = self.begin + self.interval;
 
+        self.searchQuery = ko.observable();
+
+        self.isSearchPhotosByName = ko.observable(false);
+        self.isSearchPhotosByTags = ko.observable(false);
+        self.isSearchPhotosByDescription = ko.observable(false);
+
+        self.isSearchAlbumsByName = ko.observable(false);
+        self.isSearchAlbumsByTags = ko.observable(false);
+        self.isSearchAlbumsByDescription = ko.observable(false);
+
+        self.isSearchUsersByName = ko.observable(false);
+        self.isSearchUserByDepartment = ko.observable(false);
+
+        self.isSearchByComments = ko.observable(false);
+
+        self.isSearchAlbumsByDescription = ko.computed(function () {
+            return true;
+        }, this);
+
         self.search = function() {
-
-            switch (self.SearchType) {
-            case "Photos":
-                // clear div data
-                    // build string
-                break;
-            default:
-            }
-        };
-
-        self.appendSearch = function() {
 
         };
     }
 
-    ko.applyBindings(searchViewModel);
+    ko.applyBindings(new searchViewModel());
 });

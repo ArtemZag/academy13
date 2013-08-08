@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using FluentScheduler;
 
 namespace BinaryStudio.PhotoGallery.Web.Registers
