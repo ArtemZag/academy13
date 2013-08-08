@@ -41,21 +41,11 @@
         </div>
     </body>
     
+    @Scripts.Render("~/Scripts/jquery-2.0.3.min.js")
     @Scripts.Render("~/Scripts/jquery.pnotify.min.js")
-    
-    <script type="text/javascript">
-        function ShowNotify() {
-            $.pnotify({
-                title: 'Новая фотография',
-                text: 'Пользователь useremail добавил фотографию photoname',
-                addclass: 'custom',
-                icon: 'photo_icon',
-                opacity: .8,
-                delay:6000
-                //nonblock: true,
-                //nonblock_opacity: .2
-            });
-        }
-    </script>
+    @Scripts.Render("~/Scripts/jquery.signalR-1.1.3.min.js")
+    @Scripts.Render("/signalr/hubs")
+    @Scripts.Render("~/Scripts/Notifications.js")
+
 </html>
 
