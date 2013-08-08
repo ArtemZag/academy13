@@ -78,6 +78,7 @@
     <Compile Include="SocialNetworkUtils\ISocialNetwork.cs" />
     <Compile Include="SocialNetworkUtils\ISocialNetworkFactory.cs" />
     <Compile Include="SocialNetworkUtils\SocialNetworkFactory.cs" />
+    <Compile Include="StringUtils\Extensions.cs" />
     <Compile Include="UserUtils\CryptoProvider.cs" />
     <Compile Include="UserUtils\ICryptoProvider.cs" />
     <Compile Include="NotificationsUtils\NotificationSender.cs" />
