@@ -6,6 +6,5 @@
         bool Exists(string path);
         void Move(string sourceFileName, string destFileName);
         bool Equals(string firstFile, string secondFile);
-        void HardRename(string sourceName, string destName);
     }
 }

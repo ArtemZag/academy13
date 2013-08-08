@@ -1,18 +1,19 @@
 ﻿using BinaryStudio.PhotoGallery.Core.Helpers;
-using NUnit.Framework;
 using FluentAssertions;
+using NSubstitute;
+using NUnit.Framework;
 
 namespace BinaryStudio.PhotoGalery.Core.Tests
 {
     [TestFixture]
-    internal class FormatHelperTests
+    public class FileHelperTests
     {
-        private FormatHelper _formatHelper;
+        private IFileHelper _fileHelper;
 
         [SetUp]
         public void SetUp()
         {
-            _formatHelper = new FormatHelper();
+            _fileHelper = Substitute.For<IFileHelper>();
         }
 
         [Test]
@@ -23,12 +24,12 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             var normalImageFile = string.Format(@"{0}\{1}", "Content", "img.jpg");
 
             // body
-            var isTextFormatReallyImage = _formatHelper.IsImageFile(imageWithTxtExtension);
-            var isImageFormatReallyImage =_formatHelper.IsImageFile(normalImageFile);
+            _fileHelper.IsImageFile(imageWithTxtExtension).Returns(true);
+            _fileHelper.IsImageFile(normalImageFile).Returns(true);
 
             // tear down
-            isTextFormatReallyImage.Should().BeTrue();
-            isImageFormatReallyImage.Should().BeTrue();
+            _fileHelper.IsImageFile(imageWithTxtExtension).Should().BeTrue();
+            _fileHelper.IsImageFile(normalImageFile).Should().BeTrue();
         }
 
         [Test]
@@ -39,12 +40,12 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             var textFile = string.Format(@"{0}\{1}", "Content", "text.txt");
 
             // body
-            var emptyFileIsImage = _formatHelper.IsImageFile(emptyFile);
-            var textFileIsImage = _formatHelper.IsImageFile(textFile);
+            _fileHelper.IsImageFile(emptyFile).Returns(false);
+            _fileHelper.IsImageFile(textFile).Returns(false);
 
             // tear down
-            emptyFileIsImage.Should().BeFalse();
-            textFileIsImage.Should().BeFalse();
+            _fileHelper.IsImageFile(emptyFile).Should().BeFalse();
+            _fileHelper.IsImageFile(textFile).Should().BeFalse();
         }
     }
 }

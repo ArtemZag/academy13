@@ -20,20 +20,20 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         private readonly IUserService _userService;
 	    private readonly IPathUtil _pathUtil;
 	    private readonly IDirectoryWrapper _directoryWrapper;
-	    private readonly IFormatHelper _formatHelper;
+	    private readonly IFileHelper _fileHelper;
 	    private readonly IFileWrapper _fileWrapper;
 
 	    public FileController(
             IUserService userService,
             IPathUtil pathUtil,
             IDirectoryWrapper directoryWrapper,
-            IFormatHelper formatHelper,
+            IFileHelper fileHelper,
             IFileWrapper fileWrapper)
         {
             _userService = userService;
             _pathUtil = pathUtil;
 	        _directoryWrapper = directoryWrapper;
-	        _formatHelper = formatHelper;
+	        _fileHelper = fileHelper;
 	        _fileWrapper = fileWrapper;
         }
 
@@ -63,6 +63,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     _directoryWrapper.CreateDirectory(pathToTempFolder);
                 }
 
+                // TODO what I must to do here? Create new instance of MFDSPW oder it come
                 var provider = new MultipartFormDataStreamProvider(pathToTempFolder);
 
                 // Read the form data from request
@@ -75,7 +76,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     var destFileName = string.Format("{0}\\{1}", pathToTempFolder, originalFileName);
 
                     // Is it really image file format ?
-                    if (!_formatHelper.IsImageFile(fileData.LocalFileName))
+                    if (!_fileHelper.IsImageFile(fileData.LocalFileName))
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
                         notAccpetedFiles.Add(originalFileName, "This file contains no image data");
@@ -85,7 +86,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     // try to rename file to source name (users file name)
                     try
                     {
-                        _fileWrapper.HardRename(fileData.LocalFileName, destFileName);
+                        _fileHelper.HardRename(fileData.LocalFileName, destFileName);
                     }
                     catch (FileRenameException ex)
                     {
