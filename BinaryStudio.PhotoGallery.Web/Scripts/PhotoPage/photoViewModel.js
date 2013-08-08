@@ -56,6 +56,7 @@
             $.post("/PhotoComment/AddPhotoComment", { NewComment: self.newComment(), PhotoID: self.PhotoID() }, function(data) {
                 SetComments(data);
             });
+            
         };
 
         self.fbSync = function() {
@@ -92,8 +93,8 @@
 
 
 
-    function GetFirstPhoto(index) {
-        $.post("/Photo/GetPhoto", { photoID: model.PhotoID(), offset: index }, GetAllPhotosFromAlbum);
+    function GetFirstPhoto() {
+        $.post("/Photo/GetPhoto", { photoID: model.PhotoID() }, GetAllPhotosFromAlbum);
     }
 
     function GetAllPhotosFromAlbum(photo) {
@@ -160,5 +161,5 @@
         $('#prevPhotoButtonArrow').css({ opacity: 0.0, visibility: "visible" }).animate({ opacity: 0.0 }, 500);
     });
 
-    GetFirstPhoto(0);
+    GetFirstPhoto();
 });
