@@ -14,10 +14,9 @@ namespace BinaryStudio.PhotoGallery.Database
         protected override void Seed(DatabaseContext databaseContext)
         {
             var userFirstNames = new[] {"Artem", "Anton", "Andrey", "Александр", "Mikhail", "Oleg", "Alexander"};
-            var userLastNames = new[] {"Zagorodnuk", "Golovin", "Spivakov", "Носов", "Bratukha", "", "Towstonog"};
+            var userLastNames = new[] {"Zagorodnuk", "Golovin", "Spivakov", "Носов", "Bratukha", "Beloyy", "Towstonog"};
             var tags = new[] {"summer", "wind", "friends", "animals", "pentax", "binary", "cherdak", "work&fun"};
             var groups = new[] {"friends", "enemies", "kill", "neighbor", "boss", "partners"};
-
 
             var unitOfWorkFactory = new UnitOfWorkFactory();
             using (IUnitOfWork unitOfWork = unitOfWorkFactory.GetUnitOfWork())
