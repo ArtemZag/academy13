@@ -19,12 +19,5 @@
         @if (ViewBag.ReferrerUrl != null) {
             <p>Go back to the <a href="@ViewBag.ReferrerUrl">previous page</a>.</p>
         }
-
-        @*
-    Error page must be longer than 512 bytes for IE and Chrome to show it. 
-    So add padding in case we're short.
-*@
-
-        @(new string(' ', 512))
     </body>
 </html>
