@@ -5,7 +5,6 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
 using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Utils;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
@@ -24,19 +23,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetPhoto(int photoID, int offset)
+        public ActionResult GetPhoto(int photoID)
         {
-            var photoModel = _photoService.GetPhoto(photoID);
-
-            if (offset != 0)
-            {
-                photoModel =
-                    _photoService.GetPhotos(User.Identity.Name, photoModel.AlbumModelId, photoID + offset,
-                                            photoID + offset + 1).ToList()[0];
-            }
-
-
-            return Json(_modelConverter.GetViewModel(photoModel));
+            return Json(_modelConverter.GetViewModel(_photoService.GetPhoto(photoID)));
         }
 
         [HttpPost]
