@@ -42,16 +42,13 @@
         self.newComment = ko.observable();
 
         self.ShowNextPhoto = function() {
-            photoIndex < (photoArray.length - 1) ? photoIndex++ : null;
-            /*GetPhotos(++photoIndex);*/
+            photoIndex < (photoArray.length - 1) ? photoIndex++ : photoIndex = 0;
             SetPhoto(photoArray[photoIndex]);
         };
 
         self.ShowPrevPhoto = function() {
-            photoIndex > 0 ? photoIndex-- : null;
-            /*GetPhotos(photoIndex);*/
+            photoIndex > 0 ? photoIndex-- : photoIndex = (photoArray.length - 1);
             SetPhoto(photoArray[photoIndex]);
-
         };
 
         self.AddComment = function() {
@@ -99,16 +96,17 @@
     }
 
     function GetAllPhotosFromAlbum(photo) {
-
         $.post("/Photo/GetPhotosIDFromAlbum", { albumID: photo.AlbumId, begin: 0, end: 1000 }, SetPhotoArray);
     }
 
     function SetPhotoArray(photos) {
         $.each(photos, function(index, value) {
             photoArray[index] = value;
+            if (photoArray[index].PhotoId == model.PhotoID()) {
+                photoIndex = index;
+            }
         });
-
-        photoIndex = photoArray.indexOf(photoArray[model.PhotoID() - 1]);
+        
         SetPhoto(photoArray[photoIndex]);
     }
 
@@ -125,7 +123,7 @@
 
         $("#mainPhoto").attr("src", img.src);
         //needs fixing
-        window.history.pushState("", "", "http://localhost:57367/photo/"+model.PhotoID());
+        window.history.pushState("", "", "/photo/"+model.PhotoID());
         $.post("/PhotoComment/GetPhotoComments", { photoID: photo.PhotoId, begin: 0, last: 50 }, SetComments);
     }
 
