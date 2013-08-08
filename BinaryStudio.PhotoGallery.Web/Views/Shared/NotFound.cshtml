@@ -1,15 +1,30 @@
 ﻿@{
-    ViewBag.Title = "Page Not Found | Bingally";
+    ViewBag.Title = ;
 }
 
-<p>Could not find the page: @ViewBag.RequestedUrl</p>
-@if (ViewBag.ReferrerUrl != null) {
-    <p>Go back to the <a href="@ViewBag.ReferrerUrl">previous page</a>.</p>
-}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Page Not Found | Bingally</title>
+        @Styles.Render("~/Content/notfound-page.css")
+    </head>
 
-@*
+    <body>
+        <div id="container">
+            <div id="image"><img src="~/Content/"/></div>
+
+        </div>
+
+        <p>Could not find the page: @ViewBag.RequestedUrl</p>
+        @if (ViewBag.ReferrerUrl != null) {
+            <p>Go back to the <a href="@ViewBag.ReferrerUrl">previous page</a>.</p>
+        }
+
+        @*
     Error page must be longer than 512 bytes for IE and Chrome to show it. 
     So add padding in case we're short.
 *@
 
-@(new string(' ', 512))
+        @(new string(' ', 512))
+    </body>
+</html>

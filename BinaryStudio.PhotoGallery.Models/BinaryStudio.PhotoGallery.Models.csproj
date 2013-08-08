@@ -60,7 +60,6 @@
     <Content Include="Scripts\jquery-2.0.3.min.js" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Scripts\jquery-2.0.3.min.map" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

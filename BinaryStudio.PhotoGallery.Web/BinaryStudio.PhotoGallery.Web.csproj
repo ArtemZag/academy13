@@ -204,6 +204,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
+    <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhotoCommentController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -227,7 +228,18 @@
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
+    <Content Include="Content\albums-page.css" />
+    <Content Include="Content\images\1.png" />
+    <Content Include="Content\images\2.png" />
+    <Content Include="Content\images\arrowLeft.png" />
+    <Content Include="Content\images\arrowLeft1.png" />
+    <Content Include="Content\images\nothing.png" />
+    <Content Include="Content\images\photopreloader.gif" />
+    <Content Include="Content\images\spritemap.png" />
+    <Content Include="Content\notfound-page.css" />
+    <Content Include="Content\photo-page.css" />
     <Content Include="Content\search.css" />
+    <Content Include="Scripts\albums.js" />
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchedUserViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
@@ -248,7 +260,6 @@
     <Content Include="Content\images\no_avatar.png" />
     <Content Include="Content\images\rabbit.jpg" />
     <Content Include="Content\images\rabbit1.jpg" />
-    <Content Include="Content\images\rabbit2.png" />
     <Content Include="Content\images\textures\1.jpg" />
     <Content Include="Content\images\textures\10.jpg" />
     <Content Include="Content\images\textures\10c3574ce200t.jpg" />
@@ -354,6 +365,7 @@
     <Content Include="Views\Photo\Index.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Search\Search.cshtml" />
+    <Content Include="Views\Albums\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
