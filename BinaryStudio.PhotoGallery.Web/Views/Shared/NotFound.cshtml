@@ -1,23 +1,24 @@
 ﻿@{
-    ViewBag.Title = ;
+    ViewBag.Title = "Page Not Found | Bingally";
 }
 
 <!DOCTYPE html>
 <html>
     <head>
         <title>Page Not Found | Bingally</title>
-        @Styles.Render("~/Content/notfound-page.css")
+        @System.Web.Optimization.Styles.Render("~/Content/notfound-page.css")
     </head>
 
     <body>
         <div id="container">
-            <div id="image"><img src="~/Content/"/></div>
-
+            @if (ViewBag.ReferrerUrl != null)
+            {
+                <a href="@ViewBag.ReferrerUrl"><img src="~/Content/images/notfound.png"/></a>
+            }
+            @if (ViewBag.ReferrerUrl == null)
+            {
+                <a href="~/"><img src="~/Content/images/notfound.png"/></a>
+            }
         </div>
-
-        <p>Could not find the page: @ViewBag.RequestedUrl</p>
-        @if (ViewBag.ReferrerUrl != null) {
-            <p>Go back to the <a href="@ViewBag.ReferrerUrl">previous page</a>.</p>
-        }
     </body>
 </html>

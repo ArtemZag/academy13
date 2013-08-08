@@ -7,3 +7,8 @@
      margin: 0 auto;
 }
 
+ #container img {
+     display: block;
+     margin: auto;
+     max-height: 98%;
+ }
