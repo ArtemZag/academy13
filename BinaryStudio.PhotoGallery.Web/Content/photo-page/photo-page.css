@@ -1,5 +1,27 @@
 ﻿body {
-    background-color: #E6E6E6 !important;
+    background-color: #323232 !important;
+
+    -webkit-perspective: 1800px; 
+    -webkit-perspective-origin-x: 50%;
+    -webkit-perspective-origin-y: 50%;
+}
+
+#leftSideMenu {
+    width: 280px;
+    height: 100%;
+    padding-left: 20px;
+    padding-top: 60px;
+    position: absolute;
+    left: -300px;
+    bottom: auto;
+    right: auto;
+    -webkit-transition: all 500ms cubic-bezier(0.77, 0, 0.175, 1);
+
+
+    color: #bbb;
+    background-color: #323232;
+    z-index: 3000;
+
 }
 #leftSideMenuButton{
 	width: 30px;
@@ -10,15 +32,16 @@
 	/*background-color: red;*/
 }
 
-#leftSideMenuButton:hover{
-	background-color: blue;
-}
-
 #photoSegment {
     width: 100%;
     padding-top: 5%;
     padding-bottom: 7%;
     position: relative;
+
+/*    -webkit-transform-origin: 0px 50%;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    -webkit-transform: translate(300px) rotateY(-20deg);*/
 
     background-color: #F2F2F2;
 }
@@ -66,7 +89,7 @@
     padding-top: 2%;
     position: relative;
 
-
+    background-color: #E6E6E6;
 }
 
 #commentBlock{
@@ -79,6 +102,7 @@
 .comment {
     width: 100%;
     margin-bottom: 20px;
+    font-size: 10pt;
     /*background-color: pink;*/
 }
 
@@ -99,9 +123,11 @@
 }
 .userName {
     width: 100%;
+    font-size: 11pt;
 }
 .dateOfCreating {
     width: 100%;
+    font-size: 8pt;
 }
 .rating {
     width: 40px;
@@ -115,6 +141,7 @@
 
 .commentText {
     padding-left: 60px;
+    font-size: 9pt;
 }
 .commentFooter {
     text-align: right;
@@ -123,7 +150,7 @@
 
 
 #activityBlock{
-	width: 35%;
+	width: 30%;
 	padding-left: 5%;
 
 	float: left;
@@ -131,3 +158,85 @@
 
 
 
+
+
+#cosialNetworkSync {
+    position: relative;
+    z-index: 2000;
+}
+
+#facebookSyncButton {
+    width: 20px;
+    height: 30px;
+    position: relative;
+    float: left;
+    margin-right: 3px;
+    text-align: center;
+    line-height: 30px;
+
+    color:cornflowerblue;
+    background-color: white;
+}
+
+#facebookSyncButton:hover {
+    color: white;
+    background-color: cornflowerblue;
+}
+#vkSyncButton {
+    width: 20px;
+    height: 30px;
+    position: relative;
+    float: left;
+    margin-right: 3px;
+    text-align: center;
+    line-height: 30px;
+
+    color:cornflowerblue;
+    background-color: white;
+}
+#vkSyncButton:hover {
+    color: white;
+    background-color: cornflowerblue;
+}
+
+#twetterSyncButton {
+    width: 20px;
+    height: 30px;
+    position: relative;
+    float: left;
+    margin-right: 3px;
+    text-align: center;
+    line-height: 30px;
+
+    color:cornflowerblue;
+    background-color: white;
+}
+
+#twetterSyncButton:hover {
+        color: white;
+    background-color: cornflowerblue;
+}
+
+#addComment {
+    margin-bottom: 40px;
+}
+
+.tag-photos {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    float: left;
+    margin-right: 2px;
+    margin-bottom: 2px;
+}
+
+#friendPhotos {
+    width: 100%;
+    height: 250px;
+    margin-bottom: 10px;
+}
+
+#tagPhotos {
+    width: 100%;
+    height: 250px;
+}

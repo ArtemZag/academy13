@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 
-namespace BinaryStudio.PhotoGallery.Domain.Services
+namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
 {
     internal class UsersMonitorTask : IUsersMonitorTask
     {

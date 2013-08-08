@@ -222,26 +222,17 @@
     <Compile Include="Utils\ModelConverter.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
+    <Compile Include="ViewModels\PhotoPage\NewCommentViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\PhotoCommentViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\PhotoPageViewModel.cs" />
     <Compile Include="ViewModels\PhotoViewModel.cs" />
     <Compile Include="ViewModels\RegistrationViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
-    <Content Include="Content\albums-page.css" />
-    <Content Include="Content\images\1.png" />
-    <Content Include="Content\images\2.png" />
-    <Content Include="Content\images\arrowLeft.png" />
-    <Content Include="Content\images\arrowLeft1.png" />
-    <Content Include="Content\images\nothing.png" />
-    <Content Include="Content\images\photopreloader.gif" />
-    <Content Include="Content\images\spritemap.png" />
-    <Content Include="Content\notfound-page.css" />
-    <Content Include="Content\photo-page.css" />
+    <Compile Include="ViewModels\UsersListViewModel.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\search.css" />
-    <Content Include="Scripts\albums.js" />
     <Content Include="Scripts\off-screen-nav.js" />
-    <Compile Include="ViewModels\Search\SearchedUserViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
     <Content Include="Scripts\PhotoPage\photo.js" />
     <Content Include="Content\photo-page\photo-page.css" />
@@ -259,7 +250,6 @@
     <Content Include="Content\images\logo_small.png" />
     <Content Include="Content\images\no_avatar.png" />
     <Content Include="Content\images\rabbit.jpg" />
-    <Content Include="Content\images\rabbit1.jpg" />
     <Content Include="Content\images\textures\1.jpg" />
     <Content Include="Content\images\textures\10.jpg" />
     <Content Include="Content\images\textures\10c3574ce200t.jpg" />
@@ -335,9 +325,10 @@
     <Content Include="Scripts\perpetuum.knockout.js" />
     <Content Include="Scripts\PhotoPage\photoViewModel.js" />
     <Content Include="Scripts\photo_placer.js" />
+    <Content Include="Scripts\Search\search.js" />
     <Content Include="Scripts\UploadPage\main.js" />
     <Content Include="Scripts\UploadPage\upload.js" />
-    <Content Include="Scripts\UserSlider.js" />
+    <Content Include="Scripts\AdminPanel\UserSlider.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -365,11 +356,9 @@
     <Content Include="Views\Photo\Index.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Search\Search.cshtml" />
-    <Content Include="Views\Albums\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\AdminPanel\" />
     <Folder Include="Scripts\AlbumsPage\" />
     <Folder Include="Scripts\FlowPage\" />
   </ItemGroup>

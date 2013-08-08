@@ -5,6 +5,7 @@ using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 using System.Linq;
+using System.Data.Entity;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -21,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Users.All().ToList();
+				return unitOfWork.Users.All().Include(g => g.Albums).Include(g => g.Groups).Include(g => g.AuthInfos).ToList();
             }
         }
 

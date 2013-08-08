@@ -62,7 +62,22 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return album.Photos.OrderBy(model => model.DateOfCreation)
                             .ThenBy(model => model.Id)
                             .Skip(begin)
-                            .Take(end - begin);
+                            .Take(end - begin)
+                            .ToList();
+            }
+        }
+
+        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int albumID, int begin, int end)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Photos.Filter(model => model.AlbumModelId == albumID)
+                                 .Where(model => !model.IsDeleted)
+                                 .OrderBy(model => model.DateOfCreation)
+                                 .ThenBy(model => model.Id)
+                                 .Skip(begin)
+                                 .Take(end - begin)
+                                 .ToList();
             }
         }
 
@@ -72,14 +87,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                IQueryable<PhotoModel> result = unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
-                                                          .Where(model => !model.IsDeleted)
-                                                          .OrderBy(model => model.DateOfCreation)
-                                                          .ThenBy(model => model.Id)
-                                                          .Skip(begin)
-                                                          .Take(end - begin);
+                return unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
+                                 .Where(model => !model.IsDeleted)
+                                 .OrderBy(model => model.DateOfCreation)
+                                 .ThenBy(model => model.Id)
+                                 .Skip(begin)
+                                 .Take(end - begin)
+                                 .ToList();
+            }
+        }
 
-                return result.ToList();
+        public PhotoModel GetPhoto(int photoID)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Photos.Find(photoID);
             }
         }
     }

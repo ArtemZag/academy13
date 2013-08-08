@@ -98,7 +98,7 @@ namespace BinaryStudio.PhotoGallery.Database
                             generatedRandomComment.Append(" ");
                         }
                         comm.Add(new PhotoCommentModel(7, Randomizer.GetNumber(i), generatedRandomComment.ToString(),
-                                                       null) {Rating = Randomizer.GetNumber(64)});
+                                                       -1) {Rating = Randomizer.GetNumber(64)});
                     }
                     unitOfWork.Photos.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm});
                 }
