@@ -1,0 +1,133 @@
+﻿body {
+    background-color: #E6E6E6 !important;
+}
+#leftSideMenuButton{
+	width: 30px;
+	height: 100%;
+
+	position: fixed;
+	z-index: 1000;
+	/*background-color: red;*/
+}
+
+#leftSideMenuButton:hover{
+	background-color: blue;
+}
+
+#photoSegment {
+    width: 100%;
+    padding-top: 5%;
+    padding-bottom: 7%;
+    position: relative;
+
+    background-color: #F2F2F2;
+}
+
+#photo {
+    margin: 3% auto 0% auto;
+    /*background-color: #888;*/
+    position: relative;
+}
+
+#photo img{
+	height: 100%;
+	width: 100%;
+
+    /*remove this shit*/
+    /*min-width: 400px;
+    min-height: 300px;*/
+    -webkit-box-shadow: 0 0 15px rgba(0,0,0,0.65);
+}
+
+#prevPhotoButton{
+	height: 100%;
+	width: 10%;
+
+	margin-left: 30px;
+	position: absolute;
+	z-index: 900;
+	margin-top: -5%;
+
+	/*background-color: blue;*/
+}
+
+#prevPhotoButton img{
+    margin-top: 300%;
+    visibility: hidden;
+}
+
+#prevPhotoButton:hover{
+    /*background-color: rgba(0, 0, 0, 0.05);*/
+}
+
+
+#actionSegment {
+    width: 100%;
+    padding-top: 2%;
+    position: relative;
+
+
+}
+
+#commentBlock{
+	width: 60%;
+    margin-left: 30px;
+	float: left;
+
+}
+
+.comment {
+    width: 100%;
+    margin-bottom: 20px;
+    /*background-color: pink;*/
+}
+
+.commentInfo {
+    width: 100%;
+    height: 50px;
+}
+
+.userPhoto {
+    width: 50px;
+    height: 50px;
+    float: left;
+
+    margin-right: 10px;
+}
+.userInfo {
+    float: left;
+}
+.userName {
+    width: 100%;
+}
+.dateOfCreating {
+    width: 100%;
+}
+.rating {
+    width: 40px;
+    height: 100%;
+
+    float: right;
+    line-height: 50px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.commentText {
+    padding-left: 60px;
+}
+.commentFooter {
+    text-align: right;
+    margin-right: 10px;
+}
+
+
+#activityBlock{
+	width: 35%;
+	padding-left: 5%;
+
+	float: left;
+}
+
+
+

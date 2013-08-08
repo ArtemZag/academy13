@@ -1,6 +1,5 @@
 ﻿using BinaryStudio.PhotoGallery.Domain.Services;
 using FluentAssertions;
-using Microsoft.Practices.Unity;
 using NUnit.Framework;
 
 namespace BinaryStudio.PhotoGallery.Domain.Tests
@@ -11,8 +10,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         [SetUp]
         public void Setup()
         {
-            IUnityContainer container = Bootstrapper.Initialise();
-            monitorTask = container.Resolve<IUsersMonitorTask>();
+            monitorTask = new UsersMonitorTask();
         }
 
         private IUsersMonitorTask monitorTask;
@@ -37,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             monitorTask.SetOnline(EMAIL);
             monitorTask.Period = 2;
 
-            for (int i = 0; i < 16 / 2; i++)
+            for (int i = 0; i < 16/2; i++)
             {
                 monitorTask.Execute();
             }

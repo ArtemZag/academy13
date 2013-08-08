@@ -5,8 +5,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     public interface IUserService
     {
-        IEnumerable<UserModel> GetAllUsers(); 
-        
+        IEnumerable<UserModel> GetAllUsers();
+
+        UserModel GetUser(int userID);
+
         UserModel GetUser(string userEmail);
 
         int GetUserId(string userEmail);

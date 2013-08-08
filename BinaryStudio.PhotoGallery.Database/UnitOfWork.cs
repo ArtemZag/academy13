@@ -4,7 +4,7 @@ using BinaryStudio.PhotoGallery.Database.ModelRepositories;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    public class UnitOfWork : IUnitOfWork
+    internal class UnitOfWork : IUnitOfWork
     {
         private static DatabaseContext _databaseContext;
 

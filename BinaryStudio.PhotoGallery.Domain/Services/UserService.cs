@@ -4,23 +4,32 @@ using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
+using System.Linq;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class UserService : DbService, IUserService
     {
-        private readonly ICryptoProvider cryptoProvider;
+        private readonly ICryptoProvider _cryptoProvider;
 
         public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider) : base(workFactory)
         {
-            this.cryptoProvider = cryptoProvider;
+            _cryptoProvider = cryptoProvider;
         }
 
         public IEnumerable<UserModel> GetAllUsers()
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Users.All();
+                return unitOfWork.Users.All().ToList();
+            }
+        }
+
+        public UserModel GetUser(int userID)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Users.Find(user => user.Id == userID);
             }
         }
 
@@ -49,8 +58,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
             if (provider == AuthInfoModel.ProviderType.Local)
             {
-                user.Salt = cryptoProvider.GetNewSalt();
-                user.UserPassword = cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
+                user.Salt = _cryptoProvider.GetNewSalt();
+                user.UserPassword = _cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
             }
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -87,7 +96,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     UserModel user = GetUser(userEmail, unitOfWork);
 
-                    result = cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
+                    result = _cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
                 }
             }
             catch (UserNotFoundException)
@@ -109,7 +118,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         /// <summary>
-        /// Checks if there is a user with given token
+        ///     Checks if there is a user with given token
         /// </summary>
         /// <param name="authProvider">[facebook][google]</param>
         /// <param name="token">Token for authorization</param>
@@ -120,7 +129,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 IAuthInfoRepository authInfoRepository = unitOfWork.AuthInfos;
 
-                return authInfoRepository.Contains(model => string.Equals(model.AuthProvider, authProvider)&&string.Equals(model.AuthProviderToken, token));
+                return
+                    authInfoRepository.Contains(
+                        model =>
+                        string.Equals(model.AuthProvider, authProvider) && string.Equals(model.AuthProviderToken, token));
             }
         }
     }

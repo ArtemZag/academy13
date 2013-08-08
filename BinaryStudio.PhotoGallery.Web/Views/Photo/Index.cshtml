@@ -1,0 +1,84 @@
+﻿@using System.Web.Optimization
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@Scripts.Render("~/bundles/scripts/jquery")
+<script src="~/Scripts/knockout-2.3.0.js"></script>
+<script src="~/Scripts/knockout.mapping-latest.debug.js"></script>
+<script src="~/Scripts/PhotoPage/photo.js"></script>
+<script src="~/Scripts/PhotoPage/photoViewModel.js"></script>
+@Styles.Render("~/Content/photo-page/photo-page.css")
+
+<div id="leftSideMenuButton"></div>
+
+<div id="photoSegment">
+
+    <div id="prevPhotoButton" data-bind="click: ShowPrevPhoto">
+        <img id="prevPhotoButtonArrow" src="../../Content/images/2.png" width="85%" /></div>
+    <div id="photo">
+
+        <img id="mainPhoto" src="~/Content/images/rabbit.jpg" data-bind="click: ShowNextPhoto" />
+
+    </div>
+
+
+</div>
+
+
+
+<div id="actionSegment">
+    <div id="commentBlock">
+        <div id="addComment">
+            <div class="addCommentForm">
+
+                <input id="newCommentInputFild" placeholder="Input your comment" />
+
+                <div id="newCommentAddButton" data-bind="click: SaveUserData">
+                    <span>Add</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div data-bind="foreach: comms">
+            <div class="comment">
+                <div class="commentInfo">
+                    <div class="userPhoto">
+                        <img src="" alt="userFace" width="100%" height="100%" />
+                    </div>
+                    <div class="userInfo">
+                        <div class="userName" data-bind="text: GetUserName">
+                        </div>
+                        <div class="dateOfCreating" data-bind="text: dateOfCreating">
+                        </div>
+
+                    </div>
+
+                    <div class="rating" data-bind="text: rating"></div>
+                </div>
+                <div class="commentText" data-bind="text: text">
+                </div>
+                <div class="commentFooter">Answer</div>
+            </div>
+        </div>
+        @*need to fix, but it is idea*@
+        <hr @*data-bind="if: ($root.comms().length-1) != $index"*@/>
+
+
+    </div>
+
+
+    <div id="activityBlock">
+        <div></div>
+
+
+
+    </div>
+
+
+
+</div>
+

@@ -1,0 +1,39 @@
+﻿#leftSideMenuButton{
+	width: 40px;
+	height: 100%;
+
+	position: fixed;
+}
+
+#photoSegment {
+    width: 100%;
+    padding-top: 30px;
+
+	position: relative !important;
+    
+    background-color: #BBB;
+    
+}
+
+#photo {
+    margin: 3% auto 0% auto;
+    background-color: #888;
+    position: relative;
+}
+
+#photo img{
+	height: 100%;
+	width: 100%;
+}
+
+#photoLeftButton{
+	height: 100%;
+	width: 10%;
+	position: absolute;
+
+	background-color: blue;
+}
+
+#photoRightButton{
+
+}
