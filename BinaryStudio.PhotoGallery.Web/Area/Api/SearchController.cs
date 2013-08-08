@@ -1,7 +1,10 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using AttributeRouting;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Items;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
@@ -22,11 +25,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [HttpGet]
         public HttpResponseMessage Search([FromBody] SearchViewModel searchViewModel)
         {
-            HttpResponseMessage responseMessage = null;
+            SearchArguments searchArguments = modelConverter.GetModel(searchViewModel);
 
-            
+            IEnumerable<IFoundItem> result = searchService.Search(searchArguments);
 
-            return responseMessage;
+            return Request.CreateResponse(HttpStatusCode.OK, result);
         }
     }
 }
