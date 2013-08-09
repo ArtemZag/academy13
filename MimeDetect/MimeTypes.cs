@@ -193,6 +193,20 @@ namespace Winista.Mime
 		    return null;
 		}
 
+	    public MimeType GetFileMimeType(string fileName)
+	    {
+            sbyte[] fileData;
+
+	        using (var srcFile = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+	        {
+	            var data = new byte[srcFile.Length];
+	            srcFile.Read(data, 0, (Int32) srcFile.Length);
+	            fileData = SupportUtil.ToSByteArray(data);
+	        }
+
+	        return this.GetMimeType(fileData);
+	    }
+
 		/// <summary> Find the Mime Content Type of a document from its name and its content.
 		/// 
 		/// </summary>

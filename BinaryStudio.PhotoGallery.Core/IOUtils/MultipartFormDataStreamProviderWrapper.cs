@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net.Http;
@@ -10,36 +9,52 @@ namespace BinaryStudio.PhotoGallery.Core.IOUtils
 {
     public class MultipartFormDataStreamProviderWrapper : MultipartFormDataStreamProvider, IMultipartFormDataStreamProviderWrapper
     {
+        private readonly MultipartFormDataStreamProvider _multipartFormDataStreamProvider;
+        
         public MultipartFormDataStreamProviderWrapper(string rootPath) : base(rootPath)
         {
-            throw new NotImplementedException();
+            _multipartFormDataStreamProvider = new MultipartFormDataStreamProvider(rootPath);
         }
 
         public MultipartFormDataStreamProviderWrapper(string rootPath, int bufferSize) : base(rootPath, bufferSize)
         {
-            throw new NotImplementedException();
+            _multipartFormDataStreamProvider = new MultipartFormDataStreamProvider(rootPath, bufferSize);
         }
 
-        public new Collection<HttpContent> Contents { get; private set; }
-
-        public new Stream GetStream(HttpContent parent, HttpContentHeaders headers)
+        public override Stream GetStream(HttpContent parent, HttpContentHeaders headers)
         {
-            throw new NotImplementedException();
+            return _multipartFormDataStreamProvider.GetStream(parent, headers);
         }
 
-        public new string GetLocalFileName(HttpContentHeaders headers)
+        public override string GetLocalFileName(HttpContentHeaders headers)
         {
-            throw new NotImplementedException();
+            return _multipartFormDataStreamProvider.GetLocalFileName(headers);
         }
 
-        public new Task ExecutePostProcessingAsync()
+        public new Collection<HttpContent> Contents {
+            get
+            {
+                return _multipartFormDataStreamProvider.Contents;
+            }
+        }
+
+        public override Task ExecutePostProcessingAsync()
         {
-            throw new NotImplementedException();
+            return _multipartFormDataStreamProvider.ExecutePostProcessingAsync();
         }
 
-        public new NameValueCollection FormData { get; private set; }
-        public new Collection<MultipartFileData> FileData { get; private set; }
-        public new string RootPath { get; private set; }
-        public new int BufferSize { get; private set; }
+        public new NameValueCollection FormData {
+            get
+            {
+                return _multipartFormDataStreamProvider.FormData;
+            }
+        }
+
+        public new Collection<MultipartFileData> FileData {
+            get
+            {
+                return _multipartFormDataStreamProvider.FileData;
+            }
+        }
     }
 }
