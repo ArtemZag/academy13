@@ -34,18 +34,19 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
             _userService = userService;
         }
 
-        public void PhotoAdded()
+        public void PhotoAdded(string photoName)
         {
             User user;
             Users.TryGetValue(Context.User.Identity.Name, out user);
             var uModel = _userService.GetUser(Context.User.Identity.Name);
 
+
             if (user != null)
             {
                 Clients.AllExcept(user.ConnectionIds.ToArray())
                        .broadcastNotification(
-                            NotificationTitles.PhotoAdded, 
-                            String.Format("{0} {1}", uModel.FirstName, uModel.LastName), "photoname"
+                            NotificationTitles.PhotoAdded,
+                            String.Format("{0} {1}", uModel.FirstName, uModel.LastName), photoName
                        );
             }
 

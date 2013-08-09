@@ -1,6 +1,6 @@
-﻿var noty = $.connection.notificationsHub;
-$(function () {
-   
+﻿$(function () {
+    $.pnotify.defaults.history = false;
+    var noty = $.connection.notificationsHub;
     
     noty.client.broadcastNotification = function (title, username, photoname) {
         var message = "Пользователь " + username + " добавил фотографию " + photoname;
@@ -10,7 +10,7 @@ $(function () {
     $.connection.hub.start().done(function () {
         $('#SendButton').click(function () {
             // Call the Send method on the hub. 
-            noty.server.photoAdded();
+            noty.server.photoAdded("Имя_фотографии_для_теста.jpg");
         });
     });
 });
@@ -21,9 +21,11 @@ function ShowNotify(gTitle, message) {
         text: message,
         addclass: 'custom',
         icon: 'photo_icon',
+        shadow: true,
         opacity: .8,
         delay: 6000,
-        nonblock: true,
-        nonblock_opacity: .2
+        closer_hover: true,
+        //nonblock: true,
+        //nonblock_opacity: .2
     });
 }

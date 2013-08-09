@@ -13,8 +13,8 @@ namespace BinaryStudio.PhotoGallery.Database
     {
         protected override void Seed(DatabaseContext databaseContext)
         {
-            var userFirstNames = new[] {"Artem", "Anton", "Andrey", "Александр", "Mikhail", "Oleg", "Alexander"};
-            var userLastNames = new[] {"Zagorodnuk", "Golovin", "Spivakov", "Носов", "Bratukha", "Beloyy", "Towstonog"};
+            var userFirstNames = new[] {"Artem", "Anton", "Andrey", "Александр", "Mikhail", "Oleg", "Alexander","Tester"};
+            var userLastNames = new[] {"Zagorodnuk", "Golovin", "Spivakov", "Носов", "Bratukha", "Beloy", "Towstonog",""};
             var tags = new[] {"summer", "wind", "friends", "animals", "pentax", "binary", "cherdak", "work&fun"};
             var groups = new[] {"friends", "enemies", "kill", "neighbor", "boss", "partners"};
 
@@ -37,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Database
                                 LastName = userLastNames[i],
                                 Email = string.Format("{0}{1}@bingally.com", userFirstNames[i], userLastNames[i]),
                                 IsAdmin = (random.Next(1, 10)%2 == 1),
-                                UserPassword = crypto.CreateHashForPassword(userLastNames[i], salt),
+                                UserPassword = crypto.CreateHashForPassword(userLastNames[i].Length > 5 ? userLastNames[i] : "123456", salt),
                                 Salt = salt
                             });
                 }
@@ -100,12 +100,11 @@ namespace BinaryStudio.PhotoGallery.Database
                                                        null) {Rating = Randomizer.GetNumber(64)});
                     }
                     unitOfWork.Photos.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm});
+                    unitOfWork.Photos.Add(new PhotoModel(4, 6) {PhotoName = i + ".jpg"});
                 }
 
                 unitOfWork.Albums.Add(new AlbumModel("Test", 7));
-
-
-
+                unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));
 
                 unitOfWork.SaveChanges();
 
