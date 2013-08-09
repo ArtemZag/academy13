@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using BinaryStudio.PhotoGallery.Core.IOUtils;
 using Winista.Mime;
 
@@ -104,7 +105,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             // If source and destination files are equal
             if (Equals(Path.GetFileName(sourceName), Path.GetFileName(destName)))
             {
-                throw new FileRenameException("File already exist");
+                throw new FileRenameException("Source and destination file names can't be equal");
             }
 
             var fileName = new StringBuilder(Path.GetFileNameWithoutExtension(destName));
@@ -126,20 +127,18 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
                 }
                 else
                 {
-                    var numberAsChars = new char[numberLength];
+                    const string pattern = @"\s[(]\d+[)]$"; // ' (12)' oder ' (1)' and etc.
 
-                    fileName.CopyTo(leftBraketIndex + 1, numberAsChars, 0, numberLength);
+                    var regEx = new Regex(pattern);
 
-                    var numberAsString = new string(numberAsChars);
+                    var fileNumberFound = regEx.IsMatch(fileName.ToString());
 
-                    try
+                    if (fileNumberFound)
                     {
-                        Convert.ToUInt32(numberAsString);
-
                         fileName.Remove(leftBraketIndex + 1, numberLength);
                         fileName.Insert(leftBraketIndex + 1, number);
                     }
-                    catch // if can't convert number in brakets
+                    else
                     {
                         fileName.Append(" (1)");
                     }
