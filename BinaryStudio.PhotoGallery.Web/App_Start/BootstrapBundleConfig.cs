@@ -32,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
                 ));
 
             BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/knockout").Include(
-                "~/Scripts/knockout.js"
+                "~/Scripts/knockout-{version}.js"
                 ));
             
 

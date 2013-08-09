@@ -14,7 +14,8 @@ using BinaryStudio.PhotoGallery.Domain.Services;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-	[RoutePrefix("Api/File")]
+    [Authorize]
+    [RoutePrefix("Api/File")]
     public class FileController : ApiController
     {
         private readonly IUserService _userService;
@@ -37,7 +38,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 	        _fileWrapper = fileWrapper;
         }
 
-	    [POST("Post")]
+	    [POST]
         public async Task<HttpResponseMessage> Post()
         {
             // Check if the request contains multipart/form-data.
@@ -63,10 +64,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     _directoryWrapper.CreateDirectory(pathToTempFolder);
                 }
 
-                // TODO what I must to do here? Create new instance of MFDSPW oder it come
+                // TODO create this instance with fabrik
                 var provider = new MultipartFormDataStreamProvider(pathToTempFolder);
 
-                // Read the form data from request
+                // Read the form data from request TODO must be mocked too
                 await Request.Content.ReadAsMultipartAsync(provider);
 
                 // Check all files
