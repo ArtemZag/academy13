@@ -8,22 +8,37 @@
 @Scripts.Render("~/bundles/scripts/jquery")
 @Scripts.Render("~/bundles/scripts/bootstrap")
 @Scripts.Render("~/Scripts/AlbumsPage/albums.js")
+@Scripts.Render("~/Scripts/jsrender.js")
 @Styles.Render("~/Content/albums-page.css")
+
+<script id="collageTmpl" type="text/x-jquery-tmpl">
+    <div class="album">
+        <img class="collage" src="{{:collageSource}}" onmouseover="onMouseOverEventHandler()"/>
+    </div> 
+</script>
+
+<script id="userTmpl" type="text/x-jquery-tmpl">
+    <p>
+        <div class="avatarContainer">
+            <img class="avatar" src="{{:userAvatar}}"/>
+        </div>
+    </p>
+    <p class="textStyle">Number of albums: {{:albumCount}}</p><hr>
+    <p class="textStyle">First name: {{:firstName}}</p><hr>
+    <p class="textStyle">Last name: {{:lastName}}</p><hr>
+    <p class="textStyle">Nick name: {{:nickName}}</p><hr>
+    <p class="textStyle">User state:{{:isAdmin}}</p><hr>
+    <p class="textStyle">Department: {{:department}}</p>
+</script>
 
 <table>
     <tr>
-        <td class="mainArea">
+        <td>
             <div class="albumContainer" id="container">
-    
             </div>
         </td>
         <td class="infoArea">
             <div class="info" id="userInformation">
-                    <p>
-                        <div class="avatarContainer">
-                            <img class="avatar" src="~/Content/images/rabbit.jpg"/>
-                        </div>
-                    </p>
             </div>
         </td>
     </tr>

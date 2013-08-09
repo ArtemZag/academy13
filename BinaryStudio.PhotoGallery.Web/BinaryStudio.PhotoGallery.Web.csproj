@@ -235,6 +235,7 @@
     <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
     <Content Include="Content\search.css" />
     <Content Include="Content\Users\0\avatar.jpg" />
+    <Content Include="Scripts\jsrender.js" />
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchedUserViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />

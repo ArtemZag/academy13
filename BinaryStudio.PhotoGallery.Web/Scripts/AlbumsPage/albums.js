@@ -1,4 +1,7 @@
-﻿$(document).ready(function () {
+﻿function onMouseOverEventHandler() {
+   
+}
+$(document).ready(function () {
     var container = $("#container");
     var info = $("#userInformation");
     var windowObject = $(window);
@@ -11,19 +14,14 @@
     downloadNextPartionOfAlbums();
     numberOfAlbums = 5;
     downloadUserInfo();
-
+   
     function downloadUserInfo() {
         $.post("/Albums/GetUserInfo", getInfo);
     }
 
     function getInfo(inf) {
-        info.append('<p class="textStyle">Number of albums: ' + inf.albumCount + '</p><hr>');
-        info.append('<p class="textStyle">First name: ' + inf.firstName + '</p><hr>');
-        info.append('<p class="textStyle">Last name: ' + inf.lastName + '</p><hr>');
-        info.append('<p class="textStyle">Nick name: ' + inf.nickName + '</p><hr>');
-        info.append('<p class="textStyle">User state: ' + inf.isAdmin + '</p><hr>');
-        info.append('<p class="textStyle">Department: ' + inf.department + '</p>');
-        $(".avatar").attr('src', inf.userAvatar);
+        info.html(
+            $("#userTmpl").render(inf));
     }
 
     function downloadNextPartionOfAlbums() {
@@ -34,11 +32,8 @@
     function getAlbums(albums) {
         var length = albums.length;
         if (length > 0) {
-            for (var index = 0; index < length; index++) {
-                container.append('<div class="album">' +
-                                '<img class="collage" src="' + albums[index].collageSource + '"' +
-                            '</div>'); 
-            }
+            container.html(
+                $("#collageTmpl").render(albums));
         } else {
             windowObject.unbind("scroll");
         }
@@ -49,4 +44,5 @@
             downloadNextPartionOfAlbums();
         }
     }
+    
 });
