@@ -1,10 +1,7 @@
 ﻿using System.Linq;
-using System.Runtime.CompilerServices;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
-
-[assembly: InternalsVisibleTo("BinaryStudio.PhotoGallery.Domain.Tests")]
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
