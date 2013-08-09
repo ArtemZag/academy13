@@ -48,6 +48,8 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     Begin = searchViewModel.Begin,
                     End = searchViewModel.End,
 
+                    SearchQuery = searchViewModel.SearchQuery,
+
                     IsSearchPhotosByName = searchViewModel.IsSearchPhotosByName,
                     IsSearchPhotosByTags = searchViewModel.IsSearchPhotosByTags,
                     IsSearchPhotosByDescription = searchViewModel.IsSearchPhotosByDescription,

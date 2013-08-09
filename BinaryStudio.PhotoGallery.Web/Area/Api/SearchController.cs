@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using AttributeRouting;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Items;
 using BinaryStudio.PhotoGallery.Web.Utils;
@@ -10,7 +9,6 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-    [RoutePrefix("Api/Search")]
     public class SearchController : ApiController
     {
         private readonly IModelConverter modelConverter;
@@ -22,9 +20,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             this.modelConverter = modelConverter;
         }
 
-        [HttpGet]
-        public HttpResponseMessage Search([FromBody] SearchViewModel searchViewModel)
+        public HttpResponseMessage GetSearch()
         {
+            // todo: [FromBody]
+            var searchViewModel = new SearchViewModel {IsSearchPhotosByName = true, SearchQuery = ""};
+
             SearchArguments searchArguments = modelConverter.GetModel(searchViewModel);
 
             IEnumerable<IFoundItem> result = searchService.Search(searchArguments);

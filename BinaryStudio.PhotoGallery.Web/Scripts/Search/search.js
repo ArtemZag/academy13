@@ -23,9 +23,10 @@
 
         self.isSearchByComments = ko.observable(false);
 
-        self.search = function() {
+        self.search = function () {
+            alert("aa");
 
-            alert(jQuery.isPlainObject(new searchViewModel()));
+            $.get("Api/Search");
         };
     }
 
