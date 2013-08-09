@@ -23,7 +23,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         public HttpResponseMessage GetSearch()
         {
             // todo: [FromBody]
-            var searchViewModel = new SearchViewModel {IsSearchPhotosByName = true};
+            var searchViewModel = new SearchViewModel {IsSearchPhotosByName = true, SearchQuery = ""};
 
             SearchArguments searchArguments = modelConverter.GetModel(searchViewModel);
 
