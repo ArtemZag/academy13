@@ -1,0 +1,14 @@
+﻿* {
+    margin: 0;
+    padding: 0; 
+}
+
+ #container {
+     margin: 0 auto;
+}
+
+ #container img {
+     display: block;
+     margin: auto;
+     max-height: 98%;
+ }

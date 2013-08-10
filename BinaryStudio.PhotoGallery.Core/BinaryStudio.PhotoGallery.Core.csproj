@@ -41,13 +41,12 @@
     <Reference Include="Microsoft.Practices.Unity.Configuration">
       <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="NSubstitute">
-      <HintPath>..\packages\NSubstitute.1.6.1.0\lib\NET40\NSubstitute.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,11 +56,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Helpers\FormatHelper.cs" />
-    <Compile Include="Helpers\IFormatHelper.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Helpers\IFileHelper.cs" />
     <Compile Include="IOUtils\FileRenameException.cs" />
     <Compile Include="IOUtils\FileWrapper.cs" />
     <Compile Include="IOUtils\IFileWrapper.cs" />
+    <Compile Include="IOUtils\IMultipartFormDataStreamProviderWrapper.cs" />
+    <Compile Include="IOUtils\MultipartFormDataStreamProviderWrapper.cs" />
     <Compile Include="NotificationsUtils\INotificationSender.cs" />
     <Compile Include="IOUtils\DirectoryWrapper.cs" />
     <Compile Include="IOUtils\IDirectoryWrapper.cs" />
@@ -90,7 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Scripts\jquery-2.0.3.min.map" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.PhotoGallery.Models\BinaryStudio.PhotoGallery.Models.csproj">
@@ -101,11 +101,6 @@
       <Project>{4536b49b-9634-4b6a-b491-8e2df9aa2e98}</Project>
       <Name>MimeDetect</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\jquery-2.0.3.intellisense.js" />
-    <Content Include="Scripts\jquery-2.0.3.js" />
-    <Content Include="Scripts\jquery-2.0.3.min.js" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

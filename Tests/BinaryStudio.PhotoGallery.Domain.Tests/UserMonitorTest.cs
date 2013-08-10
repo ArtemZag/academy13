@@ -1,4 +1,4 @@
-﻿using BinaryStudio.PhotoGallery.Domain.Services;
+﻿using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 

@@ -14,7 +14,8 @@ namespace BinaryStudio.PhotoGallery.Core
             container.RegisterType<INotificationSender, NotificationSender>();
             container.RegisterType<ICryptoProvider, CryptoProvider>();
             container.RegisterType<IPathUtil, PathUtil>();
-            container.RegisterType<IFormatHelper, FormatHelper>();
+            container.RegisterType<IFileHelper, FileHelper>();
+            container.RegisterType<IMultipartFormDataStreamProviderWrapper, MultipartFormDataStreamProviderWrapper>();
             container.RegisterType<IFileWrapper, FileWrapper>();
             container.RegisterType<IDirectoryWrapper, DirectoryWrapper>();
         }

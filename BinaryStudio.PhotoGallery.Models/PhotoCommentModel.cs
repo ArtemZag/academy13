@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace BinaryStudio.PhotoGallery.Models
 {
@@ -14,12 +13,12 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreating = DateTime.Now;
         }
 
-        public PhotoCommentModel(int userModelID,  int photoModelID, string text, PhotoCommentModel reply)
+        public PhotoCommentModel(int userModelId,  int photoModelId, string text, int reply)
         {
             Reply = reply;
             Text = text;
-            PhotoModelID = photoModelID;
-            UserModelID = userModelID;
+            PhotoModelId = photoModelId;
+            UserModelId = userModelId;
             DateOfCreating = DateTime.Now;
         }
 
@@ -28,7 +27,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the phot comment ID.
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time of comment creation.
@@ -48,9 +47,9 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets if user reply in other comment.
         /// </summary>
-        public PhotoCommentModel Reply { get; set; }
+        public int Reply { get; set; }
 
-        public int PhotoModelID  { get; set; }
-        public int UserModelID { get; set; }
+        public int PhotoModelId  { get; set; }
+        public int UserModelId { get; set; }
     }
 }

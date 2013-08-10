@@ -2,30 +2,105 @@
 @model BinaryStudio.PhotoGallery.Web.ViewModels.Search.SearchViewModel
 
 
-@Styles.Render("~/Content/search.css")
-
 @{
     ViewBag.Title = "Search | Bingally";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
+
+@Scripts.Render("~/bundles/scripts/jquery")
+<script src="~/Scripts/knockout-2.3.0.js"> </script>
+<script src="~/Scripts/knockout.mapping-latest.debug.js"> </script>
+
+<script src="~/Scripts/Search/search.js"> </script>
+
+@Styles.Render("~/Content/search.css")
+
          
 <div class="container">
          
     <div class="span12">
 
-        	<form class="form-search center">
-	        	<div class="input-append">
-	        	    <input type="text" class="span5 search-query">
-	        	    <button type="submit" class="btn btn-primary">Search</button>
-	        	</div>
-        	</form>
-         </div>
+        <form class="form-search center" data-bind="submit: search">
+            <div class="input-append">
+                <input type="text" class="span5 search-query" data-bind="text: searchQuery">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+
+    </div>
         
     <div class="row">
-   
-        <div class="span6">
-            <h2>Under construction..</h2>
+        
+        <div class="span8">
+            
+            <div class="span7 founded-item">
+                <img class="user-avatar" src="~/Content/images/no_avatar.png"/> 
+                <h4>Artyom Zagorodnuk</h4>
+                <br/>
+                <h5>.NET Department</h5>
+            </div>
+            <div class="span7 founded-item">
+                <h2>Search result item</h2>
+            </div>
+            <div class="span7 founded-item">
+                <h2>Search result item</h2>
+            </div>
+
+        </div>  
+        
+        <div class="span4 search-panel">
+            
+            <!-- Search photos by -->
+            <p>Search photos by..</p>
+            <div class="offset1">
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchPhotosByName"> name
+                </label>
+            
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchPhotosByTags"> tags
+                </label>
+                
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchPhotosByDescription"> description
+                </label>
+            </div>
+
+            <!-- Search albums by -->
+            <p>Search albums by..</p>
+            <div class="offset1">
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchAlbumsByName"> name
+                </label>
+            
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchAlbumsByTags"> tags
+                </label>
+                
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchAlbumsByDescription"> description
+                </label>
+            </div>
+            
+            <!-- Search users by -->
+            <p>Search users by..</p>
+            <div class="offset1">
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchUsersByName"> name
+                </label>
+
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: isSearchUserByDepartment"> department
+                </label>
+            </div>
+            
+            <!-- Search comments -->
+            <label class="checkbox">
+                <input type="checkbox" data-bind="checked: isSearchByComments"> Search by comments
+            </label>
         </div>
+        
+
    
     </div><!-- .row -->
- </div><!-- .container -->
+</div><!-- .container -->

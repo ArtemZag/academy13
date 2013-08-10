@@ -32,9 +32,6 @@ namespace BinaryStudio.PhotoGallery.Web
             IUnityContainer container = Bootstrapper.Initialise();
             System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
 
-            // todo: delete
-            Database.Bootstrapper.Test();
-
             // todo
             // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
             // TaskManager.Initialize(new UsersMonitorRegistry(container.Resolve<IUsersMonitorTask>()));

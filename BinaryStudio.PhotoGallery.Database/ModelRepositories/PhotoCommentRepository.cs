@@ -10,7 +10,7 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
         {
         }
 
-        public void Add(int ownerID, int photoID, string text, PhotoCommentModel repliedCommentID)
+        public void Add(int ownerID, int photoID, string text, int repliedCommentID)
         {
             base.Add(new PhotoCommentModel(ownerID, photoID, text, repliedCommentID));
         }

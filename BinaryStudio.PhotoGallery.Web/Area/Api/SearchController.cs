@@ -1,17 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using AttributeRouting;
-using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Domain.Services.Search;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Items;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-    [RoutePrefix("Api/Search")]
     public class SearchController : ApiController
     {
         private readonly IModelConverter modelConverter;
@@ -23,30 +20,16 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             this.modelConverter = modelConverter;
         }
 
-        [GET]
-        public HttpResponseMessage Search([FromBody] SearchViewModel searchViewModel)
+        public HttpResponseMessage GetSearch()
         {
-            HttpResponseMessage responseMessage = null;
+            // todo: [FromBody]
+            var searchViewModel = new SearchViewModel {IsSearchPhotosByName = true, SearchQuery = ""};
 
-            string query = searchViewModel.SearchQuery;
+            SearchArguments searchArguments = modelConverter.GetModel(searchViewModel);
 
-            int begin = searchViewModel.Begin;
-            int end = searchViewModel.End;
+            IEnumerable<IFoundItem> result = searchService.Search(searchArguments);
 
-            switch (searchViewModel.Type)
-            {
-                case SearchViewModel.SearchType.Users:
-
-                    IEnumerable<SearchedUserViewModel> searchResult =
-                        searchService.SearchUsers(query, begin,
-                                                  end).Select(modelConverter.GetViewModel);
-
-                    responseMessage = Request.CreateResponse(HttpStatusCode.OK, searchResult);
-
-                    break;
-            }
-
-            return responseMessage;
+            return Request.CreateResponse(HttpStatusCode.OK, result);
         }
     }
 }

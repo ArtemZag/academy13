@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Models;
+﻿using BinaryStudio.PhotoGallery.Domain.Services.Search;
+using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
@@ -11,7 +12,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         UserModel GetModel(AuthorizationViewModel authorizationViewModel);
 
-        SearchedUserViewModel GetViewModel(UserModel userModel);
+        SearchArguments GetModel(SearchViewModel searchViewModel);
 
         PhotoCommentViewModel GetViewModel(PhotoCommentModel photoCommentModel, UserModel userModel);
 

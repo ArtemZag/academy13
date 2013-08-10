@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Helpers;
-using System.Web.Http;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
-using Newtonsoft.Json;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    [System.Web.Mvc.Authorize]
+    [Authorize]
     [RoutePrefix("PhotoComment")]
     public class PhotoCommentController : Controller
     {
-        private IPhotoCommentService _photoCommentService;
-        private IUserService _userService;
-        private IModelConverter _modelConverter;
+        private readonly IPhotoCommentService _photoCommentService;
+        private readonly IUserService _userService;
+        private readonly IModelConverter _modelConverter;
 
         public PhotoCommentController(IUserService userService, IPhotoCommentService photoCommentService, IModelConverter modelConverter)
         {
@@ -30,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         }
 
 
-        [System.Web.Mvc.HttpPost]
+        [POST]
         public ActionResult GetPhotoComments(int photoID, int begin, int last)
         {
             var photoCommentViewModel = new List<PhotoCommentViewModel>();
@@ -38,28 +33,34 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             foreach (var photoCommentModel in photoCommentModels)
             {
-                var userModel = _userService.GetUser(photoCommentModel.UserModelID);
+                var userModel = _userService.GetUser(photoCommentModel.UserModelId);
                 photoCommentViewModel.Add(_modelConverter.GetViewModel(photoCommentModel, userModel));
             }
 
             return Json(photoCommentViewModel);
         }
          
-        [System.Web.Mvc.HttpPost]
-        public ActionResult AddPhotoComment(string userData)
+        [POST]
+        public ActionResult AddPhotoComment(NewCommentViewModel newCommentViewModel)
         {
-            List<PhotoCommentViewModel> photoCommentViewModels = JsonConvert.DeserializeObject<List<PhotoCommentViewModel>>(userData);
+            var newPhotoCommentModel = new PhotoCommentModel(_userService.GetUserId(User.Identity.Name), newCommentViewModel.PhotoID,
+                                                          newCommentViewModel.NewComment, newCommentViewModel.Reply);
 
-           /* var photoCommentViewModel = new List<PhotoCommentViewModel>();
-            var photoCommentModels = _photoCommentService.GetPhotoComments(photoID, begin, last);
+            _photoCommentService.AddPhotoComment(newPhotoCommentModel);
+
+
+            // Needs refactoring
+            //bgein = 0 last = 100
+            var photoCommentViewModel = new List<PhotoCommentViewModel>();
+            var photoCommentModels = _photoCommentService.GetPhotoComments(newCommentViewModel.PhotoID, 0, 100);
 
             foreach (var photoCommentModel in photoCommentModels)
             {
-                var userModel = _userService.GetUser(photoCommentModel.UserModelID);
-                photoCommentViewModel.Add(ModelConverter.GetViewModel(photoCommentModel,userModel));
+                var userModel = _userService.GetUser(photoCommentModel.UserModelId);
+                photoCommentViewModel.Add(_modelConverter.GetViewModel(photoCommentModel, userModel));
             }
-*/
-            return View();
+
+            return Json(photoCommentViewModel);
         }
     }
     

@@ -14,30 +14,31 @@ using BinaryStudio.PhotoGallery.Domain.Services;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-	[RoutePrefix("Api/File")]
+    [Authorize]
+    [RoutePrefix("Api/File")]
     public class FileController : ApiController
     {
         private readonly IUserService _userService;
 	    private readonly IPathUtil _pathUtil;
 	    private readonly IDirectoryWrapper _directoryWrapper;
-	    private readonly IFormatHelper _formatHelper;
+	    private readonly IFileHelper _fileHelper;
 	    private readonly IFileWrapper _fileWrapper;
 
 	    public FileController(
             IUserService userService,
             IPathUtil pathUtil,
             IDirectoryWrapper directoryWrapper,
-            IFormatHelper formatHelper,
+            IFileHelper fileHelper,
             IFileWrapper fileWrapper)
         {
             _userService = userService;
             _pathUtil = pathUtil;
 	        _directoryWrapper = directoryWrapper;
-	        _formatHelper = formatHelper;
+	        _fileHelper = fileHelper;
 	        _fileWrapper = fileWrapper;
         }
 
-	    [POST("Post")]
+	    [POST]
         public async Task<HttpResponseMessage> Post()
         {
             // Check if the request contains multipart/form-data.
@@ -63,9 +64,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     _directoryWrapper.CreateDirectory(pathToTempFolder);
                 }
 
+                // TODO create this instance with fabrik
                 var provider = new MultipartFormDataStreamProvider(pathToTempFolder);
 
-                // Read the form data from request
+                // Read the form data from request TODO must be mocked too
                 await Request.Content.ReadAsMultipartAsync(provider);
 
                 // Check all files
@@ -75,7 +77,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     var destFileName = string.Format("{0}\\{1}", pathToTempFolder, originalFileName);
 
                     // Is it really image file format ?
-                    if (!_formatHelper.IsImageFile(fileData.LocalFileName))
+                    if (!_fileHelper.IsImageFile(fileData.LocalFileName))
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
                         notAccpetedFiles.Add(originalFileName, "This file contains no image data");
@@ -85,7 +87,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     // try to rename file to source name (users file name)
                     try
                     {
-                        _fileWrapper.HardRename(fileData.LocalFileName, destFileName);
+                        _fileHelper.HardRename(fileData.LocalFileName, destFileName);
                     }
                     catch (FileRenameException ex)
                     {

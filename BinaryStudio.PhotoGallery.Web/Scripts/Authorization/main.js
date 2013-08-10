@@ -18,7 +18,7 @@
             Bingally.animation(changePanel, "move", { direction: 'top', method: 'show', animTime: 510 });
         });
 
-    var baseURL = window.location.origin;
+    var baseURL = "http://" + window.location.host;
 
     addClickEventTo($("#signin-button"), baseURL + '/Api/Account/Signin');
     addClickEventTo($("#signup-button"), baseURL + '/Api/Account/Signup');

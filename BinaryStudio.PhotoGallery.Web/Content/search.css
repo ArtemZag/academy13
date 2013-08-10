@@ -3,3 +3,27 @@
     margin: 10px;
     text-align: center;
 }
+
+.founded-item {
+    -moz-box-shadow: 0 0 1px #888;
+    -webkit-box-shadow: 0 0 1px #888;
+    box-shadow: 0 0 1px #888;
+    background-color: #ffffff;
+    margin: 3px;
+    border-radius: 2px;
+    padding: 5px;
+}
+
+.user-avatar {
+    float: left;
+    margin-right: 8px;
+}
+
+.search-panel {
+    -moz-box-shadow: 0 0 1px #888;
+    -webkit-box-shadow: 0 0 1px #888;
+    box-shadow: 0 0 1px #888;
+    background-color: #ffffff;
+    margin: 5px;
+    padding: 10px;
+}

@@ -16,5 +16,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="begin">Beginning of the interval.</param>
         /// <param name="end">Ending of the interval.</param>
         IEnumerable<PhotoCommentModel> GetPhotoComments(int photoID, int begin, int last);
+
+        void AddPhotoComment(PhotoCommentModel newPhotoCommentModel);
     }
 }
