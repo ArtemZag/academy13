@@ -18,17 +18,29 @@
 }
 
 
+
+ 
 <img src="@preloaderpath" id="photopreloader" />
 <div id="photoWrapper">
     @using(var photos = ko.Foreach(it => it.Photos))
     {
-        <div class="photoContainer invisible" @photos.Bind.Attr("onclick", photo =>  "location.href = /Album/photo"+photo.PhotoId)>
+        <div class="photoContainer invisible" data-bind="click: $parent.reverse.bind($data)">
             <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
         </div>
     }
 </div>
 
-<button id = "SendButton" style="width:100px; height:50px; position:fixed; top:50px;" >Тест Noty</button>
+
+@*<button id = "SendButton" style="width:100px; height:50px; position:fixed; top:50px;" >Тест Noty</button>*@
+
+
+@ko.Initialize(Model)
+<script type="text/javascript">
+
+    viewModel.reverse = function (data) {
+        window.location.href = "/Album/photo"+data.PhotoId();
+    };
+</script>
 
 @ko.Apply(Model)
 @Scripts.Render("~/Scripts/FlowPage/photo_placer.js")
