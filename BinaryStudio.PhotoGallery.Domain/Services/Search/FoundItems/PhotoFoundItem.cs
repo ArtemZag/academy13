@@ -1,4 +1,4 @@
-﻿namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
+﻿namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
 {
     public class PhotoFoundItem : IFoundItem
     {

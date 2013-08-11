@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
+namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
 {
     public interface IPhotoSearchService
     {

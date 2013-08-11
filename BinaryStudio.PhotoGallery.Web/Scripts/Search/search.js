@@ -2,28 +2,32 @@
 
     function searchViewModel() {
 
+        var interval = 10;
+
         var self = this;
 
+        self.hashToken = "";
+
         self.begin = 0;
-        self.end = self.begin;
+        self.end = interval;
 
         self.searchQuery = ko.observable();
 
-        self.isSearchPhotosByName = ko.observable(false);
-        self.isSearchPhotosByTags = ko.observable(false);
-        self.isSearchPhotosByDescription = ko.observable(false);
+        self.isSearchPhotosByName = ko.observable();
+        self.isSearchPhotosByTags = ko.observable();
+        self.isSearchPhotosByDescription = ko.observable();
 
-        self.isSearchAlbumsByName = ko.observable(false);
-        self.isSearchAlbumsByTags = ko.observable(false);
-        self.isSearchAlbumsByDescription = ko.observable(false);
+        self.isSearchAlbumsByName = ko.observable();
+        self.isSearchAlbumsByTags = ko.observable();
+        self.isSearchAlbumsByDescription = ko.observable();
 
-        self.isSearchUsersByName = ko.observable(false);
-        self.isSearchUserByDepartment = ko.observable(false);
+        self.isSearchUsersByName = ko.observable();
+        self.isSearchUserByDepartment = ko.observable();
 
-        self.isSearchByComments = ko.observable(false);
+        self.isSearchByComments = ko.observable();
 
         self.search = function () {
-            
+
             $.get("api/search", JSON.parse(ko.toJSON(self)));
         };
     }

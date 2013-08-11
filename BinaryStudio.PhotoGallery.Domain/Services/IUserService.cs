@@ -7,7 +7,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     {
         IEnumerable<UserModel> GetAllUsers();
 
-        UserModel GetUser(int userID);
+        UserModel GetUser(int userId);
 
         UserModel GetUser(string userEmail);
 

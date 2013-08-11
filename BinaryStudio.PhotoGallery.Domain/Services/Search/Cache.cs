@@ -3,8 +3,10 @@ using BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
-    public interface ISearchService
+    internal class Cache
     {
-        IEnumerable<IFoundItem> Search(SearchArguments searchArguments);
+        public List<IFoundItem> Value { get; set; }
+
+        public int LifeTime { get; set; }
     }
 }

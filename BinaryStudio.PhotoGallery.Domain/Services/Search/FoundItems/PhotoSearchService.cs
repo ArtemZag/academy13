@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
-namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
+namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
 {
     internal class PhotoSearchService : DbService, IPhotoSearchService
     {
