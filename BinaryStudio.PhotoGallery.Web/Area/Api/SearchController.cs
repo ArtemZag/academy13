@@ -20,11 +20,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             this.modelConverter = modelConverter;
         }
 
-        public HttpResponseMessage GetSearch()
+        public HttpResponseMessage GetSearch([FromUri] SearchViewModel searchViewModel)
         {
-            // todo: [FromBody]
-            var searchViewModel = new SearchViewModel {IsSearchPhotosByName = true, SearchQuery = ""};
-
             SearchArguments searchArguments = modelConverter.GetModel(searchViewModel);
 
             IEnumerable<IFoundItem> result = searchService.Search(searchArguments);

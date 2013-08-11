@@ -17,7 +17,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
         public IEnumerable<IFoundItem> Search(SearchArguments searchArguments)
         {
             var result = new List<PhotoFoundItem>();
-
             string searchQuery = searchArguments.SearchQuery;
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -34,7 +33,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
                 if (searchArguments.IsSearchPhotosByDescription)
                 {
                     IEnumerable<PhotoFoundItem> found = SearchByCondition(searchQuery, unitOfWork,
-                                                                          model => model.Description.Contains(searchQuery),
+                                                                          model =>
+                                                                          model.Description.Contains(searchQuery),
                                                                           GetRelevanceByDescription);
 
                     result.AddRange(found);
@@ -48,8 +48,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
                 }
             }
 
+            return Group(result);
+        }
+
+        private IEnumerable<IFoundItem> Group(IEnumerable<PhotoFoundItem> data)
+        {
             return
-                result.GroupBy(item => new {item.Id, item.UserModelId, item.AlbumId, item.PhotoName})
+                data.GroupBy(item => new {item.Id, item.UserModelId, item.AlbumId, item.PhotoName})
                       .Select(items => new PhotoFoundItem
                           {
                               Id = items.Key.Id,

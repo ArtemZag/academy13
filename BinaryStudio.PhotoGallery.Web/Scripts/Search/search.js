@@ -4,9 +4,8 @@
 
         var self = this;
 
-        self.interval = 10;
         self.begin = 0;
-        self.end = self.begin + self.interval;
+        self.end = self.begin;
 
         self.searchQuery = ko.observable();
 
@@ -24,9 +23,8 @@
         self.isSearchByComments = ko.observable(false);
 
         self.search = function () {
-            alert("aa");
-
-            $.get("Api/Search");
+            
+            $.get("api/search", JSON.parse(ko.toJSON(self)));
         };
     }
 
