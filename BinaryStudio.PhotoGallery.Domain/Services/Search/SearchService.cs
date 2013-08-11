@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         private readonly IPhotoSearchService photoSearchService;
 
         /// <summary>
-        ///     Time that appends to cache lifetime
+        ///     Time that will be appended to caches lifetime
         /// </summary>
         private int updatePeriod;
 
@@ -30,6 +30,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             : base(workFactory)
         {
             this.photoSearchService = photoSearchService;
+
+            updatePeriod = 1;
         }
 
         public int UpdatePeriod
@@ -50,7 +52,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             string cacheToken = searchArguments.CacheToken;
 
-            // token checking
             if (IsTokenPresent(cacheToken))
             {
                 Cache cache = caches[cacheToken];

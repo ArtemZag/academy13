@@ -245,6 +245,7 @@
     <Compile Include="Registers\CleanupServiceRegistry.cs" />
     <Compile Include="Registers\SearchServiceRegistry.cs" />
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
+    <Compile Include="ViewModels\Search\IFoundViewModel.cs" />
     <Compile Include="Utils\IModelConverter.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
     <Compile Include="ViewModels\AuthorizationViewModel.cs" />
@@ -259,6 +260,7 @@
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\jquery.pnotify.default.css" />
     <Content Include="Content\jquery.pnotify.default.icons.css" />
+    <Compile Include="ViewModels\Search\PhotoFoundViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\albums-page.css" />

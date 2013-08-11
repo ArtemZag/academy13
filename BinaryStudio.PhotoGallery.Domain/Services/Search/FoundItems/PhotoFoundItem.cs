@@ -4,7 +4,12 @@
     {
         public int Id { get; set; }
 
-        public int UserModelId { get; set; }
+        public int Rating { get; set; }
+
+        /// <summary>
+        ///     User that added photo
+        /// </summary>
+        public int AuthorId { get; set; }
 
         public int AlbumId { get; set; }
 

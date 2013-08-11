@@ -32,7 +32,9 @@
             
             if (this.searchQuery()) {
 
-                $.get("api/search", JSON.parse(ko.toJSON(self)));
+                $.get("api/search", JSON.parse(ko.toJSON(self)), function(data) {
+                    console.log(data);
+                });
             }
         };
     }

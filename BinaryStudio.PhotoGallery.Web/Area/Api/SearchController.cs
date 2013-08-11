@@ -9,7 +9,7 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-    public class SearchController : ApiController
+    internal class SearchController : ApiController
     {
         private readonly IModelConverter modelConverter;
         private readonly ISearchService searchService;

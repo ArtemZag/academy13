@@ -13,7 +13,7 @@ using BinaryStudio.PhotoGallery.Web.Utils;
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [RoutePrefix("Api/Account")]
-    public class AccountController : ApiController
+    internal class AccountController : ApiController
     {
         private readonly IUserService _userService;
 
