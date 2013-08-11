@@ -6,7 +6,7 @@
 
         var self = this;
 
-        self.hashToken = "";
+        self.cacheToken = "no token";
 
         self.begin = 0;
         self.end = interval;
@@ -26,9 +26,14 @@
 
         self.isSearchByComments = ko.observable();
 
-        self.search = function () {
+        self.search = function() {
 
-            $.get("api/search", JSON.parse(ko.toJSON(self)));
+            this.searchQuery($.trim(this.searchQuery()));
+            
+            if (this.searchQuery()) {
+
+                $.get("api/search", JSON.parse(ko.toJSON(self)));
+            }
         };
     }
 

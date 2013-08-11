@@ -51,7 +51,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             string cacheToken = searchArguments.CacheToken;
 
             // token checking
-            if (cacheToken.Equals(string.Empty))
+            if (IsTokenPresent(cacheToken))
+            {
+                Cache cache = caches[cacheToken];
+
+                result = cache.Value;
+            }
+            else
             {
                 result = new List<IFoundItem>();
 
@@ -63,21 +69,23 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 // todo: search by other types
                 // todo: add cache to all caches
             }
-            else
-            {
-                Cache cache = caches[cacheToken];
-
-                result = cache.Value;
-            }
 
             return TakeInterval(result, searchArguments.Begin, searchArguments.End);
         }
 
+        /// <summary>
+        ///     Sheldule operation
+        /// </summary>
         public void Execute()
         {
             AppendPeriod();
 
             UpdateCaches();
+        }
+
+        private bool IsTokenPresent(string token)
+        {
+            return caches.ContainsKey(token);
         }
 
         private void AppendPeriod()
