@@ -70,6 +70,11 @@ namespace BinaryStudio.PhotoGallery.Database
                         Description = ".Net student group in Binary Studio Academy. Donetsk 2013."
                     });
 
+                unitOfWork.Albums.Add(new AlbumModel("Summer", 5)
+                {
+                    Description = "Ololololololo. Hannover 2013"
+                });
+
                 // Adding 100 photos from different users to album with ID 2(Academy)
                 /*for (int i = 0; i < 100; i++)
                 {

@@ -1,9 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BinaryStudio.PhotoGallery.Web.ViewModels
+namespace BinaryStudio.PhotoGallery.Web.ViewModels.Authorization
 {
-    public class RegistrationViewModel
+    public class SignupViewModel
     {
+        [Required]
+        [DataType(DataType.Text)]
+        [StringLength(255)]
+        public string Invite { get; set; }
+
         [Required]
         [DataType(DataType.EmailAddress)]
         [StringLength(255, MinimumLength = 5)]

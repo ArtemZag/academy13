@@ -3,6 +3,7 @@ using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
@@ -10,16 +11,16 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 {
     internal class ModelConverter : IModelConverter
     {
-        private readonly IAlbumService albumService;
-        private readonly IPathUtil pathUtil;
+        private readonly IAlbumService _albumService;
+        private readonly IPathUtil _pathUtil;
 
         public ModelConverter(IPathUtil pathUtil, IAlbumService albumService)
         {
-            this.pathUtil = pathUtil;
-            this.albumService = albumService;
+            _pathUtil = pathUtil;
+            _albumService = albumService;
         }
 
-        public UserModel GetModel(RegistrationViewModel registrationViewModel)
+        public UserModel GetModel(SignupViewModel registrationViewModel)
         {
             var userModel = new UserModel
                 {
@@ -30,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return userModel;
         }
 
-        public UserModel GetModel(AuthorizationViewModel authorizationViewModel)
+        public UserModel GetModel(SigninViewModel authorizationViewModel)
         {
             var userModel = new UserModel
                 {
@@ -70,7 +71,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             // We need to grab photos from album's owner, not from photo's creator.
             // So needs to take an userID via albumModel.UserModelID
-            AlbumModel albumModel = albumService.GetAlbumByID(photoModel.AlbumModelId);
+            AlbumModel albumModel = _albumService.GetAlbumById(photoModel.AlbumModelId);
 
             var viewModel = new PhotoViewModel
                 {
@@ -81,13 +82,13 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     //        So it can be as equel to userId, which album contain this photo, so not.
                     //        Look at PhotoModel to check the meaning of property UserModelID
                     PhotoSource =
-                        pathUtil.BuildOriginalPhotoPath(albumModel.UserModelId, photoModel.AlbumModelId,
+                        _pathUtil.BuildOriginalPhotoPath(albumModel.UserModelId, photoModel.AlbumModelId,
                                                         photoModel.PhotoName, photoModel.Format),
 
                     // Maaak: I think needs refactoring. Or another method,
                     //        that will create a path by only one parameter - photoID
                     PhotoThumbSource =
-                        pathUtil.BuildThumbnailsPath(albumModel.UserModelId, photoModel.AlbumModelId)
+                        _pathUtil.BuildThumbnailsPath(albumModel.UserModelId, photoModel.AlbumModelId)
                         + @"\" + photoModel.PhotoName + photoModel.Format,
                     AlbumId = photoModel.AlbumModelId,
                     PhotoId = photoModel.Id

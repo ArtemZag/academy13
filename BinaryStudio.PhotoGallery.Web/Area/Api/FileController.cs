@@ -11,6 +11,7 @@ using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Core.IOUtils;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Upload;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
@@ -38,8 +39,14 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 	        _fileWrapper = fileWrapper;
         }
 
-	    [POST]
-        public async Task<HttpResponseMessage> Post()
+        [POST("SavePhotos")]
+        public HttpResponseMessage SavePhotos([FromBody] SavePhotosViewModel viewModel)
+        {
+            return new HttpResponseMessage(HttpStatusCode.Accepted);
+        }
+        
+        [POST("Upload")]
+        public async Task<HttpResponseMessage> Upload()
         {
             // Check if the request contains multipart/form-data.
             if (!Request.Content.IsMimeMultipartContent())

@@ -94,8 +94,8 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
                 throw new FileNotFoundException(string.Format("Source file '{0}' not found", sourceName));
             }
 
-            var sourcePath = Path.GetFullPath(sourceName);
-            var destPath = Path.GetFullPath(destName);
+            var sourcePath = Path.GetDirectoryName(sourceName);
+            var destPath = Path.GetDirectoryName(destName);
 
             if (sourcePath != destPath)
             {
@@ -103,7 +103,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             }
 
             // If source and destination files are equal
-            if (Equals(Path.GetFileName(sourceName), Path.GetFileName(destName)))
+            if (string.Equals(Path.GetFileName(sourceName), Path.GetFileName(destName)))
             {
                 throw new FileRenameException("Source and destination file names can't be equal");
             }

@@ -220,12 +220,12 @@
     <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="App_Start\AttributeRoutingHttpConfig.cs" />
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
-    <Compile Include="Area\Api\AccountController.cs" />
+    <Compile Include="Area\Api\AuthorizationController.cs" />
     <Compile Include="Area\Api\AlbumController.cs" />
     <Compile Include="Area\Api\FileController.cs" />
     <Compile Include="Area\Api\SearchController.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AuthorizationController.cs" />
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\AlbumsController.cs" />
@@ -246,18 +246,21 @@
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
     <Compile Include="Utils\IModelConverter.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
-    <Compile Include="ViewModels\AuthorizationViewModel.cs" />
+    <Compile Include="ViewModels\AlbumsViewModel.cs" />
+    <Compile Include="ViewModels\AlbumViewModel.cs" />
+    <Compile Include="ViewModels\Authorization\SigninViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\NewCommentViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\PhotoCommentViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\PhotoPageViewModel.cs" />
     <Compile Include="ViewModels\PhotoViewModel.cs" />
-    <Compile Include="ViewModels\RegistrationViewModel.cs" />
+    <Compile Include="ViewModels\Authorization\SignupViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\jquery.pnotify.default.css" />
     <Content Include="Content\jquery.pnotify.default.icons.css" />
+    <Compile Include="ViewModels\Upload\SavePhotosViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\albums-page.css" />
@@ -371,8 +374,9 @@
     <Content Include="Scripts\FlowPage\photo_placer.js" />
     <Content Include="Scripts\Search\search.js" />
     <Content Include="Scripts\UploadPage\main.js" />
-    <Content Include="Scripts\UploadPage\upload.js" />
+    <Content Include="Scripts\UploadPage\PhotoPreview.js" />
     <Content Include="Scripts\AdminPanel\UserSlider.js" />
+    <Content Include="Scripts\UploadPage\UploadViewModel.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -384,12 +388,12 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\jquery-2.0.3.min.map" />
-    <Content Include="Views\Account\Signin.cshtml" />
-    <Content Include="Views\Account\Signup.cshtml" />
+    <Content Include="Views\Authorization\Signin.cshtml" />
+    <Content Include="Views\Authorization\Signup.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_MainLayout.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
-    <Content Include="Views\Account\RemindPass.cshtml" />
+    <Content Include="Views\Authorization\RemindPass.cshtml" />
     <Content Include="Views\Settings\Settings.cshtml" />
     <Content Include="Views\Album\Index.cshtml" />
     <Content Include="Views\Home\Gallery.cshtml" />

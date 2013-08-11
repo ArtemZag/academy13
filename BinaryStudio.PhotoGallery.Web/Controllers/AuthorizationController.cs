@@ -8,15 +8,16 @@ using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    [RoutePrefix("Account")]
-    public class AccountController : Controller
+    [RoutePrefix("Authorization")]
+    public class AuthorizationController : Controller
     {
         private readonly IUserService _userService;
 
-        public AccountController(IUserService userService)
+        public AuthorizationController(IUserService userService)
         {
             _userService = userService;
         }
@@ -45,7 +46,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
             }
             
-            return View(new AuthorizationViewModel());
+            return View(new SigninViewModel());
         }
 
         [GET("Signup/{service}")]
@@ -71,7 +72,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
             }
 
-            return View(new RegistrationViewModel());
+            return View(new SignupViewModel());
         }
 
         [GET("FacebookCallBack/{userSecret}")]
@@ -128,7 +129,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult SignOut()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Signin", "Account");
+            return RedirectToAction("Signin", "Authorization");
         }
 
         [GET]

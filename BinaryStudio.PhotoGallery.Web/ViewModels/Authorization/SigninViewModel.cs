@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BinaryStudio.PhotoGallery.Web.ViewModels
+namespace BinaryStudio.PhotoGallery.Web.ViewModels.Authorization
 {
-    public class AuthorizationViewModel
+    public class SigninViewModel
     {
         [Required]
         [DataType(DataType.EmailAddress)]

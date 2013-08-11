@@ -36,11 +36,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public AlbumModel GetAlbumByID(int albumID)
+        public AlbumModel GetAlbumById(int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Albums.Find(albumID);
+                return unitOfWork.Albums.Find(albumId);
             }
         }
 

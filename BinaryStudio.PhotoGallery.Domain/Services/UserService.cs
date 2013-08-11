@@ -26,11 +26,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public UserModel GetUser(int userID)
+        public UserModel GetUser(int userId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Users.Find(user => user.Id == userID);
+                return unitOfWork.Users.Find(user => user.Id == userId);
             }
         }
 
