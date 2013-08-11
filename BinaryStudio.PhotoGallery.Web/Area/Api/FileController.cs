@@ -63,7 +63,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 var userId = _userService.GetUserId(User.Identity.Name);
 
                 // Combine of the path to temporary folder in the user folder
-                var pathToTempFolder = string.Format("{0}\\{1}\\temporary", _pathUtil.GetAbsoluteRoot(), userId);
+                var pathToTempFolder = _pathUtil.GetTemporaryDirectoryPath(userId);
 
                 // Create directory, if it isn't exist
                 if (!_directoryWrapper.Exists(pathToTempFolder))

@@ -109,12 +109,14 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             }
 
             var fileName = new StringBuilder(Path.GetFileNameWithoutExtension(destName));
-            var newFileName = new StringBuilder(Path.GetFileNameWithoutExtension(destName));
+            var newFileNameWithPath = new StringBuilder();
+
+            newFileNameWithPath.AppendFormat("{0}\\{1}{2}", sourcePath, fileName, Path.GetExtension(destName));
 
             long number = 1;
 
             // Create new file name, while it exist
-            while (_fileWrapper.Exists(newFileName.ToString()))
+            while (_fileWrapper.Exists(newFileNameWithPath.ToString()))
             {
                 var leftBraketIndex = fileName.ToString().LastIndexOf('(');
                 var rightBraketIndex = fileName.ToString().LastIndexOf(')');
@@ -144,14 +146,14 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
                     }
                 }
 
-                newFileName.Clear();
+                newFileNameWithPath.Clear();
 
-                newFileName.AppendFormat("{0}\\{1}", sourcePath, fileName);
+                newFileNameWithPath.AppendFormat("{0}\\{1}{2}", sourcePath, fileName, Path.GetExtension(destName));
 
                 number++;
             }
 
-            _fileWrapper.Move(sourceName, newFileName.ToString());
+            _fileWrapper.Move(sourceName, newFileNameWithPath.ToString());
         }
     }
 }

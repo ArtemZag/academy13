@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        public string BuildAlbumPath(int userId, int albumId)
+        public string GetAlbumPath(int userId, int albumId)
         {
             var builder = new StringBuilder(BuildPhotoDirectoryPath());
             builder.Append(DELIMITER)
@@ -46,7 +46,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string BuildOriginalPhotoPath(int userId, int albumId, string photoName, string photoFormat)
         {
-            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
+            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
                    .Append(photoName)
                    .Append(photoFormat);
@@ -56,7 +56,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string BuildThumbnailsPath(int userId, int albumId)
         {
-            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
+            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
                    .Append(THUMBNAIL_DIRECTORY_NAME);
 
@@ -80,13 +80,22 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return temporaryPhotosDirectories;
         }
 
-        private string GetDataDirectory()
+        public string GetTemporaryDirectoryPath(int userId)
         {
-            return VirtualPathUtility.ToAbsolute(dataVirtualRoot);
+            var photoDirectoryPath = new StringBuilder(BuildPhotoDirectoryPath());
+            photoDirectoryPath.Append(@"\");
+            photoDirectoryPath.Append(userId);
+            photoDirectoryPath.Append(@"\");
+            photoDirectoryPath.Append(TEMPORARY_DIRECTORY_NAME);
+            return photoDirectoryPath.ToString();
         }
 
-        public string GetAbsoluteRoot()
+        private string GetDataDirectory()
         {
+            // This method not work for me
+            //return VirtualPathUtility.ToAbsolute(dataVirtualRoot); 
+            
+            // And this work good
             return HostingEnvironment.MapPath(dataVirtualRoot);
         }
 
