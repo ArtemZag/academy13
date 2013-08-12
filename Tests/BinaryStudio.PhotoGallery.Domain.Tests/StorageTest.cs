@@ -31,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             result.BuildPhotoDirectoryPath().Returns(info => @"App_Data\photos");
 
-            result.GetAlbumPath(Arg.Any<int>(), Arg.Any<int>()).Returns(info =>
+            result.BuildAlbumPath(Arg.Any<int>(), Arg.Any<int>()).Returns(info =>
                 {
                     var userId = (int) info[0];
                     var albumId = (int) info[1];
@@ -48,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                           var photoId = (int) info[2];
                           var photoFormat = (string) info[3];
 
-                          string albumPath = result.GetAlbumPath(userId, albuId);
+                          string albumPath = result.BuildAlbumPath(userId, albuId);
 
                           return albumPath + @"\" + photoId + photoFormat;
                       });

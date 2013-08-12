@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
@@ -67,7 +66,19 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         public IFoundViewModel GetViewModel(IFound found)
         {
-            throw new NotImplementedException();
+            IFoundViewModel result = null;
+
+            switch (found.Type)
+            {
+                case ItemType.Photo:
+                    
+                    break;
+
+                case ItemType.User:
+                    break;
+            }
+
+            return null;
         }
 
         public PhotoModel GetPhotoModel(int userId, int albumId, string fullPhotoName)

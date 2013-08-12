@@ -24,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             {
                 UserModel user = GetUser(album.UserId, unitOfWork);
 
-                return pathUtil.GetAlbumPath(user.Id, album.Id);
+                return pathUtil.BuildAlbumPath(user.Id, album.Id);
             }
         }
 
@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumId);
                 UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserId);
 
-                return pathUtil.GetAlbumPath(user.Id, album.Id);
+                return pathUtil.BuildAlbumPath(user.Id, album.Id);
             }
         }
 

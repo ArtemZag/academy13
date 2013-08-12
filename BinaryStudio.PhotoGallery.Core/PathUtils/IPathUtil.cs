@@ -6,7 +6,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
     {
         string BuildPhotoDirectoryPath();
 
-        string GetAlbumPath(int userId, int albumId);
+        string BuildAlbumPath(int userId, int albumId);
 
         string BuildOriginalPhotoPath(int userId, int albumId, string photoName, string photoFormat);
 
@@ -14,6 +14,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         IEnumerable<string> BuildTemporaryDirectoriesPaths();
 
-        string GetTemporaryDirectoryPath(int userId);
+        string BuildTemporaryDirectoryPath(int userId);
     }
 }

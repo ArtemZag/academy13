@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -51,7 +50,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return user.Albums.Where(model => !model.IsDeleted);
+                return user.Albums.Where(model => !model.IsDeleted).ToList();
             }
         }
 
