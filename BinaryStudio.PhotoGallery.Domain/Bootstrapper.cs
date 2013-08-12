@@ -1,6 +1,6 @@
 ﻿using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
-using BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Domain.Utils;
 using Microsoft.Practices.Unity;

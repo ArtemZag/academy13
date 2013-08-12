@@ -4,9 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Models;
 
-namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
+namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     internal class PhotoSearchService : DbService, IPhotoSearchService
     {
@@ -14,9 +15,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
         {
         }
 
-        public IEnumerable<IFoundItem> Search(SearchArguments searchArguments)
+        public IEnumerable<IFound> Search(SearchArguments searchArguments)
         {
-            var result = new List<PhotoFoundItem>();
+            var result = new List<PhotoFound>();
 
             string searchQuery = searchArguments.SearchQuery;
 
@@ -24,8 +25,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
             {
                 if (searchArguments.IsSearchPhotosByName)
                 {
-                    IEnumerable<PhotoFoundItem> found = SearchByCondition(searchQuery, unitOfWork,
-                                                                          model => model.PhotoName.Contains(searchQuery) && !model.IsDeleted,
+                    IEnumerable<PhotoFound> found = SearchByCondition(searchQuery, unitOfWork,
+                                                                          model =>
+                                                                          model.PhotoName.Contains(searchQuery) &&
+                                                                          !model.IsDeleted,
                                                                           GetRelevanceByName);
 
                     result.AddRange(found);
@@ -33,9 +36,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
 
                 if (searchArguments.IsSearchPhotosByDescription)
                 {
-                    IEnumerable<PhotoFoundItem> found = SearchByCondition(searchQuery, unitOfWork,
+                    IEnumerable<PhotoFound> found = SearchByCondition(searchQuery, unitOfWork,
                                                                           model =>
-                                                                          model.Description.Contains(searchQuery) && !model.IsDeleted,
+                                                                          model.Description.Contains(searchQuery) &&
+                                                                          !model.IsDeleted,
                                                                           GetRelevanceByDescription);
 
                     result.AddRange(found);
@@ -43,7 +47,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
 
                 if (searchArguments.IsSearchPhotosByTags)
                 {
-                    IEnumerable<PhotoFoundItem> found = SearchByTags(searchQuery, unitOfWork);
+                    IEnumerable<PhotoFound> found = SearchByTags(searchQuery, unitOfWork);
 
                     result.AddRange(found);
                 }
@@ -52,25 +56,25 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
             return Group(result);
         }
 
-        private IEnumerable<IFoundItem> Group(IEnumerable<PhotoFoundItem> data)
+        private IEnumerable<IFound> Group(IEnumerable<PhotoFound> data)
         {
             return
                 data.GroupBy(item => new {item.Id, item.AuthorId, item.AlbumId, item.Rating, item.PhotoName})
-                      .Select(items => new PhotoFoundItem
-                          {
-                              Id = items.Key.Id,
-                              AlbumId = items.Key.AlbumId,
-                              Rating = items.Key.Rating,
-                              PhotoName = items.Key.PhotoName,
-                              Relevance = items.Sum(item => item.Relevance)
-                          });
+                    .Select(items => new PhotoFound
+                        {
+                            Id = items.Key.Id,
+                            AlbumId = items.Key.AlbumId,
+                            Rating = items.Key.Rating,
+                            PhotoName = items.Key.PhotoName,
+                            Relevance = items.Sum(item => item.Relevance)
+                        });
         }
 
-        private IEnumerable<PhotoFoundItem> SearchByCondition(string searchQuery, IUnitOfWork unitOfWork,
+        private IEnumerable<PhotoFound> SearchByCondition(string searchQuery, IUnitOfWork unitOfWork,
                                                               Expression<Func<PhotoModel, bool>> predicate,
                                                               Func<string, PhotoModel, int> getRelevance)
         {
-            return unitOfWork.Photos.Filter(predicate).ToList().Select(model => new PhotoFoundItem
+            return unitOfWork.Photos.Filter(predicate).ToList().Select(model => new PhotoFound
                 {
                     Id = model.Id,
                     AuthorId = model.UserId,
@@ -81,9 +85,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
                 });
         }
 
-        private IEnumerable<PhotoFoundItem> SearchByTags(string searchQuery, IUnitOfWork unitOfWork)
+        private IEnumerable<PhotoFound> SearchByTags(string searchQuery, IUnitOfWork unitOfWork)
         {
-            var result = new List<PhotoFoundItem>();
+            var result = new List<PhotoFound>();
 
             List<PhotoTagModel> foundTags =
                 unitOfWork.PhotoTags.Filter(model => model.TagName.Contains(searchQuery)).ToList();
@@ -93,7 +97,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
                 IEnumerable<PhotoModel> presentPhotos =
                     tag.PhotoModels.Select(model => model).Where(model => !model.IsDeleted);
 
-                IEnumerable<PhotoFoundItem> tagPhotos = presentPhotos.Select(model => new PhotoFoundItem
+                IEnumerable<PhotoFound> tagPhotos = presentPhotos.Select(model => new PhotoFound
                     {
                         Id = model.Id,
                         AuthorId = model.UserId,

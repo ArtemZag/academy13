@@ -1,6 +1,6 @@
-﻿namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
+﻿namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Results
 {
-    public class PhotoFoundItem : IFoundItem
+    public class PhotoFound : IFound
     {
         public int Id { get; set; }
 

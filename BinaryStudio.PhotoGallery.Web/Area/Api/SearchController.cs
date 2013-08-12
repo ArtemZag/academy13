@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
-using BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
@@ -24,7 +23,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             SearchArguments searchArguments = modelConverter.GetModel(searchViewModel);
 
-            IEnumerable<IFoundItem> result = searchService.Search(searchArguments);
+            SearchResult result = searchService.Search(searchArguments);
 
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }

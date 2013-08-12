@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
@@ -46,32 +46,37 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             }
         }
 
-        public IEnumerable<IFoundItem> Search(SearchArguments searchArguments)
+        public SearchResult Search(SearchArguments searchArguments)
         {
-            List<IFoundItem> result;
+            List<IFound> resultItems;
 
-            string cacheToken = searchArguments.CacheToken;
+            string resultToken = searchArguments.CacheToken;
 
-            if (IsTokenPresent(cacheToken))
+            if (IsTokenPresent(resultToken))
             {
-                Cache cache = caches[cacheToken];
+                Cache cache = caches[resultToken];
 
-                result = cache.Value;
+                resultItems = cache.Value;
             }
             else
             {
-                result = new List<IFoundItem>();
+                resultItems = new List<IFound>();
 
                 if (searchArguments.IsSearchByPhotos)
                 {
-                    result.AddRange(photoSearchService.Search(searchArguments));
+                    resultItems.AddRange(photoSearchService.Search(searchArguments));
                 }
 
+                resultToken = string.Empty;
                 // todo: search by other types
-                // todo: add cache to all caches
+                // todo: add resultItems to all caches
             }
 
-            return TakeInterval(result, searchArguments.Begin, searchArguments.End);
+            return new SearchResult
+                {
+                    Value = TakeInterval(resultItems, searchArguments.Begin, searchArguments.End),
+                    Token = resultToken
+                };
         }
 
         /// <summary>
@@ -117,7 +122,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             }
         }
 
-        private IEnumerable<IFoundItem> TakeInterval(IEnumerable<IFoundItem> data, int begin, int end)
+        private IEnumerable<IFound> TakeInterval(IEnumerable<IFound> data, int begin, int end)
         {
             return
                 data.Select(item => item)

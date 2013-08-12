@@ -1,6 +1,6 @@
-﻿namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
+﻿namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Results
 {
-    public class UserFoundItem : IFoundItem
+    public class UserFound : IFound
     {
         /// <summary>
         ///     Users name, that contains FirstName, SecondName and NickName

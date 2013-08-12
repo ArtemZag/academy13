@@ -260,6 +260,9 @@
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\jquery.pnotify.default.css" />
     <Content Include="Content\jquery.pnotify.default.icons.css" />
+    <Compile Include="ViewModels\Search\IFoundViewModel.cs" />
+    <Compile Include="ViewModels\Search\PhotoFoundViewModel.cs" />
+    <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\Upload\SavePhotosViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />

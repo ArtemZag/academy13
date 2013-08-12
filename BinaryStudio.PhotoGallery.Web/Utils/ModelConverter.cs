@@ -2,7 +2,7 @@
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
-using BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
@@ -49,39 +49,50 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return new SearchArguments
                 {
                     CacheToken = searchViewModel.CacheToken,
-                    
                     Begin = searchViewModel.Begin,
                     End = searchViewModel.End,
-
                     SearchQuery = searchViewModel.SearchQuery,
-
                     IsSearchPhotosByName = searchViewModel.IsSearchPhotosByName,
                     IsSearchPhotosByTags = searchViewModel.IsSearchPhotosByTags,
                     IsSearchPhotosByDescription = searchViewModel.IsSearchPhotosByDescription,
-
                     IsSearchAlbumsByName = searchViewModel.IsSearchAlbumsByName,
                     IsSearchAlbumsByTags = searchViewModel.IsSearchAlbumsByTags,
                     IsSearchAlbumsByDescription = searchViewModel.IsSearchAlbumsByDescription,
-
                     IsSearchUsersByName = searchViewModel.IsSearchUsersByName,
                     IsSearchUserByDepartment = searchViewModel.IsSearchUserByDepartment,
-
                     IsSearchByComments = searchViewModel.IsSearchByComments
                 };
         }
-        
+
+        public IFoundItemViewModel GetViewModel(IFound found)
+        {
+            IFoundItemViewModel result;
+
+            switch (found.Type)
+            {
+                case ItemType.Photo:
+
+                    
+                    break;
+
+                case ItemType.User:
+                    break;
+            }
+        }
+
         public PhotoModel GetPhotoModel(int userId, int albumId, string fullPhotoName)
         {
             var photoModel = new PhotoModel
-            {
-                UserId = userId,
-                AlbumId = albumId,
-                PhotoName = Path.GetFileNameWithoutExtension(fullPhotoName),
-                Format = Path.GetExtension(fullPhotoName).Remove(0, 1)
-            };
+                {
+                    UserId = userId,
+                    AlbumId = albumId,
+                    PhotoName = Path.GetFileNameWithoutExtension(fullPhotoName),
+                    Format = Path.GetExtension(fullPhotoName).Remove(0, 1)
+                };
 
             return photoModel;
         }
+
         public PhotoViewModel GetViewModel(PhotoModel photoModel)
         {
             // We need to grab photos from album's owner, not from photo's creator.
@@ -98,7 +109,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     //        Look at PhotoModel to check the meaning of property UserModelID
                     PhotoSource =
                         _pathUtil.BuildOriginalPhotoPath(albumModel.UserId, photoModel.AlbumId,
-                                                        photoModel.PhotoName, photoModel.Format),
+                                                         photoModel.PhotoName, photoModel.Format),
 
                     // Maaak: I think needs refactoring. Or another method,
                     //        that will create a path by only one parameter - photoID

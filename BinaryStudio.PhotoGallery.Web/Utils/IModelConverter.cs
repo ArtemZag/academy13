@@ -1,4 +1,5 @@
 ﻿using BinaryStudio.PhotoGallery.Domain.Services.Search;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
@@ -14,6 +15,8 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         UserModel GetModel(SigninViewModel authorizationViewModel);
 
         SearchArguments GetModel(SearchViewModel searchViewModel);
+
+        IFoundItemViewModel GetViewModel(IFound found);
 
         PhotoModel GetPhotoModel(int userId, int albumId, string fullPhotoName);
 
