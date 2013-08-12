@@ -6,7 +6,7 @@ namespace BinaryStudio.PhotoGallery.Database
     {
         public static void RegisterTypes(IUnityContainer container)
         {
-            container.RegisterType<IUnitOfWorkFactory, UnitOfWorkFactory>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IUnitOfWorkFactory, UnitOfWorkFactory>();
         }
     }
 }
