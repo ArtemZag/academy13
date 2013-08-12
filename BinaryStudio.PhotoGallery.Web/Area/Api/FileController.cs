@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -11,6 +12,7 @@ using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Core.IOUtils;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Upload;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
@@ -24,25 +26,88 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 	    private readonly IDirectoryWrapper _directoryWrapper;
 	    private readonly IFileHelper _fileHelper;
 	    private readonly IFileWrapper _fileWrapper;
+        private readonly IPhotoService _photoService;
+        private readonly IModelConverter _modelConverter;
 
-	    public FileController(
+        public FileController(
             IUserService userService,
             IPathUtil pathUtil,
             IDirectoryWrapper directoryWrapper,
             IFileHelper fileHelper,
-            IFileWrapper fileWrapper)
+            IFileWrapper fileWrapper,
+            IPhotoService photoService,
+            IModelConverter modelConverter)
         {
             _userService = userService;
             _pathUtil = pathUtil;
 	        _directoryWrapper = directoryWrapper;
 	        _fileHelper = fileHelper;
 	        _fileWrapper = fileWrapper;
+	        _photoService = photoService;
+            _modelConverter = modelConverter;
         }
 
         [POST("SavePhotos")]
         public HttpResponseMessage SavePhotos([FromBody] SavePhotosViewModel viewModel)
         {
-            return new HttpResponseMessage(HttpStatusCode.Accepted);
+            if (viewModel == null || viewModel.AlbumId < 0 || !viewModel.PhotoNames.Any())
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            var notAccpetedFiles = new List<string>();
+
+            try
+            {
+                // Get user ID from DB
+                var userId = _userService.GetUserId(User.Identity.Name);
+
+                // Get path to the temporary folder in the user folder
+                var pathToTempFolder = _pathUtil.GetTemporaryDirectoryPath(userId);
+
+                foreach (var photoName in viewModel.PhotoNames)
+                {
+                    var currentFilePath = string.Format("{0}\\{1}", pathToTempFolder, photoName);
+
+                    var fileExist = _fileWrapper.Exists(currentFilePath);
+
+                    if (fileExist)
+                    {
+                        var pathToAlbum = _pathUtil.GetAlbumPath(userId, viewModel.AlbumId);
+
+                        if (!_directoryWrapper.Exists(pathToAlbum))
+                        {
+                            _directoryWrapper.CreateDirectory(pathToAlbum);
+                        }
+
+                        var newFilePath = string.Format("{0}\\{1}", pathToAlbum, photoName);
+
+                        _fileHelper.HardMove(currentFilePath, newFilePath);
+
+                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, viewModel.AlbumId, photoName));
+                    }
+                    else
+                    {
+                        notAccpetedFiles.Add(photoName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            // Create response data
+            var listOfNotLoadedFiles = new ObjectContent<IEnumerable<string>>
+                (notAccpetedFiles, new JsonMediaTypeFormatter());
+
+            var response = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.Accepted,
+                Content = listOfNotLoadedFiles
+            };
+
+            return response;
         }
         
         [POST("Upload")]
@@ -59,10 +124,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                // Get user ID from BD
+                // Get user ID from DB
                 var userId = _userService.GetUserId(User.Identity.Name);
 
-                // Combine of the path to temporary folder in the user folder
+                // Get path to the temporary folder in the user folder
                 var pathToTempFolder = _pathUtil.GetTemporaryDirectoryPath(userId);
 
                 // Create directory, if it isn't exist
@@ -74,7 +139,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 // TODO create this instance with fabrik
                 var provider = new MultipartFormDataStreamProvider(pathToTempFolder);
 
-                // Read the form data from request TODO must be mocked too
+                // Read the form data from request TODO must be wrapped too
                 await Request.Content.ReadAsMultipartAsync(provider);
 
                 // Check all files
@@ -94,7 +159,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     // try to rename file to source name (users file name)
                     try
                     {
-                        _fileHelper.HardRename(fileData.LocalFileName, destFileName);
+                        _fileHelper.HardMove(fileData.LocalFileName, destFileName);
                     }
                     catch (FileRenameException ex)
                     {

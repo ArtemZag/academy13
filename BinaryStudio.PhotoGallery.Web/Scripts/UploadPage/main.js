@@ -1,19 +1,42 @@
 ﻿$(function () {
-    function photoUploaderViewModel(options) {
-        var self = this;
+    var previews = [];
 
-        self.dropzone = options.dropzone;
-        
-        self.previews = ko.observable(options.previews);
+    var newPreview = new PhotoPreview({
+        name: "test1.jpg",
+        size: 1123123123
+    });
+    newPreview.isSelected(true);
+    previews.push(newPreview);
+    
+    newPreview = new PhotoPreview({
+        name: "test2.jpg",
+        size: 1123123123
+    });
+    newPreview.isSaved(true);
+    previews.push(newPreview);
+    
+    newPreview = new PhotoPreview({
+        name: "test3.jpg",
+        size: 1123123123
+    });
+    previews.push(newPreview);
 
-        self.canUpload = ko.computed(function () {
-        	return self.previews().length > 0;
+    newPreview = new PhotoPreview({
+        name: "test4.jpg",
+        size: 1123123123
+    });
+    newPreview.isSelected(true);
+    newPreview.isSaved(true);
+    previews.push(newPreview);
+
+    var vm = new UploadViewModel({ element: '.dropzone' });
+    
+    $.get('Api/Album')
+        .done(function (data) {
+            vm.albums(data);
         });
 
-        self.beginUpload = function() {
-            self.dropzone.
-        };
-    }
-
-//    ko.applyBindings(new photoUploaderViewModel);
+    vm.previews(previews);
+    
+    ko.applyBindings(vm);
 });
