@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
         {
             using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(album.UserModelId, unitOfWork);
+                UserModel user = GetUser(album.UserId, unitOfWork);
 
                 return pathUtil.GetAlbumPath(user.Id, album.Id);
             }
@@ -32,8 +32,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
         {
             using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
             {
-                AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumModelId);
-                UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserModelId);
+                AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumId);
+                UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserId);
 
                 return pathUtil.GetAlbumPath(user.Id, album.Id);
             }
@@ -43,8 +43,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
         {
             using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
             {
-                AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
-                UserModel user = GetUser(album.UserModelId, unitOfWork);
+                AlbumModel album = GetAlbum(photo.AlbumId, unitOfWork);
+                UserModel user = GetUser(album.UserId, unitOfWork);
 
                 return pathUtil.BuildOriginalPhotoPath(user.Id, album.Id, photo.PhotoName, photo.Format);
             }
@@ -80,8 +80,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
         {
             using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
             {
-                AlbumModel album = GetAlbum(photo.AlbumModelId, unitOfWork);
-                UserModel user = GetUser(album.UserModelId, unitOfWork);
+                AlbumModel album = GetAlbum(photo.AlbumId, unitOfWork);
+                UserModel user = GetUser(album.UserId, unitOfWork);
 
                 return pathUtil.BuildThumbnailsPath(user.Id, album.Id);
             }

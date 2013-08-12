@@ -8,19 +8,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Gets user's album specified by name.
         /// </summary>
-        AlbumModel GetAlbum(string userEmail, string albumName);
+        AlbumModel GetAlbum(string userEmail, int albumName);
         
         /// <summary>
         /// Gets user's album specified by id.
         /// </summary>
         /// <param name="albumId">Album ID</param>
         /// <returns></returns>
-        AlbumModel GetAlbumById(int albumId);
+        AlbumModel GetAlbum(int albumId);
         
         /// <summary>
         ///     Gets all albums for specified user.
         /// </summary>
-        IEnumerable<AlbumModel> GetAlbums(string userEmail);
+        IEnumerable<AlbumModel> GetAllAlbums(string userEmail);
 
         /// <summary>
         ///     Creates album for specified user by his email.
@@ -30,6 +30,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Deletes specified album.
         /// </summary>
-        void DeleteAlbum(string userEmail, string albumName);
+        void DeleteAlbum(string userEmail, int albumId);
     }
 }

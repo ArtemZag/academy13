@@ -11,6 +11,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
+        public void AddPhoto(PhotoModel photo)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                AlbumModel album = GetAlbum(photo.UserId, photo.UserId, unitOfWork);
+
+                album.Photos.Add(photo);
+
+                unitOfWork.SaveChanges();
+            }
+        }
+
         public void AddPhoto(string userEmail, string albumName, PhotoModel photo)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -18,7 +30,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                photo.UserModelId = user.Id;
+                photo.UserId = user.Id;
                 album.Photos.Add(photo);
 
                 unitOfWork.SaveChanges();
@@ -67,11 +79,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int albumID, int begin, int end)
+        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int albumId, int begin, int end)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Photos.Filter(model => model.AlbumModelId == albumID)
+                return unitOfWork.Photos.Filter(model => model.AlbumId == albumId)
                                  .Where(model => !model.IsDeleted)
                                  .OrderBy(model => model.DateOfCreation)
                                  .ThenBy(model => model.Id)
@@ -87,7 +99,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
+                return unitOfWork.Photos.Filter(model => model.UserId == user.Id)
                                  .Where(model => !model.IsDeleted)
                                  .OrderBy(model => model.DateOfCreation)
                                  .ThenBy(model => model.Id)

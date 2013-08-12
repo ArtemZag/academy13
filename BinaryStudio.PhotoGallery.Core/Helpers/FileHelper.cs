@@ -77,7 +77,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
         /// </summary>
         /// <param name="sourceName">path to source file</param>
         /// <param name="destName">path to destination file</param>
-        public void HardRename(string sourceName, string destName)
+        public void HardMove(string sourceName, string destName)
         {
             if (sourceName == null)
             {
@@ -94,10 +94,10 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
                 throw new FileNotFoundException(string.Format("Source file '{0}' not found", sourceName));
             }
 
-            var sourcePath = Path.GetDirectoryName(sourceName);
+//            var sourcePath = Path.GetDirectoryName(sourceName);
             var destPath = Path.GetDirectoryName(destName);
 
-            if (sourcePath != destPath)
+            /*if (sourcePath != destPath)
             {
                 throw new FileRenameException("Source and destination paths are not equal");
             }
@@ -106,12 +106,12 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             if (string.Equals(Path.GetFileName(sourceName), Path.GetFileName(destName)))
             {
                 throw new FileRenameException("Source and destination file names can't be equal");
-            }
+            }*/
 
             var fileName = new StringBuilder(Path.GetFileNameWithoutExtension(destName));
             var newFileNameWithPath = new StringBuilder();
 
-            newFileNameWithPath.AppendFormat("{0}\\{1}{2}", sourcePath, fileName, Path.GetExtension(destName));
+            newFileNameWithPath.AppendFormat("{0}\\{1}{2}", destPath, fileName, Path.GetExtension(destName));
 
             long number = 1;
 
@@ -148,7 +148,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
 
                 newFileNameWithPath.Clear();
 
-                newFileNameWithPath.AppendFormat("{0}\\{1}{2}", sourcePath, fileName, Path.GetExtension(destName));
+                newFileNameWithPath.AppendFormat("{0}\\{1}{2}", destPath, fileName, Path.GetExtension(destName));
 
                 number++;
             }

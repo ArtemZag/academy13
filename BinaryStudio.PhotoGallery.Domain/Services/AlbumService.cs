@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -23,12 +24,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void DeleteAlbum(string userEmail, string albumName)
+        public void DeleteAlbum(string userEmail, int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
-                AlbumModel album = GetAlbum(user, albumName, unitOfWork);
+                AlbumModel album = GetAlbum(user, albumId, unitOfWork);
 
                 album.IsDeleted = true;
 
@@ -36,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public AlbumModel GetAlbumById(int albumId)
+        public AlbumModel GetAlbum(int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -44,24 +45,28 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<AlbumModel> GetAlbums(string userEmail)
+        public IEnumerable<AlbumModel> GetAllAlbums(string userEmail)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return user.Albums.Select(model => model).Where(model => !model.IsDeleted).ToList();
+                return user.Albums.Where(model => !model.IsDeleted);
             }
         }
 
-        public AlbumModel GetAlbum(string userEmail, string albumName)
+        public AlbumModel GetAlbum(string userEmail, int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return GetAlbum(user, albumName, unitOfWork);
+                if (user.Albums.Any(albumModel => albumModel.Id == albumId))
+                {
+                    return GetAlbum(albumId);
+                }
             }
+            return null;
         }
     }
 }

@@ -67,8 +67,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
             return unitOfWork.Photos.Filter(predicate).ToList().Select(model => new PhotoFoundItem
                 {
                     Id = model.Id,
-                    UserModelId = model.UserModelId,
-                    AlbumId = model.AlbumModelId,
+                    UserModelId = model.UserId,
+                    AlbumId = model.AlbumId,
                     PhotoName = model.PhotoName,
                     Relevance = getRelevance(searchQuery, model)
                 });
@@ -86,8 +86,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
                 IEnumerable<PhotoFoundItem> tagPhotos = tag.PhotoModels.Select(model => new PhotoFoundItem
                     {
                         Id = model.Id,
-                        UserModelId = model.UserModelId,
-                        AlbumId = model.AlbumModelId,
+                        UserModelId = model.UserId,
+                        AlbumId = model.AlbumId,
                         PhotoName = model.PhotoName,
                         Relevance = 1
                     });

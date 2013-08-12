@@ -14,8 +14,8 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
         {
             var photo = new PhotoModel
                 {
-                    AlbumModelId = albumId,
-                    UserModelId = ownerId
+                    AlbumId = albumId,
+                    UserId = ownerId
                 };
             base.Add(photo);
         }
