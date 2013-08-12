@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [HttpPost]
         public ActionResult GetPhoto(int photoID)
         {
-            return Json(_modelConverter.GetViewModel(_photoService.GetPhoto(photoID)));
+            return Json(_modelConverter.GetViewModel(_photoService.GetPhoto(User.Identity.Name, photoID)));
         }
 
         [HttpPost]

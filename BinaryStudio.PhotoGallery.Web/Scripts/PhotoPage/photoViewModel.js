@@ -56,7 +56,6 @@
             $.post("/PhotoComment/AddPhotoComment", { NewComment: self.newComment(), PhotoID: self.PhotoID() }, function(data) {
                 SetComments(data);
             });
-            
         };
 
         self.fbSync = function() {
@@ -130,7 +129,7 @@
         // todo: needs fixing
         window.history.pushState("", "", "/photo/" + model.PhotoID());
         
-        $.post("/PhotoComment/GetPhotoComments", { photoID: photo.PhotoId, begin: 0, last: 50 }, SetComments);
+        $.post("/PhotoComment/GetPhotoComments", { photoID: photo.PhotoId, begin: 0, end: 50 }, SetComments);
     }
 
     function SetComments(comm) {

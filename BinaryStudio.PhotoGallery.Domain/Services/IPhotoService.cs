@@ -18,7 +18,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Deletes specified photo
         /// </summary>
-        void DeletePhoto(PhotoModel photo);
+        void DeletePhoto(string userEmail, PhotoModel photo);
 
         /// <summary>
         ///     Returns specified interval of photos (sorted by date) from specified album.
@@ -52,6 +52,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         /// <param name="photoID"></param>
         /// <returns></returns>
-        PhotoModel GetPhoto(int photoID);
+        PhotoModel GetPhoto(string userEmail, int photoID);
     }
 }

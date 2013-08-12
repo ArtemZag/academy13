@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
@@ -71,11 +72,6 @@ namespace BinaryStudio.PhotoGallery.Database
                         Description = ".Net student group in Binary Studio Academy. Donetsk 2013."
                     });
 
-                // Adding 100 photos from different users to album with ID 2(Academy)
-                /*for (int i = 0; i < 100; i++)
-                {
-                    unitOfWork.Photos.Add(2, random.Next(1, 7));
-                }*/
                 unitOfWork.SaveChanges();
 
                 ///////////////////////////////////////////////////////
@@ -102,11 +98,37 @@ namespace BinaryStudio.PhotoGallery.Database
                     }
                     unitOfWork.Photos.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm});
                 }
-
-                unitOfWork.Albums.Add(new AlbumModel("Test", 7));
-
+                /////////////////////////////////////////////////////////////////////////////////
 
 
+                var availableGroupModel = new AvailableGroupModel(){AlbumModelId = 3, GroupModelId = 1, CanSeeComments = true, CanSeePhotos = true};
+                var availableGroupModel1 = new AvailableGroupModel(){AlbumModelId = 3, GroupModelId = 2, CanSeeComments = true, CanSeePhotos = true};
+                var availableGroupModel2 = new AvailableGroupModel(){AlbumModelId = 3, GroupModelId = 3, CanSeeComments = true, CanSeePhotos = true};
+                var availableGroupModel3 = new AvailableGroupModel(){AlbumModelId = 3, GroupModelId = 4, };
+                var availableGroupModel4 = new AvailableGroupModel(){AlbumModelId = 3, GroupModelId = 5, };
+
+                var AGList = new List<AvailableGroupModel>();
+                AGList.Add(availableGroupModel);
+                AGList.Add(availableGroupModel1);
+                AGList.Add(availableGroupModel2);
+                AGList.Add(availableGroupModel3);
+                AGList.Add(availableGroupModel4);
+
+                unitOfWork.Albums.Add(new AlbumModel("Test", 7){AvailableGroups = AGList});
+
+                var groupCollection = new Collection<GroupModel>
+                    {
+                        unitOfWork.Groups.Find(1),
+                        unitOfWork.Groups.Find(3),
+                        unitOfWork.Groups.Find(6)
+                    };
+
+
+                unitOfWork.Users.Find(7).Groups = groupCollection;
+
+                //////////////////////////////////////////////////////////
+
+                
 
                 unitOfWork.SaveChanges();
 

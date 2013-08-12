@@ -60,10 +60,12 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Exceptions\AlbumNotFoundException.cs" />
     <Compile Include="Exceptions\CleanupException.cs" />
+    <Compile Include="Exceptions\NoEnoughPrivileges.cs" />
     <Compile Include="Exceptions\UserAlreadyExistException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AlbumService.cs" />
+    <Compile Include="Services\ISecureService.cs" />
     <Compile Include="Services\Search\Items\IFoundItem.cs" />
     <Compile Include="Services\PhotoCommentService.cs" />
     <Compile Include="Services\IAlbumService.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="Services\Search\Items\PhotoFoundItem.cs" />
     <Compile Include="Services\Search\Items\PhotoSearchService.cs" />
     <Compile Include="Services\Search\Items\UserFoundItem.cs" />
+    <Compile Include="Services\SecureService.cs" />
     <Compile Include="Services\Tasks\ICleanupTask.cs" />
     <Compile Include="Services\IPhotoService.cs" />
     <Compile Include="Services\IUserService.cs" />

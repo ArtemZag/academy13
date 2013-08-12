@@ -1,27 +1,39 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class PhotoService : DbService, IPhotoService
     {
-        public PhotoService(IUnitOfWorkFactory workFactory) : base(workFactory)
+        private readonly ISecureService _secureService;
+
+        public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
         {
+            _secureService = secureService;
         }
 
         public void AddPhoto(string userEmail, string albumName, PhotoModel photo)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
+
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                photo.UserModelId = user.Id;
-                album.Photos.Add(photo);
+                if (_secureService.CanUserAddPhoto(user.Id, album.Id))
+                {
+                    photo.UserModelId = user.Id;
+                    album.Photos.Add(photo);
 
-                unitOfWork.SaveChanges();
+                    unitOfWork.SaveChanges();
+                }
+                else
+                {
+                    throw new NoEnoughPrivileges("User can't get access to photos", null);
+                }
             }
         }
 
@@ -32,23 +44,39 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                foreach (PhotoModel photo in photos)
+                if (_secureService.CanUserAddPhoto(user.Id, album.Id))
                 {
-                    album.Photos.Add(photo);
+                    foreach (var photo in photos)
+                    {
+                        album.Photos.Add(photo);
+                    }
+                    unitOfWork.SaveChanges();
                 }
-
-                unitOfWork.SaveChanges();
+                else
+                {
+                    throw new NoEnoughPrivileges("User can't get access to photos", null);
+                }
             }
         }
 
-        public void DeletePhoto(PhotoModel photo)
+        public void DeletePhoto(string userEmail, PhotoModel photo)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                PhotoModel photoToDelete = unitOfWork.Photos.Find(model => model.Id == photo.Id);
-                photoToDelete.IsDeleted = true;
+                var user = GetUser(userEmail, unitOfWork);
 
-                unitOfWork.SaveChanges();
+                if (_secureService.CanUserDeletePhoto(user.Id, photo.Id))
+                {
+                    var photoToDelete = unitOfWork.Photos.Find(model => model.Id == photo.Id);
+                    photoToDelete.IsDeleted = true;
+
+                    unitOfWork.SaveChanges();
+                }
+                else
+                {
+                    throw new NoEnoughPrivileges("User can't get access to photos", null);
+                }
+
             }
         }
 
@@ -59,11 +87,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName, unitOfWork);
 
-                return album.Photos.OrderBy(model => model.DateOfCreation)
-                            .ThenBy(model => model.Id)
-                            .Skip(begin)
-                            .Take(end - begin)
-                            .ToList();
+                if (_secureService.CanUserViewPhotos(user.Id, album.Id))
+                {
+                    return album.Photos.OrderBy(model => model.DateOfCreation)
+                                .ThenBy(model => model.Id)
+                                .Skip(begin)
+                                .Take(end - begin)
+                                .ToList();
+                }
+
+                throw new NoEnoughPrivileges("User can't get access to photos", null);
             }
         }
 
@@ -71,13 +104,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Photos.Filter(model => model.AlbumModelId == albumID)
-                                 .Where(model => !model.IsDeleted)
-                                 .OrderBy(model => model.DateOfCreation)
-                                 .ThenBy(model => model.Id)
-                                 .Skip(begin)
-                                 .Take(end - begin)
-                                 .ToList();
+                UserModel user = GetUser(userEmail, unitOfWork);
+
+                if (_secureService.CanUserViewPhotos(user.Id, albumID))
+                {
+                    return unitOfWork.Photos.Filter(model => model.AlbumModelId == albumID)
+                                     .Where(model => !model.IsDeleted)
+                                     .OrderBy(model => model.DateOfCreation)
+                                     .ThenBy(model => model.Id)
+                                     .Skip(begin)
+                                     .Take(end - begin)
+                                     .ToList();
+                }
+
+                throw new NoEnoughPrivileges("User can't get access to photos", null);
             }
         }
 
@@ -87,6 +127,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
+// todo: create a criterions for grabing all user albums' IDs and check every for access permissions
                 return unitOfWork.Photos.Filter(model => model.UserModelId == user.Id)
                                  .Where(model => !model.IsDeleted)
                                  .OrderBy(model => model.DateOfCreation)
@@ -97,11 +138,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public PhotoModel GetPhoto(int photoID)
+        public PhotoModel GetPhoto(string userEmail, int photoID)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Photos.Find(photoID);
+                var user = GetUser(userEmail, unitOfWork);
+                var photo = unitOfWork.Photos.Find(photoID);
+
+                if (_secureService.CanUserViewPhotos(user.Id, photo.AlbumModelId))
+                {
+                    return photo;
+                }
+
+                throw new NoEnoughPrivileges("User can't get access to photos", null);
             }
         }
     }
