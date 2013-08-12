@@ -2,6 +2,8 @@
 {
     public class SearchArguments
     {
+        public string CacheToken { get; set; }
+
         public string SearchQuery { get; set; }
 
         public int Begin { get; set; }

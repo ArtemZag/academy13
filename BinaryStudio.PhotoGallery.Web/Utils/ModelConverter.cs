@@ -2,6 +2,7 @@
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
@@ -47,6 +48,8 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             return new SearchArguments
                 {
+                    CacheToken = searchViewModel.CacheToken,
+                    
                     Begin = searchViewModel.Begin,
                     End = searchViewModel.End,
 
@@ -66,7 +69,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     IsSearchByComments = searchViewModel.IsSearchByComments
                 };
         }
-
+        
         public PhotoModel GetPhotoModel(int userId, int albumId, string fullPhotoName)
         {
             var photoModel = new PhotoModel
@@ -79,7 +82,6 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             return photoModel;
         }
-        
         public PhotoViewModel GetViewModel(PhotoModel photoModel)
         {
             // We need to grab photos from album's owner, not from photo's creator.

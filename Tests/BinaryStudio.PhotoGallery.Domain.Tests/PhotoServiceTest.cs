@@ -16,24 +16,23 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     internal class PhotoServiceTest
     {
-        [SetUp]
-        public void Setup()
+        private readonly IPhotoService photoService;
+        private readonly IUserService userService;
+        private readonly IAlbumService albumService;
+
+        private readonly IUnitOfWorkFactory workFactory;
+
+        public PhotoServiceTest()
         {
             IUnityContainer container = Bootstrapper.Initialise();
 
             var cryptoProvider = container.Resolve<ICryptoProvider>();
-            _workFactory = new TestUnitOfWorkFactory();
+            workFactory = new TestUnitOfWorkFactory();
 
-            _photoService = new PhotoService(_workFactory);
-            _userService = new UserService(_workFactory, cryptoProvider);
-            _albumService = new AlbumService(_workFactory);
+            photoService = new PhotoService(workFactory);
+            userService = new UserService(workFactory, cryptoProvider);
+            albumService = new AlbumService(workFactory);
         }
-
-        private IPhotoService _photoService;
-        private IUserService _userService;
-        private IAlbumService _albumService;
-
-        private IUnitOfWorkFactory _workFactory;
 
         private IEnumerable<PhotoModel> GetListOfPhotos()
         {
@@ -60,8 +59,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                     Photos = new Collection<PhotoModel>()
                 };
 
-            _userService.CreateUser(user);
-            _albumService.CreateAlbum(user.Email, album);
+            userService.CreateUser(user);
+            albumService.CreateAlbum(user.Email, album);
 
             var photo = new PhotoModel
                 {
@@ -71,7 +70,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             // body
             int photosCountBeforeAdd = album.Photos.Count;
 
-            _photoService.AddPhoto("some@gmail.com", "albumName", photo);
+            photoService.AddPhoto("some@gmail.com", "albumName", photo);
 
             int photosCountAfterAdd = album.Photos.Count;
 
@@ -92,13 +91,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             int deletedPhotosAfterCreation;
             int deletedPhotosBeforeCreation;
 
-            using (IUnitOfWork unitOfWork = _workFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
             {
                 unitOfWork.Photos.Add(photo);
 
                 // body
                 deletedPhotosAfterCreation = unitOfWork.Photos.Filter(model => model.IsDeleted).Count();
-                _photoService.DeletePhoto(photo);
+                photoService.DeletePhoto(photo);
 
                 deletedPhotosBeforeCreation = unitOfWork.Photos.Filter(model => model.IsDeleted).Count();
             }
@@ -130,13 +129,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                     Photos = new Collection<PhotoModel>()
                 };
 
-            _userService.CreateUser(user);
-            _albumService.CreateAlbum(user.Email, album);
+            userService.CreateUser(user);
+            albumService.CreateAlbum(user.Email, album);
 
-            _photoService.AddPhotos("some1@gmail.com", "albumName", photosToFill);
+            photoService.AddPhotos("some1@gmail.com", "albumName", photosToFill);
 
             // body
-            IEnumerable<PhotoModel> photos = _photoService.GetPhotos("some1@gmail.com", "albumName", 0, 5);
+            IEnumerable<PhotoModel> photos = photoService.GetPhotos("some1@gmail.com", "albumName", 0, 5);
             int count = photos.Count();
 
             // tear down

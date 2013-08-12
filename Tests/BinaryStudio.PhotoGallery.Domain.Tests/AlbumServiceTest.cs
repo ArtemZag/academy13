@@ -14,8 +14,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     internal class AlbumServiceTest
     {
-        [SetUp]
-        public void Setup()
+        private readonly IAlbumService _albumService;
+        private readonly IUserService _userService;
+
+        public AlbumServiceTest()
         {
             IUnityContainer container = Bootstrapper.Initialise();
 
@@ -25,9 +27,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             _albumService = new AlbumService(workFactory);
             _userService = new UserService(workFactory, cryptoProvidrer);
         }
-
-        private IAlbumService _albumService;
-        private IUserService _userService;
 
         [Test]
         public void AlbumShouldBeAdded()

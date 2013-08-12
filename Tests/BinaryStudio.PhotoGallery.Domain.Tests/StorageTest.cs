@@ -12,8 +12,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     internal class StorageTest
     {
-        [SetUp]
-        public void Setup()
+        private readonly IStorage storage;
+        private readonly IUnitOfWorkFactory workFactory;
+
+        public StorageTest()
         {
             IPathUtil pathUtil = MockPathUtil();
 
@@ -22,9 +24,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             FillRepository();
         }
-
-        private IStorage storage;
-        private IUnitOfWorkFactory workFactory;
 
         private IPathUtil MockPathUtil()
         {

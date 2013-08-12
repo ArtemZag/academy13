@@ -11,11 +11,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class UserService : DbService, IUserService
     {
-        private readonly ICryptoProvider _cryptoProvider;
+        private readonly ICryptoProvider cryptoProvider;
 
         public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider) : base(workFactory)
         {
-            _cryptoProvider = cryptoProvider;
+            this.cryptoProvider = cryptoProvider;
         }
 
         public IEnumerable<UserModel> GetAllUsers()
@@ -59,8 +59,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
             if (provider == AuthInfoModel.ProviderType.Local)
             {
-                user.Salt = _cryptoProvider.GetNewSalt();
-                user.UserPassword = _cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
+                user.Salt = cryptoProvider.GetNewSalt();
+                user.UserPassword = cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
             }
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -97,7 +97,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     UserModel user = GetUser(userEmail, unitOfWork);
 
-                    result = _cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
+                    result = cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
                 }
             }
             catch (UserNotFoundException)
@@ -123,7 +123,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         /// <param name="authProvider">[facebook][google]</param>
         /// <param name="token">Token for authorization</param>
-        /// <returns></returns>
         public bool IsUserExist(string authProvider, string token)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

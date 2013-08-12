@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
-namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
+namespace BinaryStudio.PhotoGallery.Domain.Services.Search.FoundItems
 {
     internal class PhotoSearchService : DbService, IPhotoSearchService
     {
@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
                 if (searchArguments.IsSearchPhotosByName)
                 {
                     IEnumerable<PhotoFoundItem> found = SearchByCondition(searchQuery, unitOfWork,
-                                                                          model => model.PhotoName.Contains(searchQuery),
+                                                                          model => model.PhotoName.Contains(searchQuery) && !model.IsDeleted,
                                                                           GetRelevanceByName);
 
                     result.AddRange(found);
@@ -34,7 +34,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
                 if (searchArguments.IsSearchPhotosByDescription)
                 {
                     IEnumerable<PhotoFoundItem> found = SearchByCondition(searchQuery, unitOfWork,
-                                                                          model => model.Description.Contains(searchQuery),
+                                                                          model =>
+                                                                          model.Description.Contains(searchQuery) && !model.IsDeleted,
                                                                           GetRelevanceByDescription);
 
                     result.AddRange(found);
@@ -48,13 +49,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
                 }
             }
 
+            return Group(result);
+        }
+
+        private IEnumerable<IFoundItem> Group(IEnumerable<PhotoFoundItem> data)
+        {
             return
-                result.GroupBy(item => new {item.Id, item.UserModelId, item.AlbumId, item.PhotoName})
+                data.GroupBy(item => new {item.Id, item.AuthorId, item.AlbumId, item.Rating, item.PhotoName})
                       .Select(items => new PhotoFoundItem
                           {
                               Id = items.Key.Id,
-                              UserModelId = items.Key.UserModelId,
                               AlbumId = items.Key.AlbumId,
+                              Rating = items.Key.Rating,
                               PhotoName = items.Key.PhotoName,
                               Relevance = items.Sum(item => item.Relevance)
                           });
@@ -67,9 +73,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
             return unitOfWork.Photos.Filter(predicate).ToList().Select(model => new PhotoFoundItem
                 {
                     Id = model.Id,
-                    UserModelId = model.UserId,
+                    AuthorId = model.UserId,
                     AlbumId = model.AlbumId,
                     PhotoName = model.PhotoName,
+                    Rating = model.Rating,
                     Relevance = getRelevance(searchQuery, model)
                 });
         }
@@ -83,12 +90,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Items
 
             foreach (PhotoTagModel tag in foundTags)
             {
-                IEnumerable<PhotoFoundItem> tagPhotos = tag.PhotoModels.Select(model => new PhotoFoundItem
+                IEnumerable<PhotoModel> presentPhotos =
+                    tag.PhotoModels.Select(model => model).Where(model => !model.IsDeleted);
+
+                IEnumerable<PhotoFoundItem> tagPhotos = presentPhotos.Select(model => new PhotoFoundItem
                     {
                         Id = model.Id,
-                        UserModelId = model.UserId,
+                        AuthorId = model.UserId,
                         AlbumId = model.AlbumId,
                         PhotoName = model.PhotoName,
+                        Rating = model.Rating,
                         Relevance = 1
                     });
 
