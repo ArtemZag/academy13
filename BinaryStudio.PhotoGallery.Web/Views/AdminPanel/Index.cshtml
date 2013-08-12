@@ -7,46 +7,43 @@
 	Layout = "~/Views/Shared/_MainLayout.cshtml";
 	ViewBag.Title = "Administration | Bingally";
 }
-
+@Styles.Render("~/Content/admin-page.css")
 @Scripts.Render("~/bundles/scripts/jquery")
-@Scripts.Render("~/Scripts/knockout-2.3.0.js")
-@Scripts.Render("~/Scripts/knockout.mapping-latest.js")
+@Scripts.Render("~/bundles/scripts/knockout")
 @Scripts.Render("~/Scripts/AdminPanel/AdminPage.js")
+@Scripts.Render("~/bundles/scripts/bootstrap")
 @Scripts.Render("~/Scripts/AdminPanel/UserSlider.js")
 
 <div class="user-container" data-bind="foreach: Users">
-		<a href="">
-			<div class="user-row">
-				<div class="user-main-info">
-					<img src="~/Content/images/no_avatar.png" data-bind="attr: { alt: Email }" />
-					<span data-bind="text: FistName"></span>
-					<span></span>
+			<a href="">
+				<div class="user-row" data-bind="click: $parent.SetCurrentUser">
+					<div class="user-main-info">
+						<img src="~/Content/images/no_avatar.png" data-bind="attr: { alt: Email }" />
+						<span data-bind="text: FirstName"></span>
+						<span data-bind="text: LastName"></span><br>
+						<span data-bind="style: { color: IsOnline == true ? 'Green' : 'Red'}, text :  IsOnline == true ? 'Online' : 'Offline'"></span>
+					</div>
 				</div>
-			</div>
-		</a>
+			</a>
 </div>
 <div class="user-info">
-	<p>Login</p>
+	<p data-bind="text: SelectedUser().Email"></p>
 	<img src="~/Content/images/no_avatar.png" alt="" />
 	<p>
 		<strong>First Name:</strong>
-		<input type="text" value="FName" />
+		<input type="text" data-bind="value: SelectedUser().FirstName" />
 	</p>
 	<p>
 		<strong>Last Name:</strong>
-		<input type="text" value="LName" />
+		<input type="text"data-bind="value: SelectedUser().LastName" />
 	</p>
 	<p>
 		<strong>Role:</strong>
-		<span>Admin</span>
-	</p>
-	<p>
-		<strong>Last visit:</strong>
-		<span>Sun 28.07.2013 10:13 AM</span>
+		<span data-bind="text: SelectedUser().IsAdmin == true ? 'Admin' : 'User' "></span>
 	</p>
 	<p>
 		<strong>Total albums:</strong>
-		<span>2</span>
+		<span data-bind="text: SelectedUser().AlbumsCount"></span>
 	</p>
 </div>
 <div class="delete-queue-info">
@@ -56,8 +53,23 @@
 <div class="hidden-field">
 	<input type="button" class="btn" value="Reset Password" onclick="alert('Another admin action!')" />
 	<input type="button" class="btn" value="Another action" onclick="alert('Another admin action!')" />
-	<input type="button" class="btn" value="And another" onclick="alert('And another admin action!')" />
+	<a type="button" class="btn"  data-toggle="modal" href="#deleteModal">And another</a>
 </div>
+
+<div id="deleteModal" class="modal hide fade in" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h4>Delete confirmation</h4>
+	</div>
+	<div class="modal-body">
+		<h5>Are you sure you want to delete <strong data-bind="text: SelectedUser().FirstName">this</strong> ?</h5>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn btn-success">Delete</a>
+		<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+	</div>
+</div>
+
 
 <script type="text/javascript">
 	$(function() {

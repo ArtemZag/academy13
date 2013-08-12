@@ -35,6 +35,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 					FirstName = user.FirstName, 
 					LastName = user.LastName,
 					Email = user.Email,
+					IsAdmin = user.IsAdmin,
 					AlbumsCount = user.Albums.Count
 				}).ToList();
 			return View(new UsersListViewModel { UserViewModels = extendedUserList});

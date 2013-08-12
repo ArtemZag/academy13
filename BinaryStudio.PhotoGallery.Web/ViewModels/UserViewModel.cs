@@ -14,6 +14,8 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 
 		public string Email { get; set; }
 
+		public bool IsAdmin { get; set; }
+
 		public int AlbumsCount { get; set; }
 
 		public bool IsOnline { get; set; }

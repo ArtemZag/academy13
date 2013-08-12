@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-	$('.user-container a').on('click', function (e) {
+	$(document).on('click', '.user-container a', function (e) {
 		e.preventDefault();
 		var self = e.target;
 		if (self.tagName.toUpperCase() != 'DIV') {

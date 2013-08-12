@@ -15,7 +15,7 @@ function AdminPageViewModel() {
 
 }
 
-Bingally.AdminPage.initializeViewModel = function(initData) {
+Bingally.AdminPage.initializeViewModel = function (initData) {
 	var instanceViewModel = new AdminPageViewModel();
 	$.each(initData.UserViewModels, function (index, user) {
 		instanceViewModel.Users.push(user);
