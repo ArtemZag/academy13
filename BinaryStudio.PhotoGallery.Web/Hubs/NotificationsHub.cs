@@ -13,11 +13,9 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
 {
     public class User
     {
-
         public string Name { get; set; }
         public HashSet<string> ConnectionIds { get; set; }
     }
-
 
     [Authorize]
     public class NotificationsHub : Hub
@@ -40,15 +38,31 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
             Users.TryGetValue(Context.User.Identity.Name, out user);
             var uModel = _userService.GetUser(Context.User.Identity.Name);
 
-
             if (user != null)
             {
                 Clients.AllExcept(user.ConnectionIds.ToArray())
                        .broadcastNotification(
                             NotificationTitles.PhotoAdded,
-                            String.Format("{0} {1}", uModel.FirstName, uModel.LastName), photoName
+                            String.Format("{0} {1}", uModel.FirstName, uModel.LastName),
+                            photoName
                        );
             }
+
+        }
+
+        public void PhotoAddedHandler(string photoName, int userId)
+        {
+            var uModelHeAdded = _userService.GetUser(userId);
+
+            Clients.Group(Context.User.Identity.Name).broadcastNotification(
+                            NotificationTitles.PhotoAdded,
+                            String.Format("{0} {1}", uModelHeAdded.FirstName, uModelHeAdded.LastName),
+                            photoName
+                       );
+        }
+
+        public void CommentAddedHandler(string userName, string photoName)
+        {
 
         }
 
@@ -56,6 +70,8 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
         {
             string userEmail = Context.User.Identity.Name;
             string connectionId = Context.ConnectionId;
+
+            Groups.Add(Context.ConnectionId, Context.User.Identity.Name);
 
             var user = Users.GetOrAdd(userEmail, new User
             {
@@ -70,6 +86,23 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
 
             return base.OnConnected();
         }
-        
+
+        public override Task OnDisconnected()
+        {
+            string userEmail = Context.User.Identity.Name;
+            string connectionId = Context.ConnectionId;
+            User signalRUser;
+            Users.TryGetValue(userEmail, out signalRUser);
+            Groups.Remove(Context.ConnectionId, Context.User.Identity.Name);
+
+            if (signalRUser != null)
+                lock (signalRUser.ConnectionIds)
+                {
+                    signalRUser.ConnectionIds.Remove(connectionId);
+                }
+
+            return base.OnDisconnected();
+        }
+
     }
 }

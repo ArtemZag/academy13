@@ -31,6 +31,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 unitOfWork.PhotoComments.Add(newPhotoCommentModel);
+                GlobalEventsAggregator events = GlobalEventsAggregator.Instance;
+                events.PushCommentAdded(newPhotoCommentModel);
                 unitOfWork.SaveChanges();
             }
         }
