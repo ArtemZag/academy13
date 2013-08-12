@@ -93,10 +93,10 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private string GetDataDirectory()
         {
             // This method not work for me
-            //return VirtualPathUtility.ToAbsolute(dataVirtualRoot); 
+            return VirtualPathUtility.ToAbsolute(dataVirtualRoot); 
             
             // And this work good
-            return HostingEnvironment.MapPath(dataVirtualRoot);
+            //return HostingEnvironment.MapPath(dataVirtualRoot);
         }
 
         private string BuildTemporaryDirectoryPath(string userDirectoryPath)

@@ -71,8 +71,19 @@ namespace BinaryStudio.PhotoGallery.Database
                         Description = ".Net student group in Binary Studio Academy. Donetsk 2013."
                     });
 
-                
+<<<<<<< HEAD
+=======
+                unitOfWork.Albums.Add(new AlbumModel("Summer", 5)
+                {
+                    Description = "Ololololololo. Hannover 2013"
+                });
 
+                // Adding 100 photos from different users to album with ID 2(Academy)
+                /*for (int i = 0; i < 100; i++)
+                {
+                    unitOfWork.Photos.Add(2, random.Next(1, 7));
+                }*/
+>>>>>>> origin/Development
                 unitOfWork.SaveChanges();
 
                 ///////////////////////////////////////////////////////
@@ -100,12 +111,9 @@ namespace BinaryStudio.PhotoGallery.Database
                     unitOfWork.Photos.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm});
                     unitOfWork.Photos.Add(new PhotoModel(4, 6) {PhotoName = i + ".jpg"});
                 }
-
-
                 /////////////////////////////////////////////////////////////////////////////////
 
-                unitOfWork.Albums.Add(new AlbumModel("Test", 7));
-                unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));
+
                 var availableGroupModel = new AvailableGroupModel(){AlbumModelId = 3, GroupModelId = 1, CanSeeComments = true, CanSeePhotos = true};
                 var availableGroupModel1 = new AvailableGroupModel(){AlbumModelId = 3, GroupModelId = 2, CanSeeComments = true, CanSeePhotos = true};
                 var availableGroupModel2 = new AvailableGroupModel(){AlbumModelId = 3, GroupModelId = 3, CanSeeComments = true, CanSeePhotos = true};
@@ -121,11 +129,6 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 unitOfWork.Albums.Add(new AlbumModel("Test", 7){AvailableGroups = AGList});
 
-                unitOfWork.Albums.Add(new AlbumModel("Summer", 5)
-                {
-                    Description = "Ololololololo. Hannover 2013"
-                });
-
                 var groupCollection = new Collection<GroupModel>
                     {
                         unitOfWork.Groups.Find(1),
@@ -133,12 +136,17 @@ namespace BinaryStudio.PhotoGallery.Database
                         unitOfWork.Groups.Find(6)
                     };
 
+<<<<<<< HEAD
 
                 unitOfWork.Users.Find(7).Groups = groupCollection;
 
                 //////////////////////////////////////////////////////////
 
                 
+=======
+                unitOfWork.Albums.Add(new AlbumModel("Test", 7));
+                unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));
+>>>>>>> origin/Development
 
                 unitOfWork.SaveChanges();
 

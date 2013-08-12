@@ -57,7 +57,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 var photo = unitOfWork.Photos.Find(photoID);
 
                 // if user in admin group OR user is photo owner
-                return (user.Groups.ToList().Find(model => (model.ID == 1)) != null) || (photo.UserModelId == userID);
+                return (user.Groups.ToList().Find(model => (model.ID == 1)) != null) || (photo.UserId == userID);
             }
         }
 
