@@ -16,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         SearchArguments GetModel(SearchViewModel searchViewModel);
 
-        IFoundItemViewModel GetViewModel(IFound found);
+        IFoundViewModel GetViewModel(IFound found);
 
         PhotoModel GetPhotoModel(int userId, int albumId, string fullPhotoName);
 
