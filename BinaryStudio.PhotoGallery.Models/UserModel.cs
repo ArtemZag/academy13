@@ -20,6 +20,12 @@ namespace BinaryStudio.PhotoGallery.Models
         public string Email { get; set; }
 
         /// <summary>
+        /// Gets or sets the nick name of the user
+        /// </summary>
+        [MaxLength(80)]
+        public string NickName { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the user.
         /// </summary>
         [MaxLength(255)]

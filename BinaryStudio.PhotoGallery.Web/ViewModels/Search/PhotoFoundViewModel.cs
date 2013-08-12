@@ -7,7 +7,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Search
     {
         public string PhotoName { get; set; }
 
-        public string PhotoViewPath { get; set; }
+        public string PhotoViewUrl { get; set; }
 
         public string AlbumName { get; set; }
 
@@ -15,7 +15,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Search
 
         public string UserName { get; set; }
 
-        public string UserViewPath { get; set; }
+        public string UserViewUrl { get; set; }
 
         public int Rating { get; set; }
 

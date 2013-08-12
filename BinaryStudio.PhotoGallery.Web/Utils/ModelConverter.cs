@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Security.Policy;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
@@ -77,14 +78,15 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             switch (found.Type)
             {
                 case ItemType.Photo:
-                    
+
+                    result = GetPhotoFoundViewModel(found);
                     break;
 
                 case ItemType.User:
                     break;
             }
 
-            return null;
+            return result;
         }
 
         private PhotoFoundViewModel GetPhotoFoundViewModel(IFound found)
@@ -99,9 +101,20 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             return new PhotoFoundViewModel
             {
+                ThumbnailPath = string.Empty, // todo
+
+                PhotoName = photoFound.PhotoName,
+                PhotoViewUrl = urlUtil.BuildPhotoViewUrl(photoFound.Id),
+
                 AlbumName = albumName,
-                AlbumViewPath = 
-            }
+                AlbumViewUrl = urlUtil.BuildAlbumViewUrl(photoFound.AlbumId),
+
+                UserName = userName,
+                UserViewUrl = urlUtil.BuildUserViewUrl(photoFound.UserId),
+
+                DateOfCreation = photoFound.DateOfCreation,
+                Rating = photoFound.Rating
+            };
         }
 
         public PhotoModel GetPhotoModel(int userId, int albumId, string fullPhotoName)
