@@ -12,8 +12,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     public class SearchController : ApiController
     {
         private readonly IModelConverter modelConverter;
-        private readonly ISearchService searchService;
         private readonly IPathUtil pathUtil;
+        private readonly ISearchService searchService;
 
         public SearchController(ISearchService searchService, IModelConverter modelConverter, IPathUtil pathUtil)
         {

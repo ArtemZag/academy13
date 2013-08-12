@@ -243,6 +243,7 @@
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers\CleanupServiceRegistry.cs" />
+    <Compile Include="Registers\SearchCacheRegistry.cs" />
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
     <Compile Include="Utils\IModelConverter.cs" />
     <Compile Include="Utils\ModelConverter.cs" />

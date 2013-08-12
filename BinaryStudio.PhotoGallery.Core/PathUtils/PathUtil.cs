@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Configuration;
 using System.IO;
 using System.Text;
-using System.Web.Hosting;
+using System.Web;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
