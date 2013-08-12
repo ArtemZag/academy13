@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Results
         /// <summary>
         ///     User that added photo
         /// </summary>
-        public int AuthorId { get; set; }
+        public int UserId { get; set; }
 
         public int AlbumId { get; set; }
 

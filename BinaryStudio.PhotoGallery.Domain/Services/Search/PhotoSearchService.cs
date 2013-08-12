@@ -59,11 +59,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         private IEnumerable<IFound> Group(IEnumerable<PhotoFound> data)
         {
             return
-                data.GroupBy(item => new {item.Id, item.AuthorId, item.AlbumId, item.Rating, item.DateOfCreation, item.PhotoName})
+                data.GroupBy(item => new {item.Id, AuthorId = item.UserId, item.AlbumId, item.Rating, item.DateOfCreation, item.PhotoName})
                     .Select(items => new PhotoFound
                         {
                             Id = items.Key.Id,
-                            AuthorId = items.Key.AuthorId,
+                            UserId = items.Key.AuthorId,
                             AlbumId = items.Key.AlbumId,
                             PhotoName = items.Key.PhotoName,
                             Rating = items.Key.Rating,
@@ -79,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return unitOfWork.Photos.Filter(predicate).ToList().Select(model => new PhotoFound
                 {
                     Id = model.Id,
-                    AuthorId = model.UserId,
+                    UserId = model.UserId,
                     AlbumId = model.AlbumId,
                     PhotoName = model.PhotoName,
                     Rating = model.Rating,
@@ -103,7 +103,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 IEnumerable<PhotoFound> tagPhotos = presentPhotos.Select(model => new PhotoFound
                     {
                         Id = model.Id,
-                        AuthorId = model.UserId,
+                        UserId = model.UserId,
                         AlbumId = model.AlbumId,
                         PhotoName = model.PhotoName,
                         Rating = model.Rating,

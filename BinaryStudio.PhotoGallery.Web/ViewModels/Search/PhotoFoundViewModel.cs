@@ -5,11 +5,17 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Search
 {
     public class PhotoFoundViewModel : IFoundViewModel
     {
+        public string PhotoName { get; set; }
+
         public string PhotoViewPath { get; set; }
 
-        public string AlbumPath { get; set; }
+        public string AlbumName { get; set; }
 
-        public string AuthorPath { get; set; }
+        public string AlbumViewUrl { get; set; }
+
+        public string UserName { get; set; }
+
+        public string UserViewPath { get; set; }
 
         public int Rating { get; set; }
 
@@ -17,9 +23,9 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Search
 
         public DateTime DateOfCreation { get; set; }
 
-        public ItemType Type
+        public string Type
         {
-            get { return ItemType.Photo; }
+            get { return "photo"; }
         }
     }
 }
