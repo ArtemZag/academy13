@@ -62,9 +62,7 @@
     <Compile Include="IOUtils\FileWrapper.cs" />
     <Compile Include="IOUtils\IFileWrapper.cs" />
     <Compile Include="IOUtils\IMultipartFormDataStreamProviderWrapper.cs" />
-    <Compile Include="IOUtils\IPathWrapper.cs" />
     <Compile Include="IOUtils\MultipartFormDataStreamProviderWrapper.cs" />
-    <Compile Include="IOUtils\PathWrapper.cs" />
     <Compile Include="NotificationsUtils\INotificationSender.cs" />
     <Compile Include="IOUtils\DirectoryWrapper.cs" />
     <Compile Include="IOUtils\IDirectoryWrapper.cs" />
@@ -84,7 +82,6 @@
     <Compile Include="SocialNetworkUtils\ISocialNetwork.cs" />
     <Compile Include="SocialNetworkUtils\ISocialNetworkFactory.cs" />
     <Compile Include="SocialNetworkUtils\SocialNetworkFactory.cs" />
-    <Compile Include="StringUtils\Extensions.cs" />
     <Compile Include="UserUtils\CryptoProvider.cs" />
     <Compile Include="UserUtils\ICryptoProvider.cs" />
     <Compile Include="NotificationsUtils\NotificationSender.cs" />

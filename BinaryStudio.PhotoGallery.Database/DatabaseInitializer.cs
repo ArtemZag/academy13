@@ -14,11 +14,10 @@ namespace BinaryStudio.PhotoGallery.Database
     {
         protected override void Seed(DatabaseContext databaseContext)
         {
-            var userFirstNames = new[] {"Artem", "Anton", "Andrey", "Александр", "Mikhail", "Oleg", "Alexander"};
-            var userLastNames = new[] {"Zagorodnuk", "Golovin", "Spivakov", "Носов", "Bratukha", "", "Towstonog"};
+            var userFirstNames = new[] {"Artem", "Anton", "Andrey", "Александр", "Mikhail", "Oleg", "Alexander","Tester"};
+            var userLastNames = new[] {"Zagorodnuk", "Golovin", "Spivakov", "Носов", "Bratukha", "Beloy", "Towstonog",""};
             var tags = new[] {"summer", "wind", "friends", "animals", "pentax", "binary", "cherdak", "work&fun"};
             var groups = new[] {"friends", "enemies", "kill", "neighbor", "boss", "partners"};
-
 
             var unitOfWorkFactory = new UnitOfWorkFactory();
             using (IUnitOfWork unitOfWork = unitOfWorkFactory.GetUnitOfWork())
@@ -39,7 +38,7 @@ namespace BinaryStudio.PhotoGallery.Database
                                 LastName = userLastNames[i],
                                 Email = string.Format("{0}{1}@bingally.com", userFirstNames[i], userLastNames[i]),
                                 IsAdmin = (random.Next(1, 10)%2 == 1),
-                                UserPassword = crypto.CreateHashForPassword(userLastNames[i], salt),
+                                UserPassword = crypto.CreateHashForPassword(userLastNames[i].Length > 5 ? userLastNames[i] : "123456", salt),
                                 Salt = salt
                             });
                 }
@@ -72,6 +71,11 @@ namespace BinaryStudio.PhotoGallery.Database
                         Description = ".Net student group in Binary Studio Academy. Donetsk 2013."
                     });
 
+                unitOfWork.Albums.Add(new AlbumModel("Summer", 5)
+                {
+                    Description = "Ololololololo. Hannover 2013"
+                });
+
                 unitOfWork.SaveChanges();
 
                 ///////////////////////////////////////////////////////
@@ -97,10 +101,12 @@ namespace BinaryStudio.PhotoGallery.Database
                                                        -1) {Rating = Randomizer.GetNumber(64)});
                     }
                     unitOfWork.Photos.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm});
+                    unitOfWork.Photos.Add(new PhotoModel(4, 6) {PhotoName = i + ".jpg"});
                 }
                 /////////////////////////////////////////////////////////////////////////////////
 
-
+                unitOfWork.Albums.Add(new AlbumModel("Test", 7));
+                unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));
                 var availableGroupModel = new AvailableGroupModel(){AlbumModelId = 3, GroupModelId = 1, CanSeeComments = true, CanSeePhotos = true};
                 var availableGroupModel1 = new AvailableGroupModel(){AlbumModelId = 3, GroupModelId = 2, CanSeeComments = true, CanSeePhotos = true};
                 var availableGroupModel2 = new AvailableGroupModel(){AlbumModelId = 3, GroupModelId = 3, CanSeeComments = true, CanSeePhotos = true};

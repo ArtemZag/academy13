@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using FluentScheduler;
 
@@ -9,8 +8,14 @@ namespace BinaryStudio.PhotoGallery.Web.Registers
     {
         private readonly ICleanupTask cleanupTask;
 
+        private readonly int dayFrequency;
+        private readonly int hours;
+
         public CleanupRegistry(ICleanupTask cleanupTask)
         {
+            dayFrequency = int.Parse(ConfigurationManager.AppSettings["CleanupDayFrequency"]);
+            hours = int.Parse(ConfigurationManager.AppSettings["CleanupHour"]);
+
             this.cleanupTask = cleanupTask;
 
             Register();
@@ -18,9 +23,6 @@ namespace BinaryStudio.PhotoGallery.Web.Registers
 
         private void Register()
         {
-            int dayFrequency = int.Parse(ConfigurationManager.AppSettings["CleanupDayFrequency"]);
-            int hours = int.Parse(ConfigurationManager.AppSettings["CleanupHour"]);
-
             Schedule<ICleanupTask>().ToRunEvery(dayFrequency).Days().At(hours, 0);
         }
 

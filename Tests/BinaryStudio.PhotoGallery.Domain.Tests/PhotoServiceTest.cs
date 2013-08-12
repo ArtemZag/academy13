@@ -16,8 +16,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     internal class PhotoServiceTest
     {
-        [SetUp]
-        public void Setup()
+        private readonly IPhotoService photoService;
+        private readonly IUserService userService;
+        private readonly IAlbumService albumService;
+
+        private readonly IUnitOfWorkFactory workFactory;
+
+        public PhotoServiceTest()
         {
             IUnityContainer container = Bootstrapper.Initialise();
 
@@ -28,12 +33,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             userService = new UserService(workFactory, cryptoProvider);
             albumService = new AlbumService(workFactory);
         }
-
-        private IPhotoService photoService;
-        private IUserService userService;
-        private IAlbumService albumService;
-
-        private IUnitOfWorkFactory workFactory;
 
         private IEnumerable<PhotoModel> GetListOfPhotos()
         {
@@ -55,7 +54,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var album = new AlbumModel
                 {
                     Id = 1,
-                    UserModelId = 1,
+                    UserId = 1,
                     AlbumName = "albumName",
                     Photos = new Collection<PhotoModel>()
                 };
@@ -125,7 +124,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var album = new AlbumModel
                 {
                     Id = 2,
-                    UserModelId = 2,
+                    UserId = 2,
                     AlbumName = "albumName",
                     Photos = new Collection<PhotoModel>()
                 };

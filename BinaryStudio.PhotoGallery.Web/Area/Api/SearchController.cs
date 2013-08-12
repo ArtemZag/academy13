@@ -1,17 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using AttributeRouting;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
-using BinaryStudio.PhotoGallery.Domain.Services.Search.Items;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-    [RoutePrefix("Api/Search")]
-    public class SearchController : ApiController
+    internal class SearchController : ApiController
     {
         private readonly IModelConverter modelConverter;
         private readonly ISearchService searchService;
@@ -22,12 +19,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             this.modelConverter = modelConverter;
         }
 
-        [HttpGet]
-        public HttpResponseMessage Search([FromBody] SearchViewModel searchViewModel)
+        public HttpResponseMessage GetSearch([FromUri] SearchViewModel searchViewModel)
         {
             SearchArguments searchArguments = modelConverter.GetModel(searchViewModel);
 
-            IEnumerable<IFoundItem> result = searchService.Search(searchArguments);
+            SearchResult result = searchService.Search(searchArguments);
 
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }

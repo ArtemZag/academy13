@@ -4,6 +4,7 @@
     {
         string GetMimeTypeOfFile(string fileName);
         bool IsImageFile(string fileName);
-        void HardRename(string sourceName, string destName);
+        bool Equals(string firstFile, string secondFile);
+        void HardMove(string sourceName, string destName);
     }
 }

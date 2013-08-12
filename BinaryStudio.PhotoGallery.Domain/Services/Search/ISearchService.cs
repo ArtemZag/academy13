@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
-using BinaryStudio.PhotoGallery.Domain.Services.Search.Items;
+﻿using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
+using FluentScheduler;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
-    public interface ISearchService
+    public interface ISearchService : ITask
     {
-        IEnumerable<IFoundItem> Search(SearchArguments searchArguments);
+        SearchResult Search(SearchArguments searchArguments);
+
+        int UpdatePeriod { get; set; }
     }
 }

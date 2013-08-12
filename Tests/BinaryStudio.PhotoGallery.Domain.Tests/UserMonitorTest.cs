@@ -7,13 +7,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     internal class UserMonitorTest
     {
-        [SetUp]
-        public void Setup()
+        private readonly IUsersMonitorTask monitorTask;
+
+        public UserMonitorTest()
         {
             monitorTask = new UsersMonitorTask();
         }
-
-        private IUsersMonitorTask monitorTask;
 
         [Test]
         public void UserShouldBeOffline()

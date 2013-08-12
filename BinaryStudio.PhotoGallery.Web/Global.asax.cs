@@ -5,6 +5,7 @@ using System.Web.Routing;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Web.App_Start;
 using Microsoft.Practices.Unity;
+using Owin;
 using PerpetuumSoft.Knockout;
 
 namespace BinaryStudio.PhotoGallery.Web

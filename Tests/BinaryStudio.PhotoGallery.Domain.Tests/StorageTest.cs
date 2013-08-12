@@ -12,8 +12,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     internal class StorageTest
     {
-        [SetUp]
-        public void Setup()
+        private readonly IStorage storage;
+        private readonly IUnitOfWorkFactory workFactory;
+
+        public StorageTest()
         {
             IPathUtil pathUtil = MockPathUtil();
 
@@ -23,16 +25,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             FillRepository();
         }
 
-        private IStorage storage;
-        private IUnitOfWorkFactory workFactory;
-
         private IPathUtil MockPathUtil()
         {
             var result = Substitute.For<IPathUtil>();
 
             result.BuildPhotoDirectoryPath().Returns(info => @"App_Data\photos");
 
-            result.BuildAlbumPath(Arg.Any<int>(), Arg.Any<int>()).Returns(info =>
+            result.GetAlbumPath(Arg.Any<int>(), Arg.Any<int>()).Returns(info =>
                 {
                     var userId = (int) info[0];
                     var albumId = (int) info[1];
@@ -49,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                           var photoId = (int) info[2];
                           var photoFormat = (string) info[3];
 
-                          string albumPath = result.BuildAlbumPath(userId, albuId);
+                          string albumPath = result.GetAlbumPath(userId, albuId);
 
                           return albumPath + @"\" + photoId + photoFormat;
                       });
@@ -69,7 +68,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 var album = new AlbumModel
                     {
                         Id = 1,
-                        UserModelId = 1
+                        UserId = 1
                     };
 
                 unitOfWork.Users.Add(user);
@@ -84,12 +83,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var album = new AlbumModel
                 {
                     Id = 1,
-                    UserModelId = 1
+                    UserId = 1
                 };
 
             var photo = new PhotoModel
                 {
-                    AlbumModelId = 1
+                    AlbumId = 1
                 };
 
             // body
@@ -109,7 +108,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var photo = new PhotoModel
                 {
                     Id = 1,
-                    AlbumModelId = 1,
+                    AlbumId = 1,
                     Format = ".png"
                 };
 

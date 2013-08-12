@@ -10,12 +10,11 @@ namespace BinaryStudio.PhotoGallery.Core.IOUtils
     public interface IMultipartFormDataStreamProviderWrapper
     {
         Stream GetStream(HttpContent parent, HttpContentHeaders headers);
+        string GetLocalFileName(HttpContentHeaders headers);
         Task ExecutePostProcessingAsync();
+
+        Collection<HttpContent> Contents { get; }
         NameValueCollection FormData { get; }
         Collection<MultipartFileData> FileData { get; }
-        string RootPath { get; }
-        int BufferSize { get; }
-        Collection<HttpContent> Contents { get; }
-        string GetLocalFileName(HttpContentHeaders headers);
     }
 }
