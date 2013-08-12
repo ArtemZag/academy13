@@ -3,7 +3,10 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Web.App_Start;
+using BinaryStudio.PhotoGallery.Web.Registers;
+using FluentScheduler;
 using Microsoft.Practices.Unity;
 using PerpetuumSoft.Knockout;
 
@@ -34,6 +37,7 @@ namespace BinaryStudio.PhotoGallery.Web
             // todo
             // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
             // TaskManager.Initialize(new UsersMonitorRegistry(container.Resolve<IUsersMonitorTask>()));
+            // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
         }
     }
 }
