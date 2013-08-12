@@ -84,13 +84,15 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             var user = userService.GetUser(User.Identity.Name);
             return Json(new
                 {
-                    albumCount = 9999,
+                    nickName = "Superman",
+                    albumCount = 7,
+                    photoCount = 90,
                     firstName = User.Identity.Name,
                     lastName = User.Identity.Name,
-                    nickName = "Superman",
+                    lastPhotoAdded = "Date: " + DateTime.Now.ToShortDateString() +" time: "+ DateTime.Now.ToLongTimeString(),
                     isAdmin = user.IsAdmin ? "admin" : "simple user",
                     department = ".Net development",
-                    userAvatar="/Content/Users/0/avatar.jpg"
+                    userAvatar = "/Content/Users/0/avatar.jpg"
                 });
         }
         private static string GetUsersImagesFolder()
