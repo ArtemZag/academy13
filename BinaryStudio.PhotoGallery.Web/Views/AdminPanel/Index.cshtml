@@ -15,8 +15,8 @@
 @Scripts.Render("~/Scripts/AdminPanel/UserSlider.js")
 
 <div class="user-container" data-bind="foreach: Users">
-			<a href="">
-				<div class="user-row" data-bind="click: $parent.SetCurrentUser">
+			<a href="" >
+				<div class="user-row"  data-bind="click: $parent.SetCurrentUser">
 					<div class="user-main-info">
 						<img src="~/Content/images/no_avatar.png" data-bind="attr: { alt: Email }" />
 						<span data-bind="text: FirstName"></span>
@@ -26,24 +26,24 @@
 				</div>
 			</a>
 </div>
-<div class="user-info">
-	<p data-bind="text: SelectedUser().Email"></p>
+<div class="user-info" data-bind="with: SelectedUser">
+	<p data-bind="text: Email"></p>
 	<img src="~/Content/images/no_avatar.png" alt="" />
 	<p>
 		<strong>First Name:</strong>
-		<input type="text" data-bind="value: SelectedUser().FirstName" />
+		<input type="text" data-bind="value: FirstName" />
 	</p>
 	<p>
 		<strong>Last Name:</strong>
-		<input type="text"data-bind="value: SelectedUser().LastName" />
+		<input type="text"data-bind="value: LastName" />
 	</p>
 	<p>
 		<strong>Role:</strong>
-		<span data-bind="text: SelectedUser().IsAdmin == true ? 'Admin' : 'User' "></span>
+		<span data-bind="text: IsAdmin == true ? 'Admin' : 'User' "></span>
 	</p>
 	<p>
 		<strong>Total albums:</strong>
-		<span data-bind="text: SelectedUser().AlbumsCount"></span>
+		<span data-bind="text: AlbumsCount"></span>
 	</p>
 </div>
 <div class="delete-queue-info">
@@ -53,7 +53,7 @@
 <div class="hidden-field">
 	<input type="button" class="btn" value="Reset Password" onclick="alert('Another admin action!')" />
 	<input type="button" class="btn" value="Another action" onclick="alert('Another admin action!')" />
-	<a type="button" class="btn"  data-toggle="modal" href="#deleteModal">And another</a>
+	<a type="button" class="btn"  data-toggle="modal" href="#deleteModal">Delete user</a>
 </div>
 
 <div id="deleteModal" class="modal hide fade in" style="display: none;">

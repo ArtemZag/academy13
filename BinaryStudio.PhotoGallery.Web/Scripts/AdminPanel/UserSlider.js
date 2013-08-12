@@ -2,7 +2,7 @@
 	$(document).on('click', '.user-container a', function (e) {
 		e.preventDefault();
 		var self = e.target;
-		if (self.tagName.toUpperCase() != 'DIV') {
+		if (self.tagName.toUpperCase() != 'DIV' && self.tagName.toUpperCase() != 'IMG') {
 			return;
 		}
 		var smaller = 100;
