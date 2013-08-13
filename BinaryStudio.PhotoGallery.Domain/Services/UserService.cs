@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
@@ -42,6 +44,22 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public UserModel FindNonActivatedUser(string hash)
+        {
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Users.Find(user => !user.IsActivated && user.Salt == hash);
+            }
+        }
+
+        public IEnumerable<UserModel> FindNonActivatedUsers()
+        {
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Users.Filter(user => !user.IsActivated);
+            }
+        }
+
         public int GetUserId(string userEmail)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -67,6 +85,53 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 unitOfWork.Users.Add(user);
                 unitOfWork.SaveChanges();
+            }
+        }
+
+
+        public string CreateUser(string userEmail, string userFirstName, string userLastName)
+        {
+            if (IsUserExist(userEmail))
+            {
+                throw new UserAlreadyExistException(userEmail);
+            }
+
+
+            var userModel = new UserModel()
+                {
+                    Email = userEmail,
+                    FirstName = userFirstName,
+                    LastName = userLastName,
+                    IsAdmin = false,
+                    IsActivated = false,
+                    // Here is our HASH for activating link
+                    Salt = Randomizer.GetString(128),
+                    // Empty password field is not good 
+                    UserPassword =
+                        cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), cryptoProvider.GetNewSalt())
+                    
+                };
+
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                unitOfWork.Users.Add(userModel);
+                unitOfWork.SaveChanges();
+            }
+
+            return userModel.Salt;
+        }
+
+        public void ActivateUser(string userEmail, string userPassword, string hash)
+        {
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                var userModel = this.GetUser(userEmail);
+
+                if (userModel.IsActivated || (userModel.Salt != hash)) return;
+
+                userModel.Salt = cryptoProvider.GetNewSalt();
+                userModel.UserPassword = cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
+                userModel.IsActivated = true;
             }
         }
 
