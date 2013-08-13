@@ -79,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 var userGroups = unitOfWork.Users.Find(userID)
                                            .Groups
                                            .ToList()
-                                           .Find(group => availableGropusCanDo.Find(x => x.GroupModelId == @group.ID) != null);
+                                           .Find(group => availableGropusCanDo.Find(x => x.GroupId == @group.ID) != null);
 
                 return userGroups != null;
             }
