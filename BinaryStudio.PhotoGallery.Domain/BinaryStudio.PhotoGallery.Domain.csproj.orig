@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8A8695B7-5687-4883-A819-E6E7DFDFBA50}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BinaryStudio.PhotoGallery.Domain</RootNamespace>
+    <AssemblyName>BinaryStudio.PhotoGallery.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentScheduler, Version=1.1.36.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentScheduler.1.1.36\lib\net40\FluentScheduler.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Exceptions\AlbumNotFoundException.cs" />
+    <Compile Include="Exceptions\CleanupException.cs" />
+    <Compile Include="Exceptions\NoEnoughPrivileges.cs" />
+    <Compile Include="Exceptions\UserAlreadyExistException.cs" />
+    <Compile Include="Exceptions\UserNotFoundException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AlbumService.cs" />
+<<<<<<< HEAD
+    <Compile Include="Services\ISecureService.cs" />
+    <Compile Include="Services\Search\Items\IFoundItem.cs" />
+    <Compile Include="Services\PhotoCommentService.cs" />
+    <Compile Include="Services\IAlbumService.cs" />
+    <Compile Include="Services\IPhotoCommentService.cs" />
+    <Compile Include="Services\Search\Items\IPhotoSearchService.cs" />
+    <Compile Include="Services\Search\Items\PhotoFoundItem.cs" />
+    <Compile Include="Services\Search\Items\PhotoSearchService.cs" />
+    <Compile Include="Services\Search\Items\UserFoundItem.cs" />
+    <Compile Include="Services\SecureService.cs" />
+=======
+    <Compile Include="Services\Search\Cache.cs" />
+    <Compile Include="Services\Search\Results\IFound.cs" />
+    <Compile Include="Services\PhotoCommentService.cs" />
+    <Compile Include="Services\IAlbumService.cs" />
+    <Compile Include="Services\IPhotoCommentService.cs" />
+    <Compile Include="Services\Search\IPhotoSearchService.cs" />
+    <Compile Include="Services\Search\Results\ItemType.cs" />
+    <Compile Include="Services\Search\Results\PhotoFound.cs" />
+    <Compile Include="Services\Search\PhotoSearchService.cs" />
+    <Compile Include="Services\Search\Results\SearchResult.cs" />
+    <Compile Include="Services\Search\Results\UserFound.cs" />
+>>>>>>> origin/Development
+    <Compile Include="Services\Tasks\ICleanupTask.cs" />
+    <Compile Include="Services\IPhotoService.cs" />
+    <Compile Include="Services\IUserService.cs" />
+    <Compile Include="Services\PhotoService.cs" />
+    <Compile Include="Services\DbService.cs" />
+    <Compile Include="Services\Tasks\CleanupTask.cs" />
+    <Compile Include="Services\Search\ISearchService.cs" />
+    <Compile Include="Services\Search\SearchArguments.cs" />
+    <Compile Include="Services\Search\SearchService.cs" />
+    <Compile Include="Services\UserService.cs" />
+    <Compile Include="Services\Tasks\IUsersMonitorTask.cs" />
+    <Compile Include="Services\Tasks\UsersMonitorTask.cs" />
+    <Compile Include="TestServiceClass.cs" />
+    <Compile Include="Utils\IStorage.cs" />
+    <Compile Include="Utils\Storage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.PhotoGallery.Core\BinaryStudio.PhotoGallery.Core.csproj">
+      <Project>{91126d20-a9b5-49be-9043-e3e8dcae3628}</Project>
+      <Name>BinaryStudio.PhotoGallery.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BinaryStudio.PhotoGallery.Database\BinaryStudio.PhotoGallery.Data.csproj">
+      <Project>{b29a5e0c-0591-420a-80f7-ddc636d8350e}</Project>
+      <Name>BinaryStudio.PhotoGallery.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BinaryStudio.PhotoGallery.Models\BinaryStudio.PhotoGallery.Models.csproj">
+      <Project>{489d5695-2c0e-4d21-b8bb-2814f9e49ff0}</Project>
+      <Name>BinaryStudio.PhotoGallery.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
