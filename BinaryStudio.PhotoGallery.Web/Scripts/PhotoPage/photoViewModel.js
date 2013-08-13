@@ -127,7 +127,7 @@
         model.src(img.src);
 
         // todo: needs fixing
-        window.history.pushState("", "", "/photo/" + model.PhotoID());
+        window.history.pushState("", "", "/Photo/" + model.PhotoID());
         
         $.post("/PhotoComment/GetPhotoComments", { photoID: photo.PhotoId, begin: 0, end: 50 }, SetComments);
     }
