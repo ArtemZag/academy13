@@ -7,14 +7,18 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain
 {
-    internal interface IGlobalEventsAggregator
+    public interface IGlobalEventsAggregator
     {
-        void PushCommentAdded(PhotoCommentModel phCommentModel);
-        void PushPhotoAdded(PhotoModel phModel);
+        void PushCommentAddedEvent(PhotoCommentModel phCommentModel);
+        void PushPhotoAddedEvent(PhotoModel phModel);
     }
 
-    internal class GlobalEventsAggregator : IGlobalEventsAggregator
+    public class GlobalEventsAggregator : IGlobalEventsAggregator
     {
+        public delegate void CommentAddedHandler();
+
+        public event CommentAddedHandler CommentAdded;
+
         private static GlobalEventsAggregator _instance;
 
         private GlobalEventsAggregator() { }
@@ -24,12 +28,13 @@ namespace BinaryStudio.PhotoGallery.Domain
             get { return _instance ?? (_instance = new GlobalEventsAggregator()); }
         }
 
-        public void PushCommentAdded(PhotoCommentModel phCommentModel)
+        public void PushCommentAddedEvent(PhotoCommentModel phCommentModel)
         {
-            throw new NotImplementedException();
+            CommentAddedHandler handler = CommentAdded;
+            if (handler != null) handler();
         }
 
-        public void PushPhotoAdded(PhotoModel phModel)
+        public void PushPhotoAddedEvent(PhotoModel phModel)
         {
             throw new NotImplementedException();
         }

@@ -8,6 +8,7 @@ using BinaryStudio.PhotoGallery.Web.Utils;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Practices.Unity;
 using Unity.Mvc4;
+using BinaryStudio.PhotoGallery.Domain;
 
 namespace BinaryStudio.PhotoGallery.Web
 {
@@ -41,6 +42,7 @@ namespace BinaryStudio.PhotoGallery.Web
             // e.g. container.RegisterType<ITestService, TestService>();   
 
             container.RegisterType<IModelConverter, ModelConverter>();
+            container.RegisterType<IGlobalEventsAggregator, IGlobalEventsAggregator>();
 
             Domain.Bootstrapper.RegisterTypes(container);
             Database.Bootstrapper.RegisterTypes(container);
