@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
@@ -35,12 +36,18 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string BuildAlbumPath(int userId, int albumId)
         {
-            var builder = new StringBuilder(BuildPhotoDirectoryPath());
+            var builder = new StringBuilder(BuildUserPath(userId));
             builder.Append(DELIMITER)
-                   .Append(userId)
-                   .Append(DELIMITER)
                    .Append(albumId);
 
+            return builder.ToString();
+        }
+
+        public string BuildUserPath(int userId)
+        {
+            var builder = new StringBuilder(BuildPhotoDirectoryPath());
+            builder.Append(DELIMITER)
+                .Append(userId);
             return builder.ToString();
         }
 
@@ -63,17 +70,29 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
+        public IEnumerable<string> BuildTemporaryDirectoriesPaths()
+        {
+            string photoDirectoryPath = BuildPhotoDirectoryPath();
+
+            IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
+
+            var temporaryPhotosDirectories = new Collection<string>();
+
+            foreach (string temporaryPhotosDirectory in usersDirectories.Select(BuildTemporaryDirectoryPath))
+            {
+                temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
+            }
+
+            return temporaryPhotosDirectories;
+        }
+
         public string BuildTemporaryDirectoryPath(int userId)
         {
-            var photoDirectoryPath =  new StringBuilder();
+            var userPath = BuildUserPath(userId);
 
-            photoDirectoryPath.Append(BuildPhotoDirectoryPath());
-            photoDirectoryPath.Append(@"\");
-            photoDirectoryPath.Append(userId);
-            photoDirectoryPath.Append(@"\");
-            photoDirectoryPath.Append(TEMPORARY_DIRECTORY_NAME);
+            var userTempPath = BuildTemporaryDirectoryPath(userPath);
 
-            return HostingEnvironment.MapPath(photoDirectoryPath.ToString());
+            return HostingEnvironment.MapPath(userTempPath);
         }
 
         private string GetDataDirectory()
