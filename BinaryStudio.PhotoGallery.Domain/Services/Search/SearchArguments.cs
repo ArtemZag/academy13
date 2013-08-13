@@ -2,6 +2,11 @@
 {
     public class SearchArguments
     {
+        /// <summary>
+        /// User is searching
+        /// </summary>
+        public int UserId { get; set; }
+
         public string CacheToken { get; set; }
 
         public string SearchQuery { get; set; }

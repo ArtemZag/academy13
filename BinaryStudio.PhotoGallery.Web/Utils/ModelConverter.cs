@@ -51,10 +51,11 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return userModel;
         }
 
-        public SearchArguments GetModel(SearchViewModel searchViewModel)
+        public SearchArguments GetModel(SearchViewModel searchViewModel, int userId)
         {
             return new SearchArguments
                 {
+                    UserId = userId,
                     CacheToken = searchViewModel.CacheToken,
                     Begin = searchViewModel.Begin,
                     End = searchViewModel.End,

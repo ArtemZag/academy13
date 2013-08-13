@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
@@ -14,7 +15,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             this.unitOfWorkFactory = unitOfWorkFactory;
         }
-
 
         public bool CanUserViewComments(int userId, int albumId)
         {
@@ -56,19 +56,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<AlbumModel> GetAvailableAlbumsForUser(int userId)
+        public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
         {
-            using (IUnitOfWork unitOfWork = unitOfWorkFactory.GetUnitOfWork())
-            {
-                List<GroupModel> listAg = unitOfWork.Users.Find(userId).Groups.ToList();
+            List<GroupModel> listAg = unitOfWork.Users.Find(userId).Groups.ToList();
 
-                return unitOfWork.Albums.Filter(album => album.AvailableGroups
-                    .ToList()
-                    .Find(group => listAg
-                        .Find(ag => ag.ID == group.ID) != null) != null);
-            }
+            return unitOfWork.Albums.Filter(album => album.AvailableGroups
+                .ToList()
+                .Find(group => listAg
+                    .Find(ag => ag.ID == group.ID) != null) != null).ToList();
         }
-
 
         /// <summary>
         ///     Checks if user take a part in even one group, that have enough permissions to do some action
