@@ -14,10 +14,10 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreation = DateTime.Now;
         }
 
-        public PhotoModel(int albumModelId, int userModelId)
+        public PhotoModel(int albumId, int userId)
         {
-            AlbumModelId = albumModelId;
-            UserModelId = userModelId;
+            AlbumId = albumId;
+            UserId = userId;
             DateOfCreation = DateTime.Now;
         }
 
@@ -56,11 +56,10 @@ namespace BinaryStudio.PhotoGallery.Models
         /// </summary>
         public bool IsDeleted { get; set; }
  
+        public int UserId { get; set; }
+        public int AlbumId { get; set; }
 
-        public int UserModelId { get; set; }
-        public int AlbumModelId { get; set; }
         public virtual ICollection<PhotoCommentModel> PhotoComments { get; set; }
         public virtual ICollection<PhotoTagModel> PhotoTags { get; set; } 
-
     }
 }

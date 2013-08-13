@@ -18,6 +18,7 @@ namespace BinaryStudio.PhotoGallery.Core
             container.RegisterType<IMultipartFormDataStreamProviderWrapper, MultipartFormDataStreamProviderWrapper>();
             container.RegisterType<IFileWrapper, FileWrapper>();
             container.RegisterType<IDirectoryWrapper, DirectoryWrapper>();
+            container.RegisterType<IUrlUtil, UrlUtil>();
         }
     }
 }

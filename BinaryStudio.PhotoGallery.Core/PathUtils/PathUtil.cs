@@ -4,7 +4,6 @@ using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Web;
-using System.Web.Hosting;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
@@ -80,14 +79,25 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return temporaryPhotosDirectories;
         }
 
-        private string GetDataDirectory()
+        public string BuildTemporaryDirectoryPath(int userId)
         {
-            return VirtualPathUtility.ToAbsolute(dataVirtualRoot);
+            var photoDirectoryPath = new StringBuilder(BuildPhotoDirectoryPath());
+
+            photoDirectoryPath.Append(@"\");
+            photoDirectoryPath.Append(userId);
+            photoDirectoryPath.Append(@"\");
+            photoDirectoryPath.Append(TEMPORARY_DIRECTORY_NAME);
+
+            return photoDirectoryPath.ToString();
         }
 
-        public string GetAbsoluteRoot()
+        private string GetDataDirectory()
         {
-            return HostingEnvironment.MapPath(dataVirtualRoot);
+            // This method not work for me
+            return VirtualPathUtility.ToAbsolute(dataVirtualRoot); 
+            
+            // And this work good
+            //return HostingEnvironment.MapPath(dataVirtualRoot);
         }
 
         private string BuildTemporaryDirectoryPath(string userDirectoryPath)

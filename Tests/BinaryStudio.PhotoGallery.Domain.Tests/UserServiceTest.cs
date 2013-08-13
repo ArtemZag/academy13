@@ -11,8 +11,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     internal class UserServiceTest
     {
-        [SetUp]
-        public void Setup()
+        private readonly IUserService userService;
+
+        public UserServiceTest()
         {
             IUnityContainer container = Bootstrapper.Initialise();
 
@@ -21,8 +22,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             userService = new UserService(unitOfWorkFactory, cryptoProvider);
         }
-
-        private IUserService userService;
 
         [Test]
         public void UserShoulBeAbsent()

@@ -1,20 +1,20 @@
 ﻿using BinaryStudio.PhotoGallery.Core.UserUtils;
+using FluentAssertions;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
-using FluentAssertions;
 
 namespace BinaryStudio.PhotoGalery.Core.Tests
 {
     [TestFixture]
     internal class CryptoProviderTests
     {
-        private ICryptoProvider _cryptoProvider;
+        private readonly ICryptoProvider cryptoProvider;
 
-        [SetUp]
-        public void Setup()
+        public CryptoProviderTests()
         {
             IUnityContainer container = Bootstrapper.Initialise();
-            _cryptoProvider = container.Resolve<ICryptoProvider>();
+
+            cryptoProvider = container.Resolve<ICryptoProvider>();
         }
 
         [Test]
@@ -24,11 +24,11 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             const string PASSWORD = "abc123";
 
             // body
-            string salt = _cryptoProvider.GetNewSalt();
-            string encryptedVersion = _cryptoProvider.CreateHashForPassword(PASSWORD, salt);
+            string salt = cryptoProvider.GetNewSalt();
+            string encryptedVersion = cryptoProvider.CreateHashForPassword(PASSWORD, salt);
 
             // tear down
-            bool isEqual = _cryptoProvider.IsPasswordsEqual(PASSWORD, encryptedVersion, salt);
+            bool isEqual = cryptoProvider.IsPasswordsEqual(PASSWORD, encryptedVersion, salt);
             isEqual.Should().Be(true);
         }
 
@@ -39,12 +39,12 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
             const string PASSWORD = "abc123";
 
             // body
-            string salt = _cryptoProvider.GetNewSalt();
-            string twiceEcryptedVersion = _cryptoProvider.CreateHashForPassword(PASSWORD, salt);
-            twiceEcryptedVersion = _cryptoProvider.CreateHashForPassword(twiceEcryptedVersion, salt);
+            string salt = cryptoProvider.GetNewSalt();
+            string twiceEcryptedVersion = cryptoProvider.CreateHashForPassword(PASSWORD, salt);
+            twiceEcryptedVersion = cryptoProvider.CreateHashForPassword(twiceEcryptedVersion, salt);
 
             // tear down
-            bool isEqual = _cryptoProvider.IsPasswordsEqual(PASSWORD, twiceEcryptedVersion, salt);
+            bool isEqual = cryptoProvider.IsPasswordsEqual(PASSWORD, twiceEcryptedVersion, salt);
             isEqual.Should().Be(false);
         }
 
@@ -52,8 +52,8 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
         public void SaltsShouldBeNotEqualWithTwiceCalling()
         {
             // body
-            string salt1 = _cryptoProvider.GetNewSalt();
-            string salt2 = _cryptoProvider.GetNewSalt();
+            string salt1 = cryptoProvider.GetNewSalt();
+            string salt2 = cryptoProvider.GetNewSalt();
 
             // tear down
             bool isEqual = string.Equals(salt1, salt2);

@@ -21,6 +21,6 @@ namespace BinaryStudio.PhotoGallery.Models
         /// </summary>
         public string TagName { get; set; }
 
-        public virtual ICollection<AlbumModel> AlbumModels { get; set; }
+        public virtual ICollection<AlbumModel> Albums { get; set; }
     }
 }

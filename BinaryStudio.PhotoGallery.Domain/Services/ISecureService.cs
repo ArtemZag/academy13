@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -47,5 +48,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="photoID"></param>
         /// <returns></returns>
         bool CanUserDeletePhoto(int userID, int photoID);
+
+        /// <summary>
+        /// Gets a list of all available albums for user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        IEnumerable<AlbumModel> GetAvailableAlbumsForUser(int userID);
     }
 }
