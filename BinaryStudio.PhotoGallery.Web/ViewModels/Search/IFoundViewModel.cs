@@ -4,6 +4,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Search
 {
     public interface IFoundViewModel
     {
-        ItemType Type { get; set; }
+        string Type { get; }
     }
 }

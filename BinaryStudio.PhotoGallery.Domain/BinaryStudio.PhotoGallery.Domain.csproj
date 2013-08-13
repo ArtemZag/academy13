@@ -66,7 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AlbumService.cs" />
     <Compile Include="Services\ISecureService.cs" />
-    <Compile Include="Services\Search\Cache.cs" />
+    <Compile Include="Services\Search\SearchCache.cs" />
     <Compile Include="Services\Search\Results\IFound.cs" />
     <Compile Include="Services\PhotoCommentService.cs" />
     <Compile Include="Services\IAlbumService.cs" />
@@ -87,6 +87,8 @@
     <Compile Include="Services\Search\ISearchService.cs" />
     <Compile Include="Services\Search\SearchArguments.cs" />
     <Compile Include="Services\Search\SearchService.cs" />
+    <Compile Include="Services\Tasks\ISearchCacheTask.cs" />
+    <Compile Include="Services\Tasks\SearchCacheTask.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\Tasks\IUsersMonitorTask.cs" />
     <Compile Include="Services\Tasks\UsersMonitorTask.cs" />

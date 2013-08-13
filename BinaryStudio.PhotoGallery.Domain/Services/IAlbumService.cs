@@ -9,14 +9,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         ///     Gets user's album specified by name.
         /// </summary>
         AlbumModel GetAlbum(string userEmail, int albumName);
-        
+
         /// <summary>
-        /// Gets user's album specified by id.
+        ///     Gets user's album specified by id.
         /// </summary>
         /// <param name="albumId">Album ID</param>
-        /// <returns></returns>
         AlbumModel GetAlbum(int albumId);
-        
+
         /// <summary>
         ///     Gets all albums for specified user.
         /// </summary>

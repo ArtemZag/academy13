@@ -4,7 +4,6 @@ using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Web;
-using System.Web.Hosting;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
@@ -33,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        public string GetAlbumPath(int userId, int albumId)
+        public string BuildAlbumPath(int userId, int albumId)
         {
             var builder = new StringBuilder(BuildPhotoDirectoryPath());
             builder.Append(DELIMITER)
@@ -46,7 +45,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string BuildOriginalPhotoPath(int userId, int albumId, string photoName, string photoFormat)
         {
-            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
                    .Append(photoName)
                    .Append(photoFormat);
@@ -56,7 +55,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string BuildThumbnailsPath(int userId, int albumId)
         {
-            var builder = new StringBuilder(GetAlbumPath(userId, albumId));
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
                    .Append(THUMBNAIL_DIRECTORY_NAME);
 
@@ -80,13 +79,15 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return temporaryPhotosDirectories;
         }
 
-        public string GetTemporaryDirectoryPath(int userId)
+        public string BuildTemporaryDirectoryPath(int userId)
         {
             var photoDirectoryPath = new StringBuilder(BuildPhotoDirectoryPath());
+
             photoDirectoryPath.Append(@"\");
             photoDirectoryPath.Append(userId);
             photoDirectoryPath.Append(@"\");
             photoDirectoryPath.Append(TEMPORARY_DIRECTORY_NAME);
+
             return photoDirectoryPath.ToString();
         }
 

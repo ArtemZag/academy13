@@ -59,13 +59,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         private IEnumerable<IFound> Group(IEnumerable<PhotoFound> data)
         {
             return
-                data.GroupBy(item => new {item.Id, item.AuthorId, item.AlbumId, item.Rating, item.PhotoName})
+                data.GroupBy(item => new {item.Id, AuthorId = item.UserId, item.AlbumId, item.Rating, item.DateOfCreation, item.PhotoName})
                     .Select(items => new PhotoFound
                         {
                             Id = items.Key.Id,
+                            UserId = items.Key.AuthorId,
                             AlbumId = items.Key.AlbumId,
-                            Rating = items.Key.Rating,
                             PhotoName = items.Key.PhotoName,
+                            Rating = items.Key.Rating,
+                            DateOfCreation = items.Key.DateOfCreation,
                             Relevance = items.Sum(item => item.Relevance)
                         });
         }
@@ -77,10 +79,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return unitOfWork.Photos.Filter(predicate).ToList().Select(model => new PhotoFound
                 {
                     Id = model.Id,
-                    AuthorId = model.UserId,
+                    UserId = model.UserId,
                     AlbumId = model.AlbumId,
                     PhotoName = model.PhotoName,
                     Rating = model.Rating,
+                    DateOfCreation = model.DateOfCreation,
                     Relevance = getRelevance(searchQuery, model)
                 });
         }
@@ -100,10 +103,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 IEnumerable<PhotoFound> tagPhotos = presentPhotos.Select(model => new PhotoFound
                     {
                         Id = model.Id,
-                        AuthorId = model.UserId,
+                        UserId = model.UserId,
                         AlbumId = model.AlbumId,
                         PhotoName = model.PhotoName,
                         Rating = model.Rating,
+                        DateOfCreation = model.DateOfCreation,
                         Relevance = 1
                     });
 

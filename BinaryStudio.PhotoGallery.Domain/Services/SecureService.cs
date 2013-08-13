@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    class SecureService : ISecureService
+    internal class SecureService : ISecureService
     {
         private readonly IUnitOfWorkFactory _unitOfWorkFactory;
 
@@ -65,10 +62,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         /// Checks if user take a part in even one group, that have enough permissions to do some action
         /// </summary>
-        /// <param name="userID"></param>
-        /// <param name="albumID"></param>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
         private bool CanUserDoCommentsAction(int userID, int albumID, Predicate<AvailableGroupModel> predicate)
         {
             using (var unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
