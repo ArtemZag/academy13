@@ -72,5 +72,22 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             return new HttpResponseMessage(HttpStatusCode.Created);
         }
+
+        [POST]
+        public HttpResponseMessage ChangePassword([FromBody] SignupViewModel viewModel)
+        {
+            if (viewModel == null){ return new HttpResponseMessage(HttpStatusCode.BadRequest); }
+
+            try
+            {
+                _userService.ActivateUser(viewModel.Email, viewModel.Password, viewModel.Invite);
+            }
+            catch (Exception exception)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception.Message);
+            }
+
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        }
     }
 }
