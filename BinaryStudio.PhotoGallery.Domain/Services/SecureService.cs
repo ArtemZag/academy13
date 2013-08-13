@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
@@ -58,6 +59,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public IEnumerable<AlbumModel> GetAvailableAlbumsForUser(int userID)
+        {
+            using (var unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
+            {
+                var listAG = unitOfWork.Users.Find(userID).Groups.ToList();
+
+                return unitOfWork.Albums.Filter(album => album.AvailableGroups
+                                                              .ToList()
+                                                              .Find(group => listAG
+                                                                                   .Find(ag => ag.ID == group.ID)
+                                                                                   != null)
+                                                              != null);
+            }
+        }
+
 
         /// <summary>
         /// Checks if user take a part in even one group, that have enough permissions to do some action
@@ -77,5 +93,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return userGroups != null;
             }
         }
+
+
+
     }
 }
