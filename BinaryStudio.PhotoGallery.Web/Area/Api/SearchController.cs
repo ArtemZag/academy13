@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
@@ -12,14 +13,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     public class SearchController : ApiController
     {
         private readonly IModelConverter modelConverter;
-        private readonly IPathUtil pathUtil;
         private readonly ISearchService searchService;
 
-        public SearchController(ISearchService searchService, IModelConverter modelConverter, IPathUtil pathUtil)
+        public SearchController(ISearchService searchService, IModelConverter modelConverter)
         {
             this.searchService = searchService;
             this.modelConverter = modelConverter;
-            this.pathUtil = pathUtil;
         }
 
         public HttpResponseMessage GetSearch([FromUri] SearchViewModel searchViewModel)
@@ -28,9 +27,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             SearchResult result = searchService.Search(searchArguments);
 
-            pathUtil.BuildPhotoDirectoryPath();
+            var resultViewModel = new SearchResultViewModel
+            {
+                Items = result.Value.Select(found => modelConverter.GetViewModel(found)),
+                CacheToken = result.CacheToken
+            };
 
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            return Request.CreateResponse(HttpStatusCode.OK, resultViewModel);
         }
     }
 }

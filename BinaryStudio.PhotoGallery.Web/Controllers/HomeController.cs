@@ -14,13 +14,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IPhotoService _photoService;
-        private readonly IUserService _userService;
         private readonly IModelConverter _modelConverter;
 
-        public HomeController(IUserService userService, IPhotoService photoService, IModelConverter modelConverter)
+        public HomeController(IPhotoService photoService, IModelConverter modelConverter)
         {
             _photoService = photoService;
-            _userService = userService;
             _modelConverter = modelConverter;
         }
 

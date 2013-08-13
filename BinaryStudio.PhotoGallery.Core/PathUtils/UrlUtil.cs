@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         private string BuildBathByPattern(string pathPart, int id)
         {
-            const string DELIMITER = @"\";
+            const string DELIMITER = "/";
 
             var url = new StringBuilder(siteUrl);
 
