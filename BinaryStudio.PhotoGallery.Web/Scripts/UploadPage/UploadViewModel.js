@@ -1,5 +1,7 @@
 ﻿function UploadViewModel(options) {
     Dropzone.autoDiscover = false;
+    
+    var previewContainer = options.element;
 
     var dropzoneOptions = {
         maxFiles: 100,
@@ -14,17 +16,24 @@
 
     var self = this;
 
-    var dropzone = new Dropzone(options.element, dropzoneOptions);
+    var dropzone = new Dropzone(previewContainer, dropzoneOptions);
     
-    dropzone.on("success", function (file, responseText) {
-        console.log(file);
-        console.log(responseText);
-//        file.previewTemplate.appendChild(document.createTextNode(responseText));
+    dropzone.on("success", function (file, response) {
+        var preview = $(file.previewTemplate);
+        
+        if (response.length > 0) {
+            preview.removeClass('dz-success');
+            preview.addClass('dz-error');
+            
+        } else {
+            preview.prepend('<input type="checkbox" class="photo-checker" />');
+            self.previews().push();
+        }
     });
 
-    self.albums = ko.observableArray([]);
-    
-    self.previews = ko.observableArray(typeof (options.previews) !== 'undefined' ? options.previews : []);
+    self.albums = ko.observableArray(typeof(options.albums) !== 'undefined' ? options.albums : []);
+
+    self.previews = ko.observableArray(typeof(options.previews) !== 'undefined' ? options.previews : []);
 
     self.canSave = ko.computed(function () {
         if (self.albums().length <= 0) {
@@ -77,6 +86,7 @@
 
             $.post('Api/File/SavePhotos', { AlbumId: albumId, PhotoNames: selectedPhotos })
                 .done(function (data) {
+                    console.log(data);
                     // TODO display returned data (not accepted photos)
                     //                    console.log(data);
                     /*for (var index = 0; index < self.previews().length; index++) {

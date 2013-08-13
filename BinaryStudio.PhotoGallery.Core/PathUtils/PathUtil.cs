@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Web;
+using System.Web.Hosting;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
@@ -15,11 +16,11 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private const string TEMPORARY_DIRECTORY_NAME = "temporary";
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
 
-        private readonly string dataVirtualRoot;
+        private readonly string _dataVirtualRoot;
 
         public PathUtil()
         {
-            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
+            _dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
         }
 
         public string BuildPhotoDirectoryPath()
@@ -62,42 +63,22 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        public IEnumerable<string> BuildTemporaryDirectoriesPaths()
-        {
-            string photoDirectoryPath = BuildPhotoDirectoryPath();
-
-            IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
-
-            var temporaryPhotosDirectories = new Collection<string>();
-
-            foreach (string userDirectory in usersDirectories)
-            {
-                string temporaryPhotosDirectory = BuildTemporaryDirectoryPath(userDirectory);
-                temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
-            }
-
-            return temporaryPhotosDirectories;
-        }
-
         public string BuildTemporaryDirectoryPath(int userId)
         {
-            var photoDirectoryPath = new StringBuilder(BuildPhotoDirectoryPath());
+            var photoDirectoryPath =  new StringBuilder();
 
+            photoDirectoryPath.Append(BuildPhotoDirectoryPath());
             photoDirectoryPath.Append(@"\");
             photoDirectoryPath.Append(userId);
             photoDirectoryPath.Append(@"\");
             photoDirectoryPath.Append(TEMPORARY_DIRECTORY_NAME);
 
-            return photoDirectoryPath.ToString();
+            return HostingEnvironment.MapPath(photoDirectoryPath.ToString());
         }
 
         private string GetDataDirectory()
         {
-            // This method not work for me
-            return VirtualPathUtility.ToAbsolute(dataVirtualRoot); 
-            
-            // And this work good
-            //return HostingEnvironment.MapPath(dataVirtualRoot);
+            return VirtualPathUtility.ToAbsolute(_dataVirtualRoot); 
         }
 
         private string BuildTemporaryDirectoryPath(string userDirectoryPath)

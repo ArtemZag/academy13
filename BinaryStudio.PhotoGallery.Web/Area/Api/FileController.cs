@@ -50,7 +50,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [POST("SavePhotos")]
         public HttpResponseMessage SavePhotos([FromBody] SavePhotosViewModel viewModel)
         {
-            if (viewModel == null || viewModel.AlbumId < 0 || !viewModel.PhotoNames.Any())
+            if (viewModel == null || viewModel.AlbumId <= 0 || !viewModel.PhotoNames.Any())
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
@@ -80,11 +80,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                             _directoryWrapper.CreateDirectory(pathToAlbum);
                         }
 
+                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, viewModel.AlbumId, photoName));
+
                         var newFilePath = string.Format("{0}\\{1}", pathToAlbum, photoName);
 
                         _fileHelper.HardMove(currentFilePath, newFilePath);
-
-                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, viewModel.AlbumId, photoName));
                     }
                     else
                     {

@@ -33,7 +33,8 @@
     
     $.get('Api/Album')
         .done(function (data) {
-            vm.albums(data);
+            console.log(data);
+            vm.albums([{ Id: 1, Name: "Akademie" }, { Id: 2, Name: "Summer" }]);
         });
 
     vm.previews(previews);
