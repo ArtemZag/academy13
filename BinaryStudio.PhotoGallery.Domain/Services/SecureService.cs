@@ -7,13 +7,10 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class SecureService : ISecureService
+    internal class SecureService : DbService, ISecureService
     {
-        private readonly IUnitOfWorkFactory unitOfWorkFactory;
-
-        public SecureService(IUnitOfWorkFactory unitOfWorkFactory)
+        public SecureService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
-            this.unitOfWorkFactory = unitOfWorkFactory;
         }
 
         public bool CanUserViewComments(int userId, int albumId)
@@ -46,7 +43,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public bool CanUserDeletePhoto(int userId, int photoId)
         {
-            using (IUnitOfWork unitOfWork = unitOfWorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = unitOfWork.Users.Find(userId);
                 PhotoModel photo = unitOfWork.Photos.Find(photoId);
@@ -58,12 +55,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
         {
-            List<GroupModel> listAg = unitOfWork.Users.Find(userId).Groups.ToList();
+            UserModel user = GetUser(userId, unitOfWork);
+            List<GroupModel> userGroups = user.Groups.ToList();
 
             return unitOfWork.Albums.Filter(album => album.AvailableGroups
                 .ToList()
-                .Find(group => listAg
-                    .Find(ag => ag.ID == group.ID) != null) != null).ToList();
+                .Find(group => userGroups
+                    .Find(ag => ag.ID == group.Id) != null) != null).ToList();
         }
 
         /// <summary>
@@ -71,7 +69,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         private bool CanUserDoCommentsAction(int userId, int albumId, Predicate<AvailableGroupModel> predicate)
         {
-            using (IUnitOfWork unitOfWork = unitOfWorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 List<AvailableGroupModel> availableGropusCanDo =
                     unitOfWork.Albums.Find(albumId).AvailableGroups.ToList().FindAll(predicate);

@@ -20,7 +20,7 @@
         /// <summary>
         /// Gets or sets the idintification for each group availability.
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the availability for group.
