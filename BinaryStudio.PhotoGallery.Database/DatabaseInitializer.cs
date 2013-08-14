@@ -77,6 +77,8 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 ///////////////////////////////////////////////////////
 
+                var photosForAlbum = new Collection<PhotoModel>();
+
                 var generatedRandomComment = new StringBuilder();
 
                 for (int i = 0; i < 29; i++)
@@ -97,7 +99,7 @@ namespace BinaryStudio.PhotoGallery.Database
                         comm.Add(new PhotoCommentModel(7, Randomizer.GetNumber(i), generatedRandomComment.ToString(),
                                                        -1) {Rating = Randomizer.GetNumber(64)});
                     }
-                    unitOfWork.Photos.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm});
+                    photosForAlbum.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm});
                     unitOfWork.Photos.Add(new PhotoModel(4, 6) {PhotoName = i + ".jpg"});
                 }
 
@@ -111,14 +113,16 @@ namespace BinaryStudio.PhotoGallery.Database
                 var availableGroupModel3 = new AvailableGroupModel {AlbumId = 3, GroupId = 4, };
                 var availableGroupModel4 = new AvailableGroupModel {AlbumId = 3, GroupId = 5, };
 
-                var AGList = new List<AvailableGroupModel>();
-                AGList.Add(availableGroupModel);
-                AGList.Add(availableGroupModel1);
-                AGList.Add(availableGroupModel2);
-                AGList.Add(availableGroupModel3);
-                AGList.Add(availableGroupModel4);
+                var AGList = new List<AvailableGroupModel>
+                {
+                    availableGroupModel,
+                    availableGroupModel1,
+                    availableGroupModel2,
+                    availableGroupModel3,
+                    availableGroupModel4
+                };
 
-                unitOfWork.Albums.Add(new AlbumModel("Test", 7) {AvailableGroups = AGList});
+                unitOfWork.Albums.Add(new AlbumModel("Test", 7) { AvailableGroups = AGList, Photos = photosForAlbum });
 
                 unitOfWork.Albums.Add(new AlbumModel("Summer", 5)
                 {
