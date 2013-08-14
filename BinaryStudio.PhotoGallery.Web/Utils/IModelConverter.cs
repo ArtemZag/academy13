@@ -14,7 +14,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         UserModel GetModel(SigninViewModel authorizationViewModel);
 
-        SearchArguments GetModel(SearchViewModel searchViewModel);
+        SearchArguments GetModel(SearchViewModel searchViewModel, int userId);
 
         IFoundViewModel GetViewModel(IFound found);
 
