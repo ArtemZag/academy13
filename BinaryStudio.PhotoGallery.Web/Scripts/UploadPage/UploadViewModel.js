@@ -16,18 +16,57 @@
 
     var self = this;
 
+    var mediator = options.mediator;
+
+    mediator.subscribe("upload:preview", function (data) {
+//        console.log("Main VM become this data: ");
+//        console.log(data);
+        
+        for (var index = 0; index < self.previews().length; index++) {
+            var preview = self.previews()[index];
+            
+            if (preview.name === data.name) {
+                preview.isSelected = data.isSelected;
+                break;
+            }
+        }
+    });
+
     var dropzone = new Dropzone(previewContainer, dropzoneOptions);
     
     dropzone.on("success", function (file, response) {
-        var preview = $(file.previewTemplate);
-        
+        var $preview = $(file.previewTemplate);
+
         if (response.length > 0) {
-            preview.removeClass('dz-success');
-            preview.addClass('dz-error');
-            
-        } else {
-            preview.prepend('<input type="checkbox" class="photo-checker" />');
-            self.previews().push();
+            for (var index = response.length-1; index >= 0; --index) {
+                if (response[index].Name === file.name) {
+                    $preview.removeClass('dz-success');
+                    $preview.addClass('dz-error');
+                    $preview.find('.dz-error-message > span').html(response.Error);
+                    return;
+                }
+            }
+        }
+        
+        $preview.prepend('<input type="checkbox" class="photo-checker" data-bind="checked: isSelected" />');
+        
+        $preview.find('.dz-filename > span').attr("data-bind", "text: name");
+
+        var preview = new PhotoPreview({ name: file.name, size: file.size, isSelected: false, isSaved: false, mediator: mediator });
+
+        self.previews.push(preview);
+        
+        ko.applyBindings(preview, file.previewTemplate);
+    });
+
+    dropzone.on("removedfile", function (file) {
+        for (var index = 0; index < self.previews().length; ++index) {
+            var preview = self.previews()[index];
+            console.log(preview);
+            if (preview.name === file.name) {
+                self.previews().remove(preview);
+                return;
+            }
         }
     });
 
@@ -41,7 +80,9 @@
         }
 
         for (var index = 0; index < self.previews().length; index++) {
-            if (self.previews()[index].isSelected() == true) {
+            var preview = self.previews()[index];
+            
+            if (preview.isSelected() == true) {
                 return true;
             }
         }
@@ -86,8 +127,8 @@
 
             $.post('Api/File/SavePhotos', { AlbumId: albumId, PhotoNames: selectedPhotos })
                 .done(function (data) {
-                    console.log(data);
-                    // TODO display returned data (not accepted photos)
+//                    console.log(data);
+                    // TODO display returned data (for not accepted photos)
                     //                    console.log(data);
                     /*for (var index = 0; index < self.previews().length; index++) {
                         self.previews()[index].isSaved(true);
