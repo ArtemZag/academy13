@@ -47,7 +47,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return new SearchResult
             {
                 Value = TakeInterval(resultItems, searchArguments.Begin, searchArguments.End),
-                Token = resultToken
+                CacheToken = resultToken
             };
         }
 

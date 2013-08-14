@@ -38,6 +38,12 @@ namespace BinaryStudio.PhotoGallery.Models
         public string LastName { get; set; }
 
         /// <summary>
+        /// Gets or sets the nick name of the user
+        /// </summary>
+        [MaxLength(80)]
+        public string NickName { get; set; }
+
+        /// <summary>
         /// Gets or sets the type of user account.
         /// </summary>
         public bool IsAdmin { get; set; }

@@ -21,6 +21,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     [RoutePrefix("Api/File")]
     public class FileController : ApiController
     {
+        private struct NotAccpetedFilesData
+        {
+            public string Name;
+            public string Error;
+        }
+
         private readonly IUserService _userService;
 	    private readonly IPathUtil _pathUtil;
 	    private readonly IDirectoryWrapper _directoryWrapper;
@@ -50,7 +56,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [POST("SavePhotos")]
         public HttpResponseMessage SavePhotos([FromBody] SavePhotosViewModel viewModel)
         {
-            if (viewModel == null || viewModel.AlbumId < 0 || !viewModel.PhotoNames.Any())
+            if (viewModel == null || viewModel.AlbumId <= 0 || !viewModel.PhotoNames.Any())
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
@@ -80,11 +86,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                             _directoryWrapper.CreateDirectory(pathToAlbum);
                         }
 
+                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, viewModel.AlbumId, photoName));
+
                         var newFilePath = string.Format("{0}\\{1}", pathToAlbum, photoName);
 
                         _fileHelper.HardMove(currentFilePath, newFilePath);
-
-                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, viewModel.AlbumId, photoName));
                     }
                     else
                     {
@@ -120,7 +126,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
 
             // Key - file name, Value - error of the loading
-            var notAccpetedFiles = new Dictionary<string, string>();
+            var notAccpetedFiles = new List<NotAccpetedFilesData>();
 
             try
             {
@@ -152,7 +158,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     if (!_fileHelper.IsImageFile(fileData.LocalFileName))
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
-                        notAccpetedFiles.Add(originalFileName, "This file contains no image data");
+                        notAccpetedFiles.Add(new NotAccpetedFilesData
+                        {
+                            Name = originalFileName,
+                            Error = "This file contains no image data"
+                        });
                         continue;
                     }
 
@@ -164,13 +174,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     catch (FileRenameException ex)
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);        // delete temp file
-                        notAccpetedFiles.Add(originalFileName, ex.Message);
+                        notAccpetedFiles.Add(new NotAccpetedFilesData {Name = originalFileName, Error = ex.Message});
                     }
-                }
-
-                if (notAccpetedFiles.Count == provider.FileData.Count)
-                {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
             catch (Exception ex)
@@ -179,7 +184,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
 
             // Create response data
-            var listOfNotLoadedFiles = new ObjectContent<IDictionary<string, string>>
+            var listOfNotLoadedFiles = new ObjectContent<IList<NotAccpetedFilesData>>
                 (notAccpetedFiles, new JsonMediaTypeFormatter());
 
             var response = new HttpResponseMessage

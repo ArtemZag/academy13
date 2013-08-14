@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -60,12 +62,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                if (user.Albums.Any(albumModel => albumModel.Id == albumId))
+                AlbumModel album = GetAlbum(albumId);
+
+                if (album.UserId == user.Id)
                 {
-                    return GetAlbum(albumId);
+                    return album;
                 }
+                
+                throw new AlbumNotFoundException();
             }
-            return null;
         }
     }
 }

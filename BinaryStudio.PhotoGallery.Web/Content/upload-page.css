@@ -41,3 +41,13 @@
 #select-all-photos > input {
     margin-bottom: 5px;
 }
+
+.photo-checker {
+    position: absolute;
+    z-index: 12345;
+    margin: 0!important;
+}
+
+.dz-filename {
+    margin-top: 6px!important;
+}
