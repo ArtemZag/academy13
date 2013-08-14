@@ -11,6 +11,8 @@
         self.begin = 0;
         self.end = searchInterval;
 
+        self.foundItems = ko.observableArray();
+
         self.searchQuery = ko.observable();
 
         self.isSearchPhotosByName = ko.observable();
@@ -36,6 +38,11 @@
                     
                     self.searchCacheToken = searchResult.SearchCacheToken;
 
+                    // adding search result items to observable array
+                    $.each(searchResult.Items, function(index, value) {
+
+                        self.foundItems.push(value);
+                    });
                 });
             }
         };
