@@ -67,7 +67,9 @@
     <Compile Include="IOUtils\DirectoryWrapper.cs" />
     <Compile Include="IOUtils\IDirectoryWrapper.cs" />
     <Compile Include="PathUtils\IPathUtil.cs" />
+    <Compile Include="PathUtils\IUrlUtil.cs" />
     <Compile Include="PathUtils\PathUtil.cs" />
+    <Compile Include="PathUtils\UrlUtil.cs" />
     <Compile Include="Randomizer.cs" />
     <Compile Include="PhotoUtils\IAsyncPhotoProcessor.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\FB.cs" />

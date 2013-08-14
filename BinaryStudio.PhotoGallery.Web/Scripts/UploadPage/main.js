@@ -1,19 +1,14 @@
 ﻿$(function () {
-    function photoUploaderViewModel(options) {
-        var self = this;
+    var mediator = new Mediator;
 
-        self.dropzone = options.dropzone;
-        
-        self.previews = ko.observable(options.previews);
-
-        self.canUpload = ko.computed(function () {
-        	return self.previews().length > 0;
+    var vm = new UploadViewModel({ element: '.dropzone', mediator: mediator });
+    
+    $.get('Api/Album')
+        .done(function (data) {
+//            console.log(data);
+            //            vm.albums([{ Id: 1, Name: "Akademie" }, { Id: 2, Name: "Summer" }]);
+            vm.albums(data);
         });
-
-        self.beginUpload = function() {
-            self.dropzone.
-        };
-    }
-
-//    ko.applyBindings(new photoUploaderViewModel);
+    
+    ko.applyBindings(vm);
 });

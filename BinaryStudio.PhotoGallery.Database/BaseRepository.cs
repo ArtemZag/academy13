@@ -29,9 +29,7 @@ namespace BinaryStudio.PhotoGallery.Database
         {
             try
             {
-                var entry = DbSet.Add(item);
-
-                return entry;
+                return DbSet.Add(item);
             }
             catch (Exception e)
             {

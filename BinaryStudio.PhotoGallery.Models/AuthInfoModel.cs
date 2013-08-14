@@ -27,7 +27,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <param name="authProvider">[local][google][facebook]</param>
         public AuthInfoModel(int userId, string authProvider)
         {
-            UserModelId = userId;
+            UserId = userId;
             AuthProvider = authProvider;
         }
 
@@ -48,6 +48,6 @@ namespace BinaryStudio.PhotoGallery.Models
         /// </summary>
         public string AuthProviderToken { get; set; }
 
-        public int UserModelId { get; set; }
+        public int UserId { get; set; }
     }
 }

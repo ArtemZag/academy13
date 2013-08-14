@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-
 namespace BinaryStudio.PhotoGallery.Models
 {
     /// <summary>
@@ -11,7 +10,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the id of the group.
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the group.

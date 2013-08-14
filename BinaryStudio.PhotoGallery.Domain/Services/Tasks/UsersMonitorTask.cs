@@ -66,7 +66,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
         {
             foreach (string key in users.Keys)
             {
-                users[key] += Period;
+                users[key] += period;
             }
         }
 

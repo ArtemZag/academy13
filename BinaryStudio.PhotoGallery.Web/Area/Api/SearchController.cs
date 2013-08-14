@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
-using BinaryStudio.PhotoGallery.Domain.Services.Search.Items;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
+using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
@@ -13,23 +15,31 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     {
         private readonly IModelConverter modelConverter;
         private readonly ISearchService searchService;
+        private readonly IUserService userService;
 
-        public SearchController(ISearchService searchService, IModelConverter modelConverter)
+        public SearchController(ISearchService searchService, IModelConverter modelConverter, IUserService userService)
         {
             this.searchService = searchService;
             this.modelConverter = modelConverter;
+            this.userService = userService;
         }
 
-        public HttpResponseMessage GetSearch()
+        public HttpResponseMessage GetSearch([FromUri] SearchViewModel searchViewModel)
         {
-            // todo: [FromBody]
-            var searchViewModel = new SearchViewModel {IsSearchPhotosByName = true, SearchQuery = ""};
+            string usersEmail = User.Identity.Name;
+            UserModel user = userService.GetUser(usersEmail);
 
-            SearchArguments searchArguments = modelConverter.GetModel(searchViewModel);
+            SearchArguments searchArguments = modelConverter.GetModel(searchViewModel, user.Id);
 
-            IEnumerable<IFoundItem> result = searchService.Search(searchArguments);
+            SearchResult result = searchService.Search(searchArguments);
 
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            var resultViewModel = new SearchResultViewModel
+            {
+                Items = result.Value.Select(found => modelConverter.GetViewModel(found)),
+                SearchCacheToken = result.SearchCacheToken
+            };
+
+            return Request.CreateResponse(HttpStatusCode.OK, resultViewModel);
         }
     }
 }

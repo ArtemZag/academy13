@@ -9,20 +9,24 @@
 @Styles.Render("~/Content/upload-page.css")
 
 <div id="foto-select">
-    <select disabled>
-        <option value="0" selected>Default album</option>
-        <option value="1">Akademie 2013</option>
-        <option value="2">Something else</option>
+    <div id="select-all-photos">
+        <input type="checkbox" data-bind="enable: canSelectAllPhotos, checked: chekedAllPhotos"> Select all photos&nbsp;
+    </div>
+    <select data-bind="options: albums, optionsText: 'Name', optionsValue: 'Id', value: selectedAlbumId, enable: canSave, optionsCaption: 'Choose album to save in...'">
     </select>
-    <button class="btn btn-danger" disabled>Save fotos</button>
+    <button class="btn btn-danger" data-bind="click: startUpload, enable: canSave">Save fotos</button>
 </div>
 
 <div id="dropzone-container">
-    <form  action="~/Api/File" class="dropzone dz-clickable" enctype="multipart/form-data" method="POST"></form>
+    <form  action="~/Api/File/Upload" class="dropzone dz-clickable" enctype="multipart/form-data" method="POST"></form>
 </div>
 
 @Scripts.Render("~/bundles/scripts/jquery")
 @Scripts.Render("~/bundles/scripts/bootstrap")
 @Scripts.Render("~/bundles/scripts/dropzone")
+@Scripts.Render("~/bundles/scripts/knockout")
 
+@Scripts.Render("~/Scripts/mediator.js")
+@Scripts.Render("~/Scripts/UploadPage/PhotoPreview.js")
+@Scripts.Render("~/Scripts/UploadPage/UploadViewModel.js")
 @Scripts.Render("~/Scripts/UploadPage/main.js")

@@ -10,15 +10,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         void AddPhoto(string userEmail, string albumName, PhotoModel photo);
 
+        void AddPhoto(PhotoModel photo);
+
         /// <summary>
         ///     Adds photos by specidied user to his album.
         /// </summary>
         void AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
-
+        
         /// <summary>
         ///     Deletes specified photo
         /// </summary>
-        void DeletePhoto(PhotoModel photo);
+        void DeletePhoto(string userEmail, PhotoModel photo);
 
         /// <summary>
         ///     Returns specified interval of photos (sorted by date) from specified album.
@@ -29,15 +31,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="end">Ending of the interval.</param>
         IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userEmail"></param>
-        /// <param name="albumID"></param>
-        /// <param name="begin"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
-        IEnumerable<PhotoModel> GetPhotos(string userEmail, int albumID, int begin, int end);
+        IEnumerable<PhotoModel> GetPhotos(string userEmail, int albumId, int begin, int end);
 
         /// <summary>
         ///     Returns specified interval of users photos.
@@ -47,11 +41,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="end">Ending of the interval.</param>
         IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="photoID"></param>
-        /// <returns></returns>
-        PhotoModel GetPhoto(int photoID);
+        PhotoModel GetPhoto(string userEmail, int photoID);
     }
 }

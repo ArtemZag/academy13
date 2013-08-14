@@ -5,6 +5,14 @@
     -webkit-perspective-origin-x: 50%;
     -webkit-perspective-origin-y: 50%;
 }
+.navbar {
+
+    position: relative;
+}
+
+#main-render-place {
+    margin-top: 0px;
+}
 
 #leftSideMenu {
     width: 280px;

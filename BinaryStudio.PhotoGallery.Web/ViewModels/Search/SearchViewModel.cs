@@ -2,6 +2,8 @@
 {
     public class SearchViewModel
     {
+        public string SearchCacheToken { get; set; }
+
         public string SearchQuery { get; set; }
 
         public int Begin { get; set; }

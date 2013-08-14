@@ -1,39 +1,55 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class PhotoCommentService: DbService, IPhotoCommentService
     {
-        public PhotoCommentService(IUnitOfWorkFactory workFactory) : base(workFactory)
+        private readonly ISecureService _secureService;
+        public PhotoCommentService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
         {
+            _secureService = secureService;
         }
 
-        public IEnumerable<PhotoCommentModel> GetPhotoComments(int photoID, int begin, int last)
+        public IEnumerable<PhotoCommentModel> GetPhotoComments(int userID, int photoID, int begin, int last)
         {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var result = unitOfWork.PhotoComments.Filter(model => model.PhotoModelId == photoID)
-                              .OrderBy(model => model.DateOfCreating)
-                              .ThenBy(model => model.Id)
-                              .Skip(begin).Take(last - begin);
+                var albumID = unitOfWork.Photos.Find(photoID).AlbumId;
 
-                // Maaak: here is fix for lazy loading of data, 
-                //        when DbContext is already disposed(using block), but result is not generated yet
-                return result.ToList();
+                if (_secureService.CanUserViewComments(userID, albumID))
+                {
+                    return unitOfWork.PhotoComments.Filter(model => model.PhotoModelId == photoID)
+                                     .OrderBy(model => model.DateOfCreating)
+                                     .ThenBy(model => model.Id)
+                                     .Skip(begin).Take(last - begin)
+                                     .ToList();
+                }
+
+                throw new NoEnoughPrivileges("User can't get access to comments", null);
             }
         }
 
-        public void AddPhotoComment(PhotoCommentModel newPhotoCommentModel)
+        public void AddPhotoComment(int userID, PhotoCommentModel newPhotoCommentModel)
         {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                unitOfWork.PhotoComments.Add(newPhotoCommentModel);
-                GlobalEventsAggregator events = GlobalEventsAggregator.Instance;
-                events.PushCommentAdded(newPhotoCommentModel);
-                unitOfWork.SaveChanges();
+                var albumID = unitOfWork.Photos.Find(newPhotoCommentModel.PhotoModelId).AlbumId;
+
+                if (_secureService.CanUserAddComment(userID, albumID))
+                {
+                    unitOfWork.PhotoComments.Add(newPhotoCommentModel);
+                    unitOfWork.SaveChanges();
+                }
+                else
+                {
+                    throw new NoEnoughPrivileges("User can't get access to comments", null);
+                }
+                
             }
         }
     }

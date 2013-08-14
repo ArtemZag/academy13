@@ -22,85 +22,93 @@
 
         <form class="form-search center" data-bind="submit: search">
             <div class="input-append">
-                <input type="text" class="span5 search-query" data-bind="text: searchQuery">
+                <input type="text" class="span5 search-query" data-bind="value: searchQuery">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
-
     </div>
         
     <div class="row">
         
-        <div class="span8">
+        <div class="span7" data-bind="foreach: foundItems">
             
-            <div class="span7 founded-item">
-                <img class="user-avatar" src="~/Content/images/no_avatar.png"/> 
-                <h4>Artyom Zagorodnuk</h4>
-                <br/>
-                <h5>.NET Department</h5>
+            <!-- photo result -->
+            <div class="founded-item">
+                <img class="photo" data-bind="src: ThumbnailPath"/> 
+
+                <div class="photo-info">
+                    <a data-bind="attr: {href: PhotoViewUrl}"><div data-bind="text: PhotoName"></div></a>
+                    <a data-bind="attr: {href: AlbumViewUrl}"><div data-bind="text: AlbumName"></div></a>
+                </div>
+                
             </div>
-            <div class="span7 founded-item">
-                <h2>Search result item</h2>
-            </div>
-            <div class="span7 founded-item">
-                <h2>Search result item</h2>
-            </div>
+            <!-- end photo result -->
 
         </div>  
         
-        <div class="span4 search-panel">
+        <div class="span3 offset2">
             
-            <!-- Search photos by -->
-            <p>Search photos by..</p>
-            <div class="offset1">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: isSearchPhotosByName"> name
-                </label>
+            <div class="search-panel">
+                <!-- Search photos by -->
+                <strong>Search photos by</strong>
             
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: isSearchPhotosByTags"> tags
-                </label>
+                <div class="search-options-offset">
+                    <label class="checkbox">
+                        <input type="checkbox" data-bind="checked: isSearchPhotosByName"> <small>name</small>
+                    </label>
+            
+                    <label class="checkbox">
+                        <input type="checkbox" data-bind="checked: isSearchPhotosByTags"> <small>tags</small>
+                    </label>
                 
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: isSearchPhotosByDescription"> description
-                </label>
-            </div>
-
-            <!-- Search albums by -->
-            <p>Search albums by..</p>
-            <div class="offset1">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: isSearchAlbumsByName"> name
-                </label>
+                    <label class="checkbox">
+                        <input type="checkbox" data-bind="checked: isSearchPhotosByDescription"> <small>description</small>
+                    </label>
+                </div>
             
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: isSearchAlbumsByTags"> tags
-                </label>
+                <div class="search-option-vertical-interval"></div>
+
+                <!-- Search albums by -->
+                <strong>Search albums by</strong>
+
+                <div class="search-options-offset">
+                    <label class="checkbox">
+                        <input type="checkbox" data-bind="checked: isSearchAlbumsByName"> <small>name</small>
+                    </label>
+            
+                    <label class="checkbox">
+                        <input type="checkbox" data-bind="checked: isSearchAlbumsByTags"> <small>tags</small>
+                    </label>
                 
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: isSearchAlbumsByDescription"> description
-                </label>
-            </div>
+                    <label class="checkbox">
+                        <input type="checkbox" data-bind="checked: isSearchAlbumsByDescription"> <small>description</small>
+                    </label>
+                </div>
             
-            <!-- Search users by -->
-            <p>Search users by..</p>
-            <div class="offset1">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: isSearchUsersByName"> name
-                </label>
+                <div class="search-option-vertical-interval"></div>
+            
+                <!-- Search users by -->
+                <strong>Search users by</strong>
 
+                <div class="search-options-offset">
+                    <label class="checkbox">
+                        <input type="checkbox" data-bind="checked: isSearchUsersByName"> <small>name</small>
+                    </label>
+
+                    <label class="checkbox">
+                        <input type="checkbox" data-bind="checked: isSearchUserByDepartment"> <small>department</small>
+                    </label>
+                </div>
+            
+                <div class="search-option-vertical-interval"></div>
+
+                <!-- Search comments -->
                 <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: isSearchUserByDepartment"> department
+                    <input type="checkbox" data-bind="checked: isSearchByComments"> <strong>Search by comments</strong>
                 </label>
             </div>
             
-            <!-- Search comments -->
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: isSearchByComments"> Search by comments
-            </label>
         </div>
-        
 
-   
     </div><!-- .row -->
 </div><!-- .container -->

@@ -9,10 +9,10 @@
         {
         }
 
-        public AvailableGroupModel(int groupModelId, int albumModelId)
+        public AvailableGroupModel(int groupId, int albumId)
         {
-            GroupModelId = groupModelId;
-            AlbumModelId = albumModelId;
+            GroupId = groupId;
+            AlbumId = albumId;
         }
 
         
@@ -20,7 +20,7 @@
         /// <summary>
         /// Gets or sets the idintification for each group availability.
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the availability for group.
@@ -31,7 +31,7 @@
         public bool CanAddComments { get; set; }
 
 
-        public int GroupModelId { get; set; }
-        public int AlbumModelId { get; set; }
+        public int GroupId { get; set; }
+        public int AlbumId { get; set; }
     }
 }

@@ -14,9 +14,20 @@
     padding: 5px;
 }
 
+.photo {
+    float: left;
+    margin-right: 8px;
+}
+
 .user-avatar {
     float: left;
     margin-right: 8px;
+}
+
+.photo-info {
+    position: relative;
+    top: 4px;
+    left: 12px;
 }
 
 .search-panel {
@@ -24,6 +35,15 @@
     -webkit-box-shadow: 0 0 1px #888;
     box-shadow: 0 0 1px #888;
     background-color: #ffffff;
-    margin: 5px;
     padding: 10px;
+}
+
+.search-option-vertical-interval {
+    height: 18px;
+}
+
+.search-options-offset {
+    position: relative;
+    top: 4px;
+    left: 12px;
 }

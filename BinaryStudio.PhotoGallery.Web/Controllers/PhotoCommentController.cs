@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
@@ -26,18 +27,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
 
         [POST]
-        public ActionResult GetPhotoComments(int photoID, int begin, int last)
+        public ActionResult GetPhotoComments(int photoID, int begin, int end)
         {
-            var photoCommentViewModel = new List<PhotoCommentViewModel>();
-            var photoCommentModels = _photoCommentService.GetPhotoComments(photoID, begin, last);
-
-            foreach (var photoCommentModel in photoCommentModels)
-            {
-                var userModel = _userService.GetUser(photoCommentModel.UserModelId);
-                photoCommentViewModel.Add(_modelConverter.GetViewModel(photoCommentModel, userModel));
-            }
-
-            return Json(photoCommentViewModel);
+            return Json(GetPhotoCommentsViewModel(_userService.GetUserId(User.Identity.Name), photoID, begin, end));
         }
          
         [POST]
@@ -45,14 +37,46 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             var newPhotoCommentModel = new PhotoCommentModel(_userService.GetUserId(User.Identity.Name), newCommentViewModel.PhotoID,
                                                           newCommentViewModel.NewComment, newCommentViewModel.Reply);
-
-            _photoCommentService.AddPhotoComment(newPhotoCommentModel);
+            try
+            {
+                _photoCommentService.AddPhotoComment(_userService.GetUserId(User.Identity.Name), newPhotoCommentModel);
+            }
+            catch (NoEnoughPrivileges)
+            {
+                // Return information about this misstake to UI
+                throw;
+            }
 
 
             // Needs refactoring
-            //bgein = 0 last = 100
+            // begin = 0 last = 100
+            return Json(GetPhotoCommentsViewModel(_userService.GetUserId(User.Identity.Name), newCommentViewModel.PhotoID, 0, 100));
+        }
+
+
+        /// <summary>
+        /// Gets photo comments and converts them to PhotoCommentViewModel
+        /// <param name="userID"></param>
+        /// <param name="photoID"></param>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        /// </summary>
+        private List<PhotoCommentViewModel> GetPhotoCommentsViewModel(int userID, int photoID, int begin, int end)
+        {
+            IEnumerable<PhotoCommentModel> photoCommentModels;
             var photoCommentViewModel = new List<PhotoCommentViewModel>();
-            var photoCommentModels = _photoCommentService.GetPhotoComments(newCommentViewModel.PhotoID, 0, 100);
+
+            try
+            {
+                photoCommentModels = _photoCommentService.GetPhotoComments(userID, photoID, begin, end);
+            }
+            catch (NoEnoughPrivileges)
+            {
+                // Return information about this misstake to UI
+                throw;
+            }
+
 
             foreach (var photoCommentModel in photoCommentModels)
             {
@@ -60,7 +84,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 photoCommentViewModel.Add(_modelConverter.GetViewModel(photoCommentModel, userModel));
             }
 
-            return Json(photoCommentViewModel);
+            return photoCommentViewModel;
         }
     }
     
