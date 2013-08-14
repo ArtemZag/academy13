@@ -8,6 +8,8 @@
     self.size = ko.observable(options.size);
     
     self.isSelected = ko.observable(false);
+
+    self.errorMessage = ko.observable("");
     
     self.isSelected.subscribe(function (isChecked) {
         mediator.publish("upload:preview", { name: self.name(), isSelected: isChecked });

@@ -19,9 +19,6 @@
     var mediator = options.mediator;
 
     mediator.subscribe("upload:preview", function (data) {
-//        console.log("Main VM become this data: ");
-//        console.log(data);
-        
         for (var index = 0; index < self.previews().length; index++) {
             var preview = self.previews()[index];
             
@@ -48,11 +45,18 @@
             }
         }
         
-        $preview.prepend('<input type="checkbox" class="photo-checker" data-bind="checked: isSelected" />');
+        $preview.prepend('<input type="checkbox" class="photo-checker" data-bind="checked: isSelected, visible: !isSaved()" />');
         
         $preview.find('.dz-filename > span').attr("data-bind", "text: name");
+        
+        $preview.find('.dz-error-message > span').attr("data-bind", "text: errorMessage");
 
-        var preview = new PhotoPreview({ name: file.name, size: file.size, isSelected: false, isSaved: false, mediator: mediator });
+        var preview = new PhotoPreview({
+            name: file.name,
+            size: file.size,
+            isLoaded: true,
+            mediator: mediator
+        });
 
         self.previews.push(preview);
         
@@ -69,12 +73,12 @@
             }
         }
     });
-
+    
     self.albums = ko.observableArray(typeof(options.albums) !== 'undefined' ? options.albums : []);
 
     self.previews = ko.observableArray(typeof(options.previews) !== 'undefined' ? options.previews : []);
 
-    self.canSave = ko.computed(function () {
+    self.canSavePhotos = ko.computed(function () {
         if (self.albums().length <= 0) {
             return false;
         }
@@ -119,24 +123,29 @@
         var albumId = self.selectedAlbumId();
 
         if (albumId != undefined) {
-            var selectedPhotos = $.map(self.previews(), function (value) {
-                if (value.isSelected()) {
-                    return value.name();
+            // Get all names of the selected photos
+            var selectedPhotos = $.map(self.previews(), function (preview) {
+                if (preview.isSelected() === true) {
+                    return preview.name();
                 }
             });
 
             $.post('Api/File/SavePhotos', { AlbumId: albumId, PhotoNames: selectedPhotos })
-                .done(function (data) {
-//                    console.log(data);
-                    // TODO display returned data (for not accepted photos)
-                    //                    console.log(data);
-                    /*for (var index = 0; index < self.previews().length; index++) {
-                        self.previews()[index].isSaved(true);
-                    }
-                    self.chekedAllPhotos(false);*/
+                .done(function (notAcceptedFiles) {
+                    $.map(self.previews(), function (preview) {                      
+                        var fileNotSaved = $.map(notAcceptedFiles, function (fileName) {
+                            console.log(fileName);
+                            if (fileName === preview.name()) {
+                                return true;
+                            }
+                        });
+                        
+                        preview.isSaved(fileNotSaved[0] === true ? false : true);
+                        preview.isSelected(false);
+                    });
                 })
                 .fail(function (data) {
-                    // TODO
+                    alert(data);
                 });
         } else {
             alert("Please select an album to save in");

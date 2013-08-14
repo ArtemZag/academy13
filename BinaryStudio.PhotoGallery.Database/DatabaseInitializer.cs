@@ -10,7 +10,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
+    public class DatabaseInitializer : DropCreateDatabaseAlways<DatabaseContext>
     {
         protected override void Seed(DatabaseContext databaseContext)
         {
@@ -99,8 +99,8 @@ namespace BinaryStudio.PhotoGallery.Database
                         comm.Add(new PhotoCommentModel(7, Randomizer.GetNumber(i), generatedRandomComment.ToString(),
                                                        -1) {Rating = Randomizer.GetNumber(64)});
                     }
-                    photosForAlbum.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm, Description = string.Empty});
-                    unitOfWork.Photos.Add(new PhotoModel(4, 6) {PhotoName = i + ".jpg"});
+                    photosForAlbum.Add(new PhotoModel(3, 7) {PhotoFileName = i + ".jpg", PhotoComments = comm, Description = string.Empty});
+                    unitOfWork.Photos.Add(new PhotoModel(4, 6) {PhotoFileName = i + ".jpg"});
                 }
 
 
@@ -122,13 +122,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     availableGroupModel4
                 };
 
-                unitOfWork.Albums.Add(new AlbumModel("Test", 7) { AvailableGroups = AGList, Photos = photosForAlbum });
-
-                unitOfWork.Albums.Add(new AlbumModel("Summer", 5)
-                {
-                    Description = "Ololololololo. Hannover 2013"/*,
-                    AvailableGroups = AGList*/
-                });
+                var album = new AlbumModel("Test", 7) {AvailableGroups = AGList, Photos = photosForAlbum};
 
                 var groupCollection = new Collection<GroupModel>
                     {
@@ -140,6 +134,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 unitOfWork.Users.Find(7).Groups = groupCollection;
 
+                unitOfWork.Users.Find(7).Albums = new Collection<AlbumModel> {album};
                 
                 //////////////////////////////////////////////////////////
                 unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));

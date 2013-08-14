@@ -69,7 +69,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 var userId = _userService.GetUserId(User.Identity.Name);
 
                 // Get path to the temporary folder in the user folder
-                var pathToTempFolder = _pathUtil.BuildTemporaryDirectoryPath(userId);
+                var pathToTempFolder = _pathUtil.BuildAbsoluteTemporaryDirectoryPath(userId);
 
                 foreach (var photoName in viewModel.PhotoNames)
                 {
@@ -79,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                     if (fileExist)
                     {
-                        var pathToAlbum = _pathUtil.BuildAlbumPath(userId, viewModel.AlbumId);
+                        var pathToAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, viewModel.AlbumId);
 
                         if (!_directoryWrapper.Exists(pathToAlbum))
                         {
@@ -134,7 +134,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 var userId = _userService.GetUserId(User.Identity.Name);
 
                 // Get path to the temporary folder in the user folder
-                var pathToTempFolder = _pathUtil.BuildTemporaryDirectoryPath(userId);
+                var pathToTempFolder = _pathUtil.BuildAbsoluteTemporaryDirectoryPath(userId);
 
                 // Create directory, if it isn't exist
                 if (!_directoryWrapper.Exists(pathToTempFolder))

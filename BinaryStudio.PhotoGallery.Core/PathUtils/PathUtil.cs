@@ -43,11 +43,19 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
+        public string BuildAbsoluteAlbumPath(int userId, int albumId)
+        {
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
+            builder.Append(DELIMITER)
+                   .Append(THUMBNAIL_DIRECTORY_NAME);
+            return HostingEnvironment.MapPath(builder.ToString());
+        }
+
         public string BuildUserPath(int userId)
         {
             var builder = new StringBuilder(BuildPhotoDirectoryPath());
             builder.Append(DELIMITER)
-                .Append(userId);
+                   .Append(userId);
             return builder.ToString();
         }
 
@@ -86,7 +94,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return temporaryPhotosDirectories;
         }
 
-        public string BuildTemporaryDirectoryPath(int userId)
+        public string BuildAbsoluteTemporaryDirectoryPath(int userId)
         {
             var userPath = BuildUserPath(userId);
 

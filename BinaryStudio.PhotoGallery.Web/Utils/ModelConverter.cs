@@ -124,8 +124,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 {
                     UserId = userId,
                     AlbumId = albumId,
-                    PhotoName = Path.GetFileNameWithoutExtension(fullPhotoName),
-                    Format = Path.GetExtension(fullPhotoName).Remove(0, 1)
+                    PhotoFileName = fullPhotoName
                 };
 
             return photoModel;
@@ -147,13 +146,16 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     //        Look at PhotoModel to check the meaning of property UserModelID
                     PhotoSource =
                         pathUtil.BuildOriginalPhotoPath(albumModel.UserId, photoModel.AlbumId,
-                                                         photoModel.PhotoName, photoModel.Format),
+                                                         photoModel.PhotoFileName, photoModel.Format),
 
                     // Maaak: I think needs refactoring. Or another method,
                     //        that will create a path by only one parameter - photoID
                     PhotoThumbSource =
-                        pathUtil.BuildThumbnailsPath(albumModel.UserId, photoModel.AlbumId)
-                        + @"\" + photoModel.PhotoName + photoModel.Format,
+                        string.Format("{0}\\{1}{2}",
+                        pathUtil.BuildThumbnailsPath(albumModel.UserId, photoModel.AlbumId),
+                        photoModel.PhotoFileName,
+                        photoModel.Format),
+
                     AlbumId = photoModel.AlbumId,
                     PhotoId = photoModel.Id
                 };
