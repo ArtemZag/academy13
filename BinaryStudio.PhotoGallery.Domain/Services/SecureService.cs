@@ -15,9 +15,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             _unitOfWorkFactory = unitOfWorkFactory;
         }
 
-
-
-
         public bool CanUserViewComments(int userID, int albumID)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanSeeComments;

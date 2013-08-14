@@ -103,9 +103,9 @@ namespace BinaryStudio.PhotoGallery.Database
 
 
                 /////////////////////////////////////////////////////////////////////////////////
-
-                unitOfWork.Albums.Add(new AlbumModel("Test", 7));
                 unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));
+                unitOfWork.Albums.Add(new AlbumModel("Test", 7));
+                
                 var availableGroupModel = new AvailableGroupModel(){AlbumId = 3, GroupId = 1, CanSeeComments = true, CanSeePhotos = true};
                 var availableGroupModel1 = new AvailableGroupModel(){AlbumId = 3, GroupId = 2, CanSeeComments = true, CanSeePhotos = true};
                 var availableGroupModel2 = new AvailableGroupModel(){AlbumId = 3, GroupId = 3, CanSeeComments = true, CanSeePhotos = true};
@@ -119,7 +119,22 @@ namespace BinaryStudio.PhotoGallery.Database
                 AGList.Add(availableGroupModel3);
                 AGList.Add(availableGroupModel4);
 
-                unitOfWork.Albums.Add(new AlbumModel("Test", 7){AvailableGroups = AGList});
+                unitOfWork.Albums.Add(new AlbumModel("Test", 7) { AvailableGroups = AGList });
+
+                var availableGroupModel5 = new AvailableGroupModel() { AlbumId = 5, GroupId = 1, CanSeeComments = true, CanSeePhotos = true };
+                var availableGroupModel6 = new AvailableGroupModel() { AlbumId = 5, GroupId = 2, CanSeeComments = true, CanSeePhotos = true };
+                var availableGroupModel7 = new AvailableGroupModel() { AlbumId = 5, GroupId = 3, CanSeeComments = true, CanSeePhotos = true };
+                var availableGroupModel8 = new AvailableGroupModel() { AlbumId = 5, GroupId = 4, };
+                var availableGroupModel9 = new AvailableGroupModel() { AlbumId = 5, GroupId = 5, };
+
+                var AGList1 = new List<AvailableGroupModel>();
+                AGList1.Add(availableGroupModel5);
+                AGList1.Add(availableGroupModel6);
+                AGList1.Add(availableGroupModel7);
+                AGList1.Add(availableGroupModel8);
+                AGList1.Add(availableGroupModel9);
+
+                unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6) { AvailableGroups = AGList1 });
 
                 unitOfWork.Albums.Add(new AlbumModel("Summer", 5)
                 {

@@ -13,14 +13,18 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
 {
     public class User
     {
-
         public string Name { get; set; }
         public HashSet<string> ConnectionIds { get; set; }
     }
 
 
+    public interface INotificationsHub
+    {
+        void CreateNotification(string title, string text, string url);
+    }
+
     [Authorize]
-    public class NotificationsHub : Hub
+    public class NotificationsHub : Hub, INotificationsHub
     {
         private static readonly ConcurrentDictionary<string, User> Users
         = new ConcurrentDictionary<string, User>();
@@ -50,6 +54,12 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
                        );
             }
 
+        }
+
+        public void CreateNotification(string title, string text, string url)
+        {
+            //User user;
+            //Users.TryGetValue(Context.User.Identity.Name, out user);
         }
 
         public override Task OnConnected()
