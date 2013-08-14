@@ -2,7 +2,7 @@
 {
     public class SearchViewModel
     {
-        public string CacheToken { get; set; }
+        public string SearchCacheToken { get; set; }
 
         public string SearchQuery { get; set; }
 

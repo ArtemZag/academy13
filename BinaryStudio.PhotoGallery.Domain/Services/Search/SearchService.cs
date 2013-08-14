@@ -24,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         {
             var resultItems = new List<IFound>();
 
-            string resultToken = searchArguments.CacheToken;
+            string resultToken = searchArguments.SearchCacheToken;
 
             if (searchCacheTask.ContainsToken(resultToken))
             {
@@ -39,15 +39,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     resultItems.AddRange(photoSearchService.Search(searchArguments));
                 }
 
-                resultToken = string.Empty;
                 // todo: search by other types
-                // todo: add resultItems to all caches
+                resultToken = searchCacheTask.AddCache(resultItems);
             }
 
             return new SearchResult
             {
                 Value = TakeInterval(resultItems, searchArguments.Begin, searchArguments.End),
-                CacheToken = resultToken
+                SearchCacheToken = resultToken
             };
         }
 

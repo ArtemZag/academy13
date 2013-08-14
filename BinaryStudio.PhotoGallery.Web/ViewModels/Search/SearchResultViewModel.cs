@@ -6,6 +6,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Search
     {
         public IEnumerable<IFoundViewModel> Items { get; set; }
 
-        public string CacheToken { get; set; }
+        public string SearchCacheToken { get; set; }
     }
 }

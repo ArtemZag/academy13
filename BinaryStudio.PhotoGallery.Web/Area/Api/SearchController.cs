@@ -36,7 +36,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             var resultViewModel = new SearchResultViewModel
             {
                 Items = result.Value.Select(found => modelConverter.GetViewModel(found)),
-                CacheToken = result.CacheToken
+                SearchCacheToken = result.SearchCacheToken
             };
 
             return Request.CreateResponse(HttpStatusCode.OK, resultViewModel);

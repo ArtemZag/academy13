@@ -78,9 +78,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     unitOfWork.Albums.Find(albumId).AvailableGroups.ToList().FindAll(predicate);
 
 
-                GroupModel userGroups = unitOfWork.Users.Find(userId)
-                    .Groups
-                    .ToList()
+                GroupModel userGroups = unitOfWork.Users.Find(userId).Groups.ToList()
                     .Find(group => availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
 
                 return userGroups != null;
