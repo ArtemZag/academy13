@@ -6,84 +6,92 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class SecureService : DbService, ISecureService
+    internal class SecureService : ISecureService
     {
-        public SecureService(IUnitOfWorkFactory workFactory) : base(workFactory)
+        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
+
+        public SecureService(IUnitOfWorkFactory unitOfWorkFactory)
         {
+            _unitOfWorkFactory = unitOfWorkFactory;
         }
 
-        public bool CanUserViewComments(int userId, int albumId)
+        public bool CanUserViewComments(int userID, int albumID)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanSeeComments;
 
-            return CanUserDoCommentsAction(userId, albumId, predicate);
+            return CanUserDoCommentsAction(userID, albumID, predicate);
         }
 
-        public bool CanUserAddComment(int userId, int albumId)
+        public bool CanUserAddComment(int userID, int albumID)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanAddComments;
 
-            return CanUserDoCommentsAction(userId, albumId, predicate);
+            return CanUserDoCommentsAction(userID, albumID, predicate);
         }
 
-        public bool CanUserViewPhotos(int userId, int albumId)
+        public bool CanUserViewPhotos(int userID, int albumID)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanSeePhotos;
 
-            return CanUserDoCommentsAction(userId, albumId, predicate);
+            return CanUserDoCommentsAction(userID, albumID, predicate);
         }
 
-        public bool CanUserAddPhoto(int userId, int albumId)
+        public bool CanUserAddPhoto(int userID, int albumID)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanAddPhotos;
 
-            return CanUserDoCommentsAction(userId, albumId, predicate);
+            return CanUserDoCommentsAction(userID, albumID, predicate);
         }
 
-        public bool CanUserDeletePhoto(int userId, int photoId)
+        public bool CanUserDeletePhoto(int userID, int photoID)
         {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            using (var unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
             {
-                UserModel user = unitOfWork.Users.Find(userId);
-                PhotoModel photo = unitOfWork.Photos.Find(photoId);
+
+                var user = unitOfWork.Users.Find(userID);
+                var photo = unitOfWork.Photos.Find(photoID);
 
                 // if user in admin group OR user is photo owner
-                return (user.Groups.ToList().Find(model => (model.Id == 1)) != null) || (photo.UserId == userId);
+                return (user.Groups.ToList().Find(model => (model.ID == 1)) != null) || (photo.UserId == userID);
             }
         }
 
-        public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
+        public IEnumerable<AlbumModel> GetAvailableAlbumsForUser(int userID)
         {
-            UserModel user = GetUser(userId, unitOfWork);
-            List<GroupModel> userGroups = user.Groups.ToList();
+            using (var unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
+            {
+                var listAG = unitOfWork.Users.Find(userID).Groups.ToList();
 
-            IEnumerable<int> albumIds = unitOfWork.AvailableGroups.All().ToList().Join(userGroups,
-                avialableGroupModel => avialableGroupModel.Id,
-                groupModel => groupModel.Id,
-                (avialableGroupModel, groupModel) => new {avialableGroupModel.CanSeePhotos, avialableGroupModel.AlbumId})
-                .Where(arg => arg.CanSeePhotos).Select(arg => arg.AlbumId).Distinct();
-
-
-            return albumIds.Select(albumId => GetAlbum(albumId, unitOfWork)).ToList();
+                return unitOfWork.Albums.Filter(album => album.AvailableGroups
+                                                              .ToList()
+                                                              .Find(group => listAG
+                                                                                   .Find(ag => ag.ID == group.ID)
+                                                                                   != null)
+                                                              != null);
+            }
         }
+
 
         /// <summary>
-        ///     Checks if user take a part in even one group, that have enough permissions to do some action
+        /// Checks if user take a part in even one group, that have enough permissions to do some action
         /// </summary>
-        private bool CanUserDoCommentsAction(int userId, int albumId, Predicate<AvailableGroupModel> predicate)
+        private bool CanUserDoCommentsAction(int userID, int albumID, Predicate<AvailableGroupModel> predicate)
         {
-            //using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            //{
-            //    List<AvailableGroupModel> availableGropusCanDo =
-            //        unitOfWork.Albums.Find(albumId).AvailableGroups.ToList().FindAll(predicate);
+            using (var unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
+            {
+                var availableGropusCanDo = unitOfWork.Albums.Find(albumID).AvailableGroups.ToList().FindAll(predicate);
 
 
-            //    GroupModel userGroups = unitOfWork.Users.Find(userId).Groups.ToList()
-            //        .Find(group => availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
+                var userGroups = unitOfWork.Users.Find(userID)
+                                           .Groups
+                                           .ToList()
+                                           .Find(group => availableGropusCanDo.Find(x => x.GroupId == @group.ID) != null);
 
-            //    return userGroups != null;
-            //} That code not works for me. Commented to test //todo : fix.
-            return true;
+                return userGroups != null;
+            }
         }
+
+
+
     }
 }

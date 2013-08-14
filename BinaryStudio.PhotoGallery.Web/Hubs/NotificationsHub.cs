@@ -17,8 +17,14 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
         public HashSet<string> ConnectionIds { get; set; }
     }
 
+
+    public interface INotificationsHub
+    {
+        void CreateNotification(string title, string text, string url);
+    }
+
     [Authorize]
-    public class NotificationsHub : Hub
+    public class NotificationsHub : Hub, INotificationsHub
     {
         private static readonly ConcurrentDictionary<string, User> Users
         = new ConcurrentDictionary<string, User>();
@@ -38,40 +44,28 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
             Users.TryGetValue(Context.User.Identity.Name, out user);
             var uModel = _userService.GetUser(Context.User.Identity.Name);
 
+
             if (user != null)
             {
                 Clients.AllExcept(user.ConnectionIds.ToArray())
                        .broadcastNotification(
                             NotificationTitles.PhotoAdded,
-                            String.Format("{0} {1}", uModel.FirstName, uModel.LastName),
-                            photoName
+                            String.Format("{0} {1}", uModel.FirstName, uModel.LastName), photoName
                        );
             }
 
         }
 
-        public void PhotoAddedHandler(string photoName, int userId)
+        public void CreateNotification(string title, string text, string url)
         {
-            var uModelHeAdded = _userService.GetUser(userId);
-
-            Clients.Group(Context.User.Identity.Name).broadcastNotification(
-                            NotificationTitles.PhotoAdded,
-                            String.Format("{0} {1}", uModelHeAdded.FirstName, uModelHeAdded.LastName),
-                            photoName
-                       );
-        }
-
-        public void CommentAddedHandler(string userName, string photoName)
-        {
-
+            //User user;
+            //Users.TryGetValue(Context.User.Identity.Name, out user);
         }
 
         public override Task OnConnected()
         {
             string userEmail = Context.User.Identity.Name;
             string connectionId = Context.ConnectionId;
-
-            Groups.Add(Context.ConnectionId, Context.User.Identity.Name);
 
             var user = Users.GetOrAdd(userEmail, new User
             {
@@ -86,23 +80,6 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
 
             return base.OnConnected();
         }
-
-        public override Task OnDisconnected()
-        {
-            string userEmail = Context.User.Identity.Name;
-            string connectionId = Context.ConnectionId;
-            User signalRUser;
-            Users.TryGetValue(userEmail, out signalRUser);
-            Groups.Remove(Context.ConnectionId, Context.User.Identity.Name);
-
-            if (signalRUser != null)
-                lock (signalRUser.ConnectionIds)
-                {
-                    signalRUser.ConnectionIds.Remove(connectionId);
-                }
-
-            return base.OnDisconnected();
-        }
-
+        
     }
 }
