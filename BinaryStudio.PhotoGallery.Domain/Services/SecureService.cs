@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
@@ -49,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 PhotoModel photo = unitOfWork.Photos.Find(photoId);
 
                 // if user in admin group OR user is photo owner
-                return (user.Groups.ToList().Find(model => (model.ID == 1)) != null) || (photo.UserId == userId);
+                return (user.Groups.ToList().Find(model => (model.Id == 1)) != null) || (photo.UserId == userId);
             }
         }
 
@@ -58,10 +57,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             UserModel user = GetUser(userId, unitOfWork);
             List<GroupModel> userGroups = user.Groups.ToList();
 
-            return unitOfWork.Albums.Filter(album => album.AvailableGroups
-                .ToList()
-                .Find(group => userGroups
-                    .Find(ag => ag.ID == group.Id) != null) != null).ToList();
+            IEnumerable<int> albumIds = unitOfWork.AvailableGroups.All().ToList().Join(userGroups,
+                avialableGroupModel => avialableGroupModel.Id,
+                groupModel => groupModel.Id,
+                (avialableGroupModel, groupModel) => new {avialableGroupModel.CanSeePhotos, avialableGroupModel.AlbumId})
+                .Where(arg => arg.CanSeePhotos).Select(arg => arg.AlbumId).Distinct();
+
+
+            return albumIds.Select(albumId => GetAlbum(albumId, unitOfWork)).ToList();
         }
 
         /// <summary>
@@ -75,10 +78,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     unitOfWork.Albums.Find(albumId).AvailableGroups.ToList().FindAll(predicate);
 
 
-                GroupModel userGroups = unitOfWork.Users.Find(userId)
-                    .Groups
-                    .ToList()
-                    .Find(group => availableGropusCanDo.Find(x => x.GroupId == @group.ID) != null);
+                GroupModel userGroups = unitOfWork.Users.Find(userId).Groups.ToList()
+                    .Find(group => availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
 
                 return userGroups != null;
             }

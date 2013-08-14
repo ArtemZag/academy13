@@ -1,4 +1,6 @@
-﻿using BinaryStudio.PhotoGallery.Domain.Services.Search;
+﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Domain.Services.Search;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using FluentScheduler;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
@@ -10,5 +12,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
         SearchCache GetCache(string token);
 
         bool ContainsToken(string token);
+
+        string AddCache(IEnumerable<IFound> cache);
     }
 }

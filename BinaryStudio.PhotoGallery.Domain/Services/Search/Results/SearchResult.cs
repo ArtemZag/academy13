@@ -6,6 +6,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Results
     {
         public IEnumerable<IFound> Value { get; set; }
 
-        public string CacheToken { get; set; }
+        public string SearchCacheToken { get; set; }
     }
 }

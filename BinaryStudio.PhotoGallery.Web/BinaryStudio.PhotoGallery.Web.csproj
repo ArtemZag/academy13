@@ -380,7 +380,7 @@
     <Content Include="Scripts\FlowPage\photo_placer.js" />
     <Content Include="Scripts\Search\search.js" />
     <Content Include="Scripts\UploadPage\main.js" />
-    <Content Include="Scripts\UploadPage\PhotoPreview.js" />
+    <Content Include="Scripts\UploadPage\PhotoPreviewViewModel.js" />
     <Content Include="Scripts\AdminPanel\UserSlider.js" />
     <Content Include="Scripts\UploadPage\UploadViewModel.js" />
     <Content Include="Web.config">

@@ -4,11 +4,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Exceptions
 {
     public class UserNotFoundException : Exception
     {
-        public UserNotFoundException(string userEmail)
+        public UserNotFoundException(string message) : base(message)
         {
-            UserEmail = userEmail;
         }
-
-        public string UserEmail { get; private set; }
     }
 }

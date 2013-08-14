@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 {
                     IEnumerable<PhotoFound> found = SearchByCondition(avialableAlbums, searchQuery, unitOfWork,
                         model =>
-                            model.PhotoName.Contains(searchQuery) && !model.IsDeleted, GetRelevanceByName);
+                            model.PhotoFileName.Contains(searchQuery) && !model.IsDeleted, GetRelevanceByName);
 
                     result.AddRange(found);
                 }
@@ -89,7 +89,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     Id = model.Id,
                     UserId = model.UserId,
                     AlbumId = model.AlbumId,
-                    PhotoName = model.PhotoName,
+                    PhotoName = model.PhotoFileName,
                     Rating = model.Rating,
                     DateOfCreation = model.DateOfCreation,
                     Relevance = getRelevance(searchQuery, model)
@@ -118,7 +118,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     Id = model.Id,
                     UserId = model.UserId,
                     AlbumId = model.AlbumId,
-                    PhotoName = model.PhotoName,
+                    PhotoName = model.PhotoFileName,
                     Rating = model.Rating,
                     DateOfCreation = model.DateOfCreation,
                     Relevance = 1
@@ -132,7 +132,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
         private int GetRelevanceByName(string searchQuery, PhotoModel photoModel)
         {
-            return Regex.Matches(photoModel.PhotoName, searchQuery).Count;
+            return Regex.Matches(photoModel.PhotoFileName, searchQuery).Count;
         }
 
         private int GetRelevanceByDescription(string searchQuery, PhotoModel photoModel)

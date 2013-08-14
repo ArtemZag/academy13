@@ -1,6 +1,9 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
+using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
 {
@@ -10,6 +13,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
         ///     After some minutes cache will be destroyed
         /// </summary>
         private const int TIME_FOR_CACHE_DESTROY = 2;
+
+        private const int TOKEN_LENGTH = 10;
 
         /// <summary>
         ///     Describes token for cache and cache
@@ -47,6 +52,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
         public bool ContainsToken(string token)
         {
             return caches.ContainsKey(token);
+        }
+
+        public string AddCache(IEnumerable<IFound> cache)
+        {
+            string token = Randomizer.GetString(TOKEN_LENGTH);
+
+            var searchCache = new SearchCache
+            {
+                Value = cache,
+                LifeTime = 0
+            };
+
+            caches.TryAdd(token, searchCache);
+
+            return token;
         }
 
         public void Execute()

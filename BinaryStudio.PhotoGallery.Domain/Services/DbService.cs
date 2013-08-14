@@ -14,16 +14,28 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             WorkFactory = workFactory;
         }
 
-        protected UserModel GetUser(string userEmail, IUnitOfWork unitOfWork)
+        protected AlbumModel GetAlbum(int albumId, IUnitOfWork unitOfWork)
         {
-            UserModel user = unitOfWork.Users.Find(model => string.Equals(model.Email, userEmail));
+            AlbumModel foundAlbum = unitOfWork.Albums.Find(album => album.Id == albumId);
 
-            if (user == null)
+            if (foundAlbum == null)
             {
-                throw new UserNotFoundException(userEmail);
+                throw new AlbumNotFoundException();
             }
 
-            return user;
+            return foundAlbum;
+        }
+
+        protected UserModel GetUser(string userEmail, IUnitOfWork unitOfWork)
+        {
+            UserModel foundUser = unitOfWork.Users.Find(model => string.Equals(model.Email, userEmail));
+
+            if (foundUser == null)
+            {
+                throw new UserNotFoundException(string.Format("User with email {0} not found", userEmail));
+            }
+
+            return foundUser;
         }
 
         protected UserModel GetUser(int userId, IUnitOfWork unitOfWork)
@@ -40,7 +52,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         protected AlbumModel GetAlbum(int userId, int albumId, IUnitOfWork unitOfWork)
         {
-            var foundUser = unitOfWork.Users.Find(user => user.Id == userId);
+            UserModel foundUser = unitOfWork.Users.Find(user => user.Id == userId);
 
             if (foundUser == null)
             {
