@@ -104,8 +104,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 /////////////////////////////////////////////////////////////////////////////////
 
-                unitOfWork.Albums.Add(new AlbumModel("Test", 7));
-                unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));
+                /*unitOfWork.Albums.Add(new AlbumModel("Test", 7));*/
                 var availableGroupModel = new AvailableGroupModel {AlbumId = 3, GroupId = 1, CanSeeComments = true, CanSeePhotos = true};
                 var availableGroupModel1 = new AvailableGroupModel {AlbumId = 3, GroupId = 2, CanSeeComments = true, CanSeePhotos = true};
                 var availableGroupModel2 = new AvailableGroupModel {AlbumId = 3, GroupId = 3, CanSeeComments = true, CanSeePhotos = true};
@@ -123,8 +122,8 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 unitOfWork.Albums.Add(new AlbumModel("Summer", 5)
                 {
-                    Description = "Ololololololo. Hannover 2013",
-                    AvailableGroups = AGList
+                    Description = "Ololololololo. Hannover 2013"/*,
+                    AvailableGroups = AGList*/
                 });
 
                 var groupCollection = new Collection<GroupModel>
@@ -137,8 +136,9 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 unitOfWork.Users.Find(7).Groups = groupCollection;
 
+                
                 //////////////////////////////////////////////////////////
-
+                unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));
                 
 
                 unitOfWork.SaveChanges();
