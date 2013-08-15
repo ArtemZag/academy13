@@ -37,10 +37,9 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         {
             const string DELIMITER = "/";
 
-            var url = new StringBuilder(siteUrl);
+            var url = new StringBuilder(/*siteUrl*/);
 
-            url.Append("http://")
-                .Append(DELIMITER)
+            url.Append(DELIMITER)
                 .Append(pathPart)
                 .Append(DELIMITER)
                 .Append(id);

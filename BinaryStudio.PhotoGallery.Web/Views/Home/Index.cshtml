@@ -34,8 +34,7 @@
 @ko.Initialize(Model)
 <script type="text/javascript">
     viewModel.gotoPhotoPage = function (data) {
-        var test = data.PhotoViewPageUrl();
-        window.location.href = data.PhotoViewPageUrl();
+        self.location = data.PhotoViewPageUrl();
     };
 </script>
 
