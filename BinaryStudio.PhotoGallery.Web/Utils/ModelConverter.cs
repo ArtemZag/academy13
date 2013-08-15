@@ -163,6 +163,15 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return viewModel;
         }
 
+        public UserViewModel GetViewModel(UserModel userModel)
+        {
+            return new UserViewModel
+                {
+                    FirstName = userModel.FirstName,
+                    LastName = userModel.LastName
+                };
+        }
+
         public PhotoCommentViewModel GetViewModel(PhotoCommentModel photoCommentModel, UserModel userModel)
         {
             return new PhotoCommentViewModel
