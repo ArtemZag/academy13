@@ -35,7 +35,7 @@
         </div>
         <div id="photoLike" data-bind="click: IncrementPhotoLike">
             <img src="~/Content/images/photo-page/unlike-icon.png" data-bind="attr: { src: PhotoLikeIcon }"/>
-            <span data-bind="text: PhotoLikes.length"></span>
+            <span data-bind="text: PhotoLikes().length"></span>
         </div>
 
     </div>
