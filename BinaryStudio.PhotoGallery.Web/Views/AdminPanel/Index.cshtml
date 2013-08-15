@@ -1,70 +1,87 @@
 ﻿@using System.Web.Optimization
 @using BinaryStudio.PhotoGallery.Models
-@using PerpetuumSoft.Knockout
 @model BinaryStudio.PhotoGallery.Web.ViewModels.UsersListViewModel
 
 
-<script type="text/javascript" src="~/Scripts/knockout-2.3.0.debug.js"></script>
-<script type="text/javascript" src="~/Scripts/knockout.mapping-latest.debug.js"></script>
 @{
 	Layout = "~/Views/Shared/_MainLayout.cshtml";
 	ViewBag.Title = "Administration | Bingally";
 }
-@{
-    var ko = Html.CreateKnockoutContext();
-}
-
-<div class="user-container">
-	@using (var user = ko.Foreach(model => model.UserViewModels))
-	{
-		<a href="">
-			<div class="user-row">
-				<div class="user-main-info">
-					<img src="~/Content/images/no_avatar.png" @user.Bind.Attr("alt",g=>g.Email) />
-					<span @user.Bind.Text(g=> "User: "+g.FirstName+" "+ g.LastName)></span>
-					<span @user.Bind.Text(g=> g.IsOnline == true ? "Online" : "Offline").Style("color", g => g.IsOnline == true ? "green" : "red")>Offline</span>
-				</div>
-			</div>
-		</a>
-	}
-</div>
-<div class="user-info">
-	<p>Login</p>
-	<img src="~/Content/images/no_avatar.png" alt=""/>
-	<p><strong>First Name:</strong>
-		<input type="text" value="FName"/>
-	</p>
-	<p><strong>Last Name:</strong>
-		<input type="text" value="LName"/>
-	</p>
-	<p><strong>Role:</strong>
-		<span>Admin</span>
-	</p>
-	<p><strong>Last visit:</strong>
-		<span>Sun 28.07.2013 10:13 AM</span>
-	</p>
-	<p><strong>Total albums:</strong>
-		<span>2</span>
-	</p>
-	<p><strong>Total photos:</strong>
-		<span>23</span>
-	</p>
-</div>
-<div class="delete-queue-info">
-	<span>There is 5 photo scheduled for deleting.</span>
-	<input type="button" class="btn" value="Confirm deleting"/>
-</div>
-<div class="hidden-field">
-	<input type="button" class="btn" value="Reset Password" data-bind="click: ResetPass"/>
-	<input type="button" class="btn" value="Another action" onclick="alert('Another admin action!'); e.preventDefault();" />
-	<input type="button" class="btn" value="And another" onclick="alert('And another admin action!'); e.preventDefault();" />
-</div>
-@ko.Initialize(Model)
-<script type="text/javascript">
-	viewModel.ResetPass = function() {
-		alert("The password has been reset. Notification was sent by mail.");
-	}
-</script>
-@ko.Apply(Model)
+@Styles.Render("~/Content/admin-page.css")
 @Scripts.Render("~/bundles/scripts/jquery")
+@Scripts.Render("~/bundles/scripts/knockout")
+@Scripts.Render("~/Scripts/AdminPanel/AdminPage.js")
+@Scripts.Render("~/bundles/scripts/bootstrap")
 @Scripts.Render("~/Scripts/AdminPanel/UserSlider.js")
+
+<div class="user-container" data-bind="foreach: Users">
+			<a href="" >
+				<div class="user-row"  data-bind="click: $parent.SetCurrentUser">
+					<div class="user-main-info">
+						<img src="~/Content/images/no_avatar.png" data-bind="attr: { alt: Email }" />
+						<span data-bind="text: FirstName"></span>
+						<span data-bind="text: LastName"></span><br>
+						<span data-bind="style: { color: IsOnline == true ? 'Green' : 'Red'}, text :  IsOnline == true ? 'Online' : 'Offline'"></span>
+					</div>
+				</div>
+			</a>
+</div>
+<div class="user-info" data-bind="with: SelectedUser">
+	<p data-bind="text: Email"></p>
+	<img src="~/Content/images/no_avatar.png" alt="" />
+	<p>
+		<strong>First Name:</strong>
+		<span data-bind="text: FirstName" />
+	</p>
+	<p>
+		<strong>Last Name:</strong>
+		<span data-bind="text: LastName" />
+	</p>
+	<p>
+		<strong>Role:</strong>
+		<span data-bind="text: IsAdmin == true ? 'Admin' : 'User' "></span>
+	</p>
+	<p>
+		<strong>Total albums:</strong>
+		<span data-bind="text: AlbumsCount"></span>
+	</p>
+</div>
+<form class="form-horizontal" id="invite-form">
+	<p>
+		<input type="email" name="inviteEmail" id="inviteEmail" placeholder="E-mail address" />
+	</p>
+	<p>
+		<input type="text" name="inviteFirstname" id="inviteFirstname" placeholder="First name" />
+	</p>
+	<p>
+		<input type="text" name="inviteLastname" id="inviteLastname" placeholder="Last name" />
+	</p>
+	<input type="submit" name="inviteButton" id="inviteButton" class="btn" value="Send invite" />
+</form>
+<div class="hidden-field">
+	<input type="button" class="btn" value="Reset Password" onclick="alert('Another admin action!')" />
+	<input type="button" class="btn" value="Another action" onclick="alert('Another admin action!')" />
+	<a type="button" class="btn"  data-toggle="modal" href="#deleteModal">Delete user</a>
+</div>
+
+<div id="deleteModal" class="modal hide fade in" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h4>Delete confirmation</h4>
+	</div>
+	<div class="modal-body">
+		<h5>Are you sure you want to delete <strong data-bind="text: SelectedUser().FirstName">this</strong> ?</h5>
+	</div>
+	<div class="modal-footer">
+		<input type="button" class="btn btn-success" value="Delete" id="deleteButton"/>
+		<input type="button" class="btn" data-dismiss="modal" value="Cancel"/>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	$(function() {
+		var initData = @Html.Raw(Json.Encode(Model));
+		Bingally.AdminPage.initializeViewModel(initData);
+	});
+</script>
