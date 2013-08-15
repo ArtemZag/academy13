@@ -10,9 +10,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     internal class PhotoCommentService: DbService, IPhotoCommentService
     {
         private readonly ISecureService _secureService;
-        public PhotoCommentService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
+        private readonly IGlobalEventsAggregator _eventsAggregator;
+
+        public PhotoCommentService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator) : base(workFactory)
         {
             _secureService = secureService;
+            _eventsAggregator = eventsAggregator;
         }
 
         public IEnumerable<PhotoCommentModel> GetPhotoComments(int userID, int photoID, int begin, int last)
@@ -44,6 +47,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     unitOfWork.PhotoComments.Add(newPhotoCommentModel);
                     unitOfWork.SaveChanges();
+                    _eventsAggregator.PushCommentAddedEvent(newPhotoCommentModel);
                 }
                 else
                 {

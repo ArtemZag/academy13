@@ -239,6 +239,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GlobalEventsHandler.cs" />
     <Compile Include="Hubs\NotificationTitles.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -259,6 +260,7 @@
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
     <Content Include="Content\images\camera.png" />
+    <Content Include="Content\pnotify.css" />
     <Content Include="Content\images\photo-page\like-icon.png" />
     <Content Include="Content\images\photo-page\unlike-icon.png" />
     <Content Include="Content\jquery.pnotify.default.css" />

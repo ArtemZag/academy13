@@ -158,8 +158,9 @@
 			// Stop animation, reset the removal timer, and show the close
 			// button when the user mouses over.
 			var pnotify = $("<div />", {
+			    "id": opts.id,
 				"class": "ui-pnotify "+opts.addclass,
-				"css": {"display": "none"},
+				"css": { "display": "none" },
 				"mouseenter": function(e){
 					if (opts.nonblock) e.stopPropagation();
 					if (opts.mouse_reset && animating == "out") {
@@ -852,6 +853,8 @@
 	};
 
 	$.pnotify.defaults = {
+	    //The notice's Id
+        id: "",
 		// The notice's title.
 		title: false,
 		// Whether to escape the content of the title. (Not allow HTML.)

@@ -6,7 +6,8 @@
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/main-layout.css")
         @Styles.Render("~/bundles/styles/bootstrap")
-        @Styles.Render("~/Content/jquery.pnotify.default.css")
+
+        @Styles.Render("~/Content/pnotify.css")
         @Styles.Render("~/Content/jquery.pnotify.default.icons.css")
         <title>@ViewBag.Title</title>
         <style type="text/css">.viewPort { }</style>
@@ -45,7 +46,8 @@
     </body>
     
     @Scripts.Render("~/Scripts/jquery-2.0.3.min.js")
-    @Scripts.Render("~/Scripts/jquery.pnotify.min.js")
+
+    @Scripts.Render("~/Scripts/jquery.pnotify.js")
     @Scripts.Render("~/bundles/scripts/jquery.validate")
     @Scripts.Render("~/Scripts/jquery.signalR-1.1.3.min.js")
     @Scripts.Render("/signalr/hubs")
