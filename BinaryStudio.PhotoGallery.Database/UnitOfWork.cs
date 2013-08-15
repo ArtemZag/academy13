@@ -6,35 +6,26 @@ namespace BinaryStudio.PhotoGallery.Database
 {
     internal class UnitOfWork : IUnitOfWork
     {
-        private static DatabaseContext _databaseContext;
+        private readonly DatabaseContext _databaseContext;
 
 
-        private readonly Lazy<IUserRepository> _usersLazy =
-            new Lazy<IUserRepository>(() => new UserRepository(_databaseContext));
+        private readonly Lazy<IUserRepository> _usersLazy;
 
-        private readonly Lazy<IGroupRepository> _groupLazy =
-            new Lazy<IGroupRepository>(() => new GroupRepository(_databaseContext));
+        private readonly Lazy<IGroupRepository> _groupLazy;
 
-        private readonly Lazy<IAvailableGroupRepository> _availableGroupLazy =
-            new Lazy<IAvailableGroupRepository>(() => new AvailableGroupRepository(_databaseContext));
+        private readonly Lazy<IAvailableGroupRepository> _availableGroupLazy;
 
-        private readonly Lazy<IAuthInfoRepository> _authInfoLazy =
-            new Lazy<IAuthInfoRepository>(() => new AuthInfoRepository(_databaseContext));
+        private readonly Lazy<IAuthInfoRepository> _authInfoLazy;
 
-        private readonly Lazy<IPhotoRepository> _photoLazy =
-            new Lazy<IPhotoRepository>(() => new PhotoRepository(_databaseContext));
+        private readonly Lazy<IPhotoRepository> _photoLazy;
 
-        private readonly Lazy<IPhotoCommentRepository> _photoCommentLazy =
-            new Lazy<IPhotoCommentRepository>(() => new PhotoCommentRepository(_databaseContext));
+        private readonly Lazy<IPhotoCommentRepository> _photoCommentLazy;
 
-        private readonly Lazy<IAlbumRepository> _albumLazy =
-            new Lazy<IAlbumRepository>(() => new AlbumRepository(_databaseContext));
+        private readonly Lazy<IAlbumRepository> _albumLazy;
 
-        private readonly Lazy<IPhotoTagRepository> _photoTagLazy =
-            new Lazy<IPhotoTagRepository>(() => new PhotoTagRepository(_databaseContext));
+        private readonly Lazy<IPhotoTagRepository> _photoTagLazy;
 
-        private readonly Lazy<IAlbumTagRepository> _albumTagLazy =
-            new Lazy<IAlbumTagRepository>(() => new AlbumTagRepository(_databaseContext));
+        private readonly Lazy<IAlbumTagRepository> _albumTagLazy;
 
 
         /// <summary>
@@ -43,6 +34,17 @@ namespace BinaryStudio.PhotoGallery.Database
         public UnitOfWork()
         {
             _databaseContext = new DatabaseContext("BinaryStudio.PhotoGallery.Database.DatabaseContext");
+            
+            _albumTagLazy = new Lazy<IAlbumTagRepository>(() => new AlbumTagRepository(_databaseContext));
+            _photoTagLazy = new Lazy<IPhotoTagRepository>(() => new PhotoTagRepository(_databaseContext));
+            _albumLazy = new Lazy<IAlbumRepository>(() => new AlbumRepository(_databaseContext));
+            _photoCommentLazy = new Lazy<IPhotoCommentRepository>(() => new PhotoCommentRepository(_databaseContext));
+            _photoLazy = new Lazy<IPhotoRepository>(() => new PhotoRepository(_databaseContext));
+            _authInfoLazy = new Lazy<IAuthInfoRepository>(() => new AuthInfoRepository(_databaseContext));
+            _availableGroupLazy = new Lazy<IAvailableGroupRepository>(() => new AvailableGroupRepository(_databaseContext));
+            _groupLazy = new Lazy<IGroupRepository>(() => new GroupRepository(_databaseContext));
+            _usersLazy = new Lazy<IUserRepository>(() => new UserRepository(_databaseContext));
+            
         }
 
         /// <summary>

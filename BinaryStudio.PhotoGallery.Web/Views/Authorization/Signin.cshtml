@@ -1,0 +1,38 @@
+﻿@using System.Web.Optimization
+@model BinaryStudio.PhotoGallery.Web.ViewModels.Authorization.SigninViewModel
+
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewBag.Title = "Login | Bingally";
+}
+
+<div class="change-panel" class="well">
+    <strong class="pull-left">First time here?</strong>
+    <a href="~/Authorization/Signup" class="btn btn-success pull-right">Sign up</a>
+</div>
+
+<div class="login-panel">
+    <img src="~/Content/images/logo_big.png"/>
+    <div class="well">
+        <form class="control-group form-horizontal pagination-centered">
+            <input id="Email" name="Email" type="email" class="input-block-level" maxlength="255" placeholder="E-mail address" />
+            <input id="Password" name="Password" type="password" class="input-block-level" maxlength="20" placeholder="Password" />
+            <label class="checkbox">
+                <input id="RememberMe" name="RememberMe" type="checkbox" value="true" checked> Remember me
+            </label>
+            <button id="signin-button" type="submit" class="btn btn-primary effeckt-button zoom-in">
+                <span class="effeckt-label">Sign in</span>
+                <span class="effeckt-spinner effeckt-spinner-blue"></span>
+            </button>
+            <a href="~/Authorization/RemindPass" class="btn btn-link">Forgot password?</a>
+        </form>
+        <div class="error-field"></div>
+        <hr />
+        <div class="social">
+            <a href="~/Authorization/Signin/vkontakte"><img src="~/Content/images/vkontakte_logo.png" /></a>
+            <a href="~/Authorization/Signin/facebook"><img src="~/Content/images/facebook_logo.png"/></a>
+            <a href="~/Authorization/Signin/twitter"><img src="~/Content/images/twitter_logo.png" /></a>
+            <a href="~/Authorization/Signin/github"><img src="~/Content/images/github_logo.png" /></a>
+        </div>
+    </div>
+</div>

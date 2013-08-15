@@ -9,30 +9,45 @@
 .dropzone {
     margin: 0;
     min-height: 200px!important;
-    min-width: 500px;
     height: 100%;
 }
 
 #foto-select {
     position: absolute;
+    padding: 5px;
     top: 60px;
     left: 10px;
     right: 10px;
-    min-height: 10px;
-    min-width: 500px;
-    height: 40px;
-    width: 0 auto;
+    height: 30px;
+    width: auto;
     background: linen;
     border: 1px solid mistyrose;
     border-radius: 5px;
 }
 
 #foto-select select {
-    display: inline-block;
-    vertical-align: middle;
-    margin-top: 5px;
+    margin: 0;
 }
 
 #foto-select button {
-    margin: 0px!important;
+    margin: 0 !important;
+}
+
+#select-all-photos {
+    margin-top: 5px;
+    float: right;
+}
+
+#select-all-photos > input {
+    margin-bottom: 5px;
+}
+
+.photo-checker {
+    position: absolute;
+    z-index: 12345;
+    margin: 0!important;
+}
+
+.dz-filename {
+    margin-top: 6px!important;
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
@@ -9,7 +10,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
+    public class DatabaseInitializer : DropCreateDatabaseAlways<DatabaseContext>
     {
         protected override void Seed(DatabaseContext databaseContext)
         {
@@ -70,14 +71,13 @@ namespace BinaryStudio.PhotoGallery.Database
                         Description = ".Net student group in Binary Studio Academy. Donetsk 2013."
                     });
 
-                // Adding 100 photos from different users to album with ID 2(Academy)
-                /*for (int i = 0; i < 100; i++)
-                {
-                    unitOfWork.Photos.Add(2, random.Next(1, 7));
-                }*/
+                
+
                 unitOfWork.SaveChanges();
 
                 ///////////////////////////////////////////////////////
+
+                var photosForAlbum = new Collection<PhotoModel>();
 
                 var generatedRandomComment = new StringBuilder();
 
@@ -99,12 +99,46 @@ namespace BinaryStudio.PhotoGallery.Database
                         comm.Add(new PhotoCommentModel(7, Randomizer.GetNumber(i), generatedRandomComment.ToString(),
                                                        -1) {Rating = Randomizer.GetNumber(64)});
                     }
-                    unitOfWork.Photos.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm});
-                    unitOfWork.Photos.Add(new PhotoModel(4, 6) {PhotoName = i + ".jpg"});
+                    photosForAlbum.Add(new PhotoModel(3, 7) {PhotoFileName = i + ".jpg", PhotoComments = comm, Description = string.Empty});
+                    unitOfWork.Photos.Add(new PhotoModel(4, 6) {PhotoFileName = i + ".jpg"});
                 }
 
-                unitOfWork.Albums.Add(new AlbumModel("Test", 7));
+
+                /////////////////////////////////////////////////////////////////////////////////
+
+                /*unitOfWork.Albums.Add(new AlbumModel("Test", 7));*/
+                var availableGroupModel = new AvailableGroupModel {AlbumId = 3, GroupId = 1, CanSeeComments = true, CanSeePhotos = true};
+                var availableGroupModel1 = new AvailableGroupModel {AlbumId = 3, GroupId = 2, CanSeeComments = true, CanSeePhotos = true};
+                var availableGroupModel2 = new AvailableGroupModel {AlbumId = 3, GroupId = 3, CanSeeComments = true, CanSeePhotos = true};
+                var availableGroupModel3 = new AvailableGroupModel {AlbumId = 3, GroupId = 4, };
+                var availableGroupModel4 = new AvailableGroupModel {AlbumId = 3, GroupId = 5, };
+
+                var AGList = new List<AvailableGroupModel>
+                {
+                    availableGroupModel,
+                    availableGroupModel1,
+                    availableGroupModel2,
+                    availableGroupModel3,
+                    availableGroupModel4
+                };
+
+                var album = new AlbumModel("Test", 7) {AvailableGroups = AGList, Photos = photosForAlbum};
+
+                var groupCollection = new Collection<GroupModel>
+                    {
+                        unitOfWork.Groups.Find(1),
+                        unitOfWork.Groups.Find(3),
+                        unitOfWork.Groups.Find(6)
+                    };
+
+
+                unitOfWork.Users.Find(7).Groups = groupCollection;
+
+                unitOfWork.Users.Find(7).Albums = new Collection<AlbumModel> {album};
+                
+                //////////////////////////////////////////////////////////
                 unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));
+                
 
                 unitOfWork.SaveChanges();
 

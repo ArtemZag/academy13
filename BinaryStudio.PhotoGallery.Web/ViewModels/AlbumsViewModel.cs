@@ -7,7 +7,5 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
     public class AlbumsViewModel
     {
-        private string userEmail;
-
     }
 }

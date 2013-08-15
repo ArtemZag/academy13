@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -23,12 +25,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void DeleteAlbum(string userEmail, string albumName)
+        public void DeleteAlbum(string userEmail, int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
-                AlbumModel album = GetAlbum(user, albumName, unitOfWork);
+                AlbumModel album = GetAlbum(user, albumId, unitOfWork);
 
                 album.IsDeleted = true;
 
@@ -36,31 +38,38 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public AlbumModel GetAlbumByID(int albumID)
+        public AlbumModel GetAlbum(int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Albums.Find(albumID);
+                return unitOfWork.Albums.Find(albumId);
             }
         }
 
-        public IEnumerable<AlbumModel> GetAlbums(string userEmail)
+        public IEnumerable<AlbumModel> GetAllAlbums(string userEmail)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return user.Albums.Select(model => model).Where(model => !model.IsDeleted).ToList();
+                return user.Albums.Where(model => !model.IsDeleted).ToList();
             }
         }
 
-        public AlbumModel GetAlbum(string userEmail, string albumName)
+        public AlbumModel GetAlbum(string userEmail, int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                return GetAlbum(user, albumName, unitOfWork);
+                AlbumModel album = GetAlbum(albumId);
+
+                if (album.UserId == user.Id)
+                {
+                    return album;
+                }
+                
+                throw new AlbumNotFoundException();
             }
         }
     }

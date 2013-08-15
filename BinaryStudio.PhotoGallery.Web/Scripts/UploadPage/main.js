@@ -1,19 +1,15 @@
 ﻿$(function () {
-    function photoUploaderViewModel(options) {
-        var self = this;
+    var mediator = new Mediator;
 
-        self.dropzone = options.dropzone;
-        
-        self.previews = ko.observable(options.previews);
-
-        self.canUpload = ko.computed(function () {
-        	return self.previews().length > 0;
+    var vm = new UploadViewModel({ element: '.dropzone', mediator: mediator });
+    
+    $.get('Api/Album')
+        .done(function (response) {
+            vm.albums(response);
+        })
+        .fail(function (response) {
+            alert(response);
         });
-
-        self.beginUpload = function() {
-            self.dropzone.
-        };
-    }
-
-//    ko.applyBindings(new photoUploaderViewModel);
+    
+    ko.applyBindings(vm);
 });
