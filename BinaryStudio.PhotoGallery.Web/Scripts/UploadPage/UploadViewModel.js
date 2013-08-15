@@ -104,6 +104,17 @@
         return false;
     });
 
+    self.newAlbumName = ko.observable("");
+
+    self.canCreateNewAlbum = ko.computed(function () {
+        console.log(self.newAlbumName());
+        return self.newAlbumName.length > 2;
+    });
+
+    self.createNewAlbum = function () {
+        self.albums.push({ Id: 0, Name: self.newAlbumName() });
+    };
+
     self.selectedAlbumId = ko.observable();
 
     self.chekedAllPhotos = ko.observable(false);

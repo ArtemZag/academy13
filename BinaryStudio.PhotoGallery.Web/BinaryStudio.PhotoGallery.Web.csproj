@@ -399,6 +399,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\jquery-2.0.3.min.map" />
     <Content Include="Views\Authorization\Signin.cshtml" />
+    <Content Include="Views\Authorization\Signup.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_MainLayout.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />

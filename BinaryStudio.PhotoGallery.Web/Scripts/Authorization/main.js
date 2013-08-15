@@ -1,6 +1,9 @@
 ﻿$(function() {
     var loginPanel = $('.login-panel');
+    var changePanel = $('.change-panel');
     var shadow = $('#full-screen-shadow');
+
+    changePanel.hide();
 
     shadow.fadeIn();
     
@@ -9,11 +12,16 @@
             direction: 'top',
             method: 'show',
             animTime: 600
+        },
+        function() {
+            changePanel.show();
+            Bingally.animation(changePanel, "move", { direction: 'top', method: 'show', animTime: 510 });
         });
 
     var baseURL = "http://" + window.location.host;
 
     addClickEventTo($("#signin-button"), baseURL + '/Api/Authorization/Signin');
+    addClickEventTo($("#signup-button"), baseURL + '/Api/Authorization/Signup');
 
     loginPanel.find('input[type=email], input[type=password]')
         .on('focus', function() {
@@ -37,14 +45,15 @@
             
             $.post(address, submitButton.parent().serialize())
                 .done(function () {
-                    Bingally.animation(loginPanel, "move",
+                    Bingally.animation(loginPanel, "move", { direction: 'top', method: 'hide', animTime: 500 });
+                    Bingally.animation(changePanel, "move",
                         {
                             direction: 'top',
                             method: 'hide',
                             animTime: 500
                         },
-                        function () {
-                            shadow.fadeOut(500, function () {
+                        function() {
+                            shadow.fadeOut(500, function() {
                                 window.location = baseURL + '/Home/Index';
                             });
                         });
