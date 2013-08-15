@@ -16,13 +16,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         /// <param name="hash">Hash-code in Salt-field</param>
         /// <returns>User model</returns>
-        UserModel FindNonActivatedUser(string hash);
+        UserModel GetUnactivatedUser(string hash);
 
         /// <summary>
         /// Finds all not activated users by
         /// </summary>
         /// <returns></returns>
-        IEnumerable<UserModel> FindNonActivatedUsers();
+        IEnumerable<UserModel> GetUnactivatedUsers();
 
         int GetUserId(string userEmail);
 

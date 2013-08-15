@@ -13,10 +13,9 @@
 
 <div class="login-panel">
     <img src="~/Content/images/logo_big.png"/>
-    <div class="well">
+    <div class="well">          
         <form class="control-group form-horizontal pagination-centered" autocomplete="off">
-            <input type="text" id="Invite" name="Invite" class="input-block-level" maxlength="255" placeholder="Your invite from adiministration" />
-            <input type="email" id="Email" name="Email" class="input-block-level" maxlength="255" placeholder="E-mail address" />
+            <input type="email" id="Email" name="Email" class="input-block-level" maxlength="255" placeholder="E-mail address" value="@Model.Email" readonly=""/>
             <input type="password" id="Password" name="Password" class="input-block-level" maxlength="20" placeholder="Password" />
             <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="input-block-level" maxlength="20" placeholder="Repeat password">
 
