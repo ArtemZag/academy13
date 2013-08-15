@@ -39,23 +39,6 @@
                 required: "Please repeat your password.",
                 equalTo: "Passwords are not equal."
             }
-        },
-        errorPlacement: function (error, element) {
-            var tip = element.data('opentip');
-
-            if (tip != null)
-            {
-                tip.setContent(error.text());
-                tip.show();
-            }
-        },
-        success: function (label, element) {
-            var tip = $(element).data('opentip');
-
-            if (tip != null)
-            {
-                tip.hide();
-            }
         }
     });
 });

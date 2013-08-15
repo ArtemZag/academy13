@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
@@ -41,5 +44,18 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 			return View(new UsersListViewModel { UserViewModels = extendedUserList});
 		}
 
+		[DELETE]
+		public HttpResponseMessage DeleteUser(string eMail)
+		{
+			userService.DeleteUser(eMail);
+			return new HttpResponseMessage(HttpStatusCode.OK);
+		}
+
+		[POST]
+		public HttpResponseMessage SendInvite(UserViewModel invitedUser)
+		{
+			// TODO: Using service, that add new user.
+			return new HttpResponseMessage(HttpStatusCode.OK);
+		}
 	}
 }

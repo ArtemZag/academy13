@@ -70,7 +70,7 @@ a span {
 }
 
 .user-info {
-	width: 22%;
+	width: 20%;
 	background: #f3f3f3; /* Для старых браузров */
     background: -moz-linear-gradient(-225deg, #f1f1f1, #d3d3d3); 
     background: -webkit-gradient(linear, left top, right bottom, 
@@ -84,13 +84,17 @@ a span {
 	border-radius: 4px;
 	position: fixed;
 	left: 73%;
-	height: 380px;
+	height: 250px;
 	margin: 20px 20px 0px 0px;
 	padding: 20px;
 }
 
-.delete-queue-info {
-	width: 22%;
+.user-info img {
+	padding-bottom: 15px;
+}
+
+#invite-form {
+	width: 20%;
 	background: #f3f3f3; /* Для старых браузров */
     background: -moz-linear-gradient(-225deg, #f1f1f1, #d3d3d3); 
     background: -webkit-gradient(linear, left top, right bottom, 
@@ -104,13 +108,7 @@ a span {
 	border-radius: 4px;
 	position: fixed;
 	left: 73%;
-	top: 480px;
-	height: 80px;
+	top: 350px;
 	margin: 20px 20px 0px 0px;
-	text-align: center;
 	padding: 20px;
-}
-
-.delete-queue-info span {
-	line-height: 3em;
 }

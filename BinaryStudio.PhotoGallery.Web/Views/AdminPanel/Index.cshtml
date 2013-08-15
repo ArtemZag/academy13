@@ -31,11 +31,11 @@
 	<img src="~/Content/images/no_avatar.png" alt="" />
 	<p>
 		<strong>First Name:</strong>
-		<input type="text" data-bind="value: FirstName" />
+		<span data-bind="text: FirstName" />
 	</p>
 	<p>
 		<strong>Last Name:</strong>
-		<input type="text"data-bind="value: LastName" />
+		<span data-bind="text: LastName" />
 	</p>
 	<p>
 		<strong>Role:</strong>
@@ -46,10 +46,18 @@
 		<span data-bind="text: AlbumsCount"></span>
 	</p>
 </div>
-<div class="delete-queue-info">
-	<span>There is 5 photo scheduled for deleting.</span>
-	<input type="button" class="btn" value="Confirm deleting" />
-</div>
+<form class="form-horizontal" id="invite-form">
+	<p>
+		<input type="email" name="inviteEmail" id="inviteEmail" placeholder="E-mail address" />
+	</p>
+	<p>
+		<input type="text" name="inviteFirstname" id="inviteFirstname" placeholder="First name" />
+	</p>
+	<p>
+		<input type="text" name="inviteLastname" id="inviteLastname" placeholder="Last name" />
+	</p>
+	<input type="submit" name="inviteButton" id="inviteButton" class="btn" value="Send invite" />
+</form>
 <div class="hidden-field">
 	<input type="button" class="btn" value="Reset Password" onclick="alert('Another admin action!')" />
 	<input type="button" class="btn" value="Another action" onclick="alert('Another admin action!')" />
@@ -65,8 +73,8 @@
 		<h5>Are you sure you want to delete <strong data-bind="text: SelectedUser().FirstName">this</strong> ?</h5>
 	</div>
 	<div class="modal-footer">
-		<a href="#" class="btn btn-success">Delete</a>
-		<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+		<input type="button" class="btn btn-success" value="Delete" id="deleteButton"/>
+		<input type="button" class="btn" data-dismiss="modal" value="Cancel"/>
 	</div>
 </div>
 
