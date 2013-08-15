@@ -55,11 +55,18 @@ namespace BinaryStudio.PhotoGallery.Models
         /// Gets or sets a photo state
         /// </summary>
         public bool IsDeleted { get; set; }
+
+        
  
         public int UserId { get; set; }
         public int AlbumId { get; set; }
 
         public virtual ICollection<PhotoCommentModel> PhotoComments { get; set; }
         public virtual ICollection<PhotoTagModel> PhotoTags { get; set; } 
+        
+        /// <summary>
+        /// Gets or sets how much people like photo
+        /// </summary>
+        public virtual ICollection<UserModel> Likes { get; set; }
     }
 }
