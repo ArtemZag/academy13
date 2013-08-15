@@ -49,32 +49,6 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return View(new SigninViewModel());
         }
 
-        [GET("Signup/{service}")]
-        public ActionResult SignUp(string service)
-        {
-            if (string.IsNullOrEmpty(service))
-            {
-                if (User.Identity.IsAuthenticated)
-                {
-                    // recheck user (maybe it was deleted, while cookie is truth)
-                    var userExist = _userService.IsUserExist(User.Identity.Name);
-
-                    if (userExist)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    // Clear cookie
-                    FormsAuthentication.SignOut();
-                }
-            }
-            if (service == "facebook")
-            {
-                return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
-            }
-
-            return View(new SignupViewModel());
-        }
-
         [GET("FacebookCallBack/{userSecret}")]
         public RedirectToRouteResult FacebookCallBack(string userSecret, string code)
         {
