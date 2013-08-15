@@ -4,12 +4,11 @@ using AttributeRouting.Web.Mvc;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    [Authorize]
-	[RoutePrefix("Upload")]
-    public class UploadController : Controller
+	[RoutePrefix("Profile")]
+    public class ProfileController : Controller
     {
-		[GET]
-        public ActionResult Upload()
+		[GET("")]
+        public ActionResult Index()
         {
             return View();
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Mvc;
+using BinaryStudio.PhotoGallery.Domain;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.Hubs;
 using BinaryStudio.PhotoGallery.Web.Utils;
@@ -29,7 +30,6 @@ namespace BinaryStudio.PhotoGallery.Web
         {
             var container = new UnityContainer();
             RegisterTypes(container);
-            container.RegisterType<NotificationsHub>(new InjectionFactory(CreateNotificationsHub));
 
             return container;
         }
@@ -39,12 +39,17 @@ namespace BinaryStudio.PhotoGallery.Web
             // register all your components with the container here
             // it is NOT necessary to register your controllers
             // e.g. container.RegisterType<ITestService, TestService>();   
-
+            
             container.RegisterType<IModelConverter, ModelConverter>();
 
             Domain.Bootstrapper.RegisterTypes(container);
             Database.Bootstrapper.RegisterTypes(container);
             Core.Bootstrapper.RegisterTypes(container);
+
+            container.RegisterType<IGlobalEventsAggregator, GlobalEventsAggregator>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IGlobalEventsHandler, GlobalEventsHandler>(new ContainerControlledLifetimeManager());
+            container.RegisterType<NotificationsHub>(new InjectionFactory(CreateNotificationsHub));
+            container.RegisterInstance(container.Resolve<IGlobalEventsHandler>());
         }
 
         private static object CreateNotificationsHub(IUnityContainer p)

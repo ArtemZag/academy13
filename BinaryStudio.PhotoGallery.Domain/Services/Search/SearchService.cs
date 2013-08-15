@@ -11,12 +11,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         private readonly IPhotoSearchService photoSearchService;
 
         private readonly ISearchCacheTask searchCacheTask;
+        private readonly IUserSearchService userSearchService;
 
         public SearchService(IUnitOfWorkFactory workFactory, IPhotoSearchService photoSearchService,
+            IUserSearchService userSearchService,
             ISearchCacheTask searchCacheTask)
             : base(workFactory)
         {
             this.photoSearchService = photoSearchService;
+            this.userSearchService = userSearchService;
             this.searchCacheTask = searchCacheTask;
         }
 
@@ -28,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             if (searchCacheTask.ContainsToken(resultToken))
             {
-                SearchCache searchCache = searchCacheTask.GetCache(resultToken);
+                SearchCache searchCache = searchCacheTask.DeductCache(resultToken, searchArguments.Interval);
 
                 resultItems.AddRange(searchCache.Value);
             }
@@ -39,24 +42,22 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     resultItems.AddRange(photoSearchService.Search(searchArguments));
                 }
 
+                if (searchArguments.IsSearchByUsers)
+                {
+                    resultItems.AddRange(userSearchService.Search(searchArguments));
+                }
+
                 // todo: search by other types
-                resultToken = searchCacheTask.AddCache(resultItems);
+
+                resultToken = searchCacheTask.AddCache(resultItems.RemoveElements(searchArguments.Interval));
+                resultItems = resultItems.TakeInterval(searchArguments.Interval).ToList();
             }
 
             return new SearchResult
             {
-                Value = TakeInterval(resultItems, searchArguments.Begin, searchArguments.End),
+                Value = resultItems,
                 SearchCacheToken = resultToken
             };
-        }
-
-        private IEnumerable<IFound> TakeInterval(IEnumerable<IFound> data, int begin, int end)
-        {
-            return
-                data.Select(item => item)
-                    .OrderBy(item => item.Relevance)
-                    .Skip(begin)
-                    .Take(end);
         }
     }
 }

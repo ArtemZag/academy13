@@ -15,14 +15,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     [RoutePrefix("Api/Authorization")]
     public class AuthorizationController : ApiController
     {
-        private readonly IUserService userService;
-
-        private readonly IModelConverter modelConverter;
+        private readonly IUserService _userService;
+        private readonly IModelConverter _modelConverter;
 
         public AuthorizationController(IUserService userService, IModelConverter modelConverter)
         {
-            this.userService = userService;
-            this.modelConverter = modelConverter;
+            _userService = userService;
+            _modelConverter = modelConverter;
         }
 
         [POST]
@@ -33,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
-            var userNotValid = !userService.IsUserValid(viewModel.Email, viewModel.Password);
+            var userNotValid = !_userService.IsUserValid(viewModel.Email, viewModel.Password);
 
             if (userNotValid)
             {
@@ -55,9 +54,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                var user = modelConverter.GetModel(viewModel);
+                var user = _modelConverter.GetModel(viewModel);
 
-                userService.CreateUser(user);
+                _userService.ActivateUser(viewModel.Email, viewModel.Password, viewModel.Invite);
 
                 FormsAuthentication.SetAuthCookie(user.Email, false);
             }
@@ -68,23 +67,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-
-            return new HttpResponseMessage(HttpStatusCode.Created);
-        }
-
-        [POST]
-        public HttpResponseMessage ChangePassword([FromBody] SignupViewModel viewModel)
-        {
-            if (viewModel == null){ return new HttpResponseMessage(HttpStatusCode.BadRequest); }
-
-            try
-            {
-                userService.ActivateUser(viewModel.Email, viewModel.Password, viewModel.Invite);
-            }
-            catch (Exception exception)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception.Message);
             }
 
             return new HttpResponseMessage(HttpStatusCode.OK);

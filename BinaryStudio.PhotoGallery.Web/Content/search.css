@@ -1,49 +1,55 @@
 ﻿.center {
-    float: none;
     margin: 10px;
     text-align: center;
 }
 
-.founded-item {
+.found-item {
     -moz-box-shadow: 0 0 1px #888;
     -webkit-box-shadow: 0 0 1px #888;
-    box-shadow: 0 0 1px #888;
     background-color: #ffffff;
-    margin: 3px;
     border-radius: 2px;
+    box-shadow: 0 0 1px #888;
+    margin: 3px;
     padding: 5px;
 }
 
-.photo {
+.user-avatar { margin: 8px; }
+
+.result-image {
     float: left;
     margin-right: 8px;
 }
 
-.user-avatar {
-    float: left;
-    margin-right: 8px;
-}
-
-.photo-info {
-    position: relative;
-    top: 4px;
-    left: 12px;
-}
+.photo-info { display: block; }
 
 .search-panel {
     -moz-box-shadow: 0 0 1px #888;
     -webkit-box-shadow: 0 0 1px #888;
-    box-shadow: 0 0 1px #888;
     background-color: #ffffff;
+    box-shadow: 0 0 1px #888;
     padding: 10px;
 }
 
-.search-option-vertical-interval {
-    height: 18px;
+.likes-number {
+    font-size: 50px;
 }
 
+.likes-caption {
+    font-family: Helvetica;
+    color: dodgerblue;
+}
+
+.likes-block {
+    float: right;
+    margin-top: 35px;
+}
+
+.search-info-item { margin-bottom: 6px; }
+
+.search-option-vertical-interval { height: 18px; }
+
 .search-options-offset {
+    left: 12px;
     position: relative;
     top: 4px;
-    left: 12px;
 }

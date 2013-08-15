@@ -4,7 +4,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Authorization
 {
     public class SignupViewModel
     {
-        [Required]
         [DataType(DataType.Text)]
         [StringLength(255)]
         public string Invite { get; set; }

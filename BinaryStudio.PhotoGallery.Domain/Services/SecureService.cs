@@ -8,7 +8,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class SecureService : DbService, ISecureService
     {
-        public SecureService(IUnitOfWorkFactory workFactory) : base(workFactory)
+        public SecureService(IUnitOfWorkFactory workFactory)
+            : base(workFactory)
         {
         }
 
@@ -67,7 +68,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             IEnumerable<int> albumIds = unitOfWork.AvailableGroups.All().ToList().Join(userGroups,
                 avialableGroupModel => avialableGroupModel.Id,
                 groupModel => groupModel.Id,
-                (avialableGroupModel, groupModel) => new {avialableGroupModel.CanSeePhotos, avialableGroupModel.AlbumId})
+                (avialableGroupModel, groupModel) => new { avialableGroupModel.CanSeePhotos, avialableGroupModel.AlbumId })
                 .Where(arg => arg.CanSeePhotos).Select(arg => arg.AlbumId).Distinct();
 
 
@@ -81,14 +82,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                List<AvailableGroupModel> availableGropusCanDo =
-                    unitOfWork.Albums.Find(albumId).AvailableGroups.ToList().FindAll(predicate);
+                var mUser = GetUser(userId, unitOfWork);
+                var rights = false;
+                if (mUser.IsAdmin)
+                    rights = true;
+                else {
+                    List<AvailableGroupModel> availableGropusCanDo =
+                        unitOfWork.Albums.Find(albumId).AvailableGroups.ToList().FindAll(predicate);
 
 
-                GroupModel userGroups = unitOfWork.Users.Find(userId).Groups.ToList()
-                    .Find(group => availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
+                    GroupModel userGroups = unitOfWork.Users.Find(userId).Groups.ToList()
+                        .Find(group => availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
 
-                return userGroups != null;
+                    rights = userGroups != null;   
+                }
+                return rights;
             }
         }
     }

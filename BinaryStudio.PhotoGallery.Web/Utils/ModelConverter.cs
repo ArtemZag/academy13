@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Security.Policy;
-using BinaryStudio.PhotoGallery.Core.PathUtils;
+﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
@@ -56,18 +54,24 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return new SearchArguments
                 {
                     UserId = userId,
+
                     SearchCacheToken = searchViewModel.SearchCacheToken,
-                    Begin = searchViewModel.Begin,
-                    End = searchViewModel.End,
+
+                    Interval = searchViewModel.Interval,
+
                     SearchQuery = searchViewModel.SearchQuery,
+
                     IsSearchPhotosByName = searchViewModel.IsSearchPhotosByName,
                     IsSearchPhotosByTags = searchViewModel.IsSearchPhotosByTags,
                     IsSearchPhotosByDescription = searchViewModel.IsSearchPhotosByDescription,
+
                     IsSearchAlbumsByName = searchViewModel.IsSearchAlbumsByName,
                     IsSearchAlbumsByTags = searchViewModel.IsSearchAlbumsByTags,
                     IsSearchAlbumsByDescription = searchViewModel.IsSearchAlbumsByDescription,
+
                     IsSearchUsersByName = searchViewModel.IsSearchUsersByName,
                     IsSearchUserByDepartment = searchViewModel.IsSearchUserByDepartment,
+
                     IsSearchByComments = searchViewModel.IsSearchByComments
                 };
         }
@@ -84,13 +88,29 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     break;
 
                 case ItemType.User:
+
+                    result = GetUserFoundViewModel(found);
                     break;
             }
 
             return result;
         }
 
-        private PhotoFoundViewModel GetPhotoFoundViewModel(IFound found)
+        private IFoundViewModel GetUserFoundViewModel(IFound found)
+        {
+            var userFound = (UserFound) found;
+
+            return new UserFoundViewModel
+            {
+                AvatarPath = pathUtil.BuildUserAvatarPath(userFound.Id),
+                Department = userFound.Department,
+                IsOnline = userFound.IsOnline,
+                Name = userFound.Name,
+                UserViewUri = urlUtil.BuildUserViewUrl(userFound.Id)
+            };
+        }
+
+        private IFoundViewModel GetPhotoFoundViewModel(IFound found)
         {
             var photoFound = (PhotoFound) found;
 
@@ -100,9 +120,14 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             var user = userService.GetUser(photoFound.UserId);
             string userName = user.FirstName + " " + user.LastName;
 
+            // todo: delete 
+            string thumbnailPath = string.Format("{0}\\{1}{2}",
+                pathUtil.BuildThumbnailsPath(photoFound.UserId, photoFound.AlbumId),
+                photoFound.PhotoName, photoFound.Format);
+
             return new PhotoFoundViewModel
             {
-                ThumbnailPath = string.Empty, // todo
+                ThumbnailPath = thumbnailPath,
 
                 PhotoName = photoFound.PhotoName,
                 PhotoViewUrl = urlUtil.BuildPhotoViewUrl(photoFound.Id),
@@ -150,14 +175,16 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
                     // Maaak: I think needs refactoring. Or another method,
                     //        that will create a path by only one parameter - photoID
-                    PhotoThumbSource =
+                    // Anton: And we need specify size of thumbnail. So it will be 2 params. 
+                    PhotoThumbSource = 
                         string.Format("{0}\\{1}{2}",
                         pathUtil.BuildThumbnailsPath(albumModel.UserId, photoModel.AlbumId),
                         photoModel.PhotoFileName,
                         photoModel.Format),
 
                     AlbumId = photoModel.AlbumId,
-                    PhotoId = photoModel.Id
+                    PhotoId = photoModel.Id,
+                    PhotoViewPageUrl = urlUtil.BuildPhotoViewUrl(photoModel.Id)
                 };
 
             return viewModel;

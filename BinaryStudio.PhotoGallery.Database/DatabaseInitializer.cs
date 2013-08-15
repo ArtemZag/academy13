@@ -37,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Database
                                 FirstName = userFirstNames[i],
                                 LastName = userLastNames[i],
                                 Email = string.Format("{0}{1}@bingally.com", userFirstNames[i], userLastNames[i]),
-                                IsAdmin = (random.Next(1, 10)%2 == 1),
+                                IsAdmin = userFirstNames[i] != "Tester",
                                 UserPassword = crypto.CreateHashForPassword(userLastNames[i].Length > 5 ? userLastNames[i] : "123456", salt),
                                 Salt = salt
                             });

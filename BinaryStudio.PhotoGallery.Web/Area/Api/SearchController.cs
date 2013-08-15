@@ -11,6 +11,7 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
+    [Authorize]
     public class SearchController : ApiController
     {
         private readonly IModelConverter modelConverter;

@@ -34,7 +34,15 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
             BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/knockout").Include(
                 "~/Scripts/knockout-{version}.js"
                 ));
-            
+
+            BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/chosen").Include(
+                "~/Scripts/chosen.jquery.js"
+                ));
+
+            BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/mediator").Include(
+                "~/Scripts/mediator.js"
+                ));
+
 
             BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/bootstrap").Include(
                 "~/Content/style-libs/bootstrap.css",
@@ -47,6 +55,15 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
 
             BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/opentip").Include(
                 "~/Content/style-libs/opentip.css"
+                ));
+
+            BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/chosen").Include(
+                "~/Content/style-libs/chosen.css"
+                ));
+
+            BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/pnotify").Include(
+                "~/Content/style-libs/jquery.pnotify.default.icons.css",
+                "~/Content/style-libs/pnotify.css"
                 ));
 		}
 	}

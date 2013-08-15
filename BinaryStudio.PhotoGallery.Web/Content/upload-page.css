@@ -12,6 +12,10 @@
     height: 100%;
 }
 
+#foto-select > .input-append {
+    margin-bottom: 0 !important;
+}
+
 #foto-select {
     position: absolute;
     padding: 5px;

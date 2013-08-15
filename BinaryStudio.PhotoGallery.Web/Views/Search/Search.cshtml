@@ -32,17 +32,42 @@
         
         <div class="span7" data-bind="foreach: foundItems">
             
-            <!-- photo result -->
-            <div class="founded-item">
-                <img class="photo" data-bind="src: ThumbnailPath"/> 
-
-                <div class="photo-info">
-                    <a data-bind="attr: {href: PhotoViewUrl}"><div data-bind="text: PhotoName"></div></a>
-                    <a data-bind="attr: {href: AlbumViewUrl}"><div data-bind="text: AlbumName"></div></a>
+            <!-- ko if: Type == 'photo' -->
+            <div class="span7 found-item">
+                
+                <div class="result-image">
+                    <a data-bind="attr: { href: PhotoViewUrl }">
+                        <img data-bind="attr: { src: ThumbnailPath}"/>
+                    </a>
                 </div>
                 
+                <ul class="unstyled">
+                    <li class="search-info-item"><a data-bind="attr: { href: PhotoViewUrl }"><!--ko text: PhotoName--><!--/ko--></a></li>
+                    <li class="search-info-item"><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: AlbumName--><!--/ko--></a></li>
+                    <li class="search-info-item"><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
+                    <li class="search-info-item"><!--ko text: DateOfCreation--><!--/ko--></li>
+                </ul>
+
             </div>
-            <!-- end photo result -->
+            <!-- /ko -->
+            
+            
+            <!-- ko if: Type == 'user' -->
+            <div class="span7 found-item">
+                <div class="result-image">
+                    <a data-bind="attr: { href: AvatarPath }">
+                        <img src="~/Content/images/no_avatar.png"/>
+                    </a>
+                </div>
+                
+                <ul class="unstyled">
+                    <li><a data-bind="attr: { href: UserViewUri }"><!--ko text: Name--><!--/ko--></a></li>
+                    <li><!--ko text: Department--><!--/ko--></li>
+                    <li><!--ko text: IsOnline--><!--/ko--></li>
+                </ul>
+
+            </div>
+            <!-- /ko -->
 
         </div>  
         

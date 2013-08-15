@@ -5,6 +5,7 @@ using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
@@ -49,10 +50,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return View(new SigninViewModel());
         }
 
-        [GET("Signup/{service}")]
-        public ActionResult SignUp(string service)
+        [GET("Signup/{hash}")]
+        public ActionResult SignUp(string hash)
         {
-            if (string.IsNullOrEmpty(service))
+            if (string.IsNullOrEmpty(hash))
             {
                 if (User.Identity.IsAuthenticated)
                 {
@@ -66,13 +67,23 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                     // Clear cookie
                     FormsAuthentication.SignOut();
                 }
-            }
-            if (service == "facebook")
-            {
-                return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
+
+                RedirectToAction("Signin", "Authorization");
             }
 
-            return View(new SignupViewModel());
+            var signupViewModel = new SignupViewModel();
+
+            try
+            {
+                var user = _userService.GetUnactivatedUser(hash);
+                signupViewModel.Email = user.Email;
+            }
+            catch (UserNotFoundException)
+            {
+                RedirectToAction("Signin", "Authorization");
+            }
+            
+            return View(signupViewModel);
         }
 
         [GET("FacebookCallBack/{userSecret}")]
