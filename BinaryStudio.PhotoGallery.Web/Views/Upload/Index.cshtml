@@ -12,9 +12,9 @@
     <div id="select-all-photos">
         <input type="checkbox" data-bind="enable: canSelectAllPhotos, checked: chekedAllPhotos"> Select all photos&nbsp;
     </div>
-    <select data-bind="options: albums, optionsText: 'Name', optionsValue: 'Id', value: selectedAlbumId, enable: canSave, optionsCaption: 'Choose album to save in...'">
+    <select data-bind="options: albums, optionsText: 'Name', optionsValue: 'Id', value: selectedAlbumId, enable: canSavePhotos, optionsCaption: 'Choose album to save in...'">
     </select>
-    <button class="btn btn-danger" data-bind="click: startUpload, enable: canSave">Save fotos</button>
+    <button class="btn btn-danger" data-bind="click: startUpload, enable: (canSavePhotos() == true) && (selectedAlbumId() > 0)">Save photos</button>
 </div>
 
 <div id="dropzone-container">
@@ -27,6 +27,6 @@
 @Scripts.Render("~/bundles/scripts/knockout")
 
 @Scripts.Render("~/Scripts/mediator.js")
-@Scripts.Render("~/Scripts/UploadPage/PhotoPreview.js")
+@Scripts.Render("~/Scripts/UploadPage/PhotoPreviewViewModel.js")
 @Scripts.Render("~/Scripts/UploadPage/UploadViewModel.js")
 @Scripts.Render("~/Scripts/UploadPage/main.js")

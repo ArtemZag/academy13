@@ -117,33 +117,6 @@ body {
     cursor: pointer;
 }
 
-.change-panel {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    margin-left: -200px;
-    border: 2px solid #03417d;
-    border-top: 0;
-    padding: 5px;
-    border-radius: 0 0 5px 5px;
-    box-shadow: 0 0 30px 2px rgba(3, 65, 125, 0.7);
-    width: 400px;
-    height: 32px;
-    background: rgba(245, 245, 245, 0.6);
-}
-
-.change-panel strong {
-    font-size: 20px;
-    color: white;
-    margin-top: 5px;
-    width: 50%;
-    text-align: center;
-}
-
-.change-panel .btn {
-    width: 42%;
-}
-
 /* Effect button */
 
 .effeckt-button {

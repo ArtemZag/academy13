@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return GetUser(userEmail, unitOfWork);
+	            return GetUser(userEmail, unitOfWork);
             }
         }
 
@@ -48,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Users.Find(user => !user.IsActivated && user.Salt == hash);
+	            return unitOfWork.Users.Find(user => !user.IsActivated && user.Salt == hash);
             }
         }
 
@@ -105,7 +105,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     IsAdmin = false,
                     IsActivated = false,
                     // Here is our HASH for activating link
-                    Salt = Randomizer.GetString(128),
+                    Salt = Randomizer.GetString(16),
                     // Empty password field is not good 
                     UserPassword =
                         cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), cryptoProvider.GetNewSalt())
@@ -125,13 +125,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var userModel = this.GetUser(userEmail);
+				var userModel = this.GetUser(userEmail);
 
-                if (userModel.IsActivated || (userModel.Salt != hash)) return;
+				if (userModel.IsActivated || (userModel.Salt != hash)) return;
 
-                userModel.Salt = cryptoProvider.GetNewSalt();
-                userModel.UserPassword = cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
-                userModel.IsActivated = true;
+				unitOfWork.Users.Find(userModel.Id).Salt = cryptoProvider.GetNewSalt();
+
+				unitOfWork.Users.Find(userModel.Id).UserPassword = cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
+				unitOfWork.Users.Find(userModel.Id).IsActivated = true;
+				unitOfWork.SaveChanges();
             }
         }
 

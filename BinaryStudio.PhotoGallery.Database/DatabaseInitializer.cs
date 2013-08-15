@@ -10,7 +10,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
+    public class DatabaseInitializer : DropCreateDatabaseAlways<DatabaseContext>
     {
         protected override void Seed(DatabaseContext databaseContext)
         {
@@ -77,6 +77,8 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 ///////////////////////////////////////////////////////
 
+                var photosForAlbum = new Collection<PhotoModel>();
+
                 var generatedRandomComment = new StringBuilder();
 
                 for (int i = 0; i < 29; i++)
@@ -97,49 +99,30 @@ namespace BinaryStudio.PhotoGallery.Database
                         comm.Add(new PhotoCommentModel(7, Randomizer.GetNumber(i), generatedRandomComment.ToString(),
                                                        -1) {Rating = Randomizer.GetNumber(64)});
                     }
-                    unitOfWork.Photos.Add(new PhotoModel(3, 7) {PhotoName = i + ".jpg", PhotoComments = comm});
-                    unitOfWork.Photos.Add(new PhotoModel(4, 6) {PhotoName = i + ".jpg"});
+                    photosForAlbum.Add(new PhotoModel(3, 7) {PhotoFileName = i + ".jpg", PhotoComments = comm, Description = string.Empty});
+                    unitOfWork.Photos.Add(new PhotoModel(4, 6) {PhotoFileName = i + ".jpg"});
                 }
 
 
                 /////////////////////////////////////////////////////////////////////////////////
-                unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));
-                unitOfWork.Albums.Add(new AlbumModel("Test", 7));
-                
-                var availableGroupModel = new AvailableGroupModel(){AlbumId = 3, GroupId = 1, CanSeeComments = true, CanSeePhotos = true};
-                var availableGroupModel1 = new AvailableGroupModel(){AlbumId = 3, GroupId = 2, CanSeeComments = true, CanSeePhotos = true};
-                var availableGroupModel2 = new AvailableGroupModel(){AlbumId = 3, GroupId = 3, CanSeeComments = true, CanSeePhotos = true};
-                var availableGroupModel3 = new AvailableGroupModel(){AlbumId = 3, GroupId = 4, };
-                var availableGroupModel4 = new AvailableGroupModel(){AlbumId = 3, GroupId = 5, };
 
-                var AGList = new List<AvailableGroupModel>();
-                AGList.Add(availableGroupModel);
-                AGList.Add(availableGroupModel1);
-                AGList.Add(availableGroupModel2);
-                AGList.Add(availableGroupModel3);
-                AGList.Add(availableGroupModel4);
+                /*unitOfWork.Albums.Add(new AlbumModel("Test", 7));*/
+                var availableGroupModel = new AvailableGroupModel {AlbumId = 3, GroupId = 1, CanSeeComments = true, CanSeePhotos = true};
+                var availableGroupModel1 = new AvailableGroupModel {AlbumId = 3, GroupId = 2, CanSeeComments = true, CanSeePhotos = true};
+                var availableGroupModel2 = new AvailableGroupModel {AlbumId = 3, GroupId = 3, CanSeeComments = true, CanSeePhotos = true};
+                var availableGroupModel3 = new AvailableGroupModel {AlbumId = 3, GroupId = 4, };
+                var availableGroupModel4 = new AvailableGroupModel {AlbumId = 3, GroupId = 5, };
 
-                unitOfWork.Albums.Add(new AlbumModel("Test", 7) { AvailableGroups = AGList });
-
-                var availableGroupModel5 = new AvailableGroupModel() { AlbumId = 5, GroupId = 1, CanSeeComments = true, CanSeePhotos = true };
-                var availableGroupModel6 = new AvailableGroupModel() { AlbumId = 5, GroupId = 2, CanSeeComments = true, CanSeePhotos = true };
-                var availableGroupModel7 = new AvailableGroupModel() { AlbumId = 5, GroupId = 3, CanSeeComments = true, CanSeePhotos = true };
-                var availableGroupModel8 = new AvailableGroupModel() { AlbumId = 5, GroupId = 4, };
-                var availableGroupModel9 = new AvailableGroupModel() { AlbumId = 5, GroupId = 5, };
-
-                var AGList1 = new List<AvailableGroupModel>();
-                AGList1.Add(availableGroupModel5);
-                AGList1.Add(availableGroupModel6);
-                AGList1.Add(availableGroupModel7);
-                AGList1.Add(availableGroupModel8);
-                AGList1.Add(availableGroupModel9);
-
-                unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6) { AvailableGroups = AGList1 });
-
-                unitOfWork.Albums.Add(new AlbumModel("Summer", 5)
+                var AGList = new List<AvailableGroupModel>
                 {
-                    Description = "Ololololololo. Hannover 2013"
-                });
+                    availableGroupModel,
+                    availableGroupModel1,
+                    availableGroupModel2,
+                    availableGroupModel3,
+                    availableGroupModel4
+                };
+
+                var album = new AlbumModel("Test", 7) {AvailableGroups = AGList, Photos = photosForAlbum};
 
                 var groupCollection = new Collection<GroupModel>
                     {
@@ -151,8 +134,10 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 unitOfWork.Users.Find(7).Groups = groupCollection;
 
+                unitOfWork.Users.Find(7).Albums = new Collection<AlbumModel> {album};
+                
                 //////////////////////////////////////////////////////////
-
+                unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));
                 
 
                 unitOfWork.SaveChanges();

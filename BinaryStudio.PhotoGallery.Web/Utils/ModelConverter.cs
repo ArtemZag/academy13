@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Security.Policy;
-using BinaryStudio.PhotoGallery.Core.PathUtils;
+﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
@@ -56,9 +54,11 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return new SearchArguments
                 {
                     UserId = userId,
+
                     SearchCacheToken = searchViewModel.SearchCacheToken,
-                    Begin = searchViewModel.Begin,
-                    End = searchViewModel.End,
+
+                    Interval = searchViewModel.Interval,
+
                     SearchQuery = searchViewModel.SearchQuery,
                     IsSearchPhotosByName = searchViewModel.IsSearchPhotosByName,
                     IsSearchPhotosByTags = searchViewModel.IsSearchPhotosByTags,
@@ -84,13 +84,29 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     break;
 
                 case ItemType.User:
+
+                    result = GetUserFoundViewModel(found);
                     break;
             }
 
             return result;
         }
 
-        private PhotoFoundViewModel GetPhotoFoundViewModel(IFound found)
+        private IFoundViewModel GetUserFoundViewModel(IFound found)
+        {
+            var userFound = (UserFound) found;
+
+            return new UserFoundViewModel
+            {
+                AvatarPath = pathUtil.BuildUserAvatarPath(userFound.Id),
+                Department = userFound.Department,
+                IsOnline = userFound.IsOnline,
+                Name = userFound.Name,
+                UserViewUri = urlUtil.BuildUserViewUrl(userFound.Id)
+            };
+        }
+
+        private IFoundViewModel GetPhotoFoundViewModel(IFound found)
         {
             var photoFound = (PhotoFound) found;
 
@@ -124,8 +140,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 {
                     UserId = userId,
                     AlbumId = albumId,
-                    PhotoName = Path.GetFileNameWithoutExtension(fullPhotoName),
-                    Format = Path.GetExtension(fullPhotoName).Remove(0, 1)
+                    PhotoFileName = fullPhotoName
                 };
 
             return photoModel;
@@ -148,19 +163,31 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     //        Look at PhotoModel to check the meaning of property UserModelID
                     PhotoSource =
                         pathUtil.BuildOriginalPhotoPath(albumModel.UserId, photoModel.AlbumId,
-                                                         photoModel.PhotoName, photoModel.Format),
+                                                         photoModel.PhotoFileName, photoModel.Format),
 
                     // Maaak: I think needs refactoring. Or another method,
                     //        that will create a path by only one parameter - photoID
                     PhotoThumbSource = 
-                        pathUtil.BuildThumbnailsPath(albumModel.UserId, photoModel.AlbumId)
-                        + @"\" + photoModel.PhotoName + photoModel.Format,
+                        string.Format("{0}\\{1}{2}",
+                        pathUtil.BuildThumbnailsPath(albumModel.UserId, photoModel.AlbumId),
+                        photoModel.PhotoFileName,
+                        photoModel.Format),
+
                     AlbumId = photoModel.AlbumId,
                     PhotoId = photoModel.Id,
                     PhotoViewPageUrl = urlUtil.BuildPhotoViewUrl(photoModel.Id)
                 };
 
             return viewModel;
+        }
+
+        public UserViewModel GetViewModel(UserModel userModel)
+        {
+            return new UserViewModel
+                {
+                    FirstName = userModel.FirstName,
+                    LastName = userModel.LastName
+                };
         }
 
         public PhotoCommentViewModel GetViewModel(PhotoCommentModel photoCommentModel, UserModel userModel)

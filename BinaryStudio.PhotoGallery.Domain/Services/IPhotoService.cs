@@ -42,5 +42,22 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end);
 
         PhotoModel GetPhoto(string userEmail, int photoID);
+
+
+        /// <summary>
+        /// Gets all likes for photo
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="photoID"></param>
+        /// <returns></returns>
+        IEnumerable<UserModel> GetLikes(string userEmail, int photoID);
+
+
+        /// <summary>
+        /// Add like to photo from user
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="photoID"></param>
+        void AddLike(string userEmail, int photoID);
     }
 }

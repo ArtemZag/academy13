@@ -12,8 +12,14 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         string BuildThumbnailsPath(int userId, int albumId);
 
+        string BuildUserAvatarPath(int userId);
+
         IEnumerable<string> BuildTemporaryDirectoriesPaths();
 
-        string BuildTemporaryDirectoryPath(int userId);
+        /// <returns>Path in format "C:\\ololo\\ololo"</returns>
+        string BuildAbsoluteTemporaryDirectoryPath(int userId);
+
+        /// <returns>Path in format "C:\\ololo\\ololo"</returns>
+        string BuildAbsoluteAlbumPath(int userId, int albumId);
     }
 }

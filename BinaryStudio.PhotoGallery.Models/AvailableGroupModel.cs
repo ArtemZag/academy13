@@ -27,8 +27,10 @@
         /// </summary>
         public bool CanSeePhotos { get; set; }
         public bool CanSeeComments { get; set; }
+        public bool CanSeeLikes { get; set; }
         public bool CanAddPhotos { get; set; }
         public bool CanAddComments { get; set; }
+
 
 
         public int GroupId { get; set; }

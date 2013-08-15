@@ -28,6 +28,19 @@
             this);
     }
 
+    function Like(data) {
+        var lik = this;
+
+        lik.firstName = ko.observable(data.FirstName);
+        lik.lastName = ko.observable(data.LastName);
+
+        lik.fullName = ko.computed(function() {
+            return lik.firstName() + " " + lik.lastName();
+        }, this);
+
+        /*lik.avaSRC = ko.observable(data.src);*/
+    }
+
 
     function PhotoViewModel() {
         var self = this;
@@ -38,6 +51,8 @@
         self.Description = ko.observable();
         self.src = ko.observable();
         self.IsVisible = ko.observable();
+        self.PhotoLikes = ko.observableArray();
+        self.PhotoLikeIcon = ko.observable();
 
         self.comms = ko.observableArray();
         self.newComment = ko.observable();
@@ -63,7 +78,6 @@
         };
 
         self.ShowLeftSideMenu = function () {
-            $("body").css("backgound-color", "black");
             $(".navbar").css({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" })
                          .animate({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" }, 450);
             
@@ -73,6 +87,7 @@
             $("#actionSegment").css({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" })
                            .animate({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" }, 450);
             $("#leftSideMenu").css("-webkit-transform", "translateX(300px)").animate("-webkit-transform", "translateX(0px)", 500);
+            $("#leftSideMenuButton").css("background-color", "transparent");
         };
         
         self.HideLeftSideMenu = function () {
@@ -85,6 +100,12 @@
             $("#actionSegment").css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
                            .animate({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
             $("#leftSideMenu").css("-webkit-transform", "translateX(-300px)").animate("-webkit-transform", "translateX(0px)", 500);
+            $("#leftSideMenuButton").css("background-color", "#e7e7e7");
+        };
+
+        self.IncrementPhotoLike = function () {
+            AddLike(self.PhotoID);
+            self.PhotoLikeIcon("/Content/images/photo-page/like-icon.png");
         };
 
     }
@@ -130,6 +151,7 @@
         window.history.pushState("", "", "/Photo/" + model.PhotoID());
         
         $.post("/PhotoComment/GetPhotoComments", { photoID: photo.PhotoId, begin: 0, end: 50 }, SetComments);
+        $.post("/Photo/GetLikes", { photoID: model.PhotoID }, SetLikes);
     }
 
     function SetComments(comm) {
@@ -139,6 +161,19 @@
         });
     }
 
+    function SetLikes(likes) {
+        model.PhotoLikes.destroyAll();
+        $.each(likes, function(k, item) {
+            model.PhotoLikes.push(new Like(item));
+
+            var i = i + 100500;
+        });
+        
+    }
+
+    function AddLike(photoID) {
+        $.post("/Photo/AddLike", { photoID: model.PhotoID }, SetLikes);
+    };
 
     function SetPhotoSize(w, h) {
         var width = $(window).width();

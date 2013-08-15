@@ -18,7 +18,7 @@
         <li>item3</li>
     </ul>
 </div>
-<div id="leftSideMenuButton" data-bind="event: { mouseover: ShowLeftSideMenu }"></div>
+<div id="leftSideMenuButton" data-bind="event: { mouseover: ShowLeftSideMenu }"><div>...</div></div>
 
 <div id="photoSegment">
 
@@ -26,13 +26,17 @@
         <img id="prevPhotoButtonArrow" src="../../Content/images/2.png" width="85%" /></div>
     <div id="photo">
         <input id="hiddenPhotoID" type="hidden" value="@ViewBag.PhotoID"/>
-        <img id="mainPhoto" src="" alt="" data-bind="attr: { src: src }, click: ShowNextPhoto" />
+        <img id="mainPhoto" alt="" data-bind="attr: { src: src }, click: ShowNextPhoto" />
+        
         <div id="cosialNetworkSync">
             <div id="facebookSyncButton" data-bind="click: fbSync">f</div>
             <div id="vkSyncButton">vk</div>
             <div id="twetterSyncButton">t</div>
         </div>
-        
+        <div id="photoLike" data-bind="click: IncrementPhotoLike">
+            <img src="~/Content/images/photo-page/unlike-icon.png" data-bind="attr: { src: PhotoLikeIcon }"/>
+            <span data-bind="text: PhotoLikes.length"></span>
+        </div>
 
     </div>
 

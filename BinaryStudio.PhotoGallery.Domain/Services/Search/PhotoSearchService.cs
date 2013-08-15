@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
@@ -33,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 {
                     IEnumerable<PhotoFound> found = SearchByCondition(avialableAlbums, searchQuery, unitOfWork,
                         model =>
-                            model.PhotoName.Contains(searchQuery) && !model.IsDeleted, GetRelevanceByName);
+                            model.PhotoFileName.Contains(searchQuery) && !model.IsDeleted, GetRelevanceByName);
 
                     result.AddRange(found);
                 }
@@ -49,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
                 if (searchArguments.IsSearchPhotosByTags)
                 {
-                    IEnumerable<PhotoFound> found = SearchByTags(searchQuery, unitOfWork);
+                    IEnumerable<PhotoFound> found = SearchByTags(avialableAlbums, searchQuery);
 
                     result.AddRange(found);
                 }
@@ -89,7 +88,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     Id = model.Id,
                     UserId = model.UserId,
                     AlbumId = model.AlbumId,
-                    PhotoName = model.PhotoName,
+                    PhotoName = model.PhotoFileName,
                     Rating = model.Rating,
                     DateOfCreation = model.DateOfCreation,
                     Relevance = getRelevance(searchQuery, model)
@@ -101,30 +100,26 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return result;
         }
 
-        private IEnumerable<PhotoFound> SearchByTags(string searchQuery, IUnitOfWork unitOfWork)
+        private IEnumerable<PhotoFound> SearchByTags(IEnumerable<AlbumModel> fromAlbums, string searchQuery)
         {
             var result = new List<PhotoFound>();
 
-            List<PhotoTagModel> foundTags =
-                unitOfWork.PhotoTags.Filter(model => model.TagName.Contains(searchQuery)).ToList();
-
-            foreach (PhotoTagModel tag in foundTags)
+            foreach (AlbumModel album in fromAlbums)
             {
-                IEnumerable<PhotoModel> presentPhotos =
-                    tag.PhotoModels.Select(model => model).Where(model => !model.IsDeleted);
+                IEnumerable<PhotoFound> found =
+                    album.Photos.Where(model => model.PhotoTags.Any(tagModel => tagModel.TagName.Contains(searchQuery)))
+                        .Select(model => new PhotoFound
+                        {
+                            Id = model.Id,
+                            UserId = model.UserId,
+                            AlbumId = model.AlbumId,
+                            PhotoName = model.PhotoFileName,
+                            Rating = model.Rating,
+                            DateOfCreation = model.DateOfCreation,
+                            Relevance = 1
+                        });
 
-                IEnumerable<PhotoFound> tagPhotos = presentPhotos.Select(model => new PhotoFound
-                {
-                    Id = model.Id,
-                    UserId = model.UserId,
-                    AlbumId = model.AlbumId,
-                    PhotoName = model.PhotoName,
-                    Rating = model.Rating,
-                    DateOfCreation = model.DateOfCreation,
-                    Relevance = 1
-                });
-
-                result.AddRange(tagPhotos);
+                result.AddRange(found);
             }
 
             return result;
@@ -132,7 +127,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
         private int GetRelevanceByName(string searchQuery, PhotoModel photoModel)
         {
-            return Regex.Matches(photoModel.PhotoName, searchQuery).Count;
+            return Regex.Matches(photoModel.PhotoFileName, searchQuery).Count;
         }
 
         private int GetRelevanceByDescription(string searchQuery, PhotoModel photoModel)

@@ -1,7 +1,8 @@
 ﻿
 .user-container {
 	padding: 20px;
-	width: 80%;
+	width: 70%;
+	float: left;
 }
 
 .user-row {
@@ -64,6 +65,50 @@ a span {
 	display: none;
 }
 
-.hidden-field input[type="button"] {
+.hidden-field input[type="button"], .hidden-field a {
 	margin-top: 10px;
+}
+
+.user-info {
+	width: 20%;
+	background: #f3f3f3; /* Для старых браузров */
+    background: -moz-linear-gradient(-225deg, #f1f1f1, #d3d3d3); 
+    background: -webkit-gradient(linear, left top, right bottom, 
+                color-stop(0%,#f1f1f1), color-stop(100%, #d3d3d3));
+    background: -webkit-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: -o-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: -ms-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	position: fixed;
+	left: 73%;
+	height: 250px;
+	margin: 20px 20px 0px 0px;
+	padding: 20px;
+}
+
+.user-info img {
+	padding-bottom: 15px;
+}
+
+#invite-form {
+	width: 20%;
+	background: #f3f3f3; /* Для старых браузров */
+    background: -moz-linear-gradient(-225deg, #f1f1f1, #d3d3d3); 
+    background: -webkit-gradient(linear, left top, right bottom, 
+                color-stop(0%,#f1f1f1), color-stop(100%, #d3d3d3));
+    background: -webkit-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: -o-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: -ms-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+    background: linear-gradient(-225deg, #f1f1f1, #d3d3d3);
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	position: fixed;
+	left: 73%;
+	top: 350px;
+	margin: 20px 20px 0px 0px;
+	padding: 20px;
 }

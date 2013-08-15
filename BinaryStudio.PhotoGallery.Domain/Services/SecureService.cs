@@ -53,6 +53,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public bool CanUserViewLikes(int userId, int albumId)
+        {
+            Predicate<AvailableGroupModel> predicate = group => @group.CanSeeLikes;
+
+            return CanUserDoCommentsAction(userId, albumId, predicate);
+        }
+
         public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
         {
             UserModel user = GetUser(userId, unitOfWork);

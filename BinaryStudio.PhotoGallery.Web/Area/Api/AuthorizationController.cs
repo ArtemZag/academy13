@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Helpers;
 using System.Web.Http;
 using AttributeRouting;
 using System.Net.Http;
@@ -89,5 +90,20 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
+
+		[GET]
+		public HttpResponseMessage GetEmail(string hash)
+		{
+			var user = userService.FindNonActivatedUser(hash);
+			if (user!=null)
+			{
+				return new HttpResponseMessage
+					{
+						StatusCode = HttpStatusCode.OK,
+						Content = new StringContent(user.Email)
+					};
+			}
+			else return new HttpResponseMessage(HttpStatusCode.NotFound);
+		}
     }
 }
