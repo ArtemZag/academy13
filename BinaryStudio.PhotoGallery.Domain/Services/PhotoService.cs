@@ -165,5 +165,33 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 throw new NoEnoughPrivileges("User can't get access to photos", null);
             }
         }
+
+        public IEnumerable<UserModel> GetLikes(string userEmail, int photoID)
+        {
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                var user = GetUser(userEmail, unitOfWork);
+                var photo = unitOfWork.Photos.Find(photoID);
+
+                if (_secureService.CanUserViewPhotos(user.Id, photo.AlbumId))
+                {
+                    return photo.Likes.ToList();
+                }
+
+                throw new NoEnoughPrivileges("User can't get access to photo's likes", null);
+            }
+        }
+
+        public void AddLike(string userEmail, int photoID)
+        {
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                var user = GetUser(userEmail, unitOfWork);
+                var photo = unitOfWork.Photos.Find(photoID);
+
+                unitOfWork.Photos.Find(photoID).Likes.Add(user);
+                unitOfWork.SaveChanges();
+            }
+        }
     }
 }

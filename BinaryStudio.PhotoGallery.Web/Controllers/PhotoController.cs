@@ -44,6 +44,24 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return Json(photoModels.Select(model => _modelConverter.GetViewModel(model)).ToList());
         }
 
+        [POST]
+        public ActionResult GetLikes(int photoID)
+        {
+            var likes = _photoService.GetLikes(User.Identity.Name, photoID);
+
+            return Json(likes.Select(model => _modelConverter.GetViewModel(model)).ToList());
+        }
+
+        [POST]
+        public ActionResult AddLike(int photoID)
+        {
+            _photoService.AddLike(User.Identity.Name, photoID);
+
+            var likes = _photoService.GetLikes(User.Identity.Name, photoID);
+
+            return Json(likes.Select(model => _modelConverter.GetViewModel(model)).ToList());
+        }
+        
         [HttpPost]
         public ActionResult FbSync(string photoID)
         {

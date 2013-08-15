@@ -9,7 +9,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
     {
         int UpdatePeriod { get; set; }
 
-        SearchCache GetCache(string token);
+        /// <summary>
+        /// Deducts part of the cache and returns this part
+        /// </summary>
+        SearchCache DeductCache(string token, int interval);
 
         bool ContainsToken(string token);
 
