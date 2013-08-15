@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Web.Mvc;
 using System.Web.Security;
 using AttributeRouting;
@@ -117,5 +118,6 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             return View();
         }
+
     }
 }

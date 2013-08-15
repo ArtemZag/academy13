@@ -13,19 +13,19 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
     {
         private const string DELIMITER = @"\";
 
-        private const string PHOTOS_DIRECTORY_NAME = "photos";
-        private const string TEMPORARY_DIRECTORY_NAME = "temporary";
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
 
-        private readonly string _dataVirtualRoot;
+        private readonly string dataVirtualRoot;
 
         public PathUtil()
         {
-            _dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
+            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
         }
 
         public string BuildPhotoDirectoryPath()
         {
+            const string PHOTOS_DIRECTORY_NAME = "photos";
+
             var builder = new StringBuilder();
             builder.Append(GetDataDirectory())
                    .Append(DELIMITER)
@@ -78,6 +78,17 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
+        public string BuildUserAvatarPath(int userId)
+        {
+            const string AVATAR_FILE_NAME = "avatar.jpg";
+
+            var builder = new StringBuilder(BuildUserPath(userId));
+            builder.Append(DELIMITER)
+                .Append(AVATAR_FILE_NAME);
+
+            return builder.ToString();
+        }
+
         public IEnumerable<string> BuildTemporaryDirectoriesPaths()
         {
             string photoDirectoryPath = BuildPhotoDirectoryPath();
@@ -105,11 +116,13 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         private string GetDataDirectory()
         {
-            return VirtualPathUtility.ToAbsolute(_dataVirtualRoot); 
+            return VirtualPathUtility.ToAbsolute(dataVirtualRoot); 
         }
 
         private string BuildTemporaryDirectoryPath(string userDirectoryPath)
         {
+            const string TEMPORARY_DIRECTORY_NAME = "temporary";
+
             return Path.Combine(userDirectoryPath, TEMPORARY_DIRECTORY_NAME);
         }
     }

@@ -26,23 +26,6 @@
                 required: "Please enter your password.",
                 minlength: "Password should be 6-20 characters."
             }
-        },
-        errorPlacement: function (error, element) {
-            var tip = element.data('opentip');
-
-            if (tip != null)
-            {
-                tip.setContent(error.text());
-                tip.show();
-            }
-        },
-        success: function (label, element) {
-            var tip = $(element).data('opentip');
-
-            if (tip != null)
-            {
-                tip.hide();
-            }
         }
     });
 });

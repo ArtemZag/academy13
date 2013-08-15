@@ -2,6 +2,8 @@
 {
     public class UserFound : IFound
     {
+        public int Id { get; set; }
+
         /// <summary>
         ///     Users name, that contains FirstName, SecondName and NickName
         /// </summary>
