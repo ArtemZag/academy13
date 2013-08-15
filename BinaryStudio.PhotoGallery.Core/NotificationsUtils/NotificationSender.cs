@@ -3,7 +3,7 @@ using System.Net.Mail;
 
 namespace BinaryStudio.PhotoGallery.Core.NotificationsUtils
 {
-    internal class NotificationSender : INotificationSender
+    public class NotificationSender : INotificationSender
     {
         public void Send(string fromHost, string fromEmail, string fromPassword, string toEmail, string text)
         {
