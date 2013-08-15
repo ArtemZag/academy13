@@ -66,6 +66,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public int PhotoCount(string userEmail, string albumName)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userEmail, unitOfWork);
+                AlbumModel album = GetAlbum(user, albumName, unitOfWork);
+
+                return album.Photos.Sum(model => 1);
+            }
+        }
+
         public IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

@@ -15,6 +15,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         IEnumerable<AlbumModel> GetAlbums(string userEmail);
 
+        IEnumerable<AlbumModel> GetAlbums(string userEmail,int begin, int end);
+
         /// <summary>
         ///     Creates album for specified user by his email.
         /// </summary>

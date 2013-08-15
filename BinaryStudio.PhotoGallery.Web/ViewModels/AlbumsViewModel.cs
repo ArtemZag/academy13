@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
     {
         public string UserEmail { get; set; }
         public int totalPhotos{ get; set; }
-        public ICollection<PhotoViewModel> lastPhotos{ get; set; }
-        public ICollection<AlbumViewModel> Models { get; set; }
+        public List<PhotoViewModel> lastPhotos{ get; set; }
+        public List<AlbumViewModel> Models { get; set; }
     }
 }

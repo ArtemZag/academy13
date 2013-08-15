@@ -28,7 +28,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="begin">Beginning of the interval.</param>
         /// <param name="end">Ending of the interval.</param>
         IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
-
+        int PhotoCount(string userEmail, string albumName);
         /// <summary>
         ///     Returns specified interval of users photos.
         /// </summary>

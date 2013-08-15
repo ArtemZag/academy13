@@ -10,75 +10,86 @@ using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
+    [Authorize]
 	[RoutePrefix("Albums")]
     public class AlbumsController : Controller
-	{
-	    private static string usersFolder;
-	    private IAlbumService albumService;
-	    private IUserService userService;
-        static AlbumsController()
-        {
-            usersFolder = GetUsersImagesFolder();
-        }
-        public AlbumsController(IAlbumService _albumService,IUserService _userService)
+    {
+	    private readonly IAlbumService albumService;
+	    private readonly IUserService userService;
+        private readonly IPhotoService photoService;
+	    private readonly IPhotoSynchronizingService photoSynchronizing;
+        private IModelConverter modelConverter;
+        public AlbumsController(IAlbumService _albumService, IUserService _userService, IPhotoSynchronizingService _photoSynchronizing, IModelConverter _modelConverter,IPhotoService _photoService)
         {
             albumService = _albumService;
             userService = _userService;
+            photoSynchronizing = _photoSynchronizing;
+            modelConverter = _modelConverter;
+            photoService = _photoService;
         }
 	    [GET("")]
 	    public ActionResult Index()
 	    {
-	        var albums = albumService.GetAlbums(User.Identity.Name);
-	        return View(new AlbumsViewModel() {UserEmail = User.Identity.Name});
+	        return View(new AlbumsViewModel());
 	    }
 
-	    [HttpPost]
+        [HttpPost]
         public ActionResult GetAlbums(int start, int end)
         {
-            AlbumsViewModel model = new AlbumsViewModel();
-            model.UserEmail = User.Identity.Name;
-            model.Models = new Collection<AlbumViewModel>();
-            string[] descriptions = new string[] { "Pictures", "Cars", "Muscle cars", "Power cars", "Elite cars", "Mega cars", "Import cars" };
-            
+            string email = User.Identity.Name;
+            //var albumModels = albumService.GetAlbums(email, start, end);
+            //UserModel user = userService.GetUser(email);
+
+            var model = new AlbumsViewModel
+                {
+                    UserEmail = User.Identity.Name,
+                    lastPhotos = photoService.GetPhotos(email, 0, 10).Select(modelConverter.GetViewModel).ToList(),
+                    totalPhotos = 0,
+
+                };
+
+            //model.totalPhotos = model.Models.Sum(VARIABLE => photoService.PhotoCount(email, VARIABLE.AlbumName));
+
+            model.Models = new List<AlbumViewModel>();
+
+            var descriptions = new string[]
+                {"Pictures", "Cars", "Muscle cars", "Power cars", "Elite cars", "Mega cars", "Import cars"};
+
             for (int i = 0; i < 7; i++)
             {
                 model.Models.Add(
                     new AlbumViewModel()
-                    {
-                        AlbumName = "Pictures",
-                        AlbumTags = new Collection<AlbumTagModel>()
-		                        {
-		                            new AlbumTagModel()
-		                                {
-		                                    ID = 0,
-		                                    TagName = "fun images",
-		                                    AlbumModels = null
-		                                }
-		                        },
-                        DateOfCreation = DateTime.Now,
-                        Description = descriptions[i],
-                        Id = i,
-                        IsDeleted = false,
-                        UserModelId = 0,
-                    });
+                        {
+                            AlbumName = "Pictures",
+                            AlbumTags = new Collection<AlbumTagModel>()
+                                {
+                                    new AlbumTagModel()
+                                        {
+                                            ID = 0,
+                                            TagName = "fun images",
+                                            AlbumModels = null
+                                        }
+                                },
+                            DateOfCreation = DateTime.Now,
+                            Description = descriptions[i],
+                            Id = i,
+                            UserModelId = 0,
+                        });
+                photoSynchronizing.Initialize(i, 0, 64);
+                photoSynchronizing.SyncOriginalAndThumbnailImages();
+                model.Models[i].collageSource = photoSynchronizing.CreateCollageIfNotExist(256, 3);
             }
 
-            var models = model.Models.Select(p => p).Skip(start).Take(end - start + 1).ToList();
-            foreach (var mod in models)
-            {
-                AsyncPhotoProcessor processor = new AsyncPhotoProcessor(usersFolder, mod.UserModelId, mod.Id, 64);
-                processor.SyncOriginalAndThumbnailImages();
-                string s = processor.CreateCollageIfNotExist(256, 3);
-                s = s.Remove(0, s.IndexOf("Content")-1).Replace(@"\","/");
-                mod.collageSource = s;
-            }
-            return Json(models);
+            model.Models = model.Models.Select(p => p).Skip(start).Take(end - start + 1).ToList();
+            return Json(model);
         }
+
         public ActionResult GetUserInfo()
         {
             var user = userService.GetUser(User.Identity.Name);
@@ -92,13 +103,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                     lastPhotoAdded = "Date: " + DateTime.Now.ToShortDateString() +" time: "+ DateTime.Now.ToLongTimeString(),
                     isAdmin = user.IsAdmin ? "admin" : "simple user",
                     department = ".Net development",
-                    userAvatar = "/Content/Users/0/avatar.jpg"
+                    userAvatar = "/data/photos/0/avatar.jpg"
                 });
-        }
-        private static string GetUsersImagesFolder()
-        {
-            string webProjectPath = HttpRuntime.AppDomainAppPath;
-            return Path.Combine(webProjectPath, @"Content\Users");
         }
     }
 }

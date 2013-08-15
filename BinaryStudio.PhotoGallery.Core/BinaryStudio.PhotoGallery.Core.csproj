@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BinaryStudio.PhotoGallery.Domain">
+      <HintPath>..\BinaryStudio.PhotoGallery.Domain\bin\Debug\BinaryStudio.PhotoGallery.Domain.dll</HintPath>
+    </Reference>
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.6.4.2\lib\net45\Facebook.dll</HintPath>
     </Reference>
@@ -69,7 +72,6 @@
     <Compile Include="PathUtils\PathUtil.cs" />
     <Compile Include="PhotoUtils\ImageFormatHelper.cs" />
     <Compile Include="Randomizer.cs" />
-    <Compile Include="PhotoUtils\IAsyncPhotoProcessor.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\FB.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFacebook.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFB.cs" />
@@ -85,7 +87,6 @@
     <Compile Include="UserUtils\CryptoProvider.cs" />
     <Compile Include="UserUtils\ICryptoProvider.cs" />
     <Compile Include="NotificationsUtils\NotificationSender.cs" />
-    <Compile Include="PhotoUtils\AsyncPhotoProcessor.cs" />
     <Compile Include="PhotoUtils\PhotoProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

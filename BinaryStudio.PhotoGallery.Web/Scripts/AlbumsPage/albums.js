@@ -6,7 +6,7 @@
     var numberOfAlbums = 10;
     var startIndex = 0;
     var endIndex = numberOfAlbums - 1;
-    var canvas = document.getElementById("canv");
+    /*var canvas = document.getElementById("canv");
     var ctx = canvas.getContext('2d');
     var colors = ["yellow", "orange", "red", "blue", "indigo"];
     var colorLen = colors.length;
@@ -14,6 +14,7 @@
     var starColorOffset = 0;
     var width;
     var height;
+    var isFirstPartion = true;
 
     $(window).on('resize', reinitializeCanvas);
     reinitializeCanvas();
@@ -26,7 +27,7 @@
     var xMinIndent = 5;
     var yMinIndent = 5;
     var xIndent;
-    var yIndent;
+    var yIndent;*/
 
     windowObject.scroll(scrolling);
     downloadNextPartionOfAlbums();
@@ -47,14 +48,18 @@
         startIndex += numberOfAlbums;
         endIndex += numberOfAlbums;
     }
-    function getAlbums(albums) {
-        var length = albums.length;
+    function getAlbums(model) {
+        var length = model.Models.length;
         if (length > 0) {
             container.html(
-                $("#collageTmpl").render(albums));
+                $("#collageTmpl").render(model.Models));
         } else {
+            /*if (isFirstPartion) {
+                container.append('<p class="noAlbums">There are no available album</p>');
+            }*/
             windowObject.unbind("scroll");
         }
+        //isFirstPartion = false;
     }
     function scrolling() {
         if (windowObject.scrollTop() == (documentObject.height() - windowObject.height())) {
@@ -63,7 +68,7 @@
         }
     }
     
-    var id2 = setInterval(function () {
+    /*var id2 = setInterval(function () {
         var i = starColorOffset;
 
         var xOffset = 0;
@@ -146,7 +151,7 @@
         document.body.removeChild(div);
         return scrWidth;
     }*/
-    function drawStar(ctx, strokeColor, width, fillColor, height, dx, dy) {
+    /*function drawStar(ctx, strokeColor, width, fillColor, height, dx, dy) {
         ctx.beginPath();
         ctx.moveTo(dx + width, dy + height);
         ctx.lineTo(dx + 3 * width / 2, dy);
@@ -161,5 +166,5 @@
         ctx.stroke();
         ctx.fillStyle = fillColor;
         ctx.fill();
-    }
+    }*/
 });

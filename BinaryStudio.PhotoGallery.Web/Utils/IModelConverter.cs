@@ -16,5 +16,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         PhotoCommentViewModel GetViewModel(PhotoCommentModel photoCommentModel, UserModel userModel);
 
         PhotoViewModel GetViewModel(PhotoModel photoModel);
+
+        AlbumViewModel GetViewModel(AlbumModel model);
     }
 }

@@ -34,7 +34,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         private void CleanPhotos()
         {
             List<PhotoModel> photosToCleanup = GetPhotosForCleanup();
-
+           
             photosToCleanup.ForEach(CleanPhoto);
             DeleteDbRows(photosToCleanup);
 
@@ -70,7 +70,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         private void CleanOriginal(PhotoModel photo)
         {
             string path = storage.GetOriginalPhotoPath(photo);
-
             DeleteFile(path);
         }
 

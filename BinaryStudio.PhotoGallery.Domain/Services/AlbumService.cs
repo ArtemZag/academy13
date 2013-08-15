@@ -11,6 +11,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
+        public IEnumerable<AlbumModel> GetAlbums(string userEmail, int begin, int end)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userEmail, unitOfWork);
+
+                return
+                    user.Albums.Select(model => model)
+                        .Where(model => !model.IsDeleted)
+                        .Skip(begin)
+                        .Take(end - begin + 1)
+                        .ToList();
+            }
+        }
+
         public void CreateAlbum(string userEmail, AlbumModel album)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -45,6 +60,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return user.Albums.Select(model => model).Where(model => !model.IsDeleted).ToList();
             }
         }
+
+
 
         public AlbumModel GetAlbum(string userEmail, string albumName)
         {

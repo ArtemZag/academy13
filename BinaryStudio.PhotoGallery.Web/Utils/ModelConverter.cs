@@ -63,6 +63,22 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return viewModel;
         }
 
+        public AlbumViewModel GetViewModel(AlbumModel model)
+        {
+            var viewModel = new AlbumViewModel()
+                {
+                    collageSource = "",
+                    Id = model.Id,
+                    AlbumName = model.AlbumName,
+                    Description = model.Description,
+                    DateOfCreation = model.DateOfCreation,
+                    UserModelId = model.UserModelId,
+                    AlbumTags = null
+                };
+
+            return viewModel;
+        }
+
         public PhotoCommentViewModel GetViewModel(PhotoCommentModel photoCommentModel, UserModel userModel)
         {
             return new PhotoCommentViewModel
