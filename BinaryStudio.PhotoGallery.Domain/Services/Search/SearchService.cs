@@ -11,12 +11,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         private readonly IPhotoSearchService photoSearchService;
 
         private readonly ISearchCacheTask searchCacheTask;
+        private readonly IUserSearchService userSearchService;
 
         public SearchService(IUnitOfWorkFactory workFactory, IPhotoSearchService photoSearchService,
+            IUserSearchService userSearchService,
             ISearchCacheTask searchCacheTask)
             : base(workFactory)
         {
             this.photoSearchService = photoSearchService;
+            this.userSearchService = userSearchService;
             this.searchCacheTask = searchCacheTask;
         }
 
@@ -39,8 +42,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     resultItems.AddRange(photoSearchService.Search(searchArguments));
                 }
 
+                if (searchArguments.IsSearchByUsers)
+                {
+                    resultItems.AddRange(userSearchService.Search(searchArguments));
+                }
+
                 // todo: search by other types
-                
+
                 resultToken = searchCacheTask.AddCache(resultItems.RemoveElements(searchArguments.Interval));
                 resultItems = resultItems.TakeInterval(searchArguments.Interval).ToList();
             }

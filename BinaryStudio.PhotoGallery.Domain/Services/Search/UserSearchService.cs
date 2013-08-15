@@ -30,7 +30,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchUsersByName)
                 {
                     IEnumerable<UserFound> found = SearchByCondition(searchQuery,
-                        model => BuildName(model.FirstName, model.LastName).Contains(searchQuery), GetRelevanceByName,
+                        model => model.FirstName.Contains(searchQuery) || model.LastName.Contains(searchQuery), GetRelevanceByName,
                         unitOfWork);
 
                     result.AddRange(found);
@@ -70,16 +70,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 Id = model.Id,
                 Department = model.Department,
                 IsOnline = usersMonitorTask.IsOnline(model.Email),
-                Name = BuildName(model.FirstName, model.LastName),
+                Name = model.FirstName + " " + model.LastName,
                 Relevance = getRelevance(searchQuery, model)
             });
 
             return found;
-        }
-
-        private string BuildName(string firstName, string lastName)
-        {
-            return firstName + " " + lastName;
         }
 
         private int GetRelevanceByName(string searchQuery, UserModel userModel)

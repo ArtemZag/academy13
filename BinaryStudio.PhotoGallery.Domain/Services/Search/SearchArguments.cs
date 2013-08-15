@@ -34,7 +34,7 @@
         public bool IsSearchUsersByName { get; set; }
         public bool IsSearchUserByDepartment { get; set; }
 
-        public bool IsSearchByUser
+        public bool IsSearchByUsers
         {
             get { return IsSearchUsersByName || IsSearchUserByDepartment; }
         }
