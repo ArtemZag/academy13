@@ -8,8 +8,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 	[RoutePrefix("Upload")]
     public class UploadController : Controller
     {
-		[GET("")]
-        public ActionResult Index()
+		[GET]
+        public ActionResult Upload()
         {
             return View();
         }

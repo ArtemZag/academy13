@@ -235,6 +235,7 @@
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
+    <Compile Include="Events\GlobalEventManager.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -260,11 +261,10 @@
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
     <Content Include="Content\images\camera.png" />
-    <Content Include="Content\pnotify.css" />
+    <Content Include="Content\style-libs\pnotify.css" />
     <Content Include="Content\images\photo-page\like-icon.png" />
     <Content Include="Content\images\photo-page\unlike-icon.png" />
-    <Content Include="Content\jquery.pnotify.default.css" />
-    <Content Include="Content\jquery.pnotify.default.icons.css" />
+    <Content Include="Content\style-libs\jquery.pnotify.default.icons.css" />
     <Compile Include="ViewModels\Search\IFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\PhotoFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
@@ -283,7 +283,10 @@
     <Content Include="Content\images\spritemap.png" />
     <Content Include="Content\notfound-page.css" />
     <Content Include="Content\search.css" />
+    <Content Include="Content\style-libs\chosen.css" />
     <Content Include="Scripts\AdminPanel\AdminPage.js" />
+    <Content Include="Scripts\chosen.jquery.js" />
+    <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\jquery.pnotify.js" />
     <Content Include="Scripts\jquery.pnotify.min.js" />
     <Content Include="Scripts\jquery.signalR-1.1.3.js" />
@@ -411,7 +414,7 @@
     <Content Include="Views\Home\Gallery.cshtml" />
     <Content Include="Views\Home\Groups.cshtml" />
     <Content Include="Views\AdminPanel\Index.cshtml" />
-    <Content Include="Views\Upload\Index.cshtml" />
+    <Content Include="Views\Upload\Upload.cshtml" />
     <Content Include="Views\Album\PhotoView.cshtml" />
     <Content Include="Views\Photo\Index.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />

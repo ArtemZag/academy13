@@ -1,0 +1,48 @@
+﻿@using System.Web.Optimization
+
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "Upload | Bingally";
+}
+
+@Styles.Render("~/bundles/styles/dropzone")
+@Styles.Render("~/Content/upload-page.css")
+
+<div id="foto-select">
+    @*<select data-bind="options: albums, optionsText: 'Name', optionsValue: 'Id',
+                       value: selectedAlbumId, enable: canMovePhotos, optionsCaption: 'Choose album to move in...'">
+    </select>*@
+    <div>
+          <em>Into This</em>
+          <select data-placeholder="Choose a Country..." class="chosen-select" style="width: 350px; display: none;" tabindex="-1">
+            <option value=""></option>
+            <option value="United States">United States</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="Afghanistan">Afghanistan</option>
+          </select><div class="chosen-container chosen-container-single" style="width: 350px;" title=""><a class="chosen-single chosen-default" tabindex="-1"><span>Choose a Country...</span><div><b></b></div></a><div class="chosen-drop"><div class="chosen-search"><input type="text" autocomplete="off" tabindex="2"></div><ul class="chosen-results"><li class="active-result" style="" data-option-array-index="1"><em>Un</em>ited States</li><li class="active-result" style="" data-option-array-index="2"><em>Un</em>ited Kingdom</li><li class="active-result" style="" data-option-array-index="222">Tanzania, <em>Un</em>ited Republic of</li><li class="active-result" style="" data-option-array-index="236"><em>Un</em>ited Arab Emirates</li><li class="active-result" style="" data-option-array-index="237"><em>Un</em>ited Kingdom</li><li class="active-result" style="" data-option-array-index="238"><em>Un</em>ited States</li><li class="active-result" style="" data-option-array-index="239"><em>Un</em>ited States Minor Outlying Islands</li></ul></div></div>
+        </div>
+    <button class="btn btn-danger" data-bind="click: startUpload, enable: (canMovePhotos() == true) && (selectedAlbumId() > 0)">Move photos</button>
+    &nbsp;&nbsp;
+    <div class="input-append">
+        <input type="text" class="span2" placeholder="Enter an album name" data-bind="text: newAlbumName">
+        <button type="button" class="btn btn-primary" data-bind="click: createNewAlbum, enable: canCreateNewAlbum">Create</button>
+    </div>
+    <div id="select-all-photos">
+        <input type="checkbox" data-bind="enable: canSelectAllPhotos, checked: chekedAllPhotos"> Select all photos&nbsp;
+    </div>
+</div>
+
+<div id="dropzone-container">
+    <form  action="~/Api/File/Upload" class="dropzone dz-clickable" enctype="multipart/form-data" method="POST"></form>
+</div>
+
+@Scripts.Render("~/bundles/scripts/jquery")
+@Scripts.Render("~/bundles/scripts/bootstrap")
+@Scripts.Render("~/bundles/scripts/dropzone")
+@Scripts.Render("~/bundles/scripts/knockout")
+@Scripts.Render("~/bundles/scripts/chosen")
+
+@Scripts.Render("~/Scripts/mediator.js")
+@Scripts.Render("~/Scripts/UploadPage/PhotoPreviewViewModel.js")
+@Scripts.Render("~/Scripts/UploadPage/UploadViewModel.js")
+@Scripts.Render("~/Scripts/UploadPage/main.js")
