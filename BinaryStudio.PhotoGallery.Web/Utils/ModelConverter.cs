@@ -139,6 +139,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             var viewModel = new PhotoViewModel
                 {
+
                     // todo: UserId in photoModel != userId which album contain this photo
                     // is PhotoSource necessary in PhotoViewModel?!
 
@@ -151,11 +152,12 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
                     // Maaak: I think needs refactoring. Or another method,
                     //        that will create a path by only one parameter - photoID
-                    PhotoThumbSource =
+                    PhotoThumbSource = 
                         pathUtil.BuildThumbnailsPath(albumModel.UserId, photoModel.AlbumId)
                         + @"\" + photoModel.PhotoName + photoModel.Format,
                     AlbumId = photoModel.AlbumId,
-                    PhotoId = photoModel.Id
+                    PhotoId = photoModel.Id,
+                    PhotoViewPageUrl = urlUtil.BuildPhotoViewUrl(photoModel.Id)
                 };
 
             return viewModel;

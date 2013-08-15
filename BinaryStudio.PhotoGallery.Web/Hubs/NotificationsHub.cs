@@ -8,6 +8,7 @@ using Microsoft.AspNet.SignalR;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using Microsoft.AspNet.SignalR.Hubs;
 
 namespace BinaryStudio.PhotoGallery.Web.Hubs
 {
@@ -24,6 +25,7 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
     }
 
     [Authorize]
+    [HubName("NotificationsHub")]
     public class NotificationsHub : Hub, INotificationsHub
     {
         private static readonly ConcurrentDictionary<string, User> Users
@@ -31,6 +33,8 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
 
         private readonly IPhotoService _photoService;
         private readonly IUserService _userService;
+
+        public NotificationsHub(){}
 
         public NotificationsHub(IUserService userService, IPhotoService photoService)
         {
@@ -44,14 +48,10 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
             Users.TryGetValue(Context.User.Identity.Name, out user);
             var uModel = _userService.GetUser(Context.User.Identity.Name);
 
-
+            var message = "Пользователь " + uModel.FirstName+ " "+ uModel.LastName + " добавил фотографию " + photoName;
             if (user != null)
             {
-                Clients.AllExcept(user.ConnectionIds.ToArray())
-                       .broadcastNotification(
-                            NotificationTitles.PhotoAdded,
-                            String.Format("{0} {1}", uModel.FirstName, uModel.LastName), photoName
-                       );
+                Clients.All.broadcastNotification(NotificationTitles.PhotoAdded, message);
             }
 
         }
@@ -67,6 +67,8 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
             string userEmail = Context.User.Identity.Name;
             string connectionId = Context.ConnectionId;
 
+            Groups.Add(connectionId, userEmail);
+
             var user = Users.GetOrAdd(userEmail, new User
             {
                 Name = userEmail,
@@ -79,6 +81,25 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
             }
 
             return base.OnConnected();
+        }
+
+        public override Task OnDisconnected()
+        {
+            string userEmail = Context.User.Identity.Name;
+            string connectionId = Context.ConnectionId;
+
+            Groups.Remove(connectionId, userEmail);
+
+            User user;
+            Users.TryGetValue(userEmail, out user);
+
+            if (user != null)
+                lock (user.ConnectionIds)
+                {
+                    user.ConnectionIds.Remove(connectionId);
+                }
+
+            return base.OnDisconnected();
         }
         
     }

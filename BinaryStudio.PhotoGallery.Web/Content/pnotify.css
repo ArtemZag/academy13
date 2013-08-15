@@ -82,14 +82,24 @@ display: block;
 margin: 0 auto;
 }
 
+/*Custom Pnotify css*/
+
 .ui-pnotify.custom .ui-pnotify-title, .ui-pnotify.custom .ui-pnotify-text {
 font-family: Arial, Helvetica, sans-serif !important;
 text-shadow: 2px 2px 3px black !important;
 font-size: 10pt !important;
-color: #FFF !important;
 padding-left: 50px !important;
 line-height: 1 !important;
 text-rendering: geometricPrecision !important;
+}
+
+.ui-pnotify.custom .ui-pnotify-text {
+	color: #FFF;
+}
+
+.ui-pnotify.custom .ui-pnotify-title {
+	color: #00BFFF;
+	font-weight: bold;
 }
 
 .ui-pnotify.custom .ui-pnotify-container {
@@ -100,6 +110,21 @@ border: none !important;
 -webkit-border-radius: 10px;
 border-radius: 10px;
 }
+
+.ui-pnotify.custom .highlight_from {
+	color: tan;
+}
+
+.ui-pnotify.custom .highlight_what {
+	color: #32cd32;
+}
+
+.handPointer {
+	cursor: pointer !important;
+	text-decoration: underline;
+}
+
+/*End*/
 
 .ui-pnotify {
 	top: 75px;

@@ -14,7 +14,6 @@
     ViewBag.Title = "User flow | Bingally";
     var preloaderpath = "/Content/images/photopreloader.gif";
     var ko = Html.CreateKnockoutContext();
-    
 }
 
 
@@ -34,9 +33,9 @@
 
 @ko.Initialize(Model)
 <script type="text/javascript">
-
     viewModel.gotoPhotoPage = function (data) {
-        window.location.href = "/Photo/"+data.PhotoId();
+        var test = data.PhotoViewPageUrl();
+        window.location.href = data.PhotoViewPageUrl();
     };
 </script>
 

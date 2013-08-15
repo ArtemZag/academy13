@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Hubs;
+using Microsoft.AspNet.SignalR;
 
 
 namespace BinaryStudio.PhotoGallery.Web
@@ -23,22 +25,49 @@ namespace BinaryStudio.PhotoGallery.Web
         private readonly IGlobalEventsAggregator _eventsAggregator;
         private readonly IUserService _userService;
         private readonly IPhotoService _photoService;
+        private static IHubContext _hubNotify;
+        private readonly IUrlUtil _urlUtil;
 
         public GlobalEventsHandler(){}
 
-        public GlobalEventsHandler(IGlobalEventsAggregator eventsAggregator, IUserService userService, IPhotoService photoService)
+        public GlobalEventsHandler(IGlobalEventsAggregator eventsAggregator, IUserService userService, IPhotoService photoService/*, IUrlUtil urlUtil*/)
         {
             _eventsAggregator = eventsAggregator;
             _userService = userService;
-            _eventsAggregator.CommentAdded += PhotoCommentAddedCaused;
             _photoService = photoService;
+            _hubNotify = GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>();
+            //_urlUtil = urlUtil;
+
+            //subscribe to events
+            _eventsAggregator.CommentAdded += PhotoCommentAddedCaused;
+            _eventsAggregator.PhotoAdded += PhotoAddedCaused;
+            _eventsAggregator.LikeToPhotoAdded += LikeToPhotoAddedCaused;
         }
 
         public void PhotoCommentAddedCaused(PhotoCommentModel mComment)
         {
             var mUser = _userService.GetUser(mComment.UserModelId);
-            var mPhoto = _photoService.GetPhoto(mUser.Email, mComment.Id);
-            //var noty = String.Format("Пользователь {0} {1} добавил комментарий к фотографии {2}", mUser.FirstName, mUser.LastName, ");
+            var mPhoto = _photoService.GetPhoto(mUser.Email, mComment.PhotoModelId);
+
+            //if (mPhoto.UserId != mComment.UserModelId)
+            //{
+                var mPhotoOwner = _userService.GetUser(mPhoto.UserId);
+                //var _hubNotify = GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>();
+                var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
+                                         "добавил комментарий к фотографии <span class='highlight_what'>\"{2}\"</span>"
+                                         , mUser.FirstName, mUser.LastName, mPhoto.PhotoName);
+                _hubNotify.Clients.Group(mPhotoOwner.Email).SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
+            //}
+        }
+
+        public void PhotoAddedCaused(PhotoModel mPhoto)
+        {
+            
+        }
+
+        public void LikeToPhotoAddedCaused(PhotoModel mPhoto)
+        {
+            
         }
 
         public static GlobalEventsHandler Instance

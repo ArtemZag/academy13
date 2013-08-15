@@ -6,92 +6,85 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class SecureService : ISecureService
+    internal class SecureService : DbService, ISecureService
     {
-        private readonly IUnitOfWorkFactory _unitOfWorkFactory;
-
-        public SecureService(IUnitOfWorkFactory unitOfWorkFactory)
+        public SecureService(IUnitOfWorkFactory workFactory)
+            : base(workFactory)
         {
-            _unitOfWorkFactory = unitOfWorkFactory;
         }
 
-        public bool CanUserViewComments(int userID, int albumID)
+        public bool CanUserViewComments(int userId, int albumId)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanSeeComments;
 
-            return CanUserDoCommentsAction(userID, albumID, predicate);
+            return CanUserDoCommentsAction(userId, albumId, predicate);
         }
 
-        public bool CanUserAddComment(int userID, int albumID)
+        public bool CanUserAddComment(int userId, int albumId)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanAddComments;
 
-            return CanUserDoCommentsAction(userID, albumID, predicate);
+            return CanUserDoCommentsAction(userId, albumId, predicate);
         }
 
-        public bool CanUserViewPhotos(int userID, int albumID)
+        public bool CanUserViewPhotos(int userId, int albumId)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanSeePhotos;
 
-            return CanUserDoCommentsAction(userID, albumID, predicate);
+            return CanUserDoCommentsAction(userId, albumId, predicate);
         }
 
-        public bool CanUserAddPhoto(int userID, int albumID)
+        public bool CanUserAddPhoto(int userId, int albumId)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanAddPhotos;
 
-            return CanUserDoCommentsAction(userID, albumID, predicate);
+            return CanUserDoCommentsAction(userId, albumId, predicate);
         }
 
-        public bool CanUserDeletePhoto(int userID, int photoID)
+        public bool CanUserDeletePhoto(int userId, int photoId)
         {
-            using (var unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-
-                var user = unitOfWork.Users.Find(userID);
-                var photo = unitOfWork.Photos.Find(photoID);
+                UserModel user = unitOfWork.Users.Find(userId);
+                PhotoModel photo = unitOfWork.Photos.Find(photoId);
 
                 // if user in admin group OR user is photo owner
-                return (user.Groups.ToList().Find(model => (model.ID == 1)) != null) || (photo.UserId == userID);
+                return (user.Groups.ToList().Find(model => (model.Id == 1)) != null) || (photo.UserId == userId);
             }
         }
 
-        public IEnumerable<AlbumModel> GetAvailableAlbumsForUser(int userID)
+        public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
         {
-            using (var unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
-            {
-                var listAG = unitOfWork.Users.Find(userID).Groups.ToList();
+            UserModel user = GetUser(userId, unitOfWork);
+            List<GroupModel> userGroups = user.Groups.ToList();
 
-                return unitOfWork.Albums.Filter(album => album.AvailableGroups
-                                                              .ToList()
-                                                              .Find(group => listAG
-                                                                                   .Find(ag => ag.ID == group.ID)
-                                                                                   != null)
-                                                              != null);
-            }
+            IEnumerable<int> albumIds = unitOfWork.AvailableGroups.All().ToList().Join(userGroups,
+                avialableGroupModel => avialableGroupModel.Id,
+                groupModel => groupModel.Id,
+                (avialableGroupModel, groupModel) => new { avialableGroupModel.CanSeePhotos, avialableGroupModel.AlbumId })
+                .Where(arg => arg.CanSeePhotos).Select(arg => arg.AlbumId).Distinct();
+
+
+            return albumIds.Select(albumId => GetAlbum(albumId, unitOfWork)).ToList();
         }
-
 
         /// <summary>
-        /// Checks if user take a part in even one group, that have enough permissions to do some action
+        ///     Checks if user take a part in even one group, that have enough permissions to do some action
         /// </summary>
-        private bool CanUserDoCommentsAction(int userID, int albumID, Predicate<AvailableGroupModel> predicate)
+        private bool CanUserDoCommentsAction(int userId, int albumId, Predicate<AvailableGroupModel> predicate)
         {
-            using (var unitOfWork = _unitOfWorkFactory.GetUnitOfWork())
-            {
-                var availableGropusCanDo = unitOfWork.Albums.Find(albumID).AvailableGroups.ToList().FindAll(predicate);
+            //using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            //{
+            //    List<AvailableGroupModel> availableGropusCanDo =
+            //        unitOfWork.Albums.Find(albumId).AvailableGroups.ToList().FindAll(predicate);
 
 
-                var userGroups = unitOfWork.Users.Find(userID)
-                                           .Groups
-                                           .ToList()
-                                           .Find(group => availableGropusCanDo.Find(x => x.GroupId == @group.ID) != null);
+            //    GroupModel userGroups = unitOfWork.Users.Find(userId).Groups.ToList()
+            //        .Find(group => availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
 
-                return userGroups != null;
-            }
+            //    return userGroups != null;
+            //}
+            return true;
         }
-
-
-
     }
 }

@@ -4,6 +4,7 @@
     {
         public string PhotoSource { get; set; }
         public string PhotoThumbSource { get; set; }
+        public string PhotoViewPageUrl { get; set; }
         public int PhotoId { get; set; }
         public int AlbumId { get; set; }
     }

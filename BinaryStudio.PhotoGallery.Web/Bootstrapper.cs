@@ -39,18 +39,17 @@ namespace BinaryStudio.PhotoGallery.Web
             // register all your components with the container here
             // it is NOT necessary to register your controllers
             // e.g. container.RegisterType<ITestService, TestService>();   
-
             
             container.RegisterType<IModelConverter, ModelConverter>();
-            container.RegisterType<IGlobalEventsAggregator, GlobalEventsAggregator>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IGlobalEventsHandler, GlobalEventsHandler>(new ContainerControlledLifetimeManager());
-            container.RegisterType<NotificationsHub>(new InjectionFactory(CreateNotificationsHub));
 
             Domain.Bootstrapper.RegisterTypes(container);
             Database.Bootstrapper.RegisterTypes(container);
             Core.Bootstrapper.RegisterTypes(container);
 
-            container.RegisterInstance(container.Resolve<IGlobalEventsHandler>());
+            container.RegisterType<IGlobalEventsAggregator, GlobalEventsAggregator>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IGlobalEventsHandler, GlobalEventsHandler>(new ContainerControlledLifetimeManager());
+            container.RegisterType<NotificationsHub>(new InjectionFactory(CreateNotificationsHub));
+            //container.RegisterInstance(container.Resolve<IGlobalEventsHandler>());
         }
 
         private static object CreateNotificationsHub(IUnityContainer p)

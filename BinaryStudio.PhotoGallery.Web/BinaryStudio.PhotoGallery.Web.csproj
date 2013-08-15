@@ -260,7 +260,7 @@
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
     <Content Include="Content\images\camera.png" />
-    <Content Include="Content\jquery.pnotify.default.css" />
+    <Content Include="Content\pnotify.css" />
     <Content Include="Content\jquery.pnotify.default.icons.css" />
     <Compile Include="ViewModels\Search\IFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\PhotoFoundViewModel.cs" />
