@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;

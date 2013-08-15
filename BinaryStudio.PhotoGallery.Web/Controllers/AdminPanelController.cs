@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.NotificationsUtils;
-using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
