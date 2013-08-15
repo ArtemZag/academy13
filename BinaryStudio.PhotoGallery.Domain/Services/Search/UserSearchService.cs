@@ -30,7 +30,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchUsersByName)
                 {
                     IEnumerable<UserFound> found = SearchByCondition(searchQuery,
-                        model => model.FirstName.Contains(searchQuery) || model.LastName.Contains(searchQuery), GetRelevanceByName,
+                        model =>
+                            model.FirstName.ToLower().Contains(searchQuery.ToLower()) ||
+                            model.LastName.ToLower().Contains(searchQuery.ToLower()), GetRelevanceByName,
                         unitOfWork);
 
                     result.AddRange(found);
@@ -39,7 +41,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchUserByDepartment)
                 {
                     IEnumerable<UserFound> found = SearchByCondition(searchQuery,
-                        model => model.Department.Contains(searchQuery), GetRelevanceByDepartment,
+                        model => model.Department.ToLower().Contains(searchQuery.ToLower()),
+                        GetRelevanceByDepartment,
                         unitOfWork);
 
                     result.AddRange(found);
@@ -51,15 +54,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
         private IEnumerable<IFound> Group(IEnumerable<UserFound> data)
         {
-            return data.GroupBy(item => new {item.Department, item.Id, item.IsOnline, item.Name, item.Type})
-                .Select(items => new UserFound
-                {
-                    Department = items.Key.Department,
-                    IsOnline = items.Key.IsOnline,
-                    Name = items.Key.Name,
-                    Id = items.Key.Id,
-                    Relevance = items.Sum(found => found.Relevance)
-                });
+            return
+                data.GroupBy(item => new {item.Department, item.Id, item.IsOnline, item.Name, item.Type})
+                    .Select(items => new UserFound
+                    {
+                        Department = items.Key.Department,
+                        IsOnline = items.Key.IsOnline,
+                        Name = items.Key.Name,
+                        Id = items.Key.Id,
+                        Relevance = items.Sum(found => found.Relevance)
+                    });
         }
 
         private IEnumerable<UserFound> SearchByCondition(string searchQuery, Expression<Func<UserModel, bool>> predicate,
@@ -81,12 +85,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         {
             string name = userModel.FirstName + " " + userModel.LastName;
 
-            return Regex.Matches(name, searchQuery).Count;
+            return Regex.Matches(name.ToLower(), searchQuery.ToLower()).Count;
         }
 
         private int GetRelevanceByDepartment(string searchQuery, UserModel userModel)
         {
-            return Regex.Matches(userModel.Department, searchQuery).Count;
+            return Regex.Matches(userModel.Department.ToLower(), searchQuery.ToLower()).Count;
         }
     }
 }

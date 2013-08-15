@@ -31,7 +31,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchPhotosByName)
                 {
                     IEnumerable<PhotoFound> found = SearchByCondition(avialableAlbums, searchQuery, model =>
-                        model.PhotoFileName.Contains(searchQuery) && !model.IsDeleted, GetRelevanceByName);
+                        model.PhotoFileName.ToLower().Contains(searchQuery.ToLower()) &&
+                        !model.IsDeleted, GetRelevanceByName);
 
                     result.AddRange(found);
                 }
@@ -39,7 +40,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchPhotosByDescription)
                 {
                     IEnumerable<PhotoFound> found = SearchByCondition(avialableAlbums, searchQuery, model =>
-                        model.Description.Contains(searchQuery) && !model.IsDeleted, GetRelevanceByDescription);
+                        model.Description.ToLower().Contains(searchQuery.ToLower()) && !model.IsDeleted,
+                        GetRelevanceByDescription);
 
                     result.AddRange(found);
                 }
@@ -59,7 +61,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         {
             return
                 data.GroupBy(
-                    item => new { item.Id, item.UserId, item.AlbumId, item.Rating, item.DateOfCreation, item.PhotoName, item.Format })
+                    item =>
+                        new
+                        {
+                            item.Id,
+                            item.UserId,
+                            item.AlbumId,
+                            item.Rating,
+                            item.DateOfCreation,
+                            item.PhotoName,
+                            item.Format
+                        })
                     .Select(items => new PhotoFound
                     {
                         Id = items.Key.Id,
@@ -106,7 +118,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             foreach (AlbumModel album in fromAlbums)
             {
                 IEnumerable<PhotoFound> found =
-                    album.Photos.Where(model => model.PhotoTags.Any(tagModel => tagModel.TagName.Contains(searchQuery)))
+                    album.Photos.Where(
+                        model => model.PhotoTags.Any(
+                                tagModel => tagModel.TagName.ToLower().Contains(searchQuery.ToLower())))
                         .Select(model => new PhotoFound
                         {
                             Id = model.Id,
@@ -127,12 +141,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
         private int GetRelevanceByName(string searchQuery, PhotoModel photoModel)
         {
-            return Regex.Matches(photoModel.PhotoFileName, searchQuery).Count;
+            return Regex.Matches(photoModel.PhotoFileName.ToLower(), searchQuery.ToLower()).Count;
         }
 
         private int GetRelevanceByDescription(string searchQuery, PhotoModel photoModel)
         {
-            return Regex.Matches(photoModel.Description, searchQuery).Count;
+            return Regex.Matches(photoModel.Description.ToLower(), searchQuery.ToLower()).Count;
         }
     }
 }
