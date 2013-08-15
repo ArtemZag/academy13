@@ -49,7 +49,7 @@ namespace BinaryStudio.PhotoGallery.Web
             container.RegisterType<IGlobalEventsAggregator, GlobalEventsAggregator>(new ContainerControlledLifetimeManager());
             container.RegisterType<IGlobalEventsHandler, GlobalEventsHandler>(new ContainerControlledLifetimeManager());
             container.RegisterType<NotificationsHub>(new InjectionFactory(CreateNotificationsHub));
-            //container.RegisterInstance(container.Resolve<IGlobalEventsHandler>());
+            container.RegisterInstance(container.Resolve<IGlobalEventsHandler>());
         }
 
         private static object CreateNotificationsHub(IUnityContainer p)

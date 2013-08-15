@@ -32,7 +32,7 @@
             icon: 'photo_icon',
             shadow: true,
             opacity: .8,
-            delay: 66000,
+            delay: 6000,
             closer_hover: true,
             width: "400px",
             //nonblock: true,

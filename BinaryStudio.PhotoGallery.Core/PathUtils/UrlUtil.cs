@@ -5,12 +5,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
     internal class UrlUtil : IUrlUtil
     {
-        private readonly string siteUrl;
-
-        public UrlUtil()
-        {
-            siteUrl = HttpContext.Current.Request.Url.Authority;
-        }
+        public UrlUtil(){}
 
         public string BuildPhotoViewUrl(int photoId)
         {
@@ -37,12 +32,12 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         {
             const string DELIMITER = "/";
 
-            var url = new StringBuilder(/*siteUrl*/);
+            var url = new StringBuilder();
 
             url.Append(DELIMITER)
-                .Append(pathPart)
-                .Append(DELIMITER)
-                .Append(id);
+               .Append(pathPart)
+               .Append(DELIMITER)
+               .Append(id);
 
             return url.ToString();
         }
