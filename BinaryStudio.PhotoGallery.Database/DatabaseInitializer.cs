@@ -107,9 +107,9 @@ namespace BinaryStudio.PhotoGallery.Database
                 /////////////////////////////////////////////////////////////////////////////////
 
                 /*unitOfWork.Albums.Add(new AlbumModel("Test", 7));*/
-                var availableGroupModel = new AvailableGroupModel {AlbumId = 3, GroupId = 1, CanSeeComments = true, CanSeePhotos = true};
-                var availableGroupModel1 = new AvailableGroupModel {AlbumId = 3, GroupId = 2, CanSeeComments = true, CanSeePhotos = true};
-                var availableGroupModel2 = new AvailableGroupModel {AlbumId = 3, GroupId = 3, CanSeeComments = true, CanSeePhotos = true};
+                var availableGroupModel = new AvailableGroupModel {AlbumId = 3, GroupId = 1, CanSeeComments = true, CanSeePhotos = true, CanAddComments = true,CanSeeLikes = true, CanAddPhotos = true};
+                var availableGroupModel1 = new AvailableGroupModel { AlbumId = 3, GroupId = 2, CanSeeComments = true, CanSeePhotos = true, CanAddComments = true, CanSeeLikes = true, CanAddPhotos = true };
+                var availableGroupModel2 = new AvailableGroupModel { AlbumId = 3, GroupId = 3, CanSeeComments = true, CanSeePhotos = true, CanAddComments = true, CanSeeLikes = true, CanAddPhotos = true };
                 var availableGroupModel3 = new AvailableGroupModel {AlbumId = 3, GroupId = 4, };
                 var availableGroupModel4 = new AvailableGroupModel {AlbumId = 3, GroupId = 5, };
 
