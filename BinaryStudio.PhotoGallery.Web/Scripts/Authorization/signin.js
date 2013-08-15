@@ -1,9 +1,6 @@
 ﻿$(function() {
     var loginPanel = $('.login-panel');
-    var changePanel = $('.change-panel');
-    var shadow = $('#full-screen-shadow');
-
-    changePanel.hide();
+    var shadow = $('#full-screen-shadow');   
 
     shadow.fadeIn();
     
@@ -12,16 +9,11 @@
             direction: 'top',
             method: 'show',
             animTime: 600
-        },
-        function() {
-            changePanel.show();
-            Bingally.animation(changePanel, "move", { direction: 'top', method: 'show', animTime: 510 });
         });
 
     var baseURL = "http://" + window.location.host;
-
+    
     addClickEventTo($("#signin-button"), baseURL + '/Api/Authorization/Signin');
-    addClickEventTo($("#signup-button"), baseURL + '/Api/Authorization/Signup');
 
     loginPanel.find('input[type=email], input[type=password]')
         .on('focus', function() {
@@ -45,8 +37,7 @@
             
             $.post(address, submitButton.parent().serialize())
                 .done(function () {
-                    Bingally.animation(loginPanel, "move", { direction: 'top', method: 'hide', animTime: 500 });
-                    Bingally.animation(changePanel, "move",
+                    Bingally.animation(loginPanel, "move",
                         {
                             direction: 'top',
                             method: 'hide',
@@ -62,12 +53,9 @@
                     var errorMsg;
                     
                     switch (jqXHR.status) {
-                        case 400:
-                            errorMsg = "Email or password is incorrect";
-                            break;
                         case 500:
-                            errorMsg = "Uknown server error";
-                            
+                        case 400:
+                            errorMsg = jqXHR.statusText;
                             break;
                         default:
                             errorMsg = "Server is not available";

@@ -6,9 +6,8 @@
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/main-layout.css")
         @Styles.Render("~/bundles/styles/bootstrap")
+        @Styles.Render("~/bundles/styles/pnotify")
 
-        @Styles.Render("~/Content/pnotify.css")
-        @Styles.Render("~/Content/jquery.pnotify.default.icons.css")
         <title>@ViewBag.Title</title>
         <style type="text/css">.viewPort { }</style>
     </head>
@@ -17,9 +16,9 @@
             <nav class="navbar navbar-fixed-top">
                 <a href="~/Home/Index" class="brand"><img src="~/Content/images/logo_small.png"/></a>
                 <ul class="nav">
-                    <li><a href="~/Home/Gallery">Gallery</a></li>
-                    <li><a href="~/Home/Albums">Albums</a></li>
-                    <li><a href="~/Home/Groups">Groups</a></li>
+                    <li><a href="~/Gallery">Gallery</a></li>
+                    <li><a href="~/Albums">Albums</a></li>
+                    <li><a href="~/Groups">Groups</a></li>
                     <li><a href="~/Search">Search</a></li>
                 </ul>
                 <ul class="nav pull-right">
@@ -32,7 +31,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="~/AdminPanel/Index">Administration</a></li>
                             <li><a href="~/Home/News">Notifications</a></li>
-                        <li><a href="~/Settings">Settings</a></li>
+                            <li><a href="~/Profile">Profile</a></li>
                             <li class="divider"></li>
                         <li><a href="~/Authorization/Signout">Sign out</a></li>
                         </ul>

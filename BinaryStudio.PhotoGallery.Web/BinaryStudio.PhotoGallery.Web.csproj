@@ -231,6 +231,7 @@
     <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhotoCommentController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\PhotoController.cs" />
@@ -285,6 +286,7 @@
     <Content Include="Content\search.css" />
     <Content Include="Content\style-libs\chosen.css" />
     <Content Include="Scripts\AdminPanel\AdminPage.js" />
+    <Content Include="Scripts\Authorization\signup.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\jquery.pnotify.js" />
@@ -298,7 +300,7 @@
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
     <Content Include="Scripts\PhotoPage\photo.js" />
-    <Content Include="Content\photo-page\photo-page.css" />
+    <Content Include="Content\photo-page.css" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -377,7 +379,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
-    <Content Include="Scripts\Authorization\main.js" />
+    <Content Include="Scripts\Authorization\signin.js" />
     <Content Include="Scripts\opentip-jquery.js" />
     <Content Include="Scripts\opentip-jquery.min.js" />
     <Content Include="Scripts\knockout.mapping-latest.debug.js" />
@@ -409,7 +411,6 @@
     <Content Include="Views\Shared\_MainLayout.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Authorization\RemindPass.cshtml" />
-    <Content Include="Views\Settings\Settings.cshtml" />
     <Content Include="Views\Album\Index.cshtml" />
     <Content Include="Views\Home\Gallery.cshtml" />
     <Content Include="Views\Home\Groups.cshtml" />
@@ -420,6 +421,7 @@
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Search\Search.cshtml" />
     <Content Include="Views\Albums\Index.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
