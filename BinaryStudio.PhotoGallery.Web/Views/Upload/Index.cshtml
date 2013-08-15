@@ -12,9 +12,9 @@
     <div id="select-all-photos">
         <input type="checkbox" data-bind="enable: canSelectAllPhotos, checked: chekedAllPhotos"> Select all photos&nbsp;
     </div>
-    <select data-bind="options: albums, optionsText: 'Name', optionsValue: 'Id', value: selectedAlbumId, enable: canSavePhotos, optionsCaption: 'Choose album to save in...'">
+    <select data-bind="options: albums, optionsText: 'Name', optionsValue: 'Id', value: selectedAlbumId, enable: canMovePhotos, optionsCaption: 'Choose album to move in...'">
     </select>
-    <button class="btn btn-danger" data-bind="click: startUpload, enable: (canSavePhotos() == true) && (selectedAlbumId() > 0)">Save photos</button>
+    <button class="btn btn-danger" data-bind="click: startUpload, enable: (canMovePhotos() == true) && (selectedAlbumId() > 0)">Move photos</button>
 </div>
 
 <div id="dropzone-container">

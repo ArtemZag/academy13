@@ -1,7 +1,7 @@
 ﻿function UploadViewModel(options) {
     Dropzone.autoDiscover = false;
     
-    var previewContainer = options.element;
+    var previewsContainer = options.element;
 
     var dropzoneOptions = {
         maxFiles: 100,
@@ -19,17 +19,28 @@
     var mediator = options.mediator;
 
     mediator.subscribe("upload:preview", function (data) {
-        for (var index = 0; index < self.previews().length; index++) {
+        var selectedCounter = 0;
+
+        var previewsCount = self.previews().length;
+
+        for (var index = 0; index < previewsCount; index++) {
             var preview = self.previews()[index];
             
-            if (preview.name === data.name) {
-                preview.isSelected = data.isSelected;
-                break;
+            if (preview.name() === data.name) {
+                preview.isSelected(data.isSelected);
+            }
+
+            if (preview.isSelected()) {
+                selectedCounter++;
             }
         }
+
+        var isAllPhotoSelected = self.previews().length === selectedCounter;
+
+        self.chekedAllPhotos(isAllPhotoSelected);
     });
 
-    var dropzone = new Dropzone(previewContainer, dropzoneOptions);
+    var dropzone = new Dropzone(previewsContainer, dropzoneOptions);
     
     dropzone.on("success", function (file, response) {
         var $preview = $(file.previewTemplate);
@@ -78,7 +89,7 @@
 
     self.previews = ko.observableArray(typeof(options.previews) !== 'undefined' ? options.previews : []);
 
-    self.canSavePhotos = ko.computed(function () {
+    self.canMovePhotos = ko.computed(function () {
         if (self.albums().length <= 0) {
             return false;
         }
