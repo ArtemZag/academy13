@@ -101,7 +101,8 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 AvatarPath = pathUtil.BuildUserAvatarPath(userFound.Id),
                 Department = userFound.Department,
                 IsOnline = userFound.IsOnline,
-                Name = userFound.Name
+                Name = userFound.Name,
+                UserViewUri = urlUtil.BuildUserViewUrl(userFound.Id)
             };
         }
 

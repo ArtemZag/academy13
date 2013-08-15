@@ -4,6 +4,8 @@
     {
         public string Name { get; set; }
 
+        public string UserViewUri { get; set; }
+
         public string Department { get; set; }
 
         public bool IsOnline { get; set; }
