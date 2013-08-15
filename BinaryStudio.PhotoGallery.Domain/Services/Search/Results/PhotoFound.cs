@@ -15,6 +15,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Results
 
         public string PhotoName { get; set; }
 
+        // todo: delete
+        public string Format { get; set; }
+
         public int Rating { get; set; }
 
         public DateTime DateOfCreation { get; set; }

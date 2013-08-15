@@ -13,7 +13,7 @@
     padding: 5px;
 }
 
-.user-avatar { margin-right: 8px; }
+.user-avatar { margin: 8px; }
 
 .result-image {
     float: left;
@@ -44,7 +44,7 @@
     margin-top: 35px;
 }
 
-.search-info-vertical-interval { height: 7px; }
+.search-info-item { margin-bottom: 6px; }
 
 .search-option-vertical-interval { height: 18px; }
 

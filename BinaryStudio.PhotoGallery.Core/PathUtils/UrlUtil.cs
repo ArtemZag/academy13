@@ -1,12 +1,9 @@
 ﻿using System.Text;
-using System.Web;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
     internal class UrlUtil : IUrlUtil
     {
-        public UrlUtil(){}
-
         public string BuildPhotoViewUrl(int photoId)
         {
             const string PHOTO_PART = "photo";
