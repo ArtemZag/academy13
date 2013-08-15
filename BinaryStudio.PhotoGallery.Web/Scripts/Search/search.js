@@ -1,15 +1,12 @@
 ﻿$(document).ready(function() {
 
-    var searchInterval = 10;
-
     function searchViewModel() {
 
         var self = this;
 
         self.searchCacheToken = "no token";
 
-        self.begin = 0;
-        self.end = searchInterval;
+        self.interval = 10;
 
         self.foundItems = ko.observableArray();
 
@@ -27,6 +24,15 @@
         self.isSearchUserByDepartment = ko.observable();
 
         self.isSearchByComments = ko.observable();
+
+        searchViewModel.prototype.toJSON = function() {
+
+            var copy = ko.toJS(this);
+
+            delete copy.foundItems;
+
+            return copy;
+        };
 
         self.search = function() {
 

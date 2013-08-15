@@ -56,9 +56,11 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return new SearchArguments
                 {
                     UserId = userId,
+
                     SearchCacheToken = searchViewModel.SearchCacheToken,
-                    Begin = searchViewModel.Begin,
-                    End = searchViewModel.End,
+
+                    Interval = searchViewModel.Interval,
+
                     SearchQuery = searchViewModel.SearchQuery,
                     IsSearchPhotosByName = searchViewModel.IsSearchPhotosByName,
                     IsSearchPhotosByTags = searchViewModel.IsSearchPhotosByTags,

@@ -11,8 +11,7 @@
 
         public string SearchQuery { get; set; }
 
-        public int Begin { get; set; }
-        public int End { get; set; }
+        public int Interval { get; set; }
 
         public bool IsSearchPhotosByName { get; set; }
         public bool IsSearchPhotosByTags { get; set; }

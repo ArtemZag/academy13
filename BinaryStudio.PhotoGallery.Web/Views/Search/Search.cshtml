@@ -33,14 +33,26 @@
         <div class="span7" data-bind="foreach: foundItems">
             
             <!-- photo result -->
-            <div class="founded-item">
-                <img class="photo" data-bind="src: ThumbnailPath"/> 
-
-                <div class="photo-info">
-                    <a data-bind="attr: {href: PhotoViewUrl}"><div data-bind="text: PhotoName"></div></a>
-                    <a data-bind="attr: {href: AlbumViewUrl}"><div data-bind="text: AlbumName"></div></a>
+            <div class="span7 found-item">
+                
+                <div class="result-image">
+                    <a data-bind="attr: { href: PhotoViewUrl }">
+                        <img src="~/Content/images/no_avatar.png"/>
+                    </a>
                 </div>
                 
+                <div class="likes-block"><span class="likes-number likes-caption">100</span></div>
+                
+                <ul class="unstyled">
+                    <li><a data-bind="attr: { href: PhotoViewUrl }"><!--ko text: PhotoName--><!--/ko--></a></li>
+                    <div class="search-info-vertical-interval"></div>
+                    <li><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: AlbumName--><!--/ko--></a></li>
+                    <div class="search-info-vertical-interval"></div>
+                    <li><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
+                    <div class="search-info-vertical-interval"></div>
+                    <li><!--ko text: DateOfCreation--><!--/ko--></li>
+                </ul>
+
             </div>
             <!-- end photo result -->
 

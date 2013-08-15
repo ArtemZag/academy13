@@ -66,6 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AlbumService.cs" />
     <Compile Include="Services\ISecureService.cs" />
+    <Compile Include="Services\Search\ItemsExstensions.cs" />
     <Compile Include="Services\Search\SearchCache.cs" />
     <Compile Include="Services\Search\Results\IFound.cs" />
     <Compile Include="Services\PhotoCommentService.cs" />

@@ -44,9 +44,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
             }
         }
 
-        public SearchCache GetCache(string token)
+        public SearchCache DeductCache(string token, int interval)
         {
-            return caches[token];
+            SearchCache cashe = caches[token];
+
+            var result = new SearchCache
+            {
+                Value = cashe.Value.TakeInterval(interval),
+                LifeTime = cashe.LifeTime
+            };
+
+            cashe.Value = cashe.Value.RemoveElements(interval);
+
+            return result;
         }
 
         public bool ContainsToken(string token)
