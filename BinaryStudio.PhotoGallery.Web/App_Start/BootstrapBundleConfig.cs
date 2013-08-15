@@ -34,7 +34,11 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
             BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/knockout").Include(
                 "~/Scripts/knockout-{version}.js"
                 ));
-            
+
+            BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/chosen").Include(
+                "~/Scripts/chosen.jquery.js"
+                ));
+
 
             BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/bootstrap").Include(
                 "~/Content/style-libs/bootstrap.css",
