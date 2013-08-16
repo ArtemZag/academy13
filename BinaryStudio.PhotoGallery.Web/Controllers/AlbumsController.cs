@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -18,10 +19,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class AlbumsController : Controller
     {
         private static string usersFolder;
+        private static string dataFolderName;
+        private static string photosFolderName;
         private IAlbumService albumService;
         private IUserService userService;
         static AlbumsController()
         {
+            dataFolderName = ConfigurationManager.AppSettings["dataFolderName"];
+            photosFolderName = ConfigurationManager.AppSettings["photosFolderName"];
             usersFolder = GetUsersImagesFolder();
         }
         public AlbumsController(IAlbumService _albumService, IUserService _userService)
@@ -98,7 +103,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         private static string GetUsersImagesFolder()
         {
             string webProjectPath = HttpRuntime.AppDomainAppPath;
-            return Path.Combine(webProjectPath, @"data\photos");
+            return Path.Combine(webProjectPath, dataFolderName, photosFolderName);
         }
     }
 }
