@@ -11,6 +11,7 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Core.IOUtils;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Upload;
@@ -34,6 +35,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 	    private readonly IFileWrapper _fileWrapper;
         private readonly IPhotoService _photoService;
         private readonly IModelConverter _modelConverter;
+        private readonly IAlbumService _albumService;
 
         public FileController(
             IUserService userService,
@@ -42,7 +44,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             IFileHelper fileHelper,
             IFileWrapper fileWrapper,
             IPhotoService photoService,
-            IModelConverter modelConverter)
+            IModelConverter modelConverter,
+            IAlbumService albumService)
         {
             _userService = userService;
             _pathUtil = pathUtil;
@@ -51,12 +54,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 	        _fileWrapper = fileWrapper;
 	        _photoService = photoService;
             _modelConverter = modelConverter;
+            _albumService = albumService;
         }
 
-        [POST("SavePhotos")]
-        public HttpResponseMessage SavePhotos([FromBody] SavePhotosViewModel viewModel)
+        [POST("MovePhotos")]
+        public HttpResponseMessage MovePhotos([FromBody] SavePhotosViewModel viewModel)
         {
-            if (viewModel == null || viewModel.AlbumId <= 0 || !viewModel.PhotoNames.Any())
+            if (viewModel == null || string.IsNullOrEmpty(viewModel.AlbumName) || !viewModel.PhotoNames.Any())
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
@@ -68,8 +72,28 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 // Get user ID from DB
                 var userId = _userService.GetUserId(User.Identity.Name);
 
+                var albumId = 0;
+
+                try
+                {
+                    albumId = _albumService.GetAlbumId(viewModel.AlbumName);
+                }
+                catch (AlbumNotFoundException)
+                {
+                    _albumService.CreateAlbum(User.Identity.Name, viewModel.AlbumName);
+
+                    albumId = _albumService.GetAlbumId(viewModel.AlbumName);
+                }
+
                 // Get path to the temporary folder in the user folder
                 var pathToTempFolder = _pathUtil.BuildAbsoluteTemporaryDirectoryPath(userId);
+
+                var pathToAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, albumId);
+
+                if (!_directoryWrapper.Exists(pathToAlbum))
+                {
+                    _directoryWrapper.CreateDirectory(pathToAlbum);
+                }
 
                 foreach (var photoName in viewModel.PhotoNames)
                 {
@@ -79,14 +103,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                     if (fileExist)
                     {
-                        var pathToAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, viewModel.AlbumId);
-
-                        if (!_directoryWrapper.Exists(pathToAlbum))
-                        {
-                            _directoryWrapper.CreateDirectory(pathToAlbum);
-                        }
-
-                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, viewModel.AlbumId, photoName));
+                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, albumId, photoName));
 
                         var newFilePath = string.Format("{0}\\{1}", pathToAlbum, photoName);
 

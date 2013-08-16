@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -18,6 +17,24 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
+
+                user.Albums.Add(album);
+
+                unitOfWork.SaveChanges();
+            }
+        }
+
+        public void CreateAlbum(string userEmail, string albumName)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userEmail, unitOfWork);
+
+                var album = new AlbumModel
+                {
+                    AlbumName = albumName,
+                    UserId = user.Id
+                };
 
                 user.Albums.Add(album);
 
@@ -71,6 +88,35 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 
                 throw new AlbumNotFoundException();
             }
+        }
+
+        public int GetAlbumId(string albumName)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                var foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName);
+
+                if (foundAlbum == null)
+                {
+                    throw new AlbumNotFoundException();
+                }
+
+                return foundAlbum.Id;
+            }
+        }
+
+        public bool IsExist(string albumName)
+        {
+            try
+            {
+                this.GetAlbumId(albumName);
+            }
+            catch (AlbumNotFoundException)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -55,15 +55,17 @@
             <!-- ko if: Type == 'user' -->
             <div class="span7 found-item">
                 <div class="result-image">
-                    <a data-bind="attr: { href: AvatarPath }">
-                        <img src="~/Content/images/no_avatar.png"/>
+                    <a data-bind="attr: { href: UserViewUri }">
+                        <img data-bind="attr: { src: AvatarPath }"/>
                     </a>
                 </div>
                 
                 <ul class="unstyled">
                     <li><a data-bind="attr: { href: UserViewUri }"><!--ko text: Name--><!--/ko--></a></li>
                     <li><!--ko text: Department--><!--/ko--></li>
-                    <li><!--ko text: IsOnline--><!--/ko--></li>
+                    <!-- ko if: IsOnline -->
+                    <li>Online</li>
+                    <!-- /ko -->
                 </ul>
 
             </div>
@@ -73,7 +75,7 @@
         
         <div class="span3 offset2">
             
-            <div class="search-panel">
+            <div class="search-panel" id="searchPanel">
                 <!-- Search photos by -->
                 <strong>Search photos by</strong>
             

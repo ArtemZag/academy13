@@ -2,6 +2,8 @@
     var self = this;
 
     var mediator = options.mediator;
+
+    self.element = options.element;
     
     self.name = ko.observable(options.name);
     
@@ -16,4 +18,10 @@
     });
 
     self.isSaved = ko.observable(false);
+
+    self.selectPhoto = function () {
+        if (!self.isSaved()) {
+            self.isSelected(!self.isSelected());
+        }
+    };
 }

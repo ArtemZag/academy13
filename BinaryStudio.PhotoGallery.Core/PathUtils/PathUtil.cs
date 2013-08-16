@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
+using System.Web.Management;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
@@ -86,7 +87,23 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             builder.Append(DELIMITER)
                 .Append(AVATAR_FILE_NAME);
 
+            if (!File.Exists(HostingEnvironment.MapPath(builder.ToString())))
+            {
+                builder.Clear();
+
+                builder.Append(GetCustomAvatar());
+            }
+
             return builder.ToString();
+        }
+
+        public string BuildThumbnailPath(int userId, int albumId, string photoName)
+        {
+            string thumbnailDirectoryPath = BuildThumbnailsPath(userId, albumId);
+
+            var filePath = thumbnailDirectoryPath + DELIMITER + photoName;
+
+            return filePath;
         }
 
         public IEnumerable<string> BuildTemporaryDirectoriesPaths()
@@ -117,6 +134,13 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private string GetDataDirectory()
         {
             return VirtualPathUtility.ToAbsolute(dataVirtualRoot); 
+        }
+
+        private string GetCustomAvatar()
+        {
+            const string CUSTOM_AVATAR_PATH = @"~\Content\images\no_avatar.png";
+
+            return  VirtualPathUtility.ToAbsolute(CUSTOM_AVATAR_PATH);
         }
 
         private string BuildTemporaryDirectoryPath(string userDirectoryPath)

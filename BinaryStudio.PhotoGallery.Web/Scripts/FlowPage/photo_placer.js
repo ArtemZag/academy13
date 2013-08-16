@@ -85,7 +85,7 @@
     function getPhotos(photos) {
         if (photos.length > 0) {
             ko.utils.arrayPushAll(window.viewModel.Photos, photos);
-            prepareToShow();
+            setTimeout(prepareToShow(), 5000);
             busy = false;
             startIndex += photoPortion;
         } else {
