@@ -1,5 +1,7 @@
 ﻿$(document).ready(function() {
 
+    $("#searchPanel input[type=checkbox]").attr("checked", "checked");
+
     function searchViewModel() {
 
         var self = this;
@@ -14,18 +16,18 @@
 
         self.searchQuery = ko.observable();
 
-        self.isSearchPhotosByName = ko.observable();
-        self.isSearchPhotosByTags = ko.observable();
-        self.isSearchPhotosByDescription = ko.observable();
+        self.isSearchPhotosByName = ko.observable(true);
+        self.isSearchPhotosByTags = ko.observable(true);
+        self.isSearchPhotosByDescription = ko.observable(true);
 
-        self.isSearchAlbumsByName = ko.observable();
-        self.isSearchAlbumsByTags = ko.observable();
-        self.isSearchAlbumsByDescription = ko.observable();
+        self.isSearchAlbumsByName = ko.observable(true);
+        self.isSearchAlbumsByTags = ko.observable(true);
+        self.isSearchAlbumsByDescription = ko.observable(true);
 
-        self.isSearchUsersByName = ko.observable();
-        self.isSearchUserByDepartment = ko.observable();
+        self.isSearchUsersByName = ko.observable(true);
+        self.isSearchUserByDepartment = ko.observable(true);
 
-        self.isSearchByComments = ko.observable();
+        self.isSearchByComments = ko.observable(true);
 
         searchViewModel.prototype.toJSON = function() {
 

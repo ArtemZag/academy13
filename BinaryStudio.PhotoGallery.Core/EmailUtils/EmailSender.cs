@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using System.Net.Mail;
 
-namespace BinaryStudio.PhotoGallery.Core.NotificationsUtils
+namespace BinaryStudio.PhotoGallery.Core.EmailUtils
 {
-    public class NotificationSender : INotificationSender
+    internal class EmailSender : IEmailSender
     {
-        public void Send(string fromHost, string fromEmail, string fromPassword, string toEmail, string text)
+        public void Send(string fromHost, string fromEmail, string fromPassword, string toEmail, string theme, string text)
         {
             var message = new MailMessage
             {
