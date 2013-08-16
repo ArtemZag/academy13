@@ -89,6 +89,15 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
+        public string BuildThumbnailPath(int userId, int albumId, string photoName)
+        {
+            string thumbnailDirectoryPath = BuildThumbnailsPath(userId, albumId);
+
+            var filePath = thumbnailDirectoryPath + DELIMITER + photoName;
+
+            return filePath;
+        }
+
         public IEnumerable<string> BuildTemporaryDirectoriesPaths()
         {
             string photoDirectoryPath = BuildPhotoDirectoryPath();
