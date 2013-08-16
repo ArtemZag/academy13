@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     [RoutePrefix("Api/File")]
     public class FileController : ApiController
     {
-        private struct NotAccpetedFilesData
+        private struct UploadedFilesData
         {
             public string Name;
             public string Error;
@@ -143,7 +143,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
 
             // Key - file name, Value - error of the loading
-            var notAccpetedFiles = new List<NotAccpetedFilesData>();
+            var notAccpetedFiles = new List<UploadedFilesData>();
 
             try
             {
@@ -175,7 +175,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     if (!_fileHelper.IsImageFile(fileData.LocalFileName))
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
-                        notAccpetedFiles.Add(new NotAccpetedFilesData
+                        notAccpetedFiles.Add(new UploadedFilesData
                         {
                             Name = originalFileName,
                             Error = "This file contains no image data"
@@ -191,7 +191,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     catch (FileRenameException ex)
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);        // delete temp file
-                        notAccpetedFiles.Add(new NotAccpetedFilesData {Name = originalFileName, Error = ex.Message});
+                        notAccpetedFiles.Add(new UploadedFilesData {Name = originalFileName, Error = ex.Message});
                     }
                 }
             }
@@ -201,7 +201,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
 
             // Create response data
-            var listOfNotLoadedFiles = new ObjectContent<IList<NotAccpetedFilesData>>
+            var listOfNotLoadedFiles = new ObjectContent<IList<UploadedFilesData>>
                 (notAccpetedFiles, new JsonMediaTypeFormatter());
 
             var response = new HttpResponseMessage

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -38,6 +39,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         void DeleteAlbum(string userEmail, int albumId);
 
+        /// <summary>
+        ///     
+        /// </summary>
         bool IsExist(string userEmail, string albumName);
+
+        /// <summary>
+        ///     Get all available albums for specified user
+        /// </summary>
+        IEnumerable<AlbumModel> GetAvailableAlbums(int userId);
+
+        IEnumerable<AlbumModel> GetAvailableAlbums(string userEmail);
+
+        IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork);
     }
 }

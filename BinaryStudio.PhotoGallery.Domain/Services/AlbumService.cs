@@ -8,8 +8,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class AlbumService : DbService, IAlbumService
     {
-        public AlbumService(IUnitOfWorkFactory workFactory) : base(workFactory)
+        private readonly ISecureService _secureService;
+
+        public AlbumService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
         {
+            _secureService = secureService;
         }
 
         public void CreateAlbum(string userEmail, AlbumModel album)
@@ -115,6 +118,28 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 return foundAlbum != null;
             }
+        }
+
+        public IEnumerable<AlbumModel> GetAvailableAlbums(int userId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return this.GetAvailableAlbums(userId, unitOfWork);
+            }
+        }
+
+        public IEnumerable<AlbumModel> GetAvailableAlbums(string userEmail)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                var foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
+                return this.GetAvailableAlbums(foundUser.Id, unitOfWork);
+            }
+        }
+
+        public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
+        {
+            return _secureService.GetAvailableAlbums(userId, unitOfWork);
         }
     }
 }

@@ -4,11 +4,10 @@ using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.Utils;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    using BinaryStudio.PhotoGallery.Web.ViewModels;
-
     [Authorize] // Only authorized users can access this controller
     [RoutePrefix("Home")]
     public class HomeController : Controller
@@ -27,7 +26,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// </summary>
         /// <returns>page with flow of public pictures</returns>
         [GET]
-        public ActionResult Index()
+        public ActionResult Index() // TODO This method must return only View
+                                    // TODO all data must be getted by Area/Api/PhotoController
         {
             var photoModels = _photoService.GetPhotos(User.Identity.Name, 0, 30);
 
@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return View(infoViewModel);
         }
 
-        [HttpPost]
+        [HttpPost] // TODO this method must be deleted
         public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
         {
             var photos = _photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
