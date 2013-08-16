@@ -56,7 +56,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 var user = _modelConverter.GetModel(viewModel);
 
-                _userService.ActivateUser(viewModel.Email, viewModel.Password, viewModel.Invite);
+                _userService.ActivateUser(viewModel.Email, viewModel.Password/*, viewModel.Invite*/);
 
                 FormsAuthentication.SetAuthCookie(user.Email, false);
             }
