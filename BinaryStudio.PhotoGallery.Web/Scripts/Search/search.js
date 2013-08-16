@@ -125,9 +125,9 @@
                         formatFields(value);
 
                         self.foundItems.push(value);
-
-                        setImageSize();
                     });
+                    
+                    setImageSize();
                 });
             }
         };

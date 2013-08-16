@@ -29,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the name of the photo file.
         /// </summary>
-        public string PhotoFileName { get; set; }
+        public string PhotoName { get; set; }
 
         /// <summary>
         /// Gets or sets real format of photo

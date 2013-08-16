@@ -1,17 +1,16 @@
-﻿namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
+﻿using System.Collections.Generic;
+
+namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
     internal interface IAsyncPhotoProcessor
     {
-        void CreateThumbnailsIfNotExist();
-        void DeleteThumbnails();
-        string[] GetTextures();
-        void DeleteThumbnailForSpecifiedOriginalFile(string name);
-        void DeleteThumbnailsIfOriginalNotExist();
+        bool CreateThumbnailsIfNotExist();
+        bool DeleteThumbnailsIfOriginalNotExist();
         void SyncOriginalAndThumbnailImages();
-        string[] GetRandomThumbnail(int howMany);
-        string[] GetThumbnails(string searchPattern = "*.*");
-        string MakeCollage(int width, int rows, int margin);
-        string[] GetCollages();
-        void SetUpForRandomEnumerable(string[] arr);
+        string CreateCollageIfNotExist(int width, int rows);
+        IEnumerable<string> GetThumbnails();
+        void SetUpForRandomEnumerable(IEnumerable<string> arr);
+        string MakeCollage(int width, int rows);
+        IEnumerable<string> GetEnumerator();
     }
 }

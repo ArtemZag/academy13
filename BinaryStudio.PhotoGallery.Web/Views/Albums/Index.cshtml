@@ -1,26 +1,52 @@
 ﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumsViewModel
 @using System.Web.Optimization
-
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
-
-@Scripts.Render("~/bundles/scripts/jquery")
-@Scripts.Render("~/bundles/scripts/bootstrap")
-@Scripts.Render("~/Scripts/albums.js")
+@Scripts.Render("~/bundles/scripts/jquery",
+                "~/bundles/scripts/bootstrap",
+                "~/Scripts/AlbumsPage/albums.js",
+                "~/Scripts/jsrender.js")
 @Styles.Render("~/Content/albums-page.css")
 
-<div class="layer1">
-    @for (int i = 0; i < 5; i++)
-    {
-        <div class="albumContainer">Lorem ipsum</div>
-    }
-</div>
+<canvas id='canv'>Обновите браузер</canvas>
 
-<div class="layer2">
-    @for (int i = 0; i < 10; i++)
-    {
-        <p>Ut wisis enimad minim veniam</p>
-    } 
-</div>
-<div class="clear"></div>
+<script id="collageTmpl" type="text/x-jquery-tmpl">
+    <div class="album">
+        <img class="collage" src="{{:collageSource}}"/>
+    </div> 
+</script>
+
+<script id="userTmpl" type="text/x-jquery-tmpl">
+    <p>
+        <div class="avatarContainer">
+            <img class="avatar" src="{{:userAvatar}}"/>
+        </div>
+    </p>
+    <p class="textStyle">First name: {{:firstName}}</p><hr>
+    <p class="textStyle">Last name: {{:lastName}}</p><hr>
+    <p class="textStyle">Nick name: {{:nickName}}</p><hr>
+    <p class="textStyle">Number of albums: {{:albumCount}}</p><hr> 
+    <p class="textStyle">Number of photos: {{:photoCount}}</p><hr>
+    <p class="textStyle">Last photo added: {{:lastPhotoAdded}}</p>                                                                                                                                                                                                                                                                                                                                                                 <p class="textStyle">User state:{{:isAdmin}}</p><hr>
+    <p class="textStyle">Department: {{:department}}</p>
+</script>
+
+<table id="content">
+    <tr>
+        <td>
+            <div class="albumContainer" id="container">
+            </div>
+        </td>
+        <td class="infoArea">
+            <div class="info" id="userInformation">
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+
+
+
+
