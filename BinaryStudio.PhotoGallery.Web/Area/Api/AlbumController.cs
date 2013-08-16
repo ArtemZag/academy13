@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
@@ -25,12 +23,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [POST]
         public HttpResponseMessage CreateNewAlbum([FromBody] string albumName)
         {
+            var albumAlreadyExist = _albumService.IsExist(albumName);
 
-            var albumExist = _albumService.IsExist(albumName);
-
-            if (albumExist)
+            if (albumAlreadyExist)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format("Album '{0}' already exist", albumName));
             }
 
             _albumService.CreateAlbum(User.Identity.Name, albumName);

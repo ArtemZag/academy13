@@ -7,7 +7,6 @@ using System.Net;
 using System.Web.Security;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
-using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api

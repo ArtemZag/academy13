@@ -9,6 +9,7 @@
             response.splice(0, 0, '');
             vm.albums(response);
             vm.reloadChosen();
+            $('.chosen-search > input').attr('placeholder', 'Type album name to find or create');
         })
         .fail(function (response) {
             alert(response);

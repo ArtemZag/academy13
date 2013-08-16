@@ -67,7 +67,7 @@
         var preview = new PhotoPreview({
             name: file.name,
             size: file.size,
-            isLoaded: true,
+            isSelected: true,
             mediator: mediator,
             element: $preview
         });
@@ -91,7 +91,7 @@
     self.albums = ko.observableArray(typeof (options.albums) !== 'undefined' ? options.albums : []);
     
     var chosenAlbums = $(options.chosen);
-    chosenAlbums.chosen({ no_results_text: 'Album not found. <a class="create-album">Create</a> album ' });
+    chosenAlbums.chosen({ no_results_text: '<a class="create-album">Create</a> album ' });
 
     self.reloadChosen = function () {
         chosenAlbums.trigger('chosen:updated');
@@ -104,10 +104,7 @@
         self.selectedAlbum(albumName);
         self.reloadChosen();
 
-        $.post('Api/Album', albumName)
-            .done(function () {
-                console.log("I create new album");
-            });
+        $.post('Api/Album', albumName);
     };
 
     self.selectedAlbum = ko.observable('');
@@ -157,6 +154,7 @@
             if (preview.isSaved() == true) {
                 preview.element.remove();
                 self.previews.remove(preview);
+                index--;
             }
         }
     };
@@ -205,7 +203,7 @@
                 });
             })
             .fail(function(data) {
-                alert(data);
+                alert(data); // TODO show error as notification
             });
     };
 }

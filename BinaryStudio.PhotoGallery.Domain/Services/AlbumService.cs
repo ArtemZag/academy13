@@ -107,16 +107,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public bool IsExist(string albumName)
         {
-            try
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                this.GetAlbumId(albumName);
-            }
-            catch (AlbumNotFoundException)
-            {
-                return false;
-            }
+                var foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName);
 
-            return true;
+                return foundAlbum != null;
+            }
         }
     }
 }

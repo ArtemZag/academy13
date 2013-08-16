@@ -55,7 +55,7 @@
                     switch (jqXHR.status) {
                         case 500:
                         case 400:
-                            errorMsg = jqXHR.statusText;
+                            errorMsg = jqXHR.responseJSON.Message;
                             break;
                         default:
                             errorMsg = "Server is not available";
