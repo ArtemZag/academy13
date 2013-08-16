@@ -39,7 +39,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
-            FormsAuthentication.SetAuthCookie(viewModel.Email, viewModel.RememberMe);
+            FormsAuthentication.SetAuthCookie(viewModel.Email.ToLower(), viewModel.RememberMe);
 
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
@@ -58,7 +58,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 _userService.ActivateUser(viewModel.Email, viewModel.Password/*, viewModel.Invite*/);
 
-                FormsAuthentication.SetAuthCookie(user.Email, false);
+                FormsAuthentication.SetAuthCookie(user.Email.ToLower(), false);
             }
             catch (UserAlreadyExistException ex)
             {

@@ -99,25 +99,6 @@
 
     self.previews = ko.observableArray(typeof(options.previews) !== 'undefined' ? options.previews : []);
 
-    self.canMovePhotos = ko.computed(function () {
-        if (self.albums().length <= 0) {
-            return false;
-        }
-        
-        if (self.selectedAlbum() == null || self.selectedAlbum().length <= 0) {
-            return false;
-        }
-
-        for (var index = 0; index < self.previews().length; index++) {
-            var preview = self.previews()[index];
-            
-            if (preview.isSelected() == true) {
-                return true;
-            }
-        }
-        return false;
-    });
-
     self.createNewAlbum = function (albumName) {
         self.albums.push(albumName);
         self.selectedAlbum(albumName);
@@ -180,36 +161,51 @@
         }
     };
 
-    self.startUpload = function () {
+    self.canMovePhotos = ko.computed(function () {
+        if (self.albums().length <= 0) {
+            return false;
+        }
+
+        if (self.selectedAlbum() == null || self.selectedAlbum().length <= 0) {
+            return false;
+        }
+
+        for (var index = 0; index < self.previews().length; index++) {
+            var preview = self.previews()[index];
+
+            if (preview.isSelected() == true) {
+                return true;
+            }
+        }
+        return false;
+    });
+
+    self.startMoving = function () {
         var album = self.selectedAlbum();
 
-        if (album != '') {
-            // Get all names of the selected photos
-            var selectedPhotos = $.map(self.previews(), function (preview) {
-                if (preview.isSelected() === true) {
-                    return preview.name();
-                }
-            });
+        // Get all names of the selected photos
+        var selectedPhotos = $.map(self.previews(), function(preview) {
+            if (preview.isSelected() === true) {
+                return preview.name();
+            }
+        });
 
-            $.post('Api/File/MovePhotos', { AlbumName: album, PhotoNames: selectedPhotos })
-                .done(function (notAcceptedFiles) {
-                    $.map(self.previews(), function (preview) {                      
-                        var fileNotSaved = $.map(notAcceptedFiles, function (fileName) {
-                            console.log(fileName);
-                            if (fileName === preview.name()) {
-                                return true;
-                            }
-                        });
-                        
-                        preview.isSaved(fileNotSaved[0] === true ? false : true);
-                        preview.isSelected(false);
+        $.post('Api/File/MovePhotos', { AlbumName: album, PhotoNames: selectedPhotos })
+            .done(function(notAcceptedFiles) {
+                $.map(self.previews(), function(preview) {
+                    var fileNotSaved = $.map(notAcceptedFiles, function(fileName) {
+                        console.log(fileName);
+                        if (fileName === preview.name()) {
+                            return true;
+                        }
                     });
-                })
-                .fail(function (data) {
-                    alert(data);
+
+                    preview.isSaved(fileNotSaved[0] === true ? false : true);
+                    preview.isSelected(false);
                 });
-        } else {
-            alert("Please select an album to save in");
-        }
+            })
+            .fail(function(data) {
+                alert(data);
+            });
     };
 }
