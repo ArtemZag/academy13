@@ -41,8 +41,8 @@
             isModelChanged = true;
         });
 
-        self.isSearchPhotosByName.subscribe(function () {
-            
+        self.isSearchPhotosByName.subscribe(function() {
+
             isModelChanged = true;
         });
 
@@ -123,54 +123,53 @@
                     $.each(searchResult.Items, function(index, value) {
 
                         formatFields(value);
-                        
-                        self.foundItems.push(value);
-                    });
 
-                    // change images size
-                    setImageSize();
+                        self.foundItems.push(value);
+
+                        setImageSize();
+                    });
                 });
             }
         };
-    }
-
-    ko.applyBindings(new searchViewModel());
-
-    function formatFields(value) {
         
-        // date getting 
-        if (value.Type == "photo") {
-            var dateEndIndex = value.DateOfCreation.indexOf("T");
-            value.DateOfCreation = value.DateOfCreation.substr(0, dateEndIndex);
+        function formatFields(value) {
+
+            // date getting 
+            if (value.Type == "photo") {
+                var dateEndIndex = value.DateOfCreation.indexOf("T");
+                value.DateOfCreation = value.DateOfCreation.substr(0, dateEndIndex);
+            }
+        }
+        
+        function setImageSize() {
+
+            $(".result-image").each(function () {
+
+                var maxWidth = 180;
+                var maxHeight = 180;
+                var ratio = 0;
+                var width = $(this).width();
+                var height = $(this).height();
+
+                if (width > maxWidth) {
+
+                    ratio = maxWidth / width;
+                    $(this).css("width", maxWidth);
+                    $(this).css("height", height * ratio);
+                    height = height * ratio;
+                    width = width * ratio;
+                }
+
+                if (height > maxHeight) {
+
+                    ratio = maxHeight / height;
+                    $(this).css("height", maxHeight);
+                    $(this).css("width", width * ratio);
+                    width = width * ratio;
+                }
+            });
         }
     }
 
-    function setImageSize() {
-
-        $(".result-image").each(function() {
-
-            var maxWidth = 180;
-            var maxHeight = 180;
-            var ratio = 0;
-            var width = $(this).width();
-            var height = $(this).height();
-
-            if (width > maxWidth) {
-
-                ratio = maxWidth / width;
-                $(this).css("width", maxWidth);
-                $(this).css("height", height * ratio);
-                height = height * ratio;
-                width = width * ratio;
-            }
-
-            if (height > maxHeight) {
-
-                ratio = maxHeight / height;
-                $(this).css("height", maxHeight);
-                $(this).css("width", width * ratio);
-                width = width * ratio;
-            }
-        });
-    }
+    ko.applyBindings(new searchViewModel());
 });
