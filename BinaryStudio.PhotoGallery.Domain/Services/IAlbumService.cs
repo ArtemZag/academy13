@@ -38,6 +38,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         void DeleteAlbum(string userEmail, int albumId);
 
-        bool IsExist(string albumName);
+        bool IsExist(string userEmail, string albumName);
     }
 }

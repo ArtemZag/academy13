@@ -99,12 +99,13 @@
 
     self.previews = ko.observableArray(typeof(options.previews) !== 'undefined' ? options.previews : []);
 
-    self.createNewAlbum = function (albumName) {
+    self.createNewAlbum = function(albumName) {
         self.albums.push(albumName);
         self.selectedAlbum(albumName);
         self.reloadChosen();
-
-        $.post('Api/Album', albumName);
+        
+        // added '=' in request before albumName (otherwise it send null into controller)
+        $.post('Api/Album', { '': albumName });
     };
 
     self.selectedAlbum = ko.observable('');

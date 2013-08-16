@@ -23,7 +23,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [POST]
         public HttpResponseMessage CreateNewAlbum([FromBody] string albumName)
         {
-            var albumAlreadyExist = _albumService.IsExist(albumName);
+            if (albumName == null)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unknown error");
+            }
+
+            var albumAlreadyExist = _albumService.IsExist(User.Identity.Name, albumName);
 
             if (albumAlreadyExist)
             {

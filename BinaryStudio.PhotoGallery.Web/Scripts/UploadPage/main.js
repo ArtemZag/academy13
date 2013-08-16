@@ -4,12 +4,13 @@
 
     var vm = new UploadViewModel({ element: '.dropzone', chosen: '.chosen-select', mediator: mediator });
     
+    $('.chosen-search > input').attr('placeholder', 'Type album name to find or create');
+
     $.get('Api/Album')
         .done(function (response) {
             response.splice(0, 0, '');
             vm.albums(response);
             vm.reloadChosen();
-            $('.chosen-search > input').attr('placeholder', 'Type album name to find or create');
         })
         .fail(function (response) {
             alert(response);

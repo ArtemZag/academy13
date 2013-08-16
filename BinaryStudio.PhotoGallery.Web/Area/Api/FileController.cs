@@ -62,7 +62,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             if (viewModel == null || string.IsNullOrEmpty(viewModel.AlbumName) || !viewModel.PhotoNames.Any())
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Uknown error");
             }
 
             var notAccpetedFiles = new List<string>();

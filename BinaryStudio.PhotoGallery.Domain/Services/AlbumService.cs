@@ -105,11 +105,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public bool IsExist(string albumName)
+        public bool IsExist(string userEmail, string albumName)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName);
+                var foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
+
+                var foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName && album.UserId == foundUser.Id);
 
                 return foundAlbum != null;
             }
