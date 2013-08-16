@@ -7,11 +7,7 @@
     $.get('Api/Album')
         .done(function (response) {
             response.splice(0, 0, '');
-
-            response.splice(1, 0, "Test2");
-            
             vm.albums(response);
-            
             vm.reloadChosen();
         })
         .fail(function (response) {
