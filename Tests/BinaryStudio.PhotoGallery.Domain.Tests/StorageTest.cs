@@ -29,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         {
             var result = Substitute.For<IPathUtil>();
 
-            result.BuildPhotoDirectoryPath().Returns(info => @"App_Data\photos");
+            /*result.BuildPhotoDirectoryPath().Returns(info => @"App_Data\photos");
 
             result.BuildAlbumPath(Arg.Any<int>(), Arg.Any<int>()).Returns(info =>
                 {
@@ -51,7 +51,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                           string albumPath = result.BuildAlbumPath(userId, albuId);
 
                           return albumPath + @"\" + photoId + photoFormat;
-                      });
+                      });*/
 
             return result;
         }

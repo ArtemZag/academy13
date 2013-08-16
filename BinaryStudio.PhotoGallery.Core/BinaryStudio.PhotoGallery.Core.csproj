@@ -70,6 +70,7 @@
     <Compile Include="PathUtils\IUrlUtil.cs" />
     <Compile Include="PathUtils\PathUtil.cs" />
     <Compile Include="PathUtils\UrlUtil.cs" />
+    <Compile Include="PhotoUtils\ImageFormatHelper.cs" />
     <Compile Include="Randomizer.cs" />
     <Compile Include="PhotoUtils\IAsyncPhotoProcessor.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\FB.cs" />
