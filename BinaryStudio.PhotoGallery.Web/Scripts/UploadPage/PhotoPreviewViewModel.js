@@ -2,6 +2,8 @@
     var self = this;
 
     var mediator = options.mediator;
+
+    self.element = options.element;
     
     self.name = ko.observable(options.name);
     

@@ -68,7 +68,8 @@
             name: file.name,
             size: file.size,
             isLoaded: true,
-            mediator: mediator
+            mediator: mediator,
+            element: $preview
         });
 
         self.previews.push(preview);
@@ -134,12 +135,13 @@
     
     self.selectAllPhotos = function () {
         var index = 0;
+        var previewsCount = self.previews().length;
         if (self.chekedAllPhotos()) {
-            for (index = 0; index < self.previews().length; index++) {
+            for (index = 0; index < previewsCount; index++) {
                 self.previews()[index].isSelected(true);
             }
         } else {
-            for (index = 0; index < self.previews().length; index++) {
+            for (index = 0; index < previewsCount; index++) {
                 self.previews()[index].isSelected(false);
             }
         }
@@ -147,13 +149,36 @@
     };
 
     self.canSelectAllPhotos = ko.computed(function () {
-        for (var index = 0; index < self.previews().length; index++) {
-            if (self.previews()[index].isSaved() != true) {
+        var previewsCount = self.previews().length;
+        for (var index = 0; index < previewsCount; index++) {
+            var preview = self.previews()[index];
+            if (preview.isSaved() != true) {
                 return true;
             }
         }
         return false;
     });
+
+    self.canClearUploadedPhotos = ko.computed(function() {
+        var previewsCount = self.previews().length;
+        for (var index = 0; index < previewsCount; index++) {
+            var preview = self.previews()[index];
+            if (preview.isSaved() == true) {
+                return true;
+            }
+        }
+        return false;
+    });
+
+    self.clearUploadedPhotos = function() {
+        for (var index = 0; index < self.previews().length; index++) {
+            var preview = self.previews()[index];
+            if (preview.isSaved() == true) {
+                preview.element.remove();
+                self.previews.remove(preview);
+            }
+        }
+    };
 
     self.startUpload = function () {
         var album = self.selectedAlbum();
