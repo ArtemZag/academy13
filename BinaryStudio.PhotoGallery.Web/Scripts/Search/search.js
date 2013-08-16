@@ -1,7 +1,5 @@
 ﻿$(document).ready(function() {
 
-    $("#searchPanel input[type=checkbox]").attr("checked", "checked");
-
     function searchViewModel() {
 
         var self = this;
