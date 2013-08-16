@@ -15,9 +15,8 @@ namespace BinaryStudio.PhotoGallery.Database
         protected override void Seed(DatabaseContext databaseContext)
         {
             var userFirstNames = new[] {"Artem", "Anton", "Andrey", "Александр", "Mikhail", "Oleg", "Alexander","Tester"};
-            var userLastNames = new[] {"Zagorodnuk", "Golovin", "Spivakov", "Носов", "Bratukha", "Beloy", "Towstonog",""};
-            var departments = new[]
-            {".Net", "Academy", "Academy", "Academy", "Academy", "Academy", "Academy", "Test department"};
+            var userLastNames = new[] {"Zagorodnuk", "Golovin", "Spivakov", "Носов", "Bratukha", "Beloy", "Towstonog", ""};
+            var departments = new[] {".Net", "Academy", "Academy", "Academy", "Academy", "Academy", "Academy", "Test department"};
             var tags = new[] {"summer", "wind", "friends", "animals", "pentax", "binary", "cherdak", "work&fun"};
             var groups = new[] {"friends", "enemies", "kill", "neighbor", "boss", "partners"};
 
@@ -45,7 +44,6 @@ namespace BinaryStudio.PhotoGallery.Database
                                 Department = departments[i]
                             });
                 }
-                unitOfWork.SaveChanges();
 
                 // Creating a list of usefull tags
                 foreach (string photoTag in tags)
@@ -64,19 +62,6 @@ namespace BinaryStudio.PhotoGallery.Database
                 {
                     unitOfWork.Groups.Add(new GroupModel {GroupName = group});
                 }
-
-                // Creating album without any informations about it
-                unitOfWork.Albums.Add("First album", 1);
-
-                // Creating album with some informations about it
-                unitOfWork.Albums.Add(new AlbumModel("Academy", 5)
-                    {
-                        Description = ".Net student group in Binary Studio Academy. Donetsk 2013."
-                    });
-
-                
-
-                unitOfWork.SaveChanges();
 
                 ///////////////////////////////////////////////////////
 
@@ -106,15 +91,13 @@ namespace BinaryStudio.PhotoGallery.Database
                     unitOfWork.Photos.Add(new PhotoModel(4, 6) { PhotoName = i + ".jpg" });
                 }
 
-
                 /////////////////////////////////////////////////////////////////////////////////
 
-                /*unitOfWork.Albums.Add(new AlbumModel("Test", 7));*/
                 var availableGroupModel = new AvailableGroupModel {AlbumId = 3, GroupId = 1, CanSeeComments = true, CanSeePhotos = true, CanAddComments = true,CanSeeLikes = true, CanAddPhotos = true};
-                var availableGroupModel1 = new AvailableGroupModel { AlbumId = 3, GroupId = 2, CanSeeComments = true, CanSeePhotos = true, CanAddComments = true, CanSeeLikes = true, CanAddPhotos = true };
-                var availableGroupModel2 = new AvailableGroupModel { AlbumId = 3, GroupId = 3, CanSeeComments = true, CanSeePhotos = true, CanAddComments = true, CanSeeLikes = true, CanAddPhotos = true };
-                var availableGroupModel3 = new AvailableGroupModel {AlbumId = 3, GroupId = 4, };
-                var availableGroupModel4 = new AvailableGroupModel {AlbumId = 3, GroupId = 5, };
+                var availableGroupModel1 = new AvailableGroupModel {AlbumId = 3, GroupId = 2, CanSeeComments = true, CanSeePhotos = true, CanAddComments = true, CanSeeLikes = true, CanAddPhotos = true };
+                var availableGroupModel2 = new AvailableGroupModel {AlbumId = 3, GroupId = 3, CanSeeComments = true, CanSeePhotos = true, CanAddComments = true, CanSeeLikes = true, CanAddPhotos = true };
+                var availableGroupModel3 = new AvailableGroupModel {AlbumId = 3, GroupId = 4};
+                var availableGroupModel4 = new AvailableGroupModel {AlbumId = 3, GroupId = 5};
 
                 var AGList = new List<AvailableGroupModel>
                 {
@@ -134,17 +117,11 @@ namespace BinaryStudio.PhotoGallery.Database
                         unitOfWork.Groups.Find(6)
                     };
 
-
                 unitOfWork.Users.Find(7).Groups = groupCollection;
 
                 unitOfWork.Users.Find(7).Albums = new Collection<AlbumModel> {album};
                 
-                //////////////////////////////////////////////////////////
-                unitOfWork.Albums.Add(new AlbumModel("TestAvi", 6));
-                
-
                 unitOfWork.SaveChanges();
-
             }
 
             base.Seed(databaseContext);
