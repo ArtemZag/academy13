@@ -58,9 +58,11 @@
         
         $preview.prepend('<input type="checkbox" class="photo-checker" data-bind="checked: isSelected, visible: !isSaved()" />');
         
-        $preview.find('.dz-filename > span').attr("data-bind", "text: name");
+        $preview.find('.dz-filename > span').attr('data-bind', 'text: name');
+
+        $preview.find('.dz-details > img').attr('data-bind', 'click: selectPhoto');
         
-        $preview.find('.dz-error-message > span').attr("data-bind", "text: errorMessage");
+        $preview.find('.dz-error-message > span').attr('data-bind', 'text: errorMessage');
 
         var preview = new PhotoPreview({
             name: file.name,
@@ -85,12 +87,23 @@
         }
     });
     
-    self.albums = ko.observableArray(typeof(options.albums) !== 'undefined' ? options.albums : []);
+    self.albums = ko.observableArray(typeof (options.albums) !== 'undefined' ? options.albums : []);
+    
+    var chosenAlbums = $(options.chosen);
+    chosenAlbums.chosen({ no_results_text: 'Album not found. <a class="create-album">Create</a> album ' });
+
+    self.reloadChosen = function () {
+        chosenAlbums.trigger('chosen:updated');
+    };
 
     self.previews = ko.observableArray(typeof(options.previews) !== 'undefined' ? options.previews : []);
 
     self.canMovePhotos = ko.computed(function () {
         if (self.albums().length <= 0) {
+            return false;
+        }
+        
+        if (self.selectedAlbum() == null || self.selectedAlbum().length <= 0) {
             return false;
         }
 
@@ -104,24 +117,24 @@
         return false;
     });
 
-    self.newAlbumName = ko.observable("");
+    self.createNewAlbum = function (albumName) {
+        self.albums.push(albumName);
+        self.selectedAlbum(albumName);
+        self.reloadChosen();
 
-    self.canCreateNewAlbum = ko.computed(function () {
-        console.log(self.newAlbumName());
-        return self.newAlbumName.length > 2;
-    });
-
-    self.createNewAlbum = function () {
-        self.albums.push({ Id: 0, Name: self.newAlbumName() });
+        $.post('Api/Album', albumName)
+            .done(function () {
+                console.log("I create new album");
+            });
     };
 
-    self.selectedAlbumId = ko.observable();
+    self.selectedAlbum = ko.observable('');
 
     self.chekedAllPhotos = ko.observable(false);
     
-    self.chekedAllPhotos.subscribe(function (isChecked) {
+    self.selectAllPhotos = function () {
         var index = 0;
-        if (isChecked) {
+        if (self.chekedAllPhotos()) {
             for (index = 0; index < self.previews().length; index++) {
                 self.previews()[index].isSelected(true);
             }
@@ -130,7 +143,8 @@
                 self.previews()[index].isSelected(false);
             }
         }
-    });
+        return true; // allow to get check event
+    };
 
     self.canSelectAllPhotos = ko.computed(function () {
         for (var index = 0; index < self.previews().length; index++) {
@@ -142,9 +156,9 @@
     });
 
     self.startUpload = function () {
-        var albumId = self.selectedAlbumId();
+        var album = self.selectedAlbum();
 
-        if (albumId != undefined) {
+        if (album != '') {
             // Get all names of the selected photos
             var selectedPhotos = $.map(self.previews(), function (preview) {
                 if (preview.isSelected() === true) {
@@ -152,7 +166,7 @@
                 }
             });
 
-            $.post('Api/File/SavePhotos', { AlbumId: albumId, PhotoNames: selectedPhotos })
+            $.post('Api/File/MovePhotos', { AlbumName: album, PhotoNames: selectedPhotos })
                 .done(function (notAcceptedFiles) {
                     $.map(self.previews(), function (preview) {                      
                         var fileNotSaved = $.map(notAcceptedFiles, function (fileName) {

@@ -16,4 +16,8 @@
     });
 
     self.isSaved = ko.observable(false);
+
+    self.selectPhoto = function (element) {
+        self.isSelected(!self.isSelected());
+    };
 }

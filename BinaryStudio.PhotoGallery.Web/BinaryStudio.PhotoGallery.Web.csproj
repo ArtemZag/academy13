@@ -262,6 +262,7 @@
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
     <Content Include="Content\images\camera.png" />
+    <Content Include="Content\style-libs\chosen-sprite.png" />
     <Content Include="Content\style-libs\pnotify.css" />
     <Content Include="Content\images\photo-page\like-icon.png" />
     <Content Include="Content\images\photo-page\unlike-icon.png" />
