@@ -112,34 +112,32 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         private IFoundViewModel GetPhotoFoundViewModel(IFound found)
         {
-            var photoFound = (PhotoFound) found;
+            var photoModel = (PhotoFound) found;
 
-            var album = albumService.GetAlbum(photoFound.AlbumId);
+            var album = albumService.GetAlbum(photoModel.AlbumId);
             string albumName = album.AlbumName;
 
-            var user = userService.GetUser(photoFound.UserId);
+            var user = userService.GetUser(photoModel.UserId);
             string userName = user.FirstName + " " + user.LastName;
 
             // todo: delete 
-            string thumbnailPath = string.Format("{0}\\{1}{2}",
-                pathUtil.BuildThumbnailsPath(photoFound.UserId, photoFound.AlbumId),
-                photoFound.Id, photoFound.Format);
+            string thumbnailPath = pathUtil.BuildThumbnailPath(photoModel.UserId, photoModel.AlbumId, photoModel.PhotoName);
 
             return new PhotoFoundViewModel
             {
                 ThumbnailPath = thumbnailPath,
 
-                PhotoName = photoFound.PhotoName,
-                PhotoViewUrl = urlUtil.BuildPhotoViewUrl(photoFound.Id),
+                PhotoName = photoModel.PhotoName,
+                PhotoViewUrl = urlUtil.BuildPhotoViewUrl(photoModel.Id),
 
                 AlbumName = albumName,
-                AlbumViewUrl = urlUtil.BuildAlbumViewUrl(photoFound.AlbumId),
+                AlbumViewUrl = urlUtil.BuildAlbumViewUrl(photoModel.AlbumId),
 
                 UserName = userName,
-                UserViewUrl = urlUtil.BuildUserViewUrl(photoFound.UserId),
+                UserViewUrl = urlUtil.BuildUserViewUrl(photoModel.UserId),
 
-                DateOfCreation = photoFound.DateOfCreation,
-                Rating = photoFound.Rating
+                DateOfCreation = photoModel.DateOfCreation,
+                Rating = photoModel.Rating
             };
         }
 
@@ -149,7 +147,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 {
                     UserId = userId,
                     AlbumId = albumId,
-                    PhotoFileName = fullPhotoName
+                    PhotoName = fullPhotoName
                 };
 
             return photoModel;
@@ -176,11 +174,8 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     // Maaak: I think needs refactoring. Or another method,
                     //        that will create a path by only one parameter - photoID
                     // Anton: And we need specify size of thumbnail. So it will be 2 params. 
-                    PhotoThumbSource = 
-                        string.Format("{0}\\{1}{2}",
-                        pathUtil.BuildThumbnailsPath(albumModel.UserId, photoModel.AlbumId),
-                        photoModel.Id,
-                        photoModel.Format),
+
+                    PhotoThumbSource = pathUtil.BuildThumbnailPath(photoModel.UserId, photoModel.AlbumId, photoModel.PhotoName),
 
                     AlbumId = photoModel.AlbumId,
                     PhotoId = photoModel.Id,
