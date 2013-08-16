@@ -140,7 +140,7 @@
 
     function SetPhoto(photo) {
         model.PhotoID(photo.PhotoId);
-        model.AlbumID(photo.AlbumID);
+        model.AlbumID(photo.AlbumId);
         
         var img = new Image();
         img.onload = function() { SetPhotoSize(this.width, this.height); };
@@ -155,24 +155,22 @@
     }
 
     function SetComments(comm) {
-        model.comms.destroyAll();
+        model.comms.removeAll();
         $.each(comm, function(k, item) {
             model.comms.push(new Comment(item));
         });
     }
 
     function SetLikes(likes) {
-        model.PhotoLikes.destroyAll();
+        model.PhotoLikes.removeAll();
         $.each(likes, function(k, item) {
             model.PhotoLikes.push(new Like(item));
-
-            var i = i + 100500;
         });
         
     }
 
     function AddLike(photoID) {
-        $.post("/Photo/AddLike", { photoID: model.PhotoID }, SetLikes);
+        $.post("/Photo/AddLike", { photoID: photoID }, SetLikes);
     };
 
     function SetPhotoSize(w, h) {

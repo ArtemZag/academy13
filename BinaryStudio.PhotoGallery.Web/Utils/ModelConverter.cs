@@ -60,14 +60,18 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     Interval = searchViewModel.Interval,
 
                     SearchQuery = searchViewModel.SearchQuery,
+
                     IsSearchPhotosByName = searchViewModel.IsSearchPhotosByName,
                     IsSearchPhotosByTags = searchViewModel.IsSearchPhotosByTags,
                     IsSearchPhotosByDescription = searchViewModel.IsSearchPhotosByDescription,
+
                     IsSearchAlbumsByName = searchViewModel.IsSearchAlbumsByName,
                     IsSearchAlbumsByTags = searchViewModel.IsSearchAlbumsByTags,
                     IsSearchAlbumsByDescription = searchViewModel.IsSearchAlbumsByDescription,
+
                     IsSearchUsersByName = searchViewModel.IsSearchUsersByName,
                     IsSearchUserByDepartment = searchViewModel.IsSearchUserByDepartment,
+
                     IsSearchByComments = searchViewModel.IsSearchByComments
                 };
         }
@@ -116,9 +120,14 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             var user = userService.GetUser(photoFound.UserId);
             string userName = user.FirstName + " " + user.LastName;
 
+            // todo: delete 
+            string thumbnailPath = string.Format("{0}\\{1}{2}",
+                pathUtil.BuildThumbnailsPath(photoFound.UserId, photoFound.AlbumId),
+                photoFound.Id, photoFound.Format);
+
             return new PhotoFoundViewModel
             {
-                ThumbnailPath = string.Empty, // todo
+                ThumbnailPath = thumbnailPath,
 
                 PhotoName = photoFound.PhotoName,
                 PhotoViewUrl = urlUtil.BuildPhotoViewUrl(photoFound.Id),
@@ -154,7 +163,6 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             var viewModel = new PhotoViewModel
                 {
-
                     // todo: UserId in photoModel != userId which album contain this photo
                     // is PhotoSource necessary in PhotoViewModel?!
 
@@ -163,14 +171,15 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     //        Look at PhotoModel to check the meaning of property UserModelID
                     PhotoSource =
                         pathUtil.BuildOriginalPhotoPath(albumModel.UserId, photoModel.AlbumId,
-                                                         photoModel.PhotoFileName, photoModel.Format),
+                                                         photoModel.Id, photoModel.Format),
 
                     // Maaak: I think needs refactoring. Or another method,
                     //        that will create a path by only one parameter - photoID
+                    // Anton: And we need specify size of thumbnail. So it will be 2 params. 
                     PhotoThumbSource = 
                         string.Format("{0}\\{1}{2}",
                         pathUtil.BuildThumbnailsPath(albumModel.UserId, photoModel.AlbumId),
-                        photoModel.PhotoFileName,
+                        photoModel.Id,
                         photoModel.Format),
 
                     AlbumId = photoModel.AlbumId,

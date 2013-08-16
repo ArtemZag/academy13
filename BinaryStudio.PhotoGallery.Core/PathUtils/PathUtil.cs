@@ -59,11 +59,11 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        public string BuildOriginalPhotoPath(int userId, int albumId, string photoName, string photoFormat)
+        public string BuildOriginalPhotoPath(int userId, int albumId, int photoId, string photoFormat)
         {
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
-                   .Append(photoName)
+                   .Append(photoId)
                    .Append(photoFormat);
 
             return builder.ToString();

@@ -125,18 +125,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return userModel.Salt;
         }
 
-        public void ActivateUser(string userEmail, string userPassword, string hash)
+        public void ActivateUser(string userEmail, string userPassword/*, string hash*/)
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-				var userModel = this.GetUser(userEmail);
+				var userModel = this.GetUser(userEmail, unitOfWork);
 
-				if (userModel.IsActivated || (userModel.Salt != hash)) return;
+				if (userModel.IsActivated/* || (userModel.Salt != hash)*/) throw new UserNotFoundException(userEmail);
 
-				unitOfWork.Users.Find(userModel.Id).Salt = _cryptoProvider.GetNewSalt();
+                userModel.Salt = _cryptoProvider.GetNewSalt();
 
-				unitOfWork.Users.Find(userModel.Id).UserPassword = _cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
-				unitOfWork.Users.Find(userModel.Id).IsActivated = true;
+				userModel.UserPassword = _cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
+				userModel.IsActivated = true;
+
+
+                unitOfWork.Users.Update(userModel);
 				unitOfWork.SaveChanges();
             }
         }

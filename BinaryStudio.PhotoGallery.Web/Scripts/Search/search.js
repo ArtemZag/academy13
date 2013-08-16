@@ -4,6 +4,8 @@
 
         var self = this;
 
+        var isModelChanged = false;
+
         self.searchCacheToken = "no token";
 
         self.interval = 10;
@@ -36,66 +38,78 @@
 
         self.searchQuery.subscribe(function() {
 
-            self.resetToken();
+            isModelChanged = true;
         });
 
         self.isSearchPhotosByName.subscribe(function() {
 
-            self.resetToken();
+            isModelChanged = true;
         });
 
         self.isSearchPhotosByTags.subscribe(function() {
 
-            self.resetToken();
+            isModelChanged = true;
         });
 
         self.isSearchPhotosByDescription.subscribe(function() {
 
-            self.resetToken();
+            isModelChanged = true;
         });
 
         self.isSearchAlbumsByName.subscribe(function() {
 
-            self.resetToken();
+            isModelChanged = true;
         });
 
         self.isSearchAlbumsByTags.subscribe(function() {
 
-            self.resetToken();
+            isModelChanged = true;
         });
 
         self.isSearchAlbumsByDescription.subscribe(function() {
 
-            self.resetToken();
+            isModelChanged = true;
         });
 
         self.isSearchUsersByName.subscribe(function() {
 
-            self.resetToken();
+            isModelChanged = true;
         });
 
         self.isSearchUserByDepartment.subscribe(function() {
 
-            self.resetToken();
+            isModelChanged = true;
         });
 
         self.isSearchByComments.subscribe(function() {
 
-            self.resetToken();
+            isModelChanged = true;
         });
 
         self.searchQuery.subscribe(function() {
 
-            self.foundItems.removeAll();
-            self.resetToken();
+            isModelChanged = true;
         });
 
-        self.resetToken = function() {
+        self.resetSearchResult = function() {
 
+            self.foundItems.removeAll();
             self.searchCacheToken = "no token";
         };
 
+        self.checkModelChange = function() {
+
+            if (isModelChanged) {
+
+                self.resetSearchResult();
+            }
+
+            isModelChanged = false;
+        };
+
         self.search = function() {
+
+            self.checkModelChange();
 
             self.searchQuery($.trim(self.searchQuery()));
 
@@ -108,11 +122,53 @@
                     // adding search result items to observable array
                     $.each(searchResult.Items, function(index, value) {
 
+                        formatFields(value);
+
                         self.foundItems.push(value);
+
+                        setImageSize();
                     });
                 });
             }
         };
+        
+        function formatFields(value) {
+
+            // date getting 
+            if (value.Type == "photo") {
+                var dateEndIndex = value.DateOfCreation.indexOf("T");
+                value.DateOfCreation = value.DateOfCreation.substr(0, dateEndIndex);
+            }
+        }
+        
+        function setImageSize() {
+
+            $(".result-image").each(function () {
+
+                var maxWidth = 180;
+                var maxHeight = 180;
+                var ratio = 0;
+                var width = $(this).width();
+                var height = $(this).height();
+
+                if (width > maxWidth) {
+
+                    ratio = maxWidth / width;
+                    $(this).css("width", maxWidth);
+                    $(this).css("height", height * ratio);
+                    height = height * ratio;
+                    width = width * ratio;
+                }
+
+                if (height > maxHeight) {
+
+                    ratio = maxHeight / height;
+                    $(this).css("height", maxHeight);
+                    $(this).css("width", width * ratio);
+                    width = width * ratio;
+                }
+            });
+        }
     }
 
     ko.applyBindings(new searchViewModel());

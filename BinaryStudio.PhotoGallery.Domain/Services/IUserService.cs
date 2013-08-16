@@ -44,7 +44,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="userEmail">User's Email</param>
         /// <param name="userPassword">New user's password</param>
         /// <param name="hash">Hash-code for activation</param>
-        void ActivateUser(string userEmail, string userPassword, string hash);
+        void ActivateUser(string userEmail, string userPassword/*, string hash*/);
 
         void DeleteUser(string userEmail);
 

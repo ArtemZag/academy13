@@ -173,7 +173,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 var user = GetUser(userEmail, unitOfWork);
                 var photo = unitOfWork.Photos.Find(photoID);
 
-                if (_secureService.CanUserViewPhotos(user.Id, photo.AlbumId))
+                if (_secureService.CanUserViewLikes(user.Id, photo.AlbumId))
                 {
                     return photo.Likes.ToList();
                 }
@@ -187,7 +187,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 var user = GetUser(userEmail, unitOfWork);
-                var photo = unitOfWork.Photos.Find(photoID);
 
                 unitOfWork.Photos.Find(photoID).Likes.Add(user);
                 unitOfWork.SaveChanges();

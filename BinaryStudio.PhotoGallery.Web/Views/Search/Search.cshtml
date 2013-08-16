@@ -33,24 +33,19 @@
         <div class="span7" data-bind="foreach: foundItems">
             
             <!-- ko if: Type == 'photo' -->
-            <div class="span7 found-item" data-bind="if: Type == 'photo'">
+            <div class="span7 found-item">
                 
                 <div class="result-image">
                     <a data-bind="attr: { href: PhotoViewUrl }">
-                        <img src="~/Content/images/no_avatar.png"/>
+                        <img data-bind="attr: { src: ThumbnailPath}"/>
                     </a>
                 </div>
                 
-                <div class="likes-block"><span class="likes-number likes-caption">100</span></div>
-                
                 <ul class="unstyled">
-                    <li><a data-bind="attr: { href: PhotoViewUrl }"><!--ko text: PhotoName--><!--/ko--></a></li>
-                    <div class="search-info-vertical-interval"></div>
-                    <li><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: AlbumName--><!--/ko--></a></li>
-                    <div class="search-info-vertical-interval"></div>
-                    <li><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
-                    <div class="search-info-vertical-interval"></div>
-                    <li><!--ko text: DateOfCreation--><!--/ko--></li>
+                    <li class="search-info-item"><a data-bind="attr: { href: PhotoViewUrl }"><!--ko text: PhotoName--><!--/ko--></a></li>
+                    <li class="search-info-item"><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: AlbumName--><!--/ko--></a></li>
+                    <li class="search-info-item"><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
+                    <li class="search-info-item"><!--ko text: DateOfCreation--><!--/ko--></li>
                 </ul>
 
             </div>
@@ -60,16 +55,14 @@
             <!-- ko if: Type == 'user' -->
             <div class="span7 found-item">
                 <div class="result-image">
-                    <a data-bind="attr: { href: AvatarPath }">
-                        <img src="~/Content/images/no_avatar.png"/>
+                    <a data-bind="attr: { href: UserViewUri }">
+                        <img data-bind="attr: { src: AvatarPath }"/>
                     </a>
                 </div>
                 
                 <ul class="unstyled">
                     <li><a data-bind="attr: { href: UserViewUri }"><!--ko text: Name--><!--/ko--></a></li>
-                    <div class="search-info-vertical-interval"></div>
                     <li><!--ko text: Department--><!--/ko--></li>
-                    <div class="search-info-vertical-interval"></div>
                     <li><!--ko text: IsOnline--><!--/ko--></li>
                 </ul>
 

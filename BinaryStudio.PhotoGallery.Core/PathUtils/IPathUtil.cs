@@ -8,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         string BuildAlbumPath(int userId, int albumId);
 
-        string BuildOriginalPhotoPath(int userId, int albumId, string photoName, string photoFormat);
+        string BuildOriginalPhotoPath(int userId, int albumId, int photoId, string photoFormat);
 
         string BuildThumbnailsPath(int userId, int albumId);
 
