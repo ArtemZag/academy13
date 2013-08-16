@@ -16,6 +16,8 @@ namespace BinaryStudio.PhotoGallery.Database
         {
             var userFirstNames = new[] {"Artem", "Anton", "Andrey", "Александр", "Mikhail", "Oleg", "Alexander","Tester"};
             var userLastNames = new[] {"Zagorodnuk", "Golovin", "Spivakov", "Носов", "Bratukha", "Beloy", "Towstonog",""};
+            var departments = new[]
+            {".Net", "Academy", "Academy", "Academy", "Academy", "Academy", "Academy", "Test department"};
             var tags = new[] {"summer", "wind", "friends", "animals", "pentax", "binary", "cherdak", "work&fun"};
             var groups = new[] {"friends", "enemies", "kill", "neighbor", "boss", "partners"};
 
@@ -39,7 +41,8 @@ namespace BinaryStudio.PhotoGallery.Database
                                 Email = string.Format("{0}{1}@bingally.com", userFirstNames[i], userLastNames[i]),
                                 IsAdmin = userFirstNames[i] != "Tester",
                                 UserPassword = crypto.CreateHashForPassword(userLastNames[i].Length > 5 ? userLastNames[i] : "123456", salt),
-                                Salt = salt
+                                Salt = salt,
+                                Department = departments[i]
                             });
                 }
                 unitOfWork.SaveChanges();
