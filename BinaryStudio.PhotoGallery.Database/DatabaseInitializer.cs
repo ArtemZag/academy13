@@ -99,8 +99,8 @@ namespace BinaryStudio.PhotoGallery.Database
                         comm.Add(new PhotoCommentModel(7, Randomizer.GetNumber(i), generatedRandomComment.ToString(),
                                                        -1) {Rating = Randomizer.GetNumber(64)});
                     }
-                    photosForAlbum.Add(new PhotoModel(3, 7) {PhotoFileName = i + ".jpg", PhotoComments = comm, Description = string.Empty});
-                    unitOfWork.Photos.Add(new PhotoModel(4, 6) {PhotoFileName = i + ".jpg"});
+                    photosForAlbum.Add(new PhotoModel(3, 7) { PhotoFileName = "Photo name", Format = ".jpg", PhotoComments = comm, Description = string.Empty });
+                    unitOfWork.Photos.Add(new PhotoModel(4, 6) { PhotoFileName = "Photo name", Format = ".jpg" });
                 }
 
 

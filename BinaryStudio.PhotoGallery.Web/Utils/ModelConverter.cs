@@ -123,7 +123,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             // todo: delete 
             string thumbnailPath = string.Format("{0}\\{1}{2}",
                 pathUtil.BuildThumbnailsPath(photoFound.UserId, photoFound.AlbumId),
-                photoFound.PhotoName, photoFound.Format);
+                photoFound.Id, photoFound.Format);
 
             return new PhotoFoundViewModel
             {
@@ -171,7 +171,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     //        Look at PhotoModel to check the meaning of property UserModelID
                     PhotoSource =
                         pathUtil.BuildOriginalPhotoPath(albumModel.UserId, photoModel.AlbumId,
-                                                         photoModel.PhotoFileName, photoModel.Format),
+                                                         photoModel.Id, photoModel.Format),
 
                     // Maaak: I think needs refactoring. Or another method,
                     //        that will create a path by only one parameter - photoID
@@ -179,7 +179,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     PhotoThumbSource = 
                         string.Format("{0}\\{1}{2}",
                         pathUtil.BuildThumbnailsPath(albumModel.UserId, photoModel.AlbumId),
-                        photoModel.PhotoFileName,
+                        photoModel.Id,
                         photoModel.Format),
 
                     AlbumId = photoModel.AlbumId,

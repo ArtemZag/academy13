@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
 
     function searchViewModel() {
 
@@ -25,7 +25,7 @@
 
         self.isSearchByComments = ko.observable();
 
-        searchViewModel.prototype.toJSON = function () {
+        searchViewModel.prototype.toJSON = function() {
 
             var copy = ko.toJS(self);
 
@@ -34,83 +34,85 @@
             return copy;
         };
 
-        self.searchQuery.subscribe(function () {
+        self.searchQuery.subscribe(function() {
 
             self.resetToken();
         });
 
-        self.isSearchPhotosByName.subscribe(function () {
+        self.isSearchPhotosByName.subscribe(function() {
 
             self.resetToken();
         });
 
-        self.isSearchPhotosByTags.subscribe(function () {
+        self.isSearchPhotosByTags.subscribe(function() {
 
             self.resetToken();
         });
 
-        self.isSearchPhotosByDescription.subscribe(function () {
+        self.isSearchPhotosByDescription.subscribe(function() {
 
             self.resetToken();
         });
 
-        self.isSearchAlbumsByName.subscribe(function () {
+        self.isSearchAlbumsByName.subscribe(function() {
 
             self.resetToken();
         });
 
-        self.isSearchAlbumsByTags.subscribe(function () {
+        self.isSearchAlbumsByTags.subscribe(function() {
 
             self.resetToken();
         });
 
-        self.isSearchAlbumsByDescription.subscribe(function () {
+        self.isSearchAlbumsByDescription.subscribe(function() {
 
             self.resetToken();
         });
 
-        self.isSearchUsersByName.subscribe(function () {
+        self.isSearchUsersByName.subscribe(function() {
 
             self.resetToken();
         });
 
-        self.isSearchUserByDepartment.subscribe(function () {
+        self.isSearchUserByDepartment.subscribe(function() {
 
             self.resetToken();
         });
 
-        self.isSearchByComments.subscribe(function () {
+        self.isSearchByComments.subscribe(function() {
 
             self.resetToken();
         });
 
-        self.searchQuery.subscribe(function () {
+        self.searchQuery.subscribe(function() {
 
             self.foundItems.removeAll();
             self.resetToken();
         });
 
-        self.resetToken = function () {
+        self.resetToken = function() {
 
             self.searchCacheToken = "no token";
         };
 
-        self.search = function () {
+        self.search = function() {
 
             self.searchQuery($.trim(self.searchQuery()));
 
             if (self.searchQuery()) {
 
-                $.get("api/search", JSON.parse(ko.toJSON(self)), function (searchResult) {
+                $.get("api/search", JSON.parse(ko.toJSON(self)), function(searchResult) {
 
                     self.searchCacheToken = searchResult.SearchCacheToken;
 
                     // adding search result items to observable array
-                    $.each(searchResult.Items, function (index, value) {
+                    $.each(searchResult.Items, function(index, value) {
 
                         // date getting 
-                        var dateEndIndex = value.DateOfCreation.indexOf("T");
-                        value.DateOfCreation = value.DateOfCreation.substr(0, dateEndIndex);
+                        if (value.Type == "photo") {
+                            var dateEndIndex = value.DateOfCreation.indexOf("T");
+                            value.DateOfCreation = value.DateOfCreation.substr(0, dateEndIndex);
+                        }
 
                         self.foundItems.push(value);
                     });
@@ -126,7 +128,7 @@
 
     function setImageSize() {
 
-        $(".result-image").each(function () {
+        $(".result-image").each(function() {
 
             var maxWidth = 180;
             var maxHeight = 180;
