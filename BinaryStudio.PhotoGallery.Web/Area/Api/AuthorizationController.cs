@@ -16,12 +16,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     public class AuthorizationController : ApiController
     {
         private readonly IUserService _userService;
-        private readonly IModelConverter _modelConverter;
 
-        public AuthorizationController(IUserService userService, IModelConverter modelConverter)
+        public AuthorizationController(IUserService userService)
         {
             _userService = userService;
-            _modelConverter = modelConverter;
         }
 
         [POST]
@@ -29,14 +27,14 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             if (viewModel == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unknown error");
             }
 
             var userNotValid = !_userService.IsUserValid(viewModel.Email, viewModel.Password);
 
             if (userNotValid)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Incorrect email or password");
             }
 
             FormsAuthentication.SetAuthCookie(viewModel.Email.ToLower(), viewModel.RememberMe);
@@ -49,16 +47,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             if (viewModel == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unknown error");
             }
 
             try
             {
-                var user = _modelConverter.GetModel(viewModel);
-
-                _userService.ActivateUser(viewModel.Email, viewModel.Password/*, viewModel.Invite*/);
-
-                FormsAuthentication.SetAuthCookie(user.Email.ToLower(), false);
+                _userService.ActivateUser(viewModel.Email, viewModel.Password);
+                FormsAuthentication.SetAuthCookie(viewModel.Email.ToLower(), false);
             }
             catch (UserAlreadyExistException ex)
             {
