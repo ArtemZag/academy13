@@ -58,7 +58,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 if (foundUser == null)
                 {
-                    throw new UserNotFoundException("Inactive user with hash '" + hash + "' not found");
+                    throw new UserNotFoundException("Inactive user with invite '" + hash + "' not found");
                 }
 
                 return foundUser;
@@ -147,13 +147,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return userModel.Salt;
         }
 
-        public void ActivateUser(string userEmail, string userPassword /*, string hash*/)
+        public void ActivateUser(string userEmail, string userPassword, string invite)
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 var userModel = this.GetUser(userEmail, unitOfWork);
 
-                if (userModel.IsActivated /* || (userModel.Salt != hash)*/) throw new UserNotFoundException(userEmail);
+                if (userModel.IsActivated)
+                {
+                    throw new UserAlreadyExistException(string.Format("User {0} already activated", userEmail));
+                }
+
+                if (userModel.Salt != invite)
+                {
+                    throw new UserNotFoundException(string.Format("User with email {0} not found in activation list", userEmail));
+                }
 
                 userModel.Salt = _cryptoProvider.GetNewSalt();
 

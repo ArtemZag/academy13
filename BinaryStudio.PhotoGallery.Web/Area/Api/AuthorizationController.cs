@@ -51,7 +51,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                _userService.ActivateUser(viewModel.Email, viewModel.Password);
+                _userService.ActivateUser(viewModel.Email, viewModel.Password, viewModel.Invite);
                 FormsAuthentication.SetAuthCookie(viewModel.Email.ToLower(), false);
             }
             catch (UserAlreadyExistException ex)
