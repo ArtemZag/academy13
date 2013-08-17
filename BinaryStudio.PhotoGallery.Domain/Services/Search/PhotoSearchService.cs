@@ -96,7 +96,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 IEnumerable<PhotoFound> found = album.Photos.Where(predicate).Select(model => new PhotoFound
                 {
                     Id = model.Id,
-                    UserId = model.UserId,
+                    UserId = model.OwnerId,
                     AlbumId = model.AlbumId,
                     PhotoName = model.PhotoName,
                     Format = model.Format,
@@ -124,7 +124,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                         .Select(model => new PhotoFound
                         {
                             Id = model.Id,
-                            UserId = model.UserId,
+                            UserId = model.OwnerId,
                             AlbumId = model.AlbumId,
                             PhotoName = model.PhotoName,
                             Format = model.Format,

@@ -145,7 +145,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             var photoModel = new PhotoModel
                 {
-                    UserId = userId,
+                    OwnerId = userId,
                     AlbumId = albumId,
                     PhotoName = fullPhotoName
                 };
@@ -161,7 +161,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             var viewModel = new PhotoViewModel
                 {
-                    // todo: UserId in photoModel != userId which album contain this photo
+                    // todo: OwnerId in photoModel != userId which album contain this photo
                     // is PhotoSource necessary in PhotoViewModel?!
 
                     // Maaak: UserModelID is an userID, who has created(added) this photo. 
@@ -175,7 +175,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     //        that will create a path by only one parameter - photoID
                     // Anton: And we need specify size of thumbnail. So it will be 2 params. 
 
-                    PhotoThumbSource = pathUtil.BuildThumbnailPath(photoModel.UserId, photoModel.AlbumId, photoModel.PhotoName),
+                    PhotoThumbSource = pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.PhotoName),
 
                     AlbumId = photoModel.AlbumId,
                     PhotoId = photoModel.Id,

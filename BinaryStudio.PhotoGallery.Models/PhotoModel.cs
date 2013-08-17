@@ -17,7 +17,7 @@ namespace BinaryStudio.PhotoGallery.Models
         public PhotoModel(int albumId, int userId)
         {
             AlbumId = albumId;
-            UserId = userId;
+            OwnerId = userId;
             DateOfCreation = DateTime.Now;
         }
 
@@ -58,7 +58,7 @@ namespace BinaryStudio.PhotoGallery.Models
 
         
  
-        public int UserId { get; set; }
+        public int OwnerId { get; set; }
         public int AlbumId { get; set; }
 
         public virtual ICollection<PhotoCommentModel> PhotoComments { get; set; }

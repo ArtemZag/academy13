@@ -19,7 +19,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AlbumModel album = GetAlbum(photo.UserId, photo.UserId, unitOfWork);
+                AlbumModel album = GetAlbum(photo.OwnerId, photo.OwnerId, unitOfWork);
 
                 album.Photos.Add(photo);
 
@@ -37,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 if (_secureService.CanUserAddPhoto(user.Id, album.Id))
                 {
-                    photo.UserId = user.Id;
+                    photo.OwnerId = user.Id;
                     album.Photos.Add(photo);
 
                     unitOfWork.SaveChanges();
@@ -140,7 +140,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
 
 // todo: create a criterions for grabing all user albums' IDs and check every for access permissions
-                return unitOfWork.Photos.Filter(model => model.UserId == user.Id)
+                return unitOfWork.Photos.Filter(model => model.OwnerId == user.Id)
                                  .Where(model => !model.IsDeleted)
                                  .OrderBy(model => model.DateOfCreation)
                                  .ThenBy(model => model.Id)
