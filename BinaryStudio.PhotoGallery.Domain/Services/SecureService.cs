@@ -45,9 +45,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var user = unitOfWork.Users.Find(userId);
-                var photo = unitOfWork.Photos.Find(photoId);
-                var album = unitOfWork.Albums.Find(photo.AlbumId);
+                UserModel user = unitOfWork.Users.Find(userId);
+                PhotoModel photo = unitOfWork.Photos.Find(photoId);
+                AlbumModel album = unitOfWork.Albums.Find(photo.AlbumId);
 
                 // if user is album owner OR user is photo owner OR user is admin
                 return (album.OwnerId == userId) || (photo.OwnerId == userId) || (user.IsAdmin);
@@ -63,8 +63,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
         {
-            var user = GetUser(userId, unitOfWork);
-            var userGroups = user.Groups.ToList();
+            UserModel user = GetUser(userId, unitOfWork);
+            List<GroupModel> userGroups = user.Groups.ToList();
 
             if (user.IsAdmin)
             {
@@ -99,10 +99,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 bool canUser;
-                
-                var user = GetUser(userId, unitOfWork);
-                var album = GetAlbum(albumId, unitOfWork);
 
+                UserModel user = GetUser(userId, unitOfWork);
+                AlbumModel album = GetAlbum(albumId, unitOfWork);
 
 
                 if (user.IsAdmin || (album.OwnerId == userId))

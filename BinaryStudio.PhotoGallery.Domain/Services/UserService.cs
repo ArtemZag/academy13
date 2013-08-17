@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
+using System.Linq;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
-using System.Linq;
-using System.Data.Entity;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -52,9 +53,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public UserModel GetUnactivatedUser(string hash)
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var foundUser = unitOfWork.Users.Find(user => !user.IsActivated && user.Salt == hash);
+                UserModel foundUser = unitOfWork.Users.Find(user => !user.IsActivated && user.Salt == hash);
 
                 if (foundUser == null)
                 {
@@ -67,7 +68,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<UserModel> GetUnactivatedUsers()
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 return unitOfWork.Users.Filter(user => !user.IsActivated);
             }
@@ -122,10 +123,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     // Empty password field is not good 
                     UserPassword =
                         _cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), _cryptoProvider.GetNewSalt())
-                   
                 };
 
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 unitOfWork.Users.Add(userModel);
                 unitOfWork.SaveChanges();
@@ -149,20 +149,28 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public void ActivateUser(string userEmail, string userPassword /*, string hash*/)
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var userModel = this.GetUser(userEmail, unitOfWork);
+                try
+                {
+                    UserModel userModel = GetUser(userEmail, unitOfWork);
 
-                if (userModel.IsActivated /* || (userModel.Salt != hash)*/) throw new UserNotFoundException(userEmail);
+                    if (userModel.IsActivated /* || (userModel.Salt != hash)*/)
+                        throw new UserNotFoundException(userEmail);
 
-                userModel.Salt = _cryptoProvider.GetNewSalt();
+                    userModel.Salt = _cryptoProvider.GetNewSalt();
 
-                userModel.UserPassword = _cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
-                userModel.IsActivated = true;
+                    userModel.UserPassword = _cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
+                    userModel.IsActivated = true;
 
 
-                unitOfWork.Users.Update(userModel);
-                unitOfWork.SaveChanges();
+                    unitOfWork.Users.Update(userModel);
+                    unitOfWork.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
         }
 
@@ -177,8 +185,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                     unitOfWork.SaveChanges();
                 }
-                catch (UserNotFoundException)
+                catch (Exception)
                 {
+                    throw;
                 }
             }
         }
@@ -236,8 +245,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var god = GetUser(godID, unitOfWork);
-                var slave = GetUser(slaveID, unitOfWork);
+                UserModel god = GetUser(godID, unitOfWork);
+                UserModel slave = GetUser(slaveID, unitOfWork);
 
                 if (!god.IsAdmin)
                 {
