@@ -18,7 +18,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         IFoundViewModel GetViewModel(IFound found);
 
-        PhotoModel GetPhotoModel(int userId, int albumId, string fullPhotoName);
+        PhotoModel GetPhotoModel(int userId, int albumId, string realFileFormat);
 
         PhotoCommentViewModel GetViewModel(PhotoCommentModel photoCommentModel, UserModel userModel);
 

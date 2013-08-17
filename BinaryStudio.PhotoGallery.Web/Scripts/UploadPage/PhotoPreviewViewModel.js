@@ -1,4 +1,4 @@
-﻿function PhotoPreview(options) {
+﻿function PhotoPreviewViewModel(options) {
     var self = this;
 
     var mediator = options.mediator;

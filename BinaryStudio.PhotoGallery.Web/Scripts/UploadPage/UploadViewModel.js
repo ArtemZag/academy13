@@ -63,7 +63,7 @@
 
         hiddenInput.attr('data-bind', 'value: uploadHash');
 
-        var preview = new PhotoPreview({
+        var preview = new PhotoPreviewViewModel({
             uploadHash: hash,
             isSelected: true,
             mediator: mediator,
@@ -182,17 +182,6 @@
         return false;
     });
 
-    self.canClearUploadedPhotos = ko.computed(function() {
-        var previewsCount = self.previews().length;
-        for (var index = 0; index < previewsCount; index++) {
-            var preview = self.previews()[index];
-            if (preview.isSaved() == true) {
-                return true;
-            }
-        }
-        return false;
-    });
-
     self.clearUploadedPhotos = function() {
         for (var index = 0; index < self.previews().length; index++) {
             var preview = self.previews()[index];
@@ -202,6 +191,9 @@
                 index--;
             }
         }
+        
+        // Remove all previews with errors
+        $('.dz-error').remove();
     };
 
     self.canMovePhotos = ko.computed(function () {
@@ -224,31 +216,55 @@
     });
 
     self.startMoving = function () {
-        var album = self.selectedAlbum();
+        var albumName = self.selectedAlbum();
 
         // Get all names of the selected photos
-        var selectedPhotos = $.map(self.previews(), function(preview) {
+        var selectedPhotoHashes = $.map(self.previews(), function(preview) {
             if (preview.isSelected() === true) {
-                return preview.name();
+                preview.element.removeClass('dz-success');
+                return preview.uploadHash();
             }
         });
 
-       /* $.post('Api/File/MovePhotos', { AlbumName: album, PhotoNames: selectedPhotos })
-            .done(function(notAcceptedFiles) {
-                $.map(self.previews(), function(preview) {
-                    var fileNotSaved = $.map(notAcceptedFiles, function(fileName) {
-                        console.log(fileName);
-                        if (fileName === preview.name()) {
-                            return true;
-                        }
-                    });
+        $.post('Api/File/MovePhotos', { AlbumName: albumName, PhotoHashes: selectedPhotoHashes })
+            .done(function (response) {
+                $.map(response, function (fileInfo) {
+                    var count = self.previews().length;
 
-                    preview.isSaved(fileNotSaved[0] === true ? false : true);
-                    preview.isSelected(false);
+                    if (count <= 0) return;
+
+                    var $preview = null;
+                    var preview;
+
+                    for (var index = 0; index < count; index++) {
+                        preview = self.previews()[index];
+
+                        if (preview.isSaved() == false &&
+                            preview.isInTempFolder() == true &&
+                            preview.uploadHash() == fileInfo.FileHash) {
+                            $preview = preview.element;
+                            break;
+                        }
+                    }
+
+                    if ($preview == null) return;
+
+                    if (fileInfo.IsAccepted) {
+                        $preview.addClass('dz-success');
+                        preview.isSelected(false);
+                        preview.isSaved(true);
+                        preview.isInTempFolder(false);
+                    } else {
+                        $preview.find('.photo-checker').remove();
+                        $preview.addClass('dz-error');
+                        $preview.find('.dz-error-message > span').html(fileInfo.Error);
+                        self.previews.remove(preview);
+                        ko.cleanNode($preview[0]);
+                    }
                 });
             })
-            .fail(function(data) {
-                alert(data); // TODO show error as notification
-            });*/
+            .fail(function () {
+                alert("Something happens while photos have uploaded to server"); // TODO show this error as notification
+            });
     };
 }

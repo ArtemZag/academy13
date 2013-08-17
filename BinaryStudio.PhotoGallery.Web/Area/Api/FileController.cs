@@ -100,29 +100,36 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     _directoryWrapper.CreateDirectory(pathToAlbum);
                 }
 
-                foreach (var fileName in viewModel.PhotoHashes)
+                foreach (var photoHash in viewModel.PhotoHashes)
                 {
-                    var filePath = string.Format("{0}\\{1}", pathToTempFolder, fileName);
+                    // Remove all forbidden symbols in file name
+                    var fileNameInTemporaryFolder = Path.GetInvalidFileNameChars().Aggregate(photoHash, (current, c) => current.Replace(c.ToString(), ""));
 
-                    var fileExist = _fileWrapper.Exists(filePath);
+                    var filePathInTemporaryFolder = string.Format("{0}\\{1}", pathToTempFolder, fileNameInTemporaryFolder);
+
+                    var fileExist = _fileWrapper.Exists(filePathInTemporaryFolder);
 
                     if (fileExist)
                     {
-                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, albumId, fileName));
+                        var realFileFormat = _fileHelper.GetRealFileFormat(filePathInTemporaryFolder);
 
-                        var newFilePath = string.Format("{0}\\{1}", pathToAlbum, fileName);
+                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, albumId, realFileFormat));
+
+                        var photoId = 1;
+
+                        var filePathInAlbumFolder = string.Format("{0}\\{1}.{2}", pathToAlbum, photoId, realFileFormat);
 
                         try
                         {
-                            _fileWrapper.Move(filePath, newFilePath);
+                            _fileWrapper.Move(filePathInTemporaryFolder, filePathInAlbumFolder);
                         }
                         catch (Exception)
                         {
                             uploadFileInfos.Add(new UploadFileInfo
                             {
-                                FileHash = fileName,
+                                FileHash = photoHash,
                                 IsAccepted = false,
-                                Error = string.Format("Can't save photo to album '{0}'", viewModel.AlbumName)
+                                Error = "Can't save photo to selected album"
                             });
 
                             continue;
@@ -130,7 +137,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                         uploadFileInfos.Add(new UploadFileInfo
                         {
-                            FileHash = fileName,
+                            FileHash = photoHash,
                             IsAccepted = true
                         });
                     }
@@ -138,9 +145,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     {
                         uploadFileInfos.Add(new UploadFileInfo
                         {
-                            FileHash = fileName,
+                            FileHash = photoHash,
                             IsAccepted = false,
-                            Error = "Photo not found in temp folder"
+                            Error = "Photo not found in temporary folder"
                         });
                     }
                 }
