@@ -12,7 +12,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         UserModel GetUser(string userEmail);
 
         /// <summary>
-        /// Finds not activated user by hash-code
+        /// Finds not activated user by invite-code
         /// </summary>
         /// <param name="hash">Hash-code in Salt-field</param>
         /// <returns>User model</returns>
@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="userEmail">Email for activating</param>
         /// <param name="userFirstName">First name of user</param>
         /// <param name="userLastName">Last name of user</param>
-        /// <returns>128-symbols hash-code for activating link</returns>
+        /// <returns>128-symbols invite-code for activating link</returns>
         string CreateUser(string userEmail, string userFirstName, string userLastName);
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         /// <param name="userEmail">User's Email</param>
         /// <param name="userPassword">New user's password</param>
-        /// <param name="hash">Hash-code for activation</param>
-        void ActivateUser(string userEmail, string userPassword/*, string hash*/);
+        /// <param name="invite">Hash-code for activation</param>
+        void ActivateUser(string userEmail, string userPassword, string invite);
 
         void DeleteUser(string userEmail);
 

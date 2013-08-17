@@ -88,13 +88,13 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return result;
         }
 
-        public PhotoModel GetPhotoModel(int userId, int albumId, string fullPhotoName)
+        public PhotoModel GetPhotoModel(int userId, int albumId, string realFileFormat)
         {
             var photoModel = new PhotoModel
             {
                 OwnerId = userId,
                 AlbumId = albumId,
-                Name = fullPhotoName
+                    Format = realFileFormat
             };
 
             return photoModel;

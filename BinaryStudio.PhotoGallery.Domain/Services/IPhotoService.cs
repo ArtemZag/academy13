@@ -6,19 +6,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     public interface IPhotoService
     {
         /// <summary>
-        ///     Adds photo by specidied user to his album.
+        ///     Adds photoModel by specidied user to his album.
         /// </summary>
-        PhotoModel AddPhoto(string userEmail, string albumName, PhotoModel photo);
+        PhotoModel AddPhoto(string userEmail, string albumName, PhotoModel photoModel);
 
-        PhotoModel AddPhoto(PhotoModel photo);
+        PhotoModel AddPhoto(PhotoModel photoModel);
 
         /// <summary>
         ///     Adds photos by specidied user to his album.
         /// </summary>
         IEnumerable<int> AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
-        
+
         /// <summary>
-        ///     Deletes specified photo
+        ///     Deletes specified photoModel
         /// </summary>
         void DeletePhoto(string userEmail, PhotoModel photo);
 
@@ -45,7 +45,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
 
         /// <summary>
-        /// Gets all likes for photo
+        ///     Gets all likes for photoModel
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="photoId"></param>
@@ -54,7 +54,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
 
         /// <summary>
-        /// Add like to photo from user
+        ///     Add like to photoModel from user
         /// </summary>
         /// <param name="userEmail"></param>
         /// <param name="photoId"></param>
@@ -62,10 +62,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
 
         /// <summary>
-        /// Get all photos, visible by permissions to current user
+        ///     Get all photos, visible by permissions to current user
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="skipCount">Offset of the first photo in list</param>
+        /// <param name="skipCount">Offset of the first photoModel in list</param>
         /// <param name="takeCount">Number of photos to be returned</param>
         /// <returns>List of photos</returns>
         IEnumerable<PhotoModel> GetPublicPhotos(string userEmail, int skipCount, int takeCount);

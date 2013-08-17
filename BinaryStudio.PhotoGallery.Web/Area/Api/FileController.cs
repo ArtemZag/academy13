@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -25,22 +24,15 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     [RoutePrefix("Api/File")]
     public class FileController : ApiController
     {
-        private struct UploadFileInfo
-        {
-            public string FileHash;
-            public bool IsAccepted;
-            public string Error;
-        }
-
-        private readonly IUserService _userService;
-	    private readonly IPathUtil _pathUtil;
-	    private readonly IDirectoryWrapper _directoryWrapper;
-	    private readonly IFileHelper _fileHelper;
-	    private readonly IFileWrapper _fileWrapper;
-        private readonly IPhotoService _photoService;
-        private readonly IModelConverter _modelConverter;
         private readonly IAlbumService _albumService;
         private readonly ICryptoProvider _cryptoProvider;
+        private readonly IDirectoryWrapper _directoryWrapper;
+        private readonly IFileHelper _fileHelper;
+        private readonly IFileWrapper _fileWrapper;
+        private readonly IModelConverter _modelConverter;
+        private readonly IPathUtil _pathUtil;
+        private readonly IPhotoService _photoService;
+        private readonly IUserService _userService;
 
         public FileController(
             IUserService userService,
@@ -55,10 +47,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             _userService = userService;
             _pathUtil = pathUtil;
-	        _directoryWrapper = directoryWrapper;
-	        _fileHelper = fileHelper;
-	        _fileWrapper = fileWrapper;
-	        _photoService = photoService;
+            _directoryWrapper = directoryWrapper;
+            _fileHelper = fileHelper;
+            _fileWrapper = fileWrapper;
+            _photoService = photoService;
             _modelConverter = modelConverter;
             _albumService = albumService;
             _cryptoProvider = cryptoProvider;
@@ -76,9 +68,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                var userId = _userService.GetUserId(User.Identity.Name);
+                int userId = _userService.GetUserId(User.Identity.Name);
 
-                var albumId = 0;
+                int albumId = 0;
 
                 try
                 {
@@ -91,38 +83,47 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 }
 
                 // Get path to the temporary folder in the user folder
-                var pathToTempFolder = _pathUtil.BuildAbsoluteTemporaryDirectoryPath(userId);
+                string pathToTempFolder = _pathUtil.BuildAbsoluteTemporaryDirectoryPath(userId);
 
-                var pathToAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, albumId);
+                string pathToAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, albumId);
 
                 if (!_directoryWrapper.Exists(pathToAlbum))
                 {
                     _directoryWrapper.CreateDirectory(pathToAlbum);
                 }
 
-                foreach (var fileName in viewModel.PhotoHashes)
+                foreach (string photoHash in viewModel.PhotoHashes)
                 {
-                    var filePath = string.Format("{0}\\{1}", pathToTempFolder, fileName);
+                    // Remove all forbidden symbols in file name
+                    string fileNameInTemporaryFolder = Path.GetInvalidFileNameChars()
+                        .Aggregate(photoHash, (current, c) => current.Replace(c.ToString(), ""));
 
-                    var fileExist = _fileWrapper.Exists(filePath);
+                    string filePathInTemporaryFolder = string.Format("{0}\\{1}", pathToTempFolder,
+                        fileNameInTemporaryFolder);
+
+                    bool fileExist = _fileWrapper.Exists(filePathInTemporaryFolder);
 
                     if (fileExist)
                     {
-                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, albumId, fileName));
+                        string realFileFormat = _fileHelper.GetRealFileFormat(filePathInTemporaryFolder);
 
-                        var newFilePath = string.Format("{0}\\{1}", pathToAlbum, fileName);
+                        int photoId =
+                            _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, albumId, realFileFormat)).Id;
+
+                        string filePathInAlbumFolder = string.Format("{0}\\{1}.{2}", pathToAlbum, photoId,
+                            realFileFormat);
 
                         try
                         {
-                            _fileWrapper.Move(filePath, newFilePath);
+                            _fileWrapper.Move(filePathInTemporaryFolder, filePathInAlbumFolder);
                         }
                         catch (Exception)
                         {
                             uploadFileInfos.Add(new UploadFileInfo
                             {
-                                FileHash = fileName,
+                                FileHash = photoHash,
                                 IsAccepted = false,
-                                Error = string.Format("Can't save photo to album '{0}'", viewModel.AlbumName)
+                                Error = "Can't save photo to selected album"
                             });
 
                             continue;
@@ -130,7 +131,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                         uploadFileInfos.Add(new UploadFileInfo
                         {
-                            FileHash = fileName,
+                            FileHash = photoHash,
                             IsAccepted = true
                         });
                     }
@@ -138,9 +139,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     {
                         uploadFileInfos.Add(new UploadFileInfo
                         {
-                            FileHash = fileName,
+                            FileHash = photoHash,
                             IsAccepted = false,
-                            Error = "Photo not found in temp folder"
+                            Error = "Photo not found in temporary folder"
                         });
                     }
                 }
@@ -161,7 +162,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             return response;
         }
-        
+
         [POST("Upload")]
         public async Task<HttpResponseMessage> Upload()
         {
@@ -177,10 +178,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 // Get user ID from DB
-                var userId = _userService.GetUserId(User.Identity.Name);
+                int userId = _userService.GetUserId(User.Identity.Name);
 
                 // Get path to the temporary folder in the user folder
-                var pathToTempFolder = _pathUtil.BuildAbsoluteTemporaryDirectoryPath(userId);
+                string pathToTempFolder = _pathUtil.BuildAbsoluteTemporaryDirectoryPath(userId);
 
                 // Create directory, if it isn't exist
                 if (!_directoryWrapper.Exists(pathToTempFolder))
@@ -197,15 +198,17 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 // Check all files
                 foreach (MultipartFileData fileData in provider.FileData)
                 {
-                    var originalFileName = fileData.Headers.ContentDisposition.FileName.Trim('"');
+                    string originalFileName = fileData.Headers.ContentDisposition.FileName.Trim('"');
 
-                    var fileSize = _fileHelper.GetFileSize(fileData.LocalFileName);
+                    long fileSize = _fileHelper.GetFileSize(fileData.LocalFileName);
 
-                    var fileHash = _cryptoProvider.GetHash(string.Format("{0}{1}", originalFileName, fileSize));
+                    string fileHash = _cryptoProvider.GetHash(string.Format("{0}{1}", originalFileName, fileSize));
 
-                    var fileName = Path.GetInvalidFileNameChars().Aggregate(fileHash, (current, c) => current.Replace(c.ToString(), ""));
+                    // Remove all forbidden symbols in file name
+                    string fileName = Path.GetInvalidFileNameChars()
+                        .Aggregate(fileHash, (current, c) => current.Replace(c.ToString(), ""));
 
-                    var temporaryFileName = string.Format("{0}\\{1}", pathToTempFolder, fileName);
+                    string temporaryFileName = string.Format("{0}\\{1}", pathToTempFolder, fileName);
 
                     // Is it really image file format ?
                     if (!_fileHelper.IsImageFile(fileData.LocalFileName))
@@ -225,7 +228,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     {
                         _fileWrapper.Move(fileData.LocalFileName, temporaryFileName);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
 
@@ -233,7 +236,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         {
                             FileHash = fileHash,
                             IsAccepted = false,
-                            Error = "Can't save this file"
+                            Error = "File already uploaded"
                         });
 
                         continue;
@@ -261,6 +264,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             };
 
             return response;
+        }
+
+        private struct UploadFileInfo
+        {
+            public string Error;
+            public string FileHash;
+            public bool IsAccepted;
         }
     }
 }
