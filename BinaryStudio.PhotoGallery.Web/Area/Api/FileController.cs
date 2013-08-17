@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -202,7 +203,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                     var fileHash = _cryptoProvider.GetHash(string.Format("{0}{1}", originalFileName, fileSize));
 
-                    var temporaryFileName = string.Format("{0}\\{1}", pathToTempFolder, fileHash);
+                    var fileName = Path.GetInvalidFileNameChars().Aggregate(fileHash, (current, c) => current.Replace(c.ToString(), ""));
+
+                    var temporaryFileName = string.Format("{0}\\{1}", pathToTempFolder, fileName);
 
                     // Is it really image file format ?
                     if (!_fileHelper.IsImageFile(fileData.LocalFileName))
@@ -222,7 +225,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     {
                         _fileWrapper.Move(fileData.LocalFileName, temporaryFileName);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
 
