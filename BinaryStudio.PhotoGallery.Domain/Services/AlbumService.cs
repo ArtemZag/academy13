@@ -43,7 +43,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     };
 
                 try {this.CreateAlbum(userEmail, albumModel);}
-                catch (AlbumAlreadyExistException exception)
+                catch (Exception exception)
                 {
                     throw new Exception(exception.Message, exception);
                 }
