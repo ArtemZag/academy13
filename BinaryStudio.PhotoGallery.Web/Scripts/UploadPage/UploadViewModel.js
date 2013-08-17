@@ -23,30 +23,13 @@
         for (var index = 0; index < previewsCount; index++) {
             var preview = self.previews()[index];
             
-            if (preview.hash() === data.hash) {
+            if (preview.uploadHash() === data.hash) {
                 preview.isSelected(data.isSelected);
             }
         }
-
-        checkAllPhotoSelection();
     });
 
-    var checkAllPhotoSelection = function () {
-        var selectedCounter = 0;
-        
-        var previewsCount = self.previews().length;
-
-        for (var index = 0; index < previewsCount; index++) {
-            var preview = self.previews()[index];
-            if (preview.isSelected()) {
-                selectedCounter++;
-            }
-        }
-
-        var isAllPhotoSelected = self.previews().length === selectedCounter;
-
-        self.chekedAllPhotos(isAllPhotoSelected);
-    };
+    var responseData = null;
 
     var dropzone = new Dropzone(previewsContainer, dropzoneOptions);
 
@@ -56,20 +39,32 @@
         $preview.append('<input type="hidden" value="' + md5Hash + '"/>');
     });
 
-    var responseData = null;
+    dropzone.on('sending', function (file) {
+        var $preview = $(file.previewTemplate);
+        $preview.addClass('dz-processing');
+    });
 
     dropzone.on('success', function (file, response) {
         responseData = response;
 
         var $preview = $(file.previewTemplate);
+        
+        $preview.removeClass('dz-success');
 
         $preview.prepend('<input type="checkbox" class="photo-checker" data-bind="checked: isSelected, visible: !isSaved()" />');
 
         $preview.find('.dz-details > img').attr('data-bind', 'click: selectPhoto');
 
         $preview.find('.dz-error-message > span').attr('data-bind', 'text: errorMessage');
-        
+
+        var hiddenInput = $preview.find('input[type=hidden]');
+
+        var hash = hiddenInput.attr('value');
+
+        hiddenInput.attr('data-bind', 'value: uploadHash');
+
         var preview = new PhotoPreview({
+            uploadHash: hash,
             isSelected: true,
             mediator: mediator,
             element: $preview
@@ -84,20 +79,39 @@
         if (responseData == null) return;
 
         $.map(responseData, function (fileInfo) {
-            
-            if (fileInfo.IsAccepted) {
+            var count = self.previews().length;
 
+            if (count <= 0) return;
+
+            var $preview = null;
+            var preview;
+
+            for (var index = 0; index < count; index++) {
+                preview = self.previews()[index];
+                
+                if (preview.isSaved() == false &&
+                    preview.isInTempFolder() == false &&
+                    preview.uploadHash() == fileInfo.FileHash) {
+                    $preview = preview.element;
+                    break;
+                }
+            }
+
+            if ($preview == null) return;
+
+            if (fileInfo.IsAccepted) {
+                $preview.addClass('dz-success');
+                preview.isInTempFolder(true);
             } else {
-//                var $preview = $('.dz-preview input');
-//                $preview.removeClass('dz-success');
-//                $preview.addClass('dz-error');
-//                $preview.find('.dz-error-message > span').html(fileInfo.Error);
+                $preview.find('.photo-checker').remove();
+                $preview.addClass('dz-error');
+                $preview.find('.dz-error-message > span').html(fileInfo.Error);
+                ko.cleanNode($preview[0]);
+                self.previews.remove(preview);
             }
         });
 
         responseData = null;
-
-        checkAllPhotoSelection();
     });
 
     dropzone.on("removedfile", function (file) {
@@ -105,7 +119,7 @@
             var preview = self.previews()[index];
             console.log(preview);
             if (preview.name === file.name) {
-                self.previews().remove(preview);
+                self.previews.remove(preview);
                 return;
             }
         }
@@ -132,23 +146,30 @@
     };
 
     self.selectedAlbum = ko.observable('');
-
-    self.chekedAllPhotos = ko.observable(false);
     
-    self.selectAllPhotos = function () {
-        var index = 0;
-        var previewsCount = self.previews().length;
-        if (self.chekedAllPhotos()) {
-            for (index = 0; index < previewsCount; index++) {
-                self.previews()[index].isSelected(true);
+    self.chekedAllPhotos = ko.computed({
+        read: function() {
+            var selectedCounter = 0;
+
+            var previewsCount = self.previews().length;
+
+            for (var index = 0; index < previewsCount; index++) {
+                var preview = self.previews()[index];
+                if (preview.isSelected()) {
+                    selectedCounter++;
+                }
             }
-        } else {
-            for (index = 0; index < previewsCount; index++) {
-                self.previews()[index].isSelected(false);
+            
+            return self.previews().length === selectedCounter;
+        },
+        write: function (value) {
+            var previewsCount = self.previews().length;
+            for (var index = 0; index < previewsCount; index++) {
+                self.previews()[index].isSelected(value);
             }
-        }
-        return true; // allow to get check event
-    };
+        },
+        owner: this
+    });
 
     self.canSelectAllPhotos = ko.computed(function () {
         var previewsCount = self.previews().length;

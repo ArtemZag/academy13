@@ -34,7 +34,9 @@ namespace BinaryStudio.PhotoGallery.Core.UserUtils
 
             var endcodedString = md5.ComputeHash(encoding.GetBytes(originalString));
 
-            return Convert.ToBase64String(endcodedString);
+            // ToBase64String function add '==' in the end of encruptedString 
+            // There are an excess symbols and are must be deleted
+            return Convert.ToBase64String(endcodedString).TrimEnd('=').TrimEnd('=');
         }
     }
 }

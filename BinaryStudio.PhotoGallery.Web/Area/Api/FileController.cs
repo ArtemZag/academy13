@@ -203,6 +203,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                     var fileHash = _cryptoProvider.GetHash(string.Format("{0}{1}", originalFileName, fileSize));
 
+                    // Remove all forbidden symbols in file name
                     var fileName = Path.GetInvalidFileNameChars().Aggregate(fileHash, (current, c) => current.Replace(c.ToString(), ""));
 
                     var temporaryFileName = string.Format("{0}\\{1}", pathToTempFolder, fileName);
@@ -225,7 +226,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     {
                         _fileWrapper.Move(fileData.LocalFileName, temporaryFileName);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
 
@@ -233,7 +234,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         {
                             FileHash = fileHash,
                             IsAccepted = false,
-                            Error = "Can't save this file"
+                            Error = "File already uploaded"
                         });
 
                         continue;
