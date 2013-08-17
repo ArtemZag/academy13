@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
@@ -80,6 +81,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+
+        //todo: maybe we will remove this method?
         public void CreateUser(UserModel user, AuthInfoModel.ProviderType provider)
         {
             if (IsUserExist(user.Email))
@@ -107,7 +110,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 throw new UserAlreadyExistException(userEmail);
             }
 
-            var userModel = new UserModel()
+            var userModel = new UserModel
                 {
                     Email = userEmail,
                     FirstName = userFirstName,
@@ -119,12 +122,25 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     // Empty password field is not good 
                     UserPassword =
                         _cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), _cryptoProvider.GetNewSalt())
-
+                   
                 };
 
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 unitOfWork.Users.Add(userModel);
+                unitOfWork.SaveChanges();
+
+                userModel.Albums = new Collection<AlbumModel>
+                    {
+                        new AlbumModel
+                            {
+                                AlbumName = "Temporary",
+                                Description = "System album. Not for use",
+                                OwnerId = unitOfWork.Users.Find(user => user.Email == userEmail).Id
+                            }
+                    };
+
+                unitOfWork.Users.Update(userModel);
                 unitOfWork.SaveChanges();
             }
 
