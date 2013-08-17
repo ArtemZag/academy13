@@ -17,10 +17,11 @@
                            optionsText: $data,
                            optionsValue: $data,
                            value: selectedAlbum">
+            <option value></option>
         </select>
     </div>
     &nbsp;&nbsp;
-    <button class="btn btn-danger" data-bind="click: startUpload, enable: canMovePhotos">Move photos</button>
+    <button class="btn btn-danger" data-bind="click: startMoving, enable: canMovePhotos">Move photos</button>
     &nbsp;
     <button class="btn btn-inverse" data-bind="enable: canClearUploadedPhotos, click: clearUploadedPhotos">Clear uploaded</button>
     <div id="select-all-photos">

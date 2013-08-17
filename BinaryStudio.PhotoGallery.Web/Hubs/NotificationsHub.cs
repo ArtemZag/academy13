@@ -85,7 +85,7 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
 
         public override Task OnDisconnected()
         {
-            string userEmail = Context.User.Identity.Name;
+            string userEmail = Context.User.Identity.Name; // null reference exception, when I closed all tabs with site
             string connectionId = Context.ConnectionId;
 
             Groups.Remove(connectionId, userEmail);
