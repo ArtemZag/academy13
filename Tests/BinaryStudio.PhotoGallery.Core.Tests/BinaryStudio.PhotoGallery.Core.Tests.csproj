@@ -6,8 +6,8 @@
     <ProjectGuid>{B85AE110-861E-41EE-9C29-D8C777C4C571}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BinaryStudio.PhotoGalery.Core.Tests</RootNamespace>
-    <AssemblyName>BinaryStudio.PhotoGalery.Core.Tests</AssemblyName>
+    <RootNamespace>BinaryStudio.PhotoGallery.Core.Tests</RootNamespace>
+    <AssemblyName>BinaryStudio.PhotoGallery.Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -71,7 +71,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Bootstrapper.cs" />
     <Compile Include="CryptoProviderTests.cs" />
     <Compile Include="DirectoryWrapperTests.cs" />
     <Compile Include="FileHelperTests.cs" />
@@ -87,20 +86,6 @@
       <Project>{91126D20-A9B5-49BE-9043-E3E8DCAE3628}</Project>
       <Name>BinaryStudio.PhotoGallery.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\imageAsText.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="Content\empty">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Content Include="Content\img.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\text.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

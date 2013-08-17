@@ -1,7 +1,5 @@
 ﻿$(document).ready(function() {
 
-    $("#searchPanel input[type=checkbox]").attr("checked", "checked");
-
     function searchViewModel() {
 
         var self = this;
@@ -16,7 +14,6 @@
 
         self.searchQuery = ko.observable();
 
-        self.isSearchPhotosByName = ko.observable(true);
         self.isSearchPhotosByTags = ko.observable(true);
         self.isSearchPhotosByDescription = ko.observable(true);
 
@@ -39,11 +36,6 @@
         };
 
         self.searchQuery.subscribe(function() {
-
-            isModelChanged = true;
-        });
-
-        self.isSearchPhotosByName.subscribe(function() {
 
             isModelChanged = true;
         });

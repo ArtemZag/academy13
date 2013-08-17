@@ -9,7 +9,7 @@ using Winista.Mime;
 
 namespace BinaryStudio.PhotoGallery.Core.Helpers
 {
-    public class FileHelper : IFileHelper
+    internal class FileHelper : IFileHelper
     {
         private readonly IFileWrapper _fileWrapper;
 

@@ -71,13 +71,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                                     userService.CreateUser(invitedUser.Email, invitedUser.FirstName,
                                         invitedUser.LastName);
 
-            const string THEME = "Binary Studio gallery invitation";
+            const string SUBJECT = "Binary Studio gallery invitation";
 
             string text = string.Format("Dear {0} {1}!\n\nYou have been invited to the great photogallery project" +
                                         " of Binary Studio! For the end of registration, please click on this link:\n{2} ",
                 invitedUser.FirstName, invitedUser.LastName, activationLink);
 
-            emailSender.Send(host, fromEmail, fromPass, toEmail, THEME, text);
+            emailSender.Send(host, fromEmail, fromPass, toEmail, SUBJECT, text);
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }

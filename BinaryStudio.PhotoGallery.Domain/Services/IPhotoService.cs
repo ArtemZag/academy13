@@ -8,14 +8,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Adds photo by specidied user to his album.
         /// </summary>
-        void AddPhoto(string userEmail, string albumName, PhotoModel photo);
+        PhotoModel AddPhoto(string userEmail, string albumName, PhotoModel photo);
 
-        void AddPhoto(PhotoModel photo);
+        PhotoModel AddPhoto(PhotoModel photo);
 
         /// <summary>
         ///     Adds photos by specidied user to his album.
         /// </summary>
-        void AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
+        IEnumerable<int> AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
         
         /// <summary>
         ///     Deletes specified photo
@@ -41,24 +41,24 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="takeCount">Ending of the interval.</param>
         IEnumerable<PhotoModel> GetPhotos(string userEmail, int skipCount, int takeCount);
 
-        PhotoModel GetPhoto(string userEmail, int photoID);
+        PhotoModel GetPhoto(string userEmail, int photoId);
 
 
         /// <summary>
         /// Gets all likes for photo
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="photoID"></param>
+        /// <param name="photoId"></param>
         /// <returns></returns>
-        IEnumerable<UserModel> GetLikes(string userEmail, int photoID);
+        IEnumerable<UserModel> GetLikes(string userEmail, int photoId);
 
 
         /// <summary>
         /// Add like to photo from user
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="photoID"></param>
-        void AddLike(string userEmail, int photoID);
+        /// <param name="photoId"></param>
+        void AddLike(string userEmail, int photoId);
 
 
         /// <summary>

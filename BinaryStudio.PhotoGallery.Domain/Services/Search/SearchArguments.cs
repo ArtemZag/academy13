@@ -13,13 +13,12 @@
 
         public int Interval { get; set; }
 
-        public bool IsSearchPhotosByName { get; set; }
         public bool IsSearchPhotosByTags { get; set; }
         public bool IsSearchPhotosByDescription { get; set; }
 
         public bool IsSearchByPhotos
         {
-            get { return IsSearchPhotosByName || IsSearchPhotosByTags || IsSearchPhotosByDescription; }
+            get { return IsSearchPhotosByTags || IsSearchPhotosByDescription; }
         }
 
         public bool IsSearchAlbumsByName { get; set; }

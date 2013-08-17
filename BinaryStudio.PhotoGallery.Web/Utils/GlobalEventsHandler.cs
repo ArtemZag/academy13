@@ -52,13 +52,13 @@ namespace BinaryStudio.PhotoGallery.Web
             var mUser = _userService.GetUser(mComment.UserModelId);
             var mPhoto = _photoService.GetPhoto(mUser.Email, mComment.PhotoModelId);
 
-            if (mPhoto.UserId != mComment.UserModelId)
+            if (mPhoto.OwnerId != mComment.UserModelId)
             {
-                var mPhotoOwner = _userService.GetUser(mPhoto.UserId);
+                var mPhotoOwner = _userService.GetUser(mPhoto.OwnerId);
                 var _hubNotify = GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>();
                 var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
                                          "добавил комментарий к фотографии <span class='highlight_what'>\"{2}\"</span>"
-                                         , mUser.FirstName, mUser.LastName, mPhoto.PhotoName);
+                                         , mUser.FirstName, mUser.LastName, mPhoto.Name);
                 _hubNotify.Clients.Group(mPhotoOwner.Email).SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
             }
         }
@@ -67,15 +67,15 @@ namespace BinaryStudio.PhotoGallery.Web
         {
             var mAlbum = _albumService.GetAlbum(mPhoto.AlbumId);
 
-            if (mPhoto.UserId != mAlbum.OwnerId)
+            if (mPhoto.OwnerId != mAlbum.OwnerId)
             {
-                var mPhotoOwner = _userService.GetUser(mPhoto.UserId);
+                var mPhotoOwner = _userService.GetUser(mPhoto.OwnerId);
                 var mAlbumOwner = _userService.GetUser(mAlbum.OwnerId);
 
                 var _hubNotify = GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>();
                 var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
                                          "добавил фотографию <span class='highlight_what'>\"{2}\"</span> в ваш альбом {3}"
-                                         , mPhotoOwner.FirstName, mPhotoOwner.LastName, mPhoto.PhotoName, mAlbum.AlbumName);
+                                         , mPhotoOwner.FirstName, mPhotoOwner.LastName, mPhoto.Name, mAlbum.AlbumName);
                 _hubNotify.Clients.Group(mAlbumOwner.Email)
                           .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
             }

@@ -2,11 +2,10 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+[assembly: InternalsVisibleTo("BinaryStudio.PhotoGallery.Domain.Tests")]
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-
-[assembly: InternalsVisibleTo("BinaryStudio.PhotoGallery.Domain.Tests")]
 [assembly: AssemblyTitle("BinaryStudio.PhotoGallery.Domain")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
@@ -23,7 +22,6 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-
 [assembly: Guid("a3965943-51e8-4689-83c1-f9a84a3481a8")]
 
 // Version information for an assembly consists of the following four values:

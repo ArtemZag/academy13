@@ -8,7 +8,6 @@
 
         public int Interval { get; set; }
 
-        public bool IsSearchPhotosByName { get; set; }
         public bool IsSearchPhotosByTags { get; set; }
         public bool IsSearchPhotosByDescription { get; set; }
 
