@@ -44,6 +44,7 @@ namespace BinaryStudio.PhotoGallery.Database
                                 Department = departments[i]
                             });
                 }
+                unitOfWork.SaveChanges();
 
                 // Creating a list of usefull tags
                 foreach (string photoTag in tags)
@@ -62,6 +63,8 @@ namespace BinaryStudio.PhotoGallery.Database
                 {
                     unitOfWork.Groups.Add(new GroupModel {GroupName = group});
                 }
+
+                unitOfWork.SaveChanges();
 
                 ///////////////////////////////////////////////////////
 
@@ -90,6 +93,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     photosForAlbum.Add(new PhotoModel(3, 7) { PhotoName = i + ".jpg", PhotoComments = comm, Description = string.Empty });
                     unitOfWork.Photos.Add(new PhotoModel(4, 6) { PhotoName = i + ".jpg" });
                 }
+                unitOfWork.SaveChanges();
 
                 /////////////////////////////////////////////////////////////////////////////////
 
@@ -109,6 +113,8 @@ namespace BinaryStudio.PhotoGallery.Database
                 };
 
                 var album = new AlbumModel("Test", 7) {AvailableGroups = AGList, Photos = photosForAlbum};
+
+                unitOfWork.SaveChanges();
 
                 var groupCollection = new Collection<GroupModel>
                     {

@@ -56,7 +56,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var album = new AlbumModel
                 {
                     Id = 1,
-                    UserId = 1,
+                    OwnerId = 1,
                     AlbumName = "albumName",
                     Photos = new Collection<PhotoModel>()
                 };
@@ -126,7 +126,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var album = new AlbumModel
                 {
                     Id = 2,
-                    UserId = 2,
+                    OwnerId = 2,
                     AlbumName = "albumName",
                     Photos = new Collection<PhotoModel>()
                 };
