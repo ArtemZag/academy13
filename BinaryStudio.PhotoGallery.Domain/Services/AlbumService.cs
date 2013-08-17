@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -34,14 +35,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
-                
+
                 var albumModel = new AlbumModel
                     {
                         AlbumName = albumName,
                         OwnerId = user.Id
                     };
-                
-                this.CreateAlbum(userEmail, albumModel);
+
+                try {this.CreateAlbum(userEmail, albumModel);}
+                catch (AlbumAlreadyExistException exception)
+                {
+                    throw new Exception(exception.Message, exception);
+                }
             }
         }
 
