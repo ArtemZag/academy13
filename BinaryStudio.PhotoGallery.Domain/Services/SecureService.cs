@@ -45,11 +45,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = unitOfWork.Users.Find(userId);
-                PhotoModel photo = unitOfWork.Photos.Find(photoId);
+                var user = unitOfWork.Users.Find(userId);
+                var photo = unitOfWork.Photos.Find(photoId);
+                var album = unitOfWork.Albums.Find(photo.AlbumId);
 
-                // if user in admin group OR user is photo owner
-                return (user.Groups.ToList().Find(model => (model.Id == 1)) != null) || (photo.UserId == userId);
+                // if user is album owner OR user is photo owner OR user is admin
+                return (album.OwnerId == userId) || (photo.OwnerId == userId) || (user.IsAdmin);
             }
         }
 
