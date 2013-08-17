@@ -15,21 +15,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             _secureService = secureService;
         }
 
-        public PhotoModel AddPhoto(PhotoModel photo)
+        public PhotoModel AddPhoto(PhotoModel photoModel)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AlbumModel album = GetAlbum(photo.OwnerId, photo.OwnerId, unitOfWork);
+                AlbumModel album = GetAlbum(photoModel.OwnerId, photoModel.OwnerId, unitOfWork);
 
-                album.Photos.Add(photo);
+                album.Photos.Add(photoModel);
 
                 unitOfWork.SaveChanges();
 
-                return photo;
+                return photoModel;
             }
         }
 
-        public PhotoModel AddPhoto(string userEmail, string albumName, PhotoModel photo)
+        public PhotoModel AddPhoto(string userEmail, string albumName, PhotoModel photoModel)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -38,12 +38,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 if (_secureService.CanUserAddPhoto(user.Id, album.Id))
                 {
-                    photo.OwnerId = user.Id;
-                    album.Photos.Add(photo);
+                    photoModel.OwnerId = user.Id;
+                    album.Photos.Add(photoModel);
 
                     unitOfWork.SaveChanges();
 
-                    return photo;
+                    return photoModel;
                 }
 
                 throw new NoEnoughPrivileges("User can't get access to photos", null);
@@ -179,7 +179,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     return photo.Likes.ToList();
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photo's likes", null);
+                throw new NoEnoughPrivileges("User can't get access to photoModel's likes", null);
             }
         }
 

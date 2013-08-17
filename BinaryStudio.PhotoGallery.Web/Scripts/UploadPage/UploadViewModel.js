@@ -1,6 +1,6 @@
 ﻿function UploadViewModel(options) {
     Dropzone.autoDiscover = false;
-    
+
     var previewsContainer = options.element;
 
     var dropzoneOptions = {
@@ -17,12 +17,12 @@
 
     var mediator = options.mediator;
 
-    mediator.subscribe("upload:preview", function (data) {
+    mediator.subscribe("upload:preview", function(data) {
         var previewsCount = self.previews().length;
 
         for (var index = 0; index < previewsCount; index++) {
             var preview = self.previews()[index];
-            
+
             if (preview.uploadHash() === data.hash) {
                 preview.isSelected(data.isSelected);
             }
@@ -33,23 +33,25 @@
 
     var dropzone = new Dropzone(previewsContainer, dropzoneOptions);
 
-    dropzone.on('addedfile', function (file) {
-        var md5Hash = b64_md5(file.name + file.size);      
+    dropzone.on('addedfile', function(file) {
+        var md5Hash = b64_md5(file.name + file.size);
         var $preview = $(file.previewTemplate);
         $preview.append('<input type="hidden" value="' + md5Hash + '"/>');
     });
 
-    dropzone.on('sending', function (file) {
+    dropzone.on('sending', function(file) {
         var $preview = $(file.previewTemplate);
         $preview.addClass('dz-processing');
     });
 
-    dropzone.on('success', function (file, response) {
+    dropzone.on('success', function(file, response) {
         responseData = response;
 
         var $preview = $(file.previewTemplate);
-        
+
         $preview.removeClass('dz-success');
+        
+        $preview.removeClass('dz-processing');
 
         $preview.prepend('<input type="checkbox" class="photo-checker" data-bind="checked: isSelected, visible: !isSaved()" />');
 
@@ -75,10 +77,10 @@
         ko.applyBindings(preview, file.previewTemplate);
     });
 
-    dropzone.on("complete", function () {
+    dropzone.on("complete", function() {
         if (responseData == null) return;
 
-        $.map(responseData, function (fileInfo) {
+        $.map(responseData, function(fileInfo) {
             var count = self.previews().length;
 
             if (count <= 0) return;
@@ -88,7 +90,7 @@
 
             for (var index = 0; index < count; index++) {
                 preview = self.previews()[index];
-                
+
                 if (preview.isSaved() == false &&
                     preview.isInTempFolder() == false &&
                     preview.uploadHash() == fileInfo.FileHash) {
@@ -114,7 +116,7 @@
         responseData = null;
     });
 
-    dropzone.on("removedfile", function (file) {
+    dropzone.on("removedfile", function(file) {
         for (var index = 0; index < self.previews().length; ++index) {
             var preview = self.previews()[index];
             console.log(preview);
@@ -124,13 +126,13 @@
             }
         }
     });
-    
-    self.albums = ko.observableArray(typeof (options.albums) !== 'undefined' ? options.albums : []);
-    
+
+    self.albums = ko.observableArray(typeof(options.albums) !== 'undefined' ? options.albums : []);
+
     var chosenAlbums = $(options.chosen);
     chosenAlbums.chosen({ no_results_text: '<a class="create-album">Create</a> album ' });
 
-    self.reloadChosen = function () {
+    self.reloadChosen = function() {
         chosenAlbums.trigger('chosen:updated');
     };
 
@@ -140,13 +142,13 @@
         self.albums.push(albumName);
         self.selectedAlbum(albumName);
         self.reloadChosen();
-        
+
         // added '=' in request before albumName (otherwise it send null into controller)
         $.post('Api/Album', { '': albumName });
     };
 
     self.selectedAlbum = ko.observable('');
-    
+
     self.chekedAllPhotos = ko.computed({
         read: function() {
             var selectedCounter = 0;
@@ -159,10 +161,10 @@
                     selectedCounter++;
                 }
             }
-            
+
             return self.previews().length === selectedCounter;
         },
-        write: function (value) {
+        write: function(value) {
             var previewsCount = self.previews().length;
             for (var index = 0; index < previewsCount; index++) {
                 self.previews()[index].isSelected(value);
@@ -171,7 +173,7 @@
         owner: this
     });
 
-    self.canSelectAllPhotos = ko.computed(function () {
+    self.canSelectAllPhotos = ko.computed(function() {
         var previewsCount = self.previews().length;
         for (var index = 0; index < previewsCount; index++) {
             var preview = self.previews()[index];
@@ -191,12 +193,12 @@
                 index--;
             }
         }
-        
+
         // Remove all previews with errors
         $('.dz-error').remove();
     };
 
-    self.canMovePhotos = ko.computed(function () {
+    self.canMovePhotos = ko.computed(function() {
         if (self.albums().length <= 0) {
             return false;
         }
@@ -215,20 +217,21 @@
         return false;
     });
 
-    self.startMoving = function () {
+    self.startMoving = function() {
         var albumName = self.selectedAlbum();
 
         // Get all names of the selected photos
         var selectedPhotoHashes = $.map(self.previews(), function(preview) {
             if (preview.isSelected() === true) {
                 preview.element.removeClass('dz-success');
+                preview.element.addClass('dz-processing');
                 return preview.uploadHash();
             }
         });
 
         $.post('Api/File/MovePhotos', { AlbumName: albumName, PhotoHashes: selectedPhotoHashes })
-            .done(function (response) {
-                $.map(response, function (fileInfo) {
+            .done(function(response) {
+                $.map(response, function(fileInfo) {
                     var count = self.previews().length;
 
                     if (count <= 0) return;
@@ -264,6 +267,9 @@
                 });
             })
             .fail(function () {
+                $.map(self.previews(), function (preview) {
+                    preview.element.removeClass('dz-processing');
+                });
                 alert("Something happens while photos have uploaded to server"); // TODO show this error as notification
             });
     };
