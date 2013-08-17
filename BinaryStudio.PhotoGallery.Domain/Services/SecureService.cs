@@ -87,7 +87,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                                                   .Select(arg => arg.AlbumId)
                                                   .Distinct();
 
-
             return albumIds.Select(albumId => GetAlbum(albumId, unitOfWork)).ToList();
         }
 

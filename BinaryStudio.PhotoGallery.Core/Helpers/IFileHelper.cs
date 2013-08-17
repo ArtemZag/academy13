@@ -6,5 +6,6 @@
         bool IsImageFile(string fileName);
         bool Equals(string firstFile, string secondFile);
         void HardMove(string sourceName, string destName);
+        long GetFileSize(string path);
     }
 }

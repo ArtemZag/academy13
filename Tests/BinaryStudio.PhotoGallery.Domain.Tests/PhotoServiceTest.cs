@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             _photoService = new PhotoService(_workFactory, secureService);
             _userService = new UserService(_workFactory, cryptoProvider);
-            _albumService = new AlbumService(_workFactory);
+//            _albumService = new AlbumService(_workFactory);
         }
 
         private IEnumerable<PhotoModel> GetListOfPhotos()

@@ -5,16 +5,14 @@
 
     self.element = options.element;
     
-    self.name = ko.observable(options.name);
+    self.hash = ko.observable(options.hash);
     
-    self.size = ko.observable(options.size);
-    
-    self.isSelected = ko.observable(false);
+    self.isSelected = ko.observable(options.isSelected);
 
     self.errorMessage = ko.observable("");
     
     self.isSelected.subscribe(function (isChecked) {
-        mediator.publish("upload:preview", { name: self.name(), isSelected: isChecked });
+        mediator.publish("upload:preview", { hash: self.hash(), isSelected: isChecked });
     });
 
     self.isSaved = ko.observable(false);

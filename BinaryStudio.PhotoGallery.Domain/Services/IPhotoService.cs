@@ -27,19 +27,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         /// <param name="userEmail">Users email.</param>
         /// <param name="albumName">Album name.</param>
-        /// <param name="begin">Beginning of the interval.</param>
-        /// <param name="end">Ending of the interval.</param>
-        IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end);
+        /// <param name="skipCount">Beginning of the interval.</param>
+        /// <param name="takeCount">Ending of the interval.</param>
+        IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int skipCount, int takeCount);
 
-        IEnumerable<PhotoModel> GetPhotos(string userEmail, int albumId, int begin, int end);
+        IEnumerable<PhotoModel> GetPhotos(string userEmail, int albumId, int skipCount, int takeCount);
 
         /// <summary>
         ///     Returns specified interval of users photos.
         /// </summary>
         /// <param name="userEmail">Users email.</param>
-        /// <param name="begin">Beginning of the interval.</param>
-        /// <param name="end">Ending of the interval.</param>
-        IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end);
+        /// <param name="skipCount">Beginning of the interval.</param>
+        /// <param name="takeCount">Ending of the interval.</param>
+        IEnumerable<PhotoModel> GetPhotos(string userEmail, int skipCount, int takeCount);
 
         PhotoModel GetPhoto(string userEmail, int photoID);
 
@@ -59,5 +59,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="userEmail"></param>
         /// <param name="photoID"></param>
         void AddLike(string userEmail, int photoID);
+
+
+        /// <summary>
+        /// Get all photos, visible by permissions to current user
+        /// </summary>
+        /// <param name="userEmail"></param>
+        /// <param name="skipCount">Offset of the first photo in list</param>
+        /// <param name="takeCount">Number of photos to be returned</param>
+        /// <returns>List of photos</returns>
+        IEnumerable<PhotoModel> GetPublicPhotos(string userEmail, int skipCount, int takeCount);
     }
 }

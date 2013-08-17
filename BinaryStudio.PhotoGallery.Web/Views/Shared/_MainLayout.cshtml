@@ -13,41 +13,38 @@
     </head>
     <body>
 
-            <nav class="navbar navbar-fixed-top">
-                <a href="~/Home/Index" class="brand"><img src="~/Content/images/logo_small.png"/></a>
-                <ul class="nav">
-                    <li><a href="~/Gallery">Gallery</a></li>
-                    <li><a href="~/Albums/Index">Albums</a></li>
-                    <li><a href="~/Groups">Groups</a></li>
-                    <li><a href="~/Search">Search</a></li>
-                </ul>
-                <ul class="nav pull-right">
-                    <li><a href="~/Upload" class="btn btn-success">Upload</a></li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <strong>@User.Identity.Name</strong>
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="~/AdminPanel/Index">Administration</a></li>
-                            <li><a href="~/Home/News">Notifications</a></li>
-                            <li><a href="~/Profile">Profile</a></li>
-                            <li class="divider"></li>
+        <nav class="navbar navbar-fixed-top">
+            <a href="~/Home/Index" class="brand"><img src="~/Content/images/logo_small.png"/></a>
+            <ul class="nav">
+                <li><a href="~/Gallery">Gallery</a></li>
+                <li><a href="~/Albums/Index">Albums</a></li>
+                <li><a href="~/Groups">Groups</a></li>
+                <li><a href="~/Search">Search</a></li>
+            </ul>
+            <ul class="nav pull-right">
+                <li><a href="~/Upload" class="btn btn-success">Upload</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        <strong>@User.Identity.Name</strong>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="~/AdminPanel/Index">Administration</a></li>
+                        <li><a href="~/Home/News">Notifications</a></li>
+                        <li><a href="~/Profile">Profile</a></li>
+                        <li class="divider"></li>
                         <li><a href="~/Authorization/Signout">Sign out</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-            <div id="main-render-place">
-                @RenderBody()
-            </div>
-
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="main-render-place">
+            @RenderBody()
+        </div>
+        @Scripts.Render("~/Scripts/jquery.pnotify.js")
+        @Scripts.Render("~/Scripts/jquery.signalR-1.1.3.min.js")
+        @Scripts.Render("/signalr/hubs")
+        @Scripts.Render("~/Scripts/Notifications.js")
     </body>
-
-    @Scripts.Render("~/Scripts/jquery.pnotify.js")
-    @Scripts.Render("~/Scripts/jquery.signalR-1.1.3.min.js")
-    @Scripts.Render("/signalr/hubs")
-    @Scripts.Render("~/Scripts/Notifications.js")
-
 </html>
 

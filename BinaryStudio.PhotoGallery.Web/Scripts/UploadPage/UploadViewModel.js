@@ -5,13 +5,12 @@
 
     var dropzoneOptions = {
         maxFiles: 100,
-        maxFilesize: 10,
+        maxFilesize: 30,
         uploadMultiple: true,
         addRemoveLinks: true,
         clickable: true,
-        enqueueForUpload: true,
         acceptedFiles: 'image/*',
-        dictRemoveFile: "Remove image"
+        dictRemoveFile: "Remove photo"
     };
 
     var self = this;
@@ -19,17 +18,26 @@
     var mediator = options.mediator;
 
     mediator.subscribe("upload:preview", function (data) {
-        var selectedCounter = 0;
-
         var previewsCount = self.previews().length;
 
         for (var index = 0; index < previewsCount; index++) {
             var preview = self.previews()[index];
             
-            if (preview.name() === data.name) {
+            if (preview.hash() === data.hash) {
                 preview.isSelected(data.isSelected);
             }
+        }
 
+        checkAllPhotoSelection();
+    });
+
+    var checkAllPhotoSelection = function () {
+        var selectedCounter = 0;
+        
+        var previewsCount = self.previews().length;
+
+        for (var index = 0; index < previewsCount; index++) {
+            var preview = self.previews()[index];
             if (preview.isSelected()) {
                 selectedCounter++;
             }
@@ -38,43 +46,58 @@
         var isAllPhotoSelected = self.previews().length === selectedCounter;
 
         self.chekedAllPhotos(isAllPhotoSelected);
-    });
+    };
 
     var dropzone = new Dropzone(previewsContainer, dropzoneOptions);
-    
-    dropzone.on("success", function (file, response) {
+
+    dropzone.on('addedfile', function (file) {
+        var md5Hash = b64_md5(file.name + file.size);      
+        var $preview = $(file.previewTemplate);
+        $preview.append('<input type="hidden" value="' + md5Hash + '"/>');
+    });
+
+    var responseData = null;
+
+    dropzone.on('success', function (file, response) {
+        responseData = response;
+
         var $preview = $(file.previewTemplate);
 
-        if (response.length > 0) {
-            for (var index = response.length-1; index >= 0; --index) {
-                if (response[index].Name === file.name) {
-                    $preview.removeClass('dz-success');
-                    $preview.addClass('dz-error');
-                    $preview.find('.dz-error-message > span').html(response.Error);
-                    return;
-                }
-            }
-        }
-        
         $preview.prepend('<input type="checkbox" class="photo-checker" data-bind="checked: isSelected, visible: !isSaved()" />');
-        
-        $preview.find('.dz-filename > span').attr('data-bind', 'text: name');
 
         $preview.find('.dz-details > img').attr('data-bind', 'click: selectPhoto');
-        
-        $preview.find('.dz-error-message > span').attr('data-bind', 'text: errorMessage');
 
+        $preview.find('.dz-error-message > span').attr('data-bind', 'text: errorMessage');
+        
         var preview = new PhotoPreview({
-            name: file.name,
-            size: file.size,
             isSelected: true,
             mediator: mediator,
             element: $preview
         });
 
         self.previews.push(preview);
-        
+
         ko.applyBindings(preview, file.previewTemplate);
+    });
+
+    dropzone.on("complete", function () {
+        if (responseData == null) return;
+
+        $.map(responseData, function (fileInfo) {
+            
+            if (fileInfo.IsAccepted) {
+
+            } else {
+//                var $preview = $('.dz-preview input');
+//                $preview.removeClass('dz-success');
+//                $preview.addClass('dz-error');
+//                $preview.find('.dz-error-message > span').html(fileInfo.Error);
+            }
+        });
+
+        responseData = null;
+
+        checkAllPhotoSelection();
     });
 
     dropzone.on("removedfile", function (file) {
@@ -189,7 +212,7 @@
             }
         });
 
-        $.post('Api/File/MovePhotos', { AlbumName: album, PhotoNames: selectedPhotos })
+       /* $.post('Api/File/MovePhotos', { AlbumName: album, PhotoNames: selectedPhotos })
             .done(function(notAcceptedFiles) {
                 $.map(self.previews(), function(preview) {
                     var fileNotSaved = $.map(notAcceptedFiles, function(fileName) {
@@ -205,6 +228,6 @@
             })
             .fail(function(data) {
                 alert(data); // TODO show error as notification
-            });
+            });*/
     };
 }

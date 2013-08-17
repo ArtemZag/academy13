@@ -92,7 +92,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int begin, int end)
+        public IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int skipCount, int takeCount)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -103,8 +103,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     return album.Photos.OrderBy(model => model.DateOfCreation)
                                 .ThenBy(model => model.Id)
-                                .Skip(begin)
-                                .Take(end - begin)
+                                .Skip(skipCount)
+                                .Take(takeCount)
                                 .ToList();
                 }
 
@@ -112,7 +112,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int albumId, int begin, int end)
+        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int albumId, int skipCount, int takeCount)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -124,8 +124,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                                      .Where(model => !model.IsDeleted)
                                      .OrderBy(model => model.DateOfCreation)
                                      .ThenBy(model => model.Id)
-                                     .Skip(begin)
-                                     .Take(end - begin)
+                                     .Skip(skipCount)
+                                     .Take(takeCount)
                                      .ToList();
                 }
 
@@ -133,7 +133,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int begin, int end)
+        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int skipCount, int takeCount)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -144,8 +144,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                                  .Where(model => !model.IsDeleted)
                                  .OrderBy(model => model.DateOfCreation)
                                  .ThenBy(model => model.Id)
-                                 .Skip(begin)
-                                 .Take(end - begin)
+                                 .Skip(skipCount)
+                                 .Take(takeCount)
                                  .ToList();
             }
         }
@@ -190,6 +190,24 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 unitOfWork.Photos.Find(photoID).Likes.Add(user);
                 unitOfWork.SaveChanges();
+            }
+        }
+
+        public IEnumerable<PhotoModel> GetPublicPhotos(string userEmail, int skipCount, int takeCount)
+        {
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                var user = GetUser(userEmail, unitOfWork);
+
+                var allAvailableAlbums = (IEnumerable<PhotoModel>) _secureService.GetAvailableAlbums(user.Id, unitOfWork)
+                    .OrderBy(album => album.DateOfCreation)
+                    .Select(album => unitOfWork.Photos.Filter(photo => photo.AlbumId == album.Id)
+                        .Where(photo => !photo.IsDeleted));
+
+                return allAvailableAlbums.OrderBy(photo => photo.DateOfCreation)
+                    .ThenBy(photo => photo.Id)
+                    .Skip(skipCount)
+                    .Take(takeCount);
             }
         }
     }
