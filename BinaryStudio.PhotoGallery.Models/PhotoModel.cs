@@ -29,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the name of the photo file.
         /// </summary>
-        public string PhotoName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets real format of photo
@@ -55,7 +55,6 @@ namespace BinaryStudio.PhotoGallery.Models
         /// Gets or sets a photo state
         /// </summary>
         public bool IsDeleted { get; set; }
-
         
  
         public int OwnerId { get; set; }

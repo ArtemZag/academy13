@@ -31,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchPhotosByName)
                 {
                     IEnumerable<PhotoFound> found = SearchByCondition(avialableAlbums, searchQuery, model =>
-                        model.PhotoName.ToLower().Contains(searchQuery.ToLower()) &&
+                        model.Name.ToLower().Contains(searchQuery.ToLower()) &&
                         !model.IsDeleted, GetRelevanceByName);
 
                     result.AddRange(found);
@@ -98,7 +98,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     Id = model.Id,
                     UserId = model.OwnerId,
                     AlbumId = model.AlbumId,
-                    PhotoName = model.PhotoName,
+                    PhotoName = model.Name,
                     Format = model.Format,
                     Rating = model.Rating,
                     DateOfCreation = model.DateOfCreation,
@@ -126,7 +126,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                             Id = model.Id,
                             UserId = model.OwnerId,
                             AlbumId = model.AlbumId,
-                            PhotoName = model.PhotoName,
+                            PhotoName = model.Name,
                             Format = model.Format,
                             Rating = model.Rating,
                             DateOfCreation = model.DateOfCreation,
@@ -141,7 +141,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
         private int GetRelevanceByName(string searchQuery, PhotoModel photoModel)
         {
-            return Regex.Matches(photoModel.PhotoName.ToLower(), searchQuery.ToLower()).Count;
+            return Regex.Matches(photoModel.Name.ToLower(), searchQuery.ToLower()).Count;
         }
 
         private int GetRelevanceByDescription(string searchQuery, PhotoModel photoModel)
