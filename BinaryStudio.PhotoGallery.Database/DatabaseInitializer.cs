@@ -41,25 +41,27 @@ namespace BinaryStudio.PhotoGallery.Database
             #region userModels creating
 
             var userModelsList = new List<UserModel>();
+            UserModel user;
 
             #region Artem Zagorodnuk
 
             string userSalt = cryptoProvider.GetNewSalt();
-            var user = new UserModel
-            {
-                Email = "ArtemZagorodnuk@bingally.com",
-                FirstName = "Artem",
-                LastName = "Zagorodnuk",
-                NickName = ";)",
-                Department = ".Net",
-                Albums = new Collection<AlbumModel>(),
-                AuthInfos = new Collection<AuthInfoModel>(),
-                Groups = new Collection<GroupModel>(),
-                IsActivated = true,
-                IsAdmin = false,
-                Salt = userSalt,
-                UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
-            };
+            
+            user = new UserModel
+                {
+                    Email = "ArtemZagorodnuk@bingally.com",
+                    FirstName = "Artem",
+                    LastName = "Zagorodnuk",
+                    NickName = ";)",
+                    Department = ".Net",
+                    Albums = new Collection<AlbumModel>(),
+                    AuthInfos = new Collection<AuthInfoModel>(),
+                    Groups = new Collection<GroupModel>(),
+                    IsActivated = true,
+                    IsAdmin = false,
+                    Salt = userSalt,
+                    UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
+                };
             userModelsList.Add(user);
 
             #endregion
