@@ -92,7 +92,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             var photoModel = new PhotoModel
             {
-                UserId = userId,
+                OwnerId = userId,
                 AlbumId = albumId,
                 Name = fullPhotoName
             };
@@ -123,7 +123,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 // Anton: we need know userId, albumId, photoId, format (jpg, png), size for getting thumbnail
 
                 PhotoThumbSource =
-                    pathUtil.BuildThumbnailPath(photoModel.UserId, photoModel.AlbumId, photoModel.Id, photoModel.Format),
+                    pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id, photoModel.Format),
                 AlbumId = photoModel.AlbumId,
                 PhotoId = photoModel.Id,
                 PhotoViewPageUrl = urlUtil.BuildPhotoViewUrl(photoModel.Id)

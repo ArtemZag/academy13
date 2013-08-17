@@ -138,7 +138,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
 
 // todo: create a criterions for grabing all user albums' IDs and check every for access permissions
-                return unitOfWork.Photos.Filter(model => model.UserId == user.Id)
+                return unitOfWork.Photos.Filter(model => model.OwnerId == user.Id)
                     .Where(model => !model.IsDeleted)
                     .OrderBy(model => model.DateOfCreation)
                     .ThenBy(model => model.Id)
