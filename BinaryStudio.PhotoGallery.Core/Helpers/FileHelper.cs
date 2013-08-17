@@ -143,5 +143,11 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
 
             _fileWrapper.Move(sourceName, newFileNameWithPath.ToString());
         }
+
+        public long GetFileSize(string path)
+        {
+            var fileInfo = new FileInfo(path);
+            return fileInfo.Length;
+        }
     }
 }

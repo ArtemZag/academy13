@@ -5,6 +5,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Upload
     public class SavePhotosViewModel
     {
         public string AlbumName { get; set; }
-        public IEnumerable<string> PhotoNames { get; set; }
+        public IEnumerable<string> PhotoHashes { get; set; }
     }
 }

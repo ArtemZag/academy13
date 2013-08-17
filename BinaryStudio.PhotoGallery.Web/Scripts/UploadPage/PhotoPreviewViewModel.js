@@ -5,9 +5,9 @@
 
     self.element = options.element;
     
-    self.name = ko.observable(options.name);
+    self.hash = ko.observable(options.hash);
     
-    self.size = ko.observable(options.size);
+//    self.size = ko.observable(options.size);
     
     self.isSelected = ko.observable(false);
 

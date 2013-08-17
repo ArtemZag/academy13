@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -11,6 +12,7 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Core.IOUtils;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.Utils;
@@ -22,9 +24,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     [RoutePrefix("Api/File")]
     public class FileController : ApiController
     {
-        private struct NotAccpetedFilesData
+        private struct UploadFileInfo
         {
-            public string Name;
+            public string FileHash;
+            public bool IsAccepted;
             public string Error;
         }
 
@@ -36,6 +39,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         private readonly IPhotoService _photoService;
         private readonly IModelConverter _modelConverter;
         private readonly IAlbumService _albumService;
+        private readonly ICryptoProvider _cryptoProvider;
 
         public FileController(
             IUserService userService,
@@ -45,7 +49,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             IFileWrapper fileWrapper,
             IPhotoService photoService,
             IModelConverter modelConverter,
-            IAlbumService albumService)
+            IAlbumService albumService,
+            ICryptoProvider cryptoProvider)
         {
             _userService = userService;
             _pathUtil = pathUtil;
@@ -55,21 +60,21 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 	        _photoService = photoService;
             _modelConverter = modelConverter;
             _albumService = albumService;
+            _cryptoProvider = cryptoProvider;
         }
 
         [POST("MovePhotos")]
         public HttpResponseMessage MovePhotos([FromBody] SavePhotosViewModel viewModel)
         {
-            if (viewModel == null || string.IsNullOrEmpty(viewModel.AlbumName) || !viewModel.PhotoNames.Any())
+            if (viewModel == null || string.IsNullOrEmpty(viewModel.AlbumName) || !viewModel.PhotoHashes.Any())
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Uknown error");
             }
 
-            var notAccpetedFiles = new List<string>();
+            var uploadFileInfos = new List<UploadFileInfo>();
 
             try
             {
-                // Get user ID from DB
                 var userId = _userService.GetUserId(User.Identity.Name);
 
                 var albumId = 0;
@@ -80,9 +85,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 }
                 catch (AlbumNotFoundException)
                 {
-                    _albumService.CreateAlbum(User.Identity.Name, viewModel.AlbumName);
-
-                    albumId = _albumService.GetAlbumId(viewModel.AlbumName);
+                    albumId = _albumService.CreateAlbum(User.Identity.Name, viewModel.AlbumName).Id;
                 }
 
                 // Get path to the temporary folder in the user folder
@@ -95,23 +98,48 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     _directoryWrapper.CreateDirectory(pathToAlbum);
                 }
 
-                foreach (var photoName in viewModel.PhotoNames)
+                foreach (var fileName in viewModel.PhotoHashes)
                 {
-                    var currentFilePath = string.Format("{0}\\{1}", pathToTempFolder, photoName);
+                    var filePath = string.Format("{0}\\{1}", pathToTempFolder, fileName);
 
-                    var fileExist = _fileWrapper.Exists(currentFilePath);
+                    var fileExist = _fileWrapper.Exists(filePath);
 
                     if (fileExist)
                     {
-                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, albumId, photoName));
+                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, albumId, fileName));
 
-                        var newFilePath = string.Format("{0}\\{1}", pathToAlbum, photoName);
+                        var newFilePath = string.Format("{0}\\{1}", pathToAlbum, fileName);
 
-                        _fileHelper.HardMove(currentFilePath, newFilePath);
+                        try
+                        {
+                            _fileWrapper.Move(filePath, newFilePath);
+                        }
+                        catch (Exception)
+                        {
+                            uploadFileInfos.Add(new UploadFileInfo
+                            {
+                                FileHash = fileName,
+                                IsAccepted = false,
+                                Error = string.Format("Can't save photo to album '{0}'", viewModel.AlbumName)
+                            });
+
+                            continue;
+                        }
+
+                        uploadFileInfos.Add(new UploadFileInfo
+                        {
+                            FileHash = fileName,
+                            IsAccepted = true
+                        });
                     }
                     else
                     {
-                        notAccpetedFiles.Add(photoName);
+                        uploadFileInfos.Add(new UploadFileInfo
+                        {
+                            FileHash = fileName,
+                            IsAccepted = false,
+                            Error = "Photo not found in temp folder"
+                        });
                     }
                 }
             }
@@ -120,14 +148,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            // Create response data
-            var listOfNotLoadedFiles = new ObjectContent<IEnumerable<string>>
-                (notAccpetedFiles, new JsonMediaTypeFormatter());
+            var responseData = new ObjectContent<IEnumerable<UploadFileInfo>>
+                (uploadFileInfos, new JsonMediaTypeFormatter());
 
             var response = new HttpResponseMessage
             {
-                StatusCode = HttpStatusCode.Accepted,
-                Content = listOfNotLoadedFiles
+                StatusCode = HttpStatusCode.OK,
+                Content = responseData
             };
 
             return response;
@@ -143,7 +170,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
 
             // Key - file name, Value - error of the loading
-            var notAccpetedFiles = new List<NotAccpetedFilesData>();
+            var uploadFileInfos = new List<UploadFileInfo>();
 
             try
             {
@@ -168,31 +195,51 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 // Check all files
                 foreach (MultipartFileData fileData in provider.FileData)
                 {
-                    var originalFileName = fileData.Headers.ContentDisposition.FileName.Replace("\"", "");
-                    var destFileName = string.Format("{0}\\{1}", pathToTempFolder, originalFileName);
+                    var originalFileName = fileData.Headers.ContentDisposition.FileName.Trim('"');
+
+                    var fileSize = _fileHelper.GetFileSize(fileData.LocalFileName);
+
+                    var fileHash = _cryptoProvider.GetHash(string.Format("{0}{1}", originalFileName, fileSize));
+
+                    var temporaryFileName = string.Format("{0}\\{1}", pathToTempFolder, fileHash);
 
                     // Is it really image file format ?
                     if (!_fileHelper.IsImageFile(fileData.LocalFileName))
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
-                        notAccpetedFiles.Add(new NotAccpetedFilesData
+
+                        uploadFileInfos.Add(new UploadFileInfo
                         {
-                            Name = originalFileName,
+                            FileHash = fileHash,
                             Error = "This file contains no image data"
                         });
+
                         continue;
                     }
 
-                    // try to rename file to source name (users file name)
                     try
                     {
-                        _fileHelper.HardMove(fileData.LocalFileName, destFileName);
+                        _fileWrapper.Move(fileData.LocalFileName, temporaryFileName);
                     }
-                    catch (FileRenameException ex)
+                    catch (Exception)
                     {
-                        _fileWrapper.Delete(fileData.LocalFileName);        // delete temp file
-                        notAccpetedFiles.Add(new NotAccpetedFilesData {Name = originalFileName, Error = ex.Message});
+                        _fileWrapper.Delete(fileData.LocalFileName);
+
+                        uploadFileInfos.Add(new UploadFileInfo
+                        {
+                            FileHash = fileHash,
+                            IsAccepted = false,
+                            Error = "Can't save this file"
+                        });
+
+                        continue;
                     }
+
+                    uploadFileInfos.Add(new UploadFileInfo
+                    {
+                        FileHash = fileHash,
+                        IsAccepted = true
+                    });
                 }
             }
             catch (Exception ex)
@@ -200,14 +247,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            // Create response data
-            var listOfNotLoadedFiles = new ObjectContent<IList<NotAccpetedFilesData>>
-                (notAccpetedFiles, new JsonMediaTypeFormatter());
+            var responseData = new ObjectContent<IList<UploadFileInfo>>
+                (uploadFileInfos, new JsonMediaTypeFormatter());
 
             var response = new HttpResponseMessage
             {
-                StatusCode = HttpStatusCode.Created,
-                Content = listOfNotLoadedFiles
+                StatusCode = HttpStatusCode.OK,
+                Content = responseData
             };
 
             return response;

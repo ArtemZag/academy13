@@ -20,14 +20,12 @@ namespace BinaryStudio.PhotoGallery.Core.UserUtils
 
         public string CreateHashForPassword(string password, string salt)
         {
-            var hash = EncryptString(password);
+            var hash = GetHash(password);
 
-            hash = EncryptString(hash + salt);
-
-            return EncryptString(hash + salt);
+            return GetHash(hash + salt);
         }
 
-        private static string EncryptString(string originalString)
+        public string GetHash(string originalString)
         {
             var md5 = new MD5CryptoServiceProvider();
             var encoding = Encoding.UTF8;
