@@ -8,14 +8,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Adds photo by specidied user to his album.
         /// </summary>
-        void AddPhoto(string userEmail, string albumName, PhotoModel photo);
+        PhotoModel AddPhoto(string userEmail, string albumName, PhotoModel photo);
 
-        void AddPhoto(PhotoModel photo);
+        PhotoModel AddPhoto(PhotoModel photo);
 
         /// <summary>
         ///     Adds photos by specidied user to his album.
         /// </summary>
-        void AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
+        IEnumerable<int> AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
         
         /// <summary>
         ///     Deletes specified photo
