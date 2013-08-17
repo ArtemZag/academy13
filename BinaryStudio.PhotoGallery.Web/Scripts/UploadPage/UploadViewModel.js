@@ -116,23 +116,13 @@
         responseData = null;
     });
 
-    dropzone.on("removedfile", function(file) {
-        for (var index = 0; index < self.previews().length; ++index) {
-            var preview = self.previews()[index];
-            console.log(preview);
-            if (preview.name === file.name) {
-                self.previews.remove(preview);
-                return;
-            }
-        }
-    });
-
     self.albums = ko.observableArray(typeof(options.albums) !== 'undefined' ? options.albums : []);
 
     var chosenAlbums = $(options.chosen);
     chosenAlbums.chosen({ no_results_text: '<a class="create-album">Create</a> album ' });
 
-    self.reloadChosen = function() {
+    self.reloadChosen = function () {
+        // Dropdown list of photos update his data only after calling this trigger
         chosenAlbums.trigger('chosen:updated');
     };
 
@@ -229,7 +219,7 @@
             }
         });
 
-        $.post('Api/File/MovePhotos', { AlbumName: albumName, PhotoHashes: selectedPhotoHashes })
+        $.post('Api/File/Move', { AlbumName: albumName, PhotoHashes: selectedPhotoHashes })
             .done(function(response) {
                 $.map(response, function(fileInfo) {
                     var count = self.previews().length;

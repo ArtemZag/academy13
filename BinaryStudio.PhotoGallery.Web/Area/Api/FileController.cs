@@ -56,8 +56,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _cryptoProvider = cryptoProvider;
         }
 
-        [POST("MovePhotos")]
-        public HttpResponseMessage MovePhotos([FromBody] SavePhotosViewModel viewModel)
+        [POST("Move")]
+        public HttpResponseMessage Move([FromBody] SavePhotosViewModel viewModel)
         {
             if (viewModel == null || string.IsNullOrEmpty(viewModel.AlbumName) || !viewModel.PhotoHashes.Any())
             {
