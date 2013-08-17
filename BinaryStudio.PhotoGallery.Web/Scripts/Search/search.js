@@ -14,7 +14,6 @@
 
         self.searchQuery = ko.observable();
 
-        self.isSearchPhotosByName = ko.observable(true);
         self.isSearchPhotosByTags = ko.observable(true);
         self.isSearchPhotosByDescription = ko.observable(true);
 
@@ -37,11 +36,6 @@
         };
 
         self.searchQuery.subscribe(function() {
-
-            isModelChanged = true;
-        });
-
-        self.isSearchPhotosByName.subscribe(function() {
 
             isModelChanged = true;
         });

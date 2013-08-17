@@ -4,8 +4,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Search
 {
     public class PhotoFoundViewModel : IFoundViewModel
     {
-        public string PhotoName { get; set; }
-
         public string PhotoViewUrl { get; set; }
 
         public string AlbumName { get; set; }
