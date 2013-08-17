@@ -58,14 +58,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Exceptions\AlbumAlreadyExistException.cs" />
     <Compile Include="Exceptions\AlbumNotFoundException.cs" />
     <Compile Include="Exceptions\CleanupException.cs" />
+    <Compile Include="Exceptions\GroupAlreadyExistException.cs" />
     <Compile Include="Exceptions\NoEnoughPrivileges.cs" />
     <Compile Include="Exceptions\UserAlreadyExistException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="GlobalEventsAggregator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AlbumService.cs" />
+    <Compile Include="Services\GroupService.cs" />
+    <Compile Include="Services\IGroupService.cs" />
     <Compile Include="Services\ISecureService.cs" />
     <Compile Include="Services\Search\ItemsExstensions.cs" />
     <Compile Include="Services\Search\IUserSearchService.cs" />
