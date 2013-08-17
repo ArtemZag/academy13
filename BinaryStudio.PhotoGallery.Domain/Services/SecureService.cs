@@ -17,28 +17,28 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanSeeComments;
 
-            return CanUserDoCommentsAction(userId, albumId, predicate);
+            return CanUserDoAction(userId, albumId, predicate);
         }
 
         public bool CanUserAddComment(int userId, int albumId)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanAddComments;
 
-            return CanUserDoCommentsAction(userId, albumId, predicate);
+            return CanUserDoAction(userId, albumId, predicate);
         }
 
         public bool CanUserViewPhotos(int userId, int albumId)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanSeePhotos;
 
-            return CanUserDoCommentsAction(userId, albumId, predicate);
+            return CanUserDoAction(userId, albumId, predicate);
         }
 
         public bool CanUserAddPhoto(int userId, int albumId)
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanAddPhotos;
 
-            return CanUserDoCommentsAction(userId, albumId, predicate);
+            return CanUserDoAction(userId, albumId, predicate);
         }
 
         public bool CanUserDeletePhoto(int userId, int photoId)
@@ -57,19 +57,35 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             Predicate<AvailableGroupModel> predicate = group => @group.CanSeeLikes;
 
-            return CanUserDoCommentsAction(userId, albumId, predicate);
+            return CanUserDoAction(userId, albumId, predicate);
         }
 
         public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
         {
-            UserModel user = GetUser(userId, unitOfWork);
-            List<GroupModel> userGroups = user.Groups.ToList();
+            var user = GetUser(userId, unitOfWork);
+            var userGroups = user.Groups.ToList();
+
+            if (user.IsAdmin)
+            {
+                return unitOfWork.Albums.All().ToList();
+            }
 
             IEnumerable<int> albumIds = unitOfWork.AvailableGroups.All().ToList().Join(userGroups,
-                avialableGroupModel => avialableGroupModel.Id,
-                groupModel => groupModel.Id,
-                (avialableGroupModel, groupModel) => new { avialableGroupModel.CanSeePhotos, avialableGroupModel.AlbumId })
-                .Where(arg => arg.CanSeePhotos).Select(arg => arg.AlbumId).Distinct();
+                                                                                       avialableGroupModel =>
+                                                                                       avialableGroupModel.Id,
+                                                                                       groupModel => groupModel.Id,
+                                                                                       (avialableGroupModel,
+                                                                                        groupModel) =>
+                                                                                       new
+                                                                                           {
+                                                                                               avialableGroupModel
+                                                                                           .CanSeePhotos,
+                                                                                               avialableGroupModel
+                                                                                           .AlbumId
+                                                                                           })
+                                                  .Where(arg => arg.CanSeePhotos)
+                                                  .Select(arg => arg.AlbumId)
+                                                  .Distinct();
 
 
             return albumIds.Select(albumId => GetAlbum(albumId, unitOfWork)).ToList();
@@ -78,25 +94,36 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Checks if user take a part in even one group, that have enough permissions to do some action
         /// </summary>
-        private bool CanUserDoCommentsAction(int userId, int albumId, Predicate<AvailableGroupModel> predicate)
+        private bool CanUserDoAction(int userId, int albumId, Predicate<AvailableGroupModel> predicate)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var mUser = GetUser(userId, unitOfWork);
-                var rights = false;
-                if (mUser.IsAdmin)
-                    rights = true;
-                else {
+                bool canUser;
+                
+                var user = GetUser(userId, unitOfWork);
+                var album = GetAlbum(albumId, unitOfWork);
+
+
+
+                if (user.IsAdmin || (album.OwnerId == userId))
+                {
+                    canUser = true;
+                }
+                else
+                {
                     List<AvailableGroupModel> availableGropusCanDo =
                         unitOfWork.Albums.Find(albumId).AvailableGroups.ToList().FindAll(predicate);
 
 
                     GroupModel userGroups = unitOfWork.Users.Find(userId).Groups.ToList()
-                        .Find(group => availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
+                                                      .Find(
+                                                          group =>
+                                                          availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
 
-                    rights = userGroups != null;   
+                    canUser = userGroups != null;
                 }
-                return rights;
+
+                return canUser;
             }
         }
     }
