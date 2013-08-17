@@ -62,7 +62,9 @@
     <Compile Include="Exceptions\AlbumNotFoundException.cs" />
     <Compile Include="Exceptions\CleanupException.cs" />
     <Compile Include="Exceptions\GroupAlreadyExistException.cs" />
+    <Compile Include="Exceptions\GroupNotFoundException.cs" />
     <Compile Include="Exceptions\NoEnoughPrivileges.cs" />
+    <Compile Include="Exceptions\RepentSlave.cs" />
     <Compile Include="Exceptions\UserAlreadyExistException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="GlobalEventsAggregator.cs" />
