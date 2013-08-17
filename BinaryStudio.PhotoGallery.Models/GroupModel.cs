@@ -22,6 +22,11 @@ namespace BinaryStudio.PhotoGallery.Models
         /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// Gets or sets group owner's ID
+        /// </summary>
+        public int OwnerID { get; set; }
+
         public virtual ICollection<UserModel> Users { get; set; }
     }
 }
