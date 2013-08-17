@@ -61,7 +61,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
             try
             {
-                return foundUser.Albums.First(album => album.UserId == userId && !album.IsDeleted);
+                return foundUser.Albums.First(album => album.OwnerId == userId && !album.IsDeleted);
             }
             catch
             {
@@ -95,6 +95,30 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 throw new AlbumNotFoundException();
             }
+        }
+
+        protected GroupModel GetGroup(int groupID, IUnitOfWork unitOfWork)
+        {
+            var groupModel = unitOfWork.Groups.Find(groupID);
+
+            if (groupModel == null)
+            {
+                throw new GroupNotFoundException(string.Format("Group with ID {0} not found", groupID));
+            }
+
+            return groupModel;
+        }
+
+        protected GroupModel GetGroup(string groupName, IUnitOfWork unitOfWork)
+        {
+            var groupModel = unitOfWork.Groups.Find(group => group.GroupName == groupName);
+
+            if (groupModel == null)
+            {
+                throw new GroupNotFoundException(string.Format("Group with name {0} not found", groupName));
+            }
+
+            return groupModel;
         }
     }
 }

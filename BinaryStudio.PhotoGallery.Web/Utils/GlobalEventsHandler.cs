@@ -67,10 +67,10 @@ namespace BinaryStudio.PhotoGallery.Web
         {
             var mAlbum = _albumService.GetAlbum(mPhoto.AlbumId);
 
-            if (mPhoto.UserId != mAlbum.UserId)
+            if (mPhoto.UserId != mAlbum.OwnerId)
             {
                 var mPhotoOwner = _userService.GetUser(mPhoto.UserId);
-                var mAlbumOwner = _userService.GetUser(mAlbum.UserId);
+                var mAlbumOwner = _userService.GetUser(mAlbum.OwnerId);
 
                 var _hubNotify = GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>();
                 var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +

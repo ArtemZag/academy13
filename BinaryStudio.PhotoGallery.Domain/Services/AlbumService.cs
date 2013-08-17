@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -15,13 +16,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             _secureService = secureService;
         }
 
-        public void CreateAlbum(string userEmail, AlbumModel album)
+        public void CreateAlbum(string userEmail, AlbumModel albumModel)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
+                
+                if (user.Albums.ToList().Find(album => album.AlbumName == albumModel.AlbumName) != null)
+                {
+                    throw new AlbumAlreadyExistException(albumModel.AlbumName);
+                }
 
-                user.Albums.Add(album);
+                user.Albums.Add(albumModel);
 
                 unitOfWork.SaveChanges();
             }
@@ -33,15 +39,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                var album = new AlbumModel
+                var albumModel = new AlbumModel
+                    {
+                        AlbumName = albumName,
+                        OwnerId = user.Id
+                    };
+
+                try {this.CreateAlbum(userEmail, albumModel);}
+                catch (Exception exception)
                 {
-                    AlbumName = albumName,
-                    UserId = user.Id
-                };
-
-                user.Albums.Add(album);
-
-                unitOfWork.SaveChanges();
+                    throw new Exception(exception.Message, exception);
+                }
             }
         }
 
@@ -84,7 +92,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 AlbumModel album = GetAlbum(albumId);
 
-                if (album.UserId == user.Id)
+                if (album.OwnerId == user.Id)
                 {
                     return album;
                 }
@@ -114,7 +122,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 var foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
 
-                var foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName && album.UserId == foundUser.Id);
+                var foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName && album.OwnerId == foundUser.Id);
 
                 return foundAlbum != null;
             }
