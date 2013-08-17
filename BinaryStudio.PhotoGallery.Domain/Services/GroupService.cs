@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
@@ -12,7 +7,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class GroupService : DbService, IGroupService
     {
-        public GroupService(IUnitOfWorkFactory workFactory) : base(workFactory)
+        public GroupService(IUnitOfWorkFactory workFactory)
+            : base(workFactory)
         {
         }
 
@@ -34,13 +30,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         //todo: add check permission for creating group event 
         public void Create(int userID, string groupName)
         {
-            var groupModel = new GroupModel()
+            var groupModel = new GroupModel
                 {
                     GroupName = groupName,
                     OwnerID = userID
                 };
 
-            try {this.Create(userID, groupModel);}
+            try
+            {
+                this.Create(userID, groupModel);
+            }
             catch (Exception exception)
             {
                 throw new Exception(exception.Message, exception);
