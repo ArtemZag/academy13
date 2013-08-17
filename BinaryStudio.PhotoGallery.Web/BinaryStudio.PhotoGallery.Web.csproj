@@ -295,6 +295,8 @@
     <Content Include="Scripts\jquery.signalR-1.1.3.js" />
     <Content Include="Scripts\jquery.signalR-1.1.3.min.js" />
     <Content Include="Scripts\jsrender.js" />
+    <Content Include="Scripts\md5-min.js" />
+    <Content Include="Scripts\md5.js" />
     <Content Include="Scripts\mediator.js" />
     <Content Include="Scripts\mediator.min.js" />
     <Content Include="Scripts\Notifications.js" />
