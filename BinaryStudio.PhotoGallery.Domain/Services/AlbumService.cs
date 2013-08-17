@@ -12,13 +12,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
-        public void CreateAlbum(string userEmail, AlbumModel album)
+        public void CreateAlbum(string userEmail, AlbumModel albumModel)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
+                
+                if (user.Albums.ToList().Find(album => album.AlbumName == albumModel.AlbumName) != null)
+                {
+                    throw new AlbumAlreadyExistException(albumModel.AlbumName);
+                }
 
-                user.Albums.Add(album);
+                user.Albums.Add(albumModel);
 
                 unitOfWork.SaveChanges();
             }
@@ -29,16 +34,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
-
-                var album = new AlbumModel
-                {
-                    AlbumName = albumName,
-                    OwnerId = user.Id
-                };
-
-                user.Albums.Add(album);
-
-                unitOfWork.SaveChanges();
+                
+                var albumModel = new AlbumModel
+                    {
+                        AlbumName = albumName,
+                        OwnerId = user.Id
+                    };
+                
+                this.CreateAlbum(userEmail, albumModel);
             }
         }
 
@@ -111,7 +114,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 var foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
 
-                var foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName && album.UserId == foundUser.Id);
+                var foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName && album.OwnerId == foundUser.Id);
 
                 return foundAlbum != null;
             }
