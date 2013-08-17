@@ -22,6 +22,8 @@ namespace BinaryStudio.PhotoGallery.Core.UserUtils
         {
             var hash = GetHash(password);
 
+            hash = GetHash(hash + salt);
+
             return GetHash(hash + salt);
         }
 

@@ -85,7 +85,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 }
                 catch (AlbumNotFoundException)
                 {
-                    albumId = _albumService.CreateAlbum(User.Identity.Name, viewModel.AlbumName).Id;
+                    _albumService.CreateAlbum(User.Identity.Name, viewModel.AlbumName);
+                    albumId = _albumService.GetAlbumId(viewModel.AlbumName);
                 }
 
                 // Get path to the temporary folder in the user folder

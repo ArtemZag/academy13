@@ -24,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var cryptoProvidrer = container.Resolve<ICryptoProvider>();
             var workFactory = new TestUnitOfWorkFactory();
 
-            _albumService = new AlbumService(workFactory);
+//            _albumService = new AlbumService(workFactory);
             _userService = new UserService(workFactory, cryptoProvidrer);
         }
 

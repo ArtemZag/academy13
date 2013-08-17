@@ -71,7 +71,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 (avialableGroupModel, groupModel) => new { avialableGroupModel.CanSeePhotos, avialableGroupModel.AlbumId })
                 .Where(arg => arg.CanSeePhotos).Select(arg => arg.AlbumId).Distinct();
 
-
             return albumIds.Select(albumId => GetAlbum(albumId, unitOfWork)).ToList();
         }
 
