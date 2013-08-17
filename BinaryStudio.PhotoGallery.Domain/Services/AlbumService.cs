@@ -12,7 +12,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
-        public void CreateAlbum(string userEmail, AlbumModel album)
+        public AlbumModel CreateAlbum(string userEmail, AlbumModel album)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -21,10 +21,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 user.Albums.Add(album);
 
                 unitOfWork.SaveChanges();
+
+                return album;
             }
         }
 
-        public void CreateAlbum(string userEmail, string albumName)
+        public AlbumModel CreateAlbum(string userEmail, string albumName)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -39,6 +41,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 user.Albums.Add(album);
 
                 unitOfWork.SaveChanges();
+
+                return album;
             }
         }
 

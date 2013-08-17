@@ -22,7 +22,6 @@ namespace BinaryStudio.PhotoGallery.Models
             Permissions = 111; // in moment, it is just for future
         }
         
-
         /// <summary>
         /// Gets or sets the album id.
         /// </summary>
@@ -58,6 +57,5 @@ namespace BinaryStudio.PhotoGallery.Models
         public virtual ICollection<PhotoModel> Photos { get; set; }
         public virtual ICollection<AvailableGroupModel> AvailableGroups { get; set; }
         public virtual ICollection<AlbumTagModel> AlbumTags { get; set; }
-
     }
 }

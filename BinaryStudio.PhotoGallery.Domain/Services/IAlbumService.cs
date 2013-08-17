@@ -29,9 +29,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Creates album for specified user by his email.
         /// </summary>
-        void CreateAlbum(string userEmail, AlbumModel album);
+        AlbumModel CreateAlbum(string userEmail, AlbumModel album);
 
-        void CreateAlbum(string userEmail, string albumName);
+        AlbumModel CreateAlbum(string userEmail, string albumName);
 
         /// <summary>
         ///     Deletes specified album.
