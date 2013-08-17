@@ -53,5 +53,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         bool IsUserExist(string userEmail);
 
         bool IsUserExist(string authProvider, string token);
+
+        /// <summary>
+        /// Makes user a God
+        /// </summary>
+        /// <param name="godID">userID with God permissions</param>
+        /// <param name="slaveID"></param>
+        void MakeUserGod(int godID, int slaveID);
     }
 }

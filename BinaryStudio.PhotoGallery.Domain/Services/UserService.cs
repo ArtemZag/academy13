@@ -14,7 +14,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     {
         private readonly ICryptoProvider _cryptoProvider;
 
-        public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider) : base(workFactory)
+        public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider)
+            : base(workFactory)
         {
             _cryptoProvider = cryptoProvider;
         }
@@ -23,7 +24,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-				return unitOfWork.Users.All().Include(g => g.Albums).Include(g => g.Groups).Include(g => g.AuthInfos).ToList();
+                return
+                    unitOfWork.Users.All()
+                              .Include(g => g.Albums)
+                              .Include(g => g.Groups)
+                              .Include(g => g.AuthInfos)
+                              .ToList();
             }
         }
 
@@ -39,7 +45,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-	            return GetUser(userEmail, unitOfWork);
+                return GetUser(userEmail, unitOfWork);
             }
         }
 
@@ -47,7 +53,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-	            var foundUser = unitOfWork.Users.Find(user => !user.IsActivated && user.Salt == hash);
+                var foundUser = unitOfWork.Users.Find(user => !user.IsActivated && user.Salt == hash);
 
                 if (foundUser == null)
                 {
@@ -93,7 +99,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 unitOfWork.SaveChanges();
             }
         }
-        
+
         public string CreateUser(string userEmail, string userFirstName, string userLastName)
         {
             if (IsUserExist(userEmail))
@@ -113,7 +119,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     // Empty password field is not good 
                     UserPassword =
                         _cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), _cryptoProvider.GetNewSalt())
-                    
+
                 };
 
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
@@ -125,22 +131,22 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return userModel.Salt;
         }
 
-        public void ActivateUser(string userEmail, string userPassword/*, string hash*/)
+        public void ActivateUser(string userEmail, string userPassword /*, string hash*/)
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-				var userModel = this.GetUser(userEmail, unitOfWork);
+                var userModel = this.GetUser(userEmail, unitOfWork);
 
-				if (userModel.IsActivated/* || (userModel.Salt != hash)*/) throw new UserNotFoundException(userEmail);
+                if (userModel.IsActivated /* || (userModel.Salt != hash)*/) throw new UserNotFoundException(userEmail);
 
                 userModel.Salt = _cryptoProvider.GetNewSalt();
 
-				userModel.UserPassword = _cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
-				userModel.IsActivated = true;
+                userModel.UserPassword = _cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
+                userModel.IsActivated = true;
 
 
                 unitOfWork.Users.Update(userModel);
-				unitOfWork.SaveChanges();
+                unitOfWork.SaveChanges();
             }
         }
 
@@ -207,6 +213,23 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     authInfoRepository.Contains(
                         model =>
                         string.Equals(model.AuthProvider, authProvider) && string.Equals(model.AuthProviderToken, token));
+            }
+        }
+
+        public void MakeUserGod(int godID, int slaveID)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                var god = GetUser(godID, unitOfWork);
+                var slave = GetUser(slaveID, unitOfWork);
+
+                if (!god.IsAdmin)
+                {
+                    throw new RepentSlave(god.FirstName);
+                }
+
+                god.IsAdmin = false;
+                slave.IsAdmin = true;
             }
         }
     }
