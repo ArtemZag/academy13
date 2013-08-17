@@ -17,7 +17,7 @@ namespace BinaryStudio.PhotoGallery.Models
         public AlbumModel(string albumName, int ownerId)
         {
             AlbumName = albumName;
-            UserId = ownerId;
+            OwnerId = ownerId;
             DateOfCreation = DateTime.Now;
             Permissions = 111; // in moment, it is just for future
         }
@@ -53,7 +53,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// </summary>
         public int Permissions { get; set; } 
 
-        public int UserId { get; set; }
+        public int OwnerId { get; set; }
 
         public virtual ICollection<PhotoModel> Photos { get; set; }
         public virtual ICollection<AvailableGroupModel> AvailableGroups { get; set; }

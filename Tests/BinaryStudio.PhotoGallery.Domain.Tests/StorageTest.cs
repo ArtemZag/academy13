@@ -68,7 +68,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 var album = new AlbumModel
                     {
                         Id = 1,
-                        UserId = 1
+                        OwnerId = 1
                     };
 
                 unitOfWork.Users.Add(user);
@@ -83,7 +83,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var album = new AlbumModel
                 {
                     Id = 1,
-                    UserId = 1
+                    OwnerId = 1
                 };
 
             var photo = new PhotoModel

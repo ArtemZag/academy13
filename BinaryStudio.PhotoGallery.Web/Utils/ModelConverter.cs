@@ -168,7 +168,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                     //        So it can be as equel to userId, which album contain this photo, so not.
                     //        Look at PhotoModel to check the meaning of property UserModelID
                     PhotoSource =
-                        pathUtil.BuildOriginalPhotoPath(albumModel.UserId, photoModel.AlbumId,
+                        pathUtil.BuildOriginalPhotoPath(albumModel.OwnerId, photoModel.AlbumId,
                                                          photoModel.Id, photoModel.Format),
 
                     // Maaak: I think needs refactoring. Or another method,

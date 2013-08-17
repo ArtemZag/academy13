@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
         {
             using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(album.UserId, unitOfWork);
+                UserModel user = GetUser(album.OwnerId, unitOfWork);
 
                 return pathUtil.BuildAlbumPath(user.Id, album.Id);
             }
@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
             {
                 AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumId);
-                UserModel user = unitOfWork.Users.Find(model => model.Id == album.UserId);
+                UserModel user = unitOfWork.Users.Find(model => model.Id == album.OwnerId);
 
                 return pathUtil.BuildAlbumPath(user.Id, album.Id);
             }
@@ -44,7 +44,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
             {
                 AlbumModel album = GetAlbum(photo.AlbumId, unitOfWork);
-                UserModel user = GetUser(album.UserId, unitOfWork);
+                UserModel user = GetUser(album.OwnerId, unitOfWork);
 
                 return pathUtil.BuildOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
             }
@@ -81,7 +81,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
             {
                 AlbumModel album = GetAlbum(photo.AlbumId, unitOfWork);
-                UserModel user = GetUser(album.UserId, unitOfWork);
+                UserModel user = GetUser(album.OwnerId, unitOfWork);
 
                 return pathUtil.BuildThumbnailsPath(user.Id, album.Id);
             }
