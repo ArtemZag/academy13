@@ -14,14 +14,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         /// <param name="userID">Group owner</param>
         /// <param name="groupModel"></param>
-        void CreateGroup(int userID, GroupModel groupModel);
+        void Create(int userID, GroupModel groupModel);
 
         /// <summary>
         /// Creates new group by name
         /// </summary>
         /// <param name="userID">Group owner</param>
         /// <param name="groupName"></param>
-        void CreateGroup(int userID, string groupName);
+        void Create(int userID, string groupName);
 
         /// <summary>
         /// Gets groupModel by it's ID
@@ -36,7 +36,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="ownerID">Group ownerID</param>
         /// <param name="userID">User to add</param>
         /// <param name="groupID"></param>
-        void AddUserToGroup(int ownerID, int userID, int groupID);
+        void AddUser(int ownerID, int userID, int groupID);
 
         /// <summary>
         /// Adds user to group by groupName
@@ -44,6 +44,30 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="ownerID">Group ownerID</param>
         /// <param name="userID">User to add</param>
         /// <param name="groupName"></param>
-        void AddUserToGroup(int ownerID, int userID, string groupName);
+        void AddUser(int ownerID, int userID, string groupName);
+
+        /// <summary>
+        /// Remove user from group by its ID
+        /// </summary>
+        /// <param name="ownerID">Group ownerID</param>
+        /// <param name="userID">User to add</param>
+        /// <param name="groupID"></param>
+        void RemoveUser(int ownerID, int userID, int groupID);
+
+        /// <summary>
+        /// Remove user from group by its name
+        /// </summary>
+        /// <param name="ownerID">Group ownerID</param>
+        /// <param name="userID">User to add</param>
+        /// <param name="groupName"></param>
+        void RemoveUser(int ownerID, int userID, string groupName);
+
+        /// <summary>
+        /// Delete group by its ID
+        /// </summary>
+        /// <param name="ownerID">Group ownerID</param>
+        /// <param name="groupID"></param>
+        void Delete(int ownerID, int groupID);
+
     }
 }

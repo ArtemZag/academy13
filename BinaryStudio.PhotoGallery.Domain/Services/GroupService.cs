@@ -17,7 +17,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         //todo: add check permission for creating group event 
-        public void CreateGroup(int userID, GroupModel groupModel)
+        public void Create(int userID, GroupModel groupModel)
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -32,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         //todo: add check permission for creating group event 
-        public void CreateGroup(int userID, string groupName)
+        public void Create(int userID, string groupName)
         {
             var groupModel = new GroupModel()
                 {
@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     OwnerID = userID
                 };
 
-            try {this.CreateGroup(userID, groupModel);}
+            try {this.Create(userID, groupModel);}
             catch (Exception exception)
             {
                 throw new Exception(exception.Message, exception);
@@ -63,7 +63,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         //todo: add check permission for adding group event 
-        public void AddUserToGroup(int ownerID, int userID, int groupID)
+        public void AddUser(int ownerID, int userID, int groupID)
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -87,7 +87,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         //todo: add check permission for adding group event 
-        public void AddUserToGroup(int ownerID, int userID, string groupName)
+        public void AddUser(int ownerID, int userID, string groupName)
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -95,7 +95,72 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     var group = GetGroup(groupName, unitOfWork);
 
-                    this.AddUserToGroup(ownerID, userID, group.Id);
+                    this.AddUser(ownerID, userID, group.Id);
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception(exception.Message, exception);
+                }
+            }
+        }
+
+        //todo: add check permission for adding group event
+        public void RemoveUser(int ownerID, int userID, int groupID)
+        {
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                try
+                {
+                    var group = GetGroup(groupID);
+                    var owner = GetUser(ownerID, unitOfWork);
+                    var user = GetUser(userID, unitOfWork);
+
+                    if (group.OwnerID == ownerID || owner.IsAdmin)
+                    {
+                        unitOfWork.Groups.Find(groupID).Users.Remove(user);
+                        unitOfWork.SaveChanges();
+                    }
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception(exception.Message, exception);
+                }
+            }
+        }
+
+        //todo: add check permission for adding group event
+        public void RemoveUser(int ownerID, int userID, string groupName)
+        {
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                try
+                {
+                    var group = GetGroup(groupName, unitOfWork);
+
+                    this.RemoveUser(ownerID, userID, group.Id);
+                }
+                catch (Exception exception)
+                {
+                    throw new Exception(exception.Message, exception);
+                }
+            }
+        }
+
+        //todo: add check permission for deleting group event
+        public void Delete(int ownerID, int groupID)
+        {
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                try
+                {
+                    var group = GetGroup(groupID);
+                    var owner = GetUser(ownerID, unitOfWork);
+
+                    if (group.OwnerID == ownerID || owner.IsAdmin)
+                    {
+                        unitOfWork.Groups.Delete(group);
+                        unitOfWork.SaveChanges();
+                    }
                 }
                 catch (Exception exception)
                 {
