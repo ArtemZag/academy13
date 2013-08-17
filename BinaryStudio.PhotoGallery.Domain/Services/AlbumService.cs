@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 var album = new AlbumModel
                 {
                     AlbumName = albumName,
-                    UserId = user.Id
+                    OwnerId = user.Id
                 };
 
                 user.Albums.Add(album);
@@ -81,7 +81,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 AlbumModel album = GetAlbum(albumId);
 
-                if (album.UserId == user.Id)
+                if (album.OwnerId == user.Id)
                 {
                     return album;
                 }
