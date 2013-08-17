@@ -1,9 +1,9 @@
-﻿using BinaryStudio.PhotoGallery.Core.PhotoUtils;
-using NUnit.Framework;
-using System.Drawing;
+﻿using System.Drawing;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using FluentAssertions;
+using NUnit.Framework;
 
-namespace BinaryStudio.PhotoGalery.Core.Tests
+namespace BinaryStudio.PhotoGallery.Core.Tests
 {
     [TestFixture]
     public class PhotoProcessorTests

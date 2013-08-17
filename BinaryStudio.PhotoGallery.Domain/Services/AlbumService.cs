@@ -21,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
-                
+
                 if (user.Albums.ToList().Find(album => album.AlbumName == albumModel.AlbumName) != null)
                 {
                     throw new AlbumAlreadyExistException(albumModel.AlbumName);
@@ -40,12 +40,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
 
                 var albumModel = new AlbumModel
-                    {
-                        AlbumName = albumName,
-                        OwnerId = user.Id
-                    };
+                {
+                    AlbumName = albumName,
+                    OwnerId = user.Id
+                };
 
-                try {this.CreateAlbum(userEmail, albumModel);}
+                try
+                {
+                    CreateAlbum(userEmail, albumModel);
+                }
                 catch (Exception exception)
                 {
                     throw new Exception(exception.Message, exception);
@@ -58,7 +61,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
-                AlbumModel album = GetAlbum(user, albumId, unitOfWork);
+                AlbumModel album = GetAlbum(user, albumId);
 
                 album.IsDeleted = true;
 
@@ -70,7 +73,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Albums.Find(albumId);
+                return GetAlbum(albumId, unitOfWork);
             }
         }
 
@@ -90,13 +93,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                AlbumModel album = GetAlbum(albumId);
+                AlbumModel album = GetAlbum(albumId, unitOfWork);
 
                 if (album.OwnerId == user.Id)
                 {
                     return album;
                 }
-                
+
                 throw new AlbumNotFoundException();
             }
         }
@@ -105,7 +108,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName);
+                AlbumModel foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName);
 
                 if (foundAlbum == null)
                 {
@@ -120,9 +123,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
+                UserModel foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
 
-                var foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName && album.OwnerId == foundUser.Id);
+                AlbumModel foundAlbum =
+                    unitOfWork.Albums.Find(album => album.AlbumName == albumName && album.OwnerId == foundUser.Id);
 
                 return foundAlbum != null;
             }
@@ -132,7 +136,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return this.GetAvailableAlbums(userId, unitOfWork);
+                return GetAvailableAlbums(userId, unitOfWork);
             }
         }
 
@@ -140,8 +144,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
-                return this.GetAvailableAlbums(foundUser.Id, unitOfWork);
+                UserModel foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
+                return GetAvailableAlbums(foundUser.Id, unitOfWork);
             }
         }
 

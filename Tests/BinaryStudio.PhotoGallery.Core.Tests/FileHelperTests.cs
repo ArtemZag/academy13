@@ -4,16 +4,15 @@ using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace BinaryStudio.PhotoGalery.Core.Tests
+namespace BinaryStudio.PhotoGallery.Core.Tests
 {
     [TestFixture]
     public class FileHelperTests
     {
-        private IFileHelper _fileHelper;
-        private IFileWrapper _fileWrapper;
+        private readonly IFileHelper _fileHelper;
+        private readonly IFileWrapper _fileWrapper;
 
-        [SetUp]
-        public void SetUp()
+        public FileHelperTests()
         {
             _fileWrapper = Substitute.For<IFileWrapper>();
             _fileHelper = new FileHelper(_fileWrapper);

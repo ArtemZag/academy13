@@ -6,16 +6,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Results
     {
         public int Id { get; set; }
 
-        /// <summary>
-        ///     User that added photo
-        /// </summary>
-        public int UserId { get; set; }
+        public int OwnerId { get; set; }
 
         public int AlbumId { get; set; }
 
-        public string PhotoName { get; set; }
-
-        // todo: delete
         public string Format { get; set; }
 
         public int Rating { get; set; }

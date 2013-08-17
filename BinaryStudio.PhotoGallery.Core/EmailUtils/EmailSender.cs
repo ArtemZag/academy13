@@ -5,7 +5,7 @@ namespace BinaryStudio.PhotoGallery.Core.EmailUtils
 {
     internal class EmailSender : IEmailSender
     {
-        public void Send(string fromHost, string fromEmail, string fromPassword, string toEmail, string theme, string text)
+        public void Send(string fromHost, string fromEmail, string fromPassword, string toEmail, string subject, string text)
         {
             var message = new MailMessage
             {
@@ -14,7 +14,7 @@ namespace BinaryStudio.PhotoGallery.Core.EmailUtils
 
             message.To.Add(toEmail);
 
-            message.Subject = "Notification";
+            message.Subject = subject;
 
             message.Body = text;
             message.IsBodyHtml = true;

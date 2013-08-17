@@ -19,7 +19,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Gets user's album specified by id.
         /// </summary>
-        /// <param name="albumId">Album ID</param>
+        /// <param name="albumId">Album Id</param>
         AlbumModel GetAlbum(int albumId);
 
         /// <summary>

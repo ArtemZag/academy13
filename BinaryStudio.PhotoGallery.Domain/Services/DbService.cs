@@ -16,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         protected AlbumModel GetAlbum(int albumId, IUnitOfWork unitOfWork)
         {
-            AlbumModel foundAlbum = unitOfWork.Albums.Find(album => album.Id == albumId);
+            AlbumModel foundAlbum = unitOfWork.Albums.Find(albumId);
 
             if (foundAlbum == null)
             {
@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         protected UserModel GetUser(int userId, IUnitOfWork unitOfWork)
         {
-            UserModel foundUser = unitOfWork.Users.Find(user => user.Id == userId);
+            UserModel foundUser = unitOfWork.Users.Find(userId);
 
             if (foundUser == null)
             {
@@ -52,7 +52,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         protected AlbumModel GetAlbum(int userId, int albumId, IUnitOfWork unitOfWork)
         {
-            UserModel foundUser = unitOfWork.Users.Find(user => user.Id == userId);
+            UserModel foundUser = unitOfWork.Users.Find(userId);
 
             if (foundUser == null)
             {
@@ -69,7 +69,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        protected AlbumModel GetAlbum(UserModel user, string albumName, IUnitOfWork unitOfWork)
+        protected AlbumModel GetAlbum(UserModel user, string albumName)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        protected AlbumModel GetAlbum(UserModel user, int albumId, IUnitOfWork unitOfWork)
+        protected AlbumModel GetAlbum(UserModel user, int albumId)
         {
             try
             {
@@ -97,13 +97,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        protected GroupModel GetGroup(int groupID, IUnitOfWork unitOfWork)
+        protected GroupModel GetGroup(int groupId, IUnitOfWork unitOfWork)
         {
-            var groupModel = unitOfWork.Groups.Find(groupID);
+            GroupModel groupModel = unitOfWork.Groups.Find(groupId);
 
             if (groupModel == null)
             {
-                throw new GroupNotFoundException(string.Format("Group with ID {0} not found", groupID));
+                throw new GroupNotFoundException(string.Format("Group with ID {0} not found", groupId));
             }
 
             return groupModel;
@@ -111,7 +111,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         protected GroupModel GetGroup(string groupName, IUnitOfWork unitOfWork)
         {
-            var groupModel = unitOfWork.Groups.Find(group => group.GroupName == groupName);
+            GroupModel groupModel = unitOfWork.Groups.Find(group => group.GroupName == groupName);
 
             if (groupModel == null)
             {
