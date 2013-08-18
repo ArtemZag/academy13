@@ -10,7 +10,8 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-    public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
+     //public class DatabaseInitializer : DropCreateDatabaseAlways<DatabaseContext>
+    public class DatabaseInitializer : DropCreateDatabaseAlways<DatabaseContext>
     {
         protected override void Seed(DatabaseContext databaseContext)
         {
@@ -69,6 +70,7 @@ namespace BinaryStudio.PhotoGallery.Database
                 ///////////////////////////////////////////////////////
 
                 var photosForAlbum = new Collection<PhotoModel>();
+                var photosForAlbum1 = new Collection<PhotoModel>();
 
                 var generatedRandomComment = new StringBuilder();
 
@@ -91,7 +93,7 @@ namespace BinaryStudio.PhotoGallery.Database
                                                        -1) {Rating = Randomizer.GetNumber(64)});
                     }
                     photosForAlbum.Add(new PhotoModel(3, 7) { PhotoName = i + ".jpg", PhotoComments = comm, Description = string.Empty });
-                    unitOfWork.Photos.Add(new PhotoModel(4, 6) { PhotoName = i + ".jpg" });
+                    photosForAlbum1.Add(new PhotoModel(4, 6) { PhotoName = i + ".jpg" });
                 }
                 unitOfWork.SaveChanges();
 
@@ -112,7 +114,25 @@ namespace BinaryStudio.PhotoGallery.Database
                     availableGroupModel4
                 };
 
+                var availableGroupModel5 = new AvailableGroupModel { AlbumId = 2, GroupId = 1, CanSeeComments = true, CanSeePhotos = true, CanAddComments = true, CanSeeLikes = true, CanAddPhotos = true };
+                var availableGroupModel6 = new AvailableGroupModel { AlbumId = 2, GroupId = 2, CanSeeComments = true, CanSeePhotos = true, CanAddComments = true, CanSeeLikes = true, CanAddPhotos = true };
+                var availableGroupModel7 = new AvailableGroupModel { AlbumId = 2, GroupId = 3, CanSeeComments = true, CanSeePhotos = true, CanAddComments = true, CanSeeLikes = true, CanAddPhotos = true };
+                var availableGroupModel8 = new AvailableGroupModel { AlbumId = 2, GroupId = 4 };
+                var availableGroupModel9 = new AvailableGroupModel { AlbumId = 2, GroupId = 5 };
+
+                var AGList1 = new List<AvailableGroupModel>
+                {
+                    availableGroupModel5,
+                    availableGroupModel6,
+                    availableGroupModel7,
+                    availableGroupModel8,
+                    availableGroupModel9
+                };
+
+                unitOfWork.Albums.Add(new AlbumModel("test", 1));
+                unitOfWork.Albums.Add(new AlbumModel("test", 1));
                 var album = new AlbumModel("Test", 7) {AvailableGroups = AGList, Photos = photosForAlbum};
+                var album1 = new AlbumModel("TestAvi", 6) { AvailableGroups = AGList1, Photos = photosForAlbum1 };
 
                 unitOfWork.SaveChanges();
 
@@ -122,10 +142,15 @@ namespace BinaryStudio.PhotoGallery.Database
                         unitOfWork.Groups.Find(3),
                         unitOfWork.Groups.Find(6)
                     };
+                var groupCollection1 = new Collection<GroupModel>(groupCollection);
+
 
                 unitOfWork.Users.Find(7).Groups = groupCollection;
 
                 unitOfWork.Users.Find(7).Albums = new Collection<AlbumModel> {album};
+
+                unitOfWork.Users.Find(6).Groups = groupCollection1;
+                unitOfWork.Users.Find(6).Albums = new Collection<AlbumModel> {album1};
                 
                 unitOfWork.SaveChanges();
             }

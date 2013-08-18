@@ -1,10 +1,15 @@
-﻿$(document).ready(function () {
-    $("#photopreloader").hide();
-    $(window).load(function() {
-        prepareToShow();
-        scrolled();
+﻿var PhotoPlacer_Module = (function(controllerURl) {
+
+    var marginsOfPhotoCont;
+    $(window).load(function () {
+        $("#photoWrapper").append('<div class="photoContainer" style="display:none;"></div>');
+        marginsOfPhotoCont = parseInt($('.photoContainer').css('margin-left'))
+            + parseInt($('.photoContainer').css('margin-right'))
+            + parseInt($('.photoContainer').css("border-left-width"))
+            + parseInt($('.photoContainer').css("border-right-width"));
+        ajaxPhotoLoad();
     });
-    $(window).on('resize', function () {
+    $(window).on('resize', function() {
         $LastRow = calcPhotoSizes($('#photoWrapper'), $("div.photoContainer > img"), marginsOfPhotoCont);
     });
     $(window).scroll(scrolled);
@@ -25,15 +30,10 @@
             } else {
                 busy = false;
             }
-                    
+
         }
     }
 
-    var marginsOfPhotoCont = parseInt($('.photoContainer').css('margin-left'))
-                             + parseInt($('.photoContainer').css('margin-right'))
-                             + parseInt($('.photoContainer').css("border-left-width"))
-                             + parseInt($('.photoContainer').css("border-right-width"));
-     
     function calcPhotoSizes($container, $photos, marginPhotoCont) {
         var width = 0;
         var firstElemInRow = 0;
@@ -41,7 +41,7 @@
         var wrapperWidth = $container.width();
         var $lastRow = $();
 
-        jQuery.each($photos, function (indPh) {
+        jQuery.each($photos, function(indPh) {
             width += this.width;
             margins += marginPhotoCont;
             if (width > wrapperWidth - margins) {
@@ -53,8 +53,7 @@
                 firstElemInRow = indPh + 1;
                 width = 0;
                 margins = 0;
-            }
-            else if (indPh == $photos.length - 1) {
+            } else if (indPh == $photos.length - 1) {
                 for (indSub = firstElemInRow; indSub <= indPh; indSub++) {
                     $($photos[indSub]).closest("div")
                         .css('width', $photos[indSub].width);
@@ -65,7 +64,7 @@
         });
         return ($lastRow);
     }
-    
+
     function prepareToShow() {
         var $newPhotoContainers = $('#photoWrapper > div.invisible');
         var $photos = $newPhotoContainers.find("img:first");
@@ -74,12 +73,12 @@
         $newPhotoContainers.removeClass("invisible");
     }
 
-    var photoPortion = 30;
-    var startIndex = photoPortion;
+    var photoPortion = 25;
+    var startIndex = 0;
 
     function ajaxPhotoLoad() {
-        $("#photopreloader").show();
-        $.post("/Home/GetPhotosViaAjax", { startIndex: startIndex, endIndex: startIndex + photoPortion }, getPhotos);
+        $("#photopreloader").show(); 
+        $.post(controllerURl, { SkipCount: startIndex, TakeCount: startIndex + photoPortion }, getPhotos);
     }
 
     function getPhotos(photos) {
@@ -93,5 +92,8 @@
         }
         $("#photopreloader").hide();
     }
+});
 
+$(document).ready(function () {
+    PhotoPlacer_Module("/Api/Photo/GetAllUserPhotos");
 });

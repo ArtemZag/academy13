@@ -12,40 +12,20 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     [RoutePrefix("Home")]
     public class HomeController : Controller
     {
-        private readonly IPhotoService _photoService;
-        private readonly IModelConverter _modelConverter;
-
-        public HomeController(IPhotoService photoService, IModelConverter modelConverter)
-        {
-            _photoService = photoService;
-            _modelConverter = modelConverter;
-        }
-
         /// <summary>
         /// Main page (click on "bingally")
         /// </summary>
         /// <returns>page with flow of public pictures</returns>
         [GET]
-        public ActionResult Index() // TODO This method must return only View
-                                    // TODO all data must be getted by Area/Api/PhotoController
+        public ActionResult Index()
         {
-            var photoModels = _photoService.GetPhotos(User.Identity.Name, 0, 30);
-
             var infoViewModel = new InfoViewModel
             {
                 UserEmail = User.Identity.Name,
-                Photos = photoModels.Select(_modelConverter.GetViewModel).ToList()
             };
 
             return View(infoViewModel);
         }
 
-        [HttpPost] // TODO this method must be deleted
-        public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
-        {
-            var photos = _photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
-                .Select(_modelConverter.GetViewModel);
-            return Json(photos);
-        }
     }
 }

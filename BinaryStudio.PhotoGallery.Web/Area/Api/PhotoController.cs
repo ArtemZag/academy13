@@ -13,14 +13,13 @@ using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-    [Authorize]
 	[RoutePrefix("Api/Photo")]
     public class PhotoController : ApiController
     {
-        public struct GetPhotosOptions
+        public class GetPhotosOptions
         {
-            public int SkipCount;
-            public int TakeCount;
+            public int SkipCount { get; set; }
+            public int TakeCount { get; set; }
         }
 
         private readonly IPhotoService _photoService;
@@ -32,8 +31,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _modelConverter = modelConverter;
         }
 
-        [POST("UserFlow")]
-	    public HttpResponseMessage GetAllUserPhotos([FromBody] GetPhotosOptions options)
+        [HttpPost]
+	    public HttpResponseMessage GetAllUserPhotos(GetPhotosOptions options)
         {
             List<PhotoViewModel> viewModels;
 
@@ -60,32 +59,32 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             return response;
 	    }
 
-        [POST("AllAvailable")]
-        public HttpResponseMessage GetAllAvailablePhotos([FromBody] GetPhotosOptions options)
-        {
-            List<PhotoViewModel> viewModels;
+        //[HttpPost]
+        //public HttpResponseMessage GetAllAvailablePhotos([FromBody] GetPhotosOptions options)
+        //{
+        //    List<PhotoViewModel> viewModels;
 
-            try
-            {
-                viewModels = _photoService
-                    .GetPublicPhotos(User.Identity.Name, options.SkipCount, options.TakeCount)
-                    .Select(photoModel => _modelConverter.GetViewModel(photoModel)).ToList();
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+        //    try
+        //    {
+        //        viewModels = _photoService
+        //            .GetPublicPhotos(User.Identity.Name, options.SkipCount, options.TakeCount)
+        //            .Select(photoModel => _modelConverter.GetViewModel(photoModel)).ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+        //    }
 
-            var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>
-                (viewModels, new JsonMediaTypeFormatter());
+        //    var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>
+        //        (viewModels, new JsonMediaTypeFormatter());
 
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = responseData
-            };
+        //    var response = new HttpResponseMessage
+        //    {
+        //        StatusCode = HttpStatusCode.OK,
+        //        Content = responseData
+        //    };
 
-            return response;
-        }
+        //    return response;
+        //}
     }
 }
