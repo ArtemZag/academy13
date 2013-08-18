@@ -58,7 +58,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _cryptoProvider = cryptoProvider;
         }
 
-        [DELETE]
+        [DELETE("{photoId}")]
         public HttpResponseMessage Delete(int photoId)
         {
             if (photoId <= 0)
@@ -73,6 +73,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             catch (NoEnoughPrivileges ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
             return new HttpResponseMessage(HttpStatusCode.OK);
@@ -103,31 +107,37 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     albumId = _albumService.CreateAlbum(userId, viewModel.AlbumName).Id;
                 }
 
-                // Get path to the temporary folder in the user folder
-                string pathToTempFolder = _pathUtil.BuildAbsoluteTemporaryDirectoryPath(userId);
+                // Get temporary album Id
+                int tempAlbumId = _albumService.GetAlbumId(userId, "Temporary");
 
-                string pathToAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, albumId);
+                // Get path to the temporary album folder
+                string pathToTempAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, tempAlbumId);
 
-                if (!_directoryWrapper.Exists(pathToAlbum))
+                // Get path to the destination album folder
+                string pathToDestAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, albumId);
+
+                if (!_directoryWrapper.Exists(pathToDestAlbum))
                 {
-                    _directoryWrapper.CreateDirectory(pathToAlbum);
+                    _directoryWrapper.CreateDirectory(pathToDestAlbum);
                 }
 
                 foreach (int photoId in viewModel.PhotosId)
                 {
                     PhotoModel photoModel = _photoService.GetPhoto(userId, photoId);
 
-                    string fileInTemporary = string.Format("{0}\\{1}.{2}", pathToTempFolder, photoModel.Id, photoModel.Format);
+                    string fileInTempAlbum = string.Format("{0}\\{1}.{2}", pathToTempAlbum, photoModel.Id,
+                        photoModel.Format);
 
-                    string fileInAlbum = string.Format("{0}\\{1}.{2}", pathToAlbum, photoModel.Id, photoModel.Format);
+                    string fileInDestAlbum = string.Format("{0}\\{1}.{2}", pathToDestAlbum, photoModel.Id,
+                        photoModel.Format);
 
-                    bool fileExist = _fileWrapper.Exists(fileInTemporary);
+                    bool fileExist = _fileWrapper.Exists(fileInTempAlbum);
 
                     if (fileExist)
                     {
                         try
                         {
-                            _fileWrapper.Move(fileInTemporary, fileInAlbum);
+                            _fileWrapper.Move(fileInTempAlbum, fileInDestAlbum);
                         }
                         catch (Exception)
                         {
@@ -196,22 +206,25 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 // Get user ID from DB
                 int userId = _userService.GetUserId(User.Identity.Name);
 
-                // Get path to the temporary folder in the user folder
-                string pathToTempFolder = _pathUtil.BuildAbsoluteTemporaryDirectoryPath(userId);
+                // Get temporary album Id
+                int tempAlbumId = _albumService.GetAlbumId(userId, "Temporary");
+
+                // Get path to the temporary album folder
+                string pathToTempAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, tempAlbumId);
 
                 // Create directory, if it isn't exist
-                if (!_directoryWrapper.Exists(pathToTempFolder))
+                if (!_directoryWrapper.Exists(pathToTempAlbum))
                 {
-                    _directoryWrapper.CreateDirectory(pathToTempFolder);
+                    _directoryWrapper.CreateDirectory(pathToTempAlbum);
                 }
 
                 // TODO create this instance with fabrik
-                var provider = new MultipartFormDataStreamProvider(pathToTempFolder);
+                var provider = new MultipartFormDataStreamProvider(pathToTempAlbum);
 
-                // Read the form data from request TODO must be wrapped too
+                // Read the form data from request (save all files in selected folder) TODO must be wrapped too
                 await Request.Content.ReadAsMultipartAsync(provider);
 
-                // Check all files
+                // Check all uploaded files
                 foreach (MultipartFileData fileData in provider.FileData)
                 {
                     string originalFileName = fileData.Headers.ContentDisposition.FileName.Trim('"');
@@ -253,7 +266,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                     int photoId = _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, albumId, format)).Id;
 
-                    string destFileName = string.Format("{0}\\{1}.{2}", pathToTempFolder, photoId, format);
+                    string destFileName = string.Format("{0}\\{1}.{2}", pathToTempAlbum, photoId, format);
 
                     try
                     {
