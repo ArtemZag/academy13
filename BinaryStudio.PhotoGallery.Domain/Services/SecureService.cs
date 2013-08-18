@@ -72,14 +72,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
 
             IEnumerable<int> albumIds = unitOfWork.AvailableGroups.All().ToList().Join(userGroups,
-                avialableGroupModel => avialableGroupModel.Id,
-                groupModel => groupModel.Id, (avialableGroupModel, groupModel) => new
-                    {
-                        avialableGroupModel.CanSeePhotos, avialableGroupModel .AlbumId
-                    })
-                .Where(arg => arg.CanSeePhotos)
-                .Select(arg => arg.AlbumId)
-                .Distinct();
+                                                                                       avialableGroupModel =>
+                                                                                       avialableGroupModel.Id,
+                                                                                       groupModel => groupModel.Id,
+                                                                                       (avialableGroupModel, groupModel)
+                                                                                       => new
+                                                                                           {
+                                                                                               avialableGroupModel
+                                                                                              .CanSeePhotos,
+                                                                                               avialableGroupModel
+                                                                                              .AlbumId
+                                                                                           })
+                                                  .Where(arg => arg.CanSeePhotos)
+                                                  .Select(arg => arg.AlbumId)
+                                                  .Distinct();
 
             return albumIds.Select(albumId => GetAlbum(albumId, unitOfWork));
         }
@@ -108,9 +114,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
 
                     GroupModel userGroups = unitOfWork.Users.Find(userId).Groups.ToList()
-                        .Find(
-                            group =>
-                                availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
+                                                      .Find(
+                                                          group =>
+                                                          availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
 
                     canUser = userGroups != null;
                 }
