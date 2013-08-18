@@ -92,66 +92,85 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
 
-
-
         public void LetGroupViewComments(int userId, int groupId, int albumId, bool let)
         {
             //todo: add try-catch
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var album = GetAlbum(albumId, unitOfWork);
-                var user = GetUser(userId, unitOfWork);
+                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                if ((album.OwnerId != userId) && !user.IsAdmin)
-                    throw new UserHaveNoEnoughPrivilegesException(
-                        string.Format("User (id={0}) can't let or deny group (id={1}) view comments in album (id={2})",
-                                      userId, groupId, albumId));
+                availableGroup.CanSeeComments = let;
 
-                var availableGroup = album.AvailableGroups.ToList().Find(ag => ag.GroupId == groupId);
-                if (availableGroup != null)
-                {
-                    availableGroup.CanSeeComments = @let;
-                    unitOfWork.AvailableGroups.Update(availableGroup);
-                }
-                else
-                {
-                    availableGroup = new AvailableGroupModel()
-                        {
-                            AlbumId = albumId,
-                            GroupId = groupId,
-
-                            CanSeeComments = @let
-                        };
-                    unitOfWork.AvailableGroups.Add(availableGroup);
-                }
-
+                unitOfWork.AvailableGroups.Update(availableGroup);
                 unitOfWork.SaveChanges();
             }
         }
 
-        public bool LetGroupAddComment(int userId, int groupId, int albumId, bool let)
+
+        public void LetGroupAddComment(int userId, int groupId, int albumId, bool let)
         {
-            throw new NotImplementedException();
+            //todo: add try-catch
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+
+                availableGroup.CanAddComments = let;
+
+                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.SaveChanges();
+            }
         }
 
-        public bool LetGroupViewPhotos(int userId, int groupId, int albumId, bool let)
+        public void LetGroupViewPhotos(int userId, int groupId, int albumId, bool let)
         {
-            throw new NotImplementedException();
+            //todo: add try-catch
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+
+                availableGroup.CanSeePhotos = let;
+
+                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.SaveChanges();
+            }
         }
 
-        public bool LetGroupAddPhoto(int userId, int groupId, int albumId, bool let)
+        public void LetGroupAddPhoto(int userId, int groupId, int albumId, bool let)
         {
-            throw new NotImplementedException();
+            //todo: add try-catch
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+
+                availableGroup.CanAddPhotos = let;
+
+                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.SaveChanges();
+            }
         }
 
-        public bool LetGroupViewLikes(int userId, int groupId, int albumId, bool let)
+        public void LetGroupViewLikes(int userId, int groupId, int albumId, bool let)
         {
-            throw new NotImplementedException();
+            //todo: add try-catch
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+
+                availableGroup.CanSeeLikes = let;
+
+                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.SaveChanges();
+            }
         }
+
 
         /// <summary>
         ///     Checks if user take a part in even one group, that have enough permissions to do some action
         /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="albumId"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
         private bool CanUserDoAction(int userId, int albumId, Predicate<AvailableGroupModel> predicate)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -182,6 +201,32 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 return canUser;
             }
+        }
+
+        /// <summary>
+        ///     Gets available group or creates if doesn't exist.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="groupId"></param>
+        /// <param name="albumId"></param>
+        /// <param name="unitOfWork"></param>
+        /// <returns></returns>
+        private AvailableGroupModel GetAvailableGroup(int userId, int groupId, int albumId, IUnitOfWork unitOfWork)
+        {
+            AlbumModel album = GetAlbum(albumId, unitOfWork);
+            UserModel user = GetUser(userId, unitOfWork);
+
+            if ((album.OwnerId != userId) && !user.IsAdmin)
+                throw new UserHaveNoEnoughPrivilegesException(
+                    string.Format("User (id={0}) can't let or deny group (id={1}) view comments in album (id={2})",
+                                  userId, groupId, albumId));
+
+            return album.AvailableGroups.ToList().Find(ag => ag.GroupId == groupId) ??
+                   new AvailableGroupModel
+                       {
+                           AlbumId = albumId,
+                           GroupId = groupId,
+                       };
         }
     }
 }

@@ -45,50 +45,46 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Lets group of users view comments in the album
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="groupId"></param>
-        /// <param name="albumId"></param>
-        /// <param name="let"></param>
+        /// <param name="userId">Who wants to give permissions for group</param>
+        /// <param name="groupId">What goup needs to add</param>
+        /// <param name="albumId">For what album will be given permissions</param>
+        /// <param name="let">Give or take away permissions</param>
         void LetGroupViewComments(int userId, int groupId, int albumId, bool let);
 
         /// <summary>
         ///     Lets group of users add comment in the album
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="groupId"></param>
-        /// <param name="albumId"></param>
-        /// <param name="let"></param>
-        /// <returns></returns>
-        bool LetGroupAddComment(int userId, int groupId, int albumId, bool let);
+        /// <param name="userId">Who wants to give permissions for group</param>
+        /// <param name="groupId">What goup needs to add</param>
+        /// <param name="albumId">For what album will be given permissions</param>
+        /// <param name="let">Give or take away permissions</param>
+        void LetGroupAddComment(int userId, int groupId, int albumId, bool @let);
 
         /// <summary>
         ///     Lets group of users view photos in the album
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="groupId"></param>
-        /// <param name="albumId"></param>
-        /// <param name="let"></param>
-        /// <returns></returns>
-        bool LetGroupViewPhotos(int userId, int groupId, int albumId, bool let);
+        /// <param name="userId">Who wants to give permissions for group</param>
+        /// <param name="groupId">What goup needs to add</param>
+        /// <param name="albumId">For what album will be given permissions</param>
+        /// <param name="let">Give or take away permissions</param>
+        void LetGroupViewPhotos(int userId, int groupId, int albumId, bool let);
 
         /// <summary>
         ///     Lets group of users add photo in the album
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="groupId"></param>
-        /// <param name="albumId"></param>
-        /// <param name="let"></param>
-        /// <returns></returns>
-        bool LetGroupAddPhoto(int userId, int groupId, int albumId, bool let);
+        /// <param name="userId">Who wants to give permissions for group</param>
+        /// <param name="groupId">What goup needs to add</param>
+        /// <param name="albumId">For what album will be given permissions</param>
+        /// <param name="let">Give or take away permissions</param>
+        void LetGroupAddPhoto(int userId, int groupId, int albumId, bool let);
 
         /// <summary>
         ///     Lets group of users view likes in the album
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="groupId"></param>
-        /// <param name="albumId"></param>
-        /// <param name="let"></param>
-        /// <returns></returns>
-        bool LetGroupViewLikes(int userId, int groupId, int albumId, bool let);
+        /// <param name="userId">Who wants to give permissions for group</param>
+        /// <param name="groupId">What goup needs to add</param>
+        /// <param name="albumId">For what album will be given permissions</param>
+        /// <param name="let">Give or take away permissions</param>
+        void LetGroupViewLikes(int userId, int groupId, int albumId, bool let);
     }
 }
