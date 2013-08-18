@@ -61,7 +61,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             return new SearchResult
             {
-                Value = result,
+                Value = result.OrderByDescending(found => found.Relevance),
                 SearchCacheToken = resultToken
             };
         }

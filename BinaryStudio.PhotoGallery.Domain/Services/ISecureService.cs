@@ -39,11 +39,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Gets a list of all available albums for user
         /// </summary>
-        IEnumerable<AlbumModel> GetAvailableAlbums(int userId);
-
-        /// <summary>
-        ///     Gets a list of all available albums for user
-        /// </summary>
         IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork);
 
         /// <summary>

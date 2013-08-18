@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             this.userService = userService;
         }
 
-        public HttpResponseMessage GetSearch([FromUri] SearchRequestViewModel searchViewModel)
+        public HttpResponseMessage GetSearch([FromUri] SearchViewModel searchViewModel)
         {
             string usersEmail = User.Identity.Name;
             UserModel user = userService.GetUser(usersEmail);

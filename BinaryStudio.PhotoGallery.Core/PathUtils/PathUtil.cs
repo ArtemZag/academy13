@@ -113,22 +113,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return "." + format;
         }
 
-        public IEnumerable<string> BuildTemporaryDirectoriesPaths()
-        {
-            string photoDirectoryPath = BuildPhotoDirectoryPath();
-
-            IEnumerable<string> usersDirectories = Directory.EnumerateDirectories(photoDirectoryPath);
-
-            var temporaryPhotosDirectories = new Collection<string>();
-
-            foreach (string temporaryPhotosDirectory in usersDirectories.Select(BuildTemporaryDirectoryPath))
-            {
-                temporaryPhotosDirectories.Add(temporaryPhotosDirectory);
-            }
-
-            return temporaryPhotosDirectories;
-        }
-
         public string BuildAbsoluteTemporaryDirectoryPath(int userId)
         {
             var userPath = BuildUserPath(userId);

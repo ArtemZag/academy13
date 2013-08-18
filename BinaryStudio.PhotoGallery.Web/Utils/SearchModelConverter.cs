@@ -49,7 +49,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return result;
         }
 
-        public SearchArguments GetModel(SearchRequestViewModel searchViewModel, int userId)
+        public SearchArguments GetModel(SearchViewModel searchViewModel, int userId)
         {
             return new SearchArguments
             {

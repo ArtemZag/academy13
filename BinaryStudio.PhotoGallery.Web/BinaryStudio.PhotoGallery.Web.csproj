@@ -311,7 +311,7 @@
     <Content Include="Scripts\Notifications.js" />
     <Content Include="Scripts\AlbumsPage\albums.js" />
     <Content Include="Scripts\off-screen-nav.js" />
-    <Compile Include="ViewModels\Search\SearchRequestViewModel.cs" />
+    <Compile Include="ViewModels\Search\SearchViewModel.cs" />
     <Content Include="Scripts\PhotoPage\photo.js" />
     <Content Include="Content\photo-page.css" />
   </ItemGroup>
