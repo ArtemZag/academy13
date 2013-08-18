@@ -17,7 +17,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
 
-        private readonly List<AlbumModel> systemAlbumsList = new List<AlbumModel>()
+        private readonly List<AlbumModel> _systemAlbumsList = new List<AlbumModel>()
             {
                 #region "Temporary" album
                 new AlbumModel
@@ -81,7 +81,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public void CreateSystemAlbums(int userId)
         {
-            foreach (var systemAlbum in systemAlbumsList)
+            foreach (var systemAlbum in _systemAlbumsList)
             {
                 systemAlbum.OwnerId = userId;
                 CreateAlbum(userId, systemAlbum);
@@ -90,7 +90,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private bool IsAlbumSystem(AlbumModel album)
         {
-            return systemAlbumsList.Find(systemAlbum => systemAlbum.AlbumName == album.AlbumName) != null;
+            return _systemAlbumsList.Find(systemAlbum => systemAlbum.AlbumName == album.AlbumName) != null;
         }
 
         public void DeleteAlbum(string userEmail, int albumId)
