@@ -2,7 +2,7 @@
 
 namespace BinaryStudio.PhotoGallery.Web.ViewModels.Upload
 {
-    public class SavePhotosViewModel
+    public class MovePhotosViewModel
     {
         public string AlbumName { get; set; }
         public IEnumerable<int> PhotosId { get; set; }

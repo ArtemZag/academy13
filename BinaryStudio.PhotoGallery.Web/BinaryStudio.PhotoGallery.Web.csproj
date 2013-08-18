@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -272,7 +272,8 @@
     <Compile Include="ViewModels\Search\PhotoFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\Search\UserFoundViewModel.cs" />
-    <Compile Include="ViewModels\Upload\SavePhotosViewModel.cs" />
+    <Compile Include="ViewModels\Upload\MovePhotosViewModel.cs" />
+    <Compile Include="ViewModels\Upload\UploadResultViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\albums-page.css" />
