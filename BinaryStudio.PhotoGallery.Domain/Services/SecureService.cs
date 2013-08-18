@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -88,6 +89,64 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                                                   .Distinct();
 
             return albumIds.Select(albumId => GetAlbum(albumId, unitOfWork));
+        }
+
+
+
+
+        public void LetGroupViewComments(int userId, int groupId, int albumId, bool let)
+        {
+            //todo: add try-catch
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                var album = GetAlbum(albumId, unitOfWork);
+                var user = GetUser(userId, unitOfWork);
+
+                if ((album.OwnerId != userId) && !user.IsAdmin)
+                    throw new UserHaveNoEnoughPrivilegesException(
+                        string.Format("User (id={0}) can't let or deny group (id={1}) view comments in album (id={2})",
+                                      userId, groupId, albumId));
+
+                var availableGroup = album.AvailableGroups.ToList().Find(ag => ag.GroupId == groupId);
+                if (availableGroup != null)
+                {
+                    availableGroup.CanSeeComments = @let;
+                    unitOfWork.AvailableGroups.Update(availableGroup);
+                }
+                else
+                {
+                    availableGroup = new AvailableGroupModel()
+                        {
+                            AlbumId = albumId,
+                            GroupId = groupId,
+
+                            CanSeeComments = @let
+                        };
+                    unitOfWork.AvailableGroups.Add(availableGroup);
+                }
+
+                unitOfWork.SaveChanges();
+            }
+        }
+
+        public bool LetGroupAddComment(int userId, int groupId, int albumId, bool let)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool LetGroupViewPhotos(int userId, int groupId, int albumId, bool let)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool LetGroupAddPhoto(int userId, int groupId, int albumId, bool let)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool LetGroupViewLikes(int userId, int groupId, int albumId, bool let)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
