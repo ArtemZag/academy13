@@ -41,6 +41,7 @@ namespace BinaryStudio.PhotoGallery.Web
             // e.g. container.RegisterType<ITestService, TestService>();   
             
             container.RegisterType<IModelConverter, ModelConverter>();
+            container.RegisterType<ISearchModelConverter, SearchModelConverter>();
 
             Domain.Bootstrapper.RegisterTypes(container);
             Database.Bootstrapper.RegisterTypes(container);

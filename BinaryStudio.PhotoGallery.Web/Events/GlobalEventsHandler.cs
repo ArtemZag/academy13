@@ -6,8 +6,7 @@ using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Hubs;
 using Microsoft.AspNet.SignalR;
 
-
-namespace BinaryStudio.PhotoGallery.Web
+namespace BinaryStudio.PhotoGallery.Web.Utils
 {
     public interface IGlobalEventsHandler
     {

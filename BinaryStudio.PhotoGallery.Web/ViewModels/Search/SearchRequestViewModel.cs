@@ -1,6 +1,6 @@
 ﻿namespace BinaryStudio.PhotoGallery.Web.ViewModels.Search
 {
-    public class SearchViewModel
+    public class SearchRequestViewModel
     {
         public string SearchCacheToken { get; set; }
 
