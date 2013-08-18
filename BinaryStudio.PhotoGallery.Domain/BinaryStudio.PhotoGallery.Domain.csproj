@@ -66,6 +66,7 @@
     <Compile Include="Exceptions\NoEnoughPrivileges.cs" />
     <Compile Include="Exceptions\RepentSlave.cs" />
     <Compile Include="Exceptions\UserAlreadyExistException.cs" />
+    <Compile Include="Exceptions\UserHaveNoEnoughPrivilegesException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="GlobalEventsAggregator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
