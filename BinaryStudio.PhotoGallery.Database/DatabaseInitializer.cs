@@ -231,7 +231,8 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 var group = new GroupModel
                 {
-                    OwnerID = 1,
+                    GroupName = "Test group",
+                    OwnerID = unitOfWork.Users.Find(a => a.Email == "Admin@bingally.com").Id,
                     Description = "Test group"
                 };
 
@@ -260,7 +261,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 #endregion
 
-                #region adding photos to album
+                #region adding photos to album with name "First album"
 
                 AlbumModel albumModel = unitOfWork.Albums.Find(album => album.AlbumName == "First album");
 
@@ -293,7 +294,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 #endregion
 
-                #region adding photos and grup to album
+                #region adding photos and group to album with name "Anton album"
 
                 albumModel = unitOfWork.Albums.Find(album => album.AlbumName == "Anton album");
 
