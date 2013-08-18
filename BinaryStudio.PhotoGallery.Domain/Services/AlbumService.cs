@@ -23,7 +23,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 if (user.Albums.ToList().Find(album => album.AlbumName == albumModel.AlbumName) != null)
                 {
-                    throw new AlbumAlreadyExistException(albumModel.AlbumName);
+                    throw new AlbumAlreadyExistException(string.Format("Can't create album \"{0}\" because it is already exist", albumModel.AlbumName));
                 }
 
                 user.Albums.Add(albumModel);
@@ -49,10 +49,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         public AlbumModel CreateAlbum(int userId, string albumName)
         {
             var albumModel = new AlbumModel
-            {
-                AlbumName = albumName,
-                OwnerId = userId
-            };
+                {
+                    AlbumName = albumName,
+                    OwnerId = userId
+                };
 
             albumModel = CreateAlbum(userId, albumModel);
 
@@ -65,6 +65,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumId);
+
+                if (album.AlbumName == "Temporary")
+                {
+                    throw new AlbumNotFoundException(string.Format("Can't delete system album with id={0}", albumId));
+                }
 
                 album.IsDeleted = true;
 
