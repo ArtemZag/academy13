@@ -73,6 +73,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public PhotoModel UpdatePhoto(PhotoModel photoModel)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                unitOfWork.Photos.Update(photoModel);
+
+                unitOfWork.SaveChanges();
+
+                return photoModel;
+            }
+        }
+
         public void DeletePhoto(string userEmail, PhotoModel photo)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -156,11 +168,22 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
-                PhotoModel photo = unitOfWork.Photos.Find(photoId);
 
-                if (_secureService.CanUserViewPhotos(user.Id, photo.AlbumId))
+                var photoModel = this.GetPhoto(user.Id, photoId);
+
+                return photoModel;
+            }
+        }
+
+        public PhotoModel GetPhoto(int userId, int photoId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                PhotoModel photoModel = unitOfWork.Photos.Find(photoId);
+
+                if (_secureService.CanUserViewPhotos(userId, photoModel.AlbumId))
                 {
-                    return photo;
+                    return photoModel;
                 }
 
                 throw new NoEnoughPrivileges("User can't get access to photos", null);

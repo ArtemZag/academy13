@@ -18,6 +18,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         IEnumerable<int> AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
 
         /// <summary>
+        ///     Updates photo by photoModel
+        /// </summary>
+        PhotoModel UpdatePhoto(PhotoModel photoModel);
+
+        /// <summary>
         ///     Deletes specified photoModel
         /// </summary>
         void DeletePhoto(string userEmail, PhotoModel photo);
@@ -42,6 +47,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         IEnumerable<PhotoModel> GetPhotos(string userEmail, int skipCount, int takeCount);
 
         PhotoModel GetPhoto(string userEmail, int photoId);
+
+        PhotoModel GetPhoto(int userId, int photoId);
 
 
         /// <summary>
