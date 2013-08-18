@@ -30,7 +30,7 @@
     self.removePhoto = function () {
         $.ajax({
             type: 'DELETE',
-            url: 'Api/File/' + self.uploadId()
+            url: '/Api/File/' + self.uploadId()
         });
     };
 }

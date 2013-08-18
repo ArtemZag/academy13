@@ -5,7 +5,6 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers

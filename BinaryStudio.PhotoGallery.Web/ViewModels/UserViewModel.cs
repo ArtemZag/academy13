@@ -15,16 +15,5 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 		public int AlbumsCount { get; set; }
 
 		public bool IsOnline { get; set; }
-
-	    public static UserViewModel FromModel(UserModel userModel)
-	    {
-	        var viewModel = new UserViewModel
-	        {
-	            FirstName = userModel.FirstName,
-	            LastName = userModel.LastName
-	        };
-
-	        return viewModel;
-	    }
 	}
 }
