@@ -3,7 +3,7 @@ using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
-    internal interface IPhotoSearchService
+    internal interface IAlbumSearchService
     {
         IEnumerable<IFound> Search(SearchArguments searchArguments);
     }

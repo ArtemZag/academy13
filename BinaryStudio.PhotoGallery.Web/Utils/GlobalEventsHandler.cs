@@ -75,7 +75,7 @@ namespace BinaryStudio.PhotoGallery.Web
                 var _hubNotify = GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>();
                 var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
                                          "добавил фотографию <span class='highlight_what'>\"{2}\"</span> в ваш альбом {3}"
-                                         , mPhotoOwner.FirstName, mPhotoOwner.LastName, mPhoto.Name, mAlbum.AlbumName);
+                                         , mPhotoOwner.FirstName, mPhotoOwner.LastName, mPhoto.Name, mAlbum.Name);
                 _hubNotify.Clients.Group(mAlbumOwner.Email)
                           .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
             }

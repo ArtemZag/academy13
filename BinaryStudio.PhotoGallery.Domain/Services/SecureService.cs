@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -63,6 +62,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return CanUserDoAction(userId, albumId, predicate);
         }
 
+        public IEnumerable<AlbumModel> GetAvailableAlbums(int userId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return GetAvailableAlbums(userId, unitOfWork);
+            }
+        }
+
         public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
         {
             UserModel user = GetUser(userId, unitOfWork);
@@ -74,20 +81,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
 
             IEnumerable<int> albumIds = unitOfWork.AvailableGroups.All().ToList().Join(userGroups,
-                                                                                       avialableGroupModel =>
-                                                                                       avialableGroupModel.Id,
-                                                                                       groupModel => groupModel.Id,
-                                                                                       (avialableGroupModel, groupModel)
-                                                                                       => new
-                                                                                           {
-                                                                                               avialableGroupModel
-                                                                                              .CanSeePhotos,
-                                                                                               avialableGroupModel
-                                                                                              .AlbumId
-                                                                                           })
-                                                  .Where(arg => arg.CanSeePhotos)
-                                                  .Select(arg => arg.AlbumId)
-                                                  .Distinct();
+                avialableGroupModel => avialableGroupModel.Id, groupModel => groupModel.Id,
+                (avialableGroupModel, groupModel) => new
+                    {
+                        avialableGroupModel.CanSeePhotos,
+                        avialableGroupModel.AlbumId
+                    })
+                .Where(arg => arg.CanSeePhotos)
+                .Select(arg => arg.AlbumId)
+                .Distinct();
 
             return albumIds.Select(albumId => GetAlbum(albumId, unitOfWork));
         }
@@ -193,9 +195,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
 
                     GroupModel userGroups = unitOfWork.Users.Find(userId).Groups.ToList()
-                                                      .Find(
-                                                          group =>
-                                                          availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
+                        .Find(
+                            group =>
+                                availableGropusCanDo.Find(x => x.GroupId == @group.Id) != null);
 
                     canUser = userGroups != null;
                 }
@@ -220,14 +222,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             if ((album.OwnerId != userId) && !user.IsAdmin)
                 throw new UserHaveNoEnoughPrivilegesException(
                     string.Format("User (id={0}) can't let or deny group (id={1}) view comments in album (id={2})",
-                                  userId, groupId, albumId));
+                        userId, groupId, albumId));
 
             return album.AvailableGroups.ToList().Find(ag => ag.GroupId == groupId) ??
                    new AvailableGroupModel
-                       {
-                           AlbumId = albumId,
-                           GroupId = groupId,
-                       };
+                   {
+                       AlbumId = albumId,
+                       GroupId = groupId,
+                   };
         }
     }
 }

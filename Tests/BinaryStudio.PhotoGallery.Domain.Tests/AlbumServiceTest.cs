@@ -44,7 +44,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             var albumModel = new AlbumModel
                 {
-                    AlbumName = "name",
+                    Name = "name",
                     DateOfCreation = DateTime.Now,
                     Description = "description"
                 };
@@ -71,7 +71,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             var albumModel = new AlbumModel
                 {
-                    AlbumName = "name",
+                    Name = "name",
                     DateOfCreation = DateTime.Now,
                     Description = "description"
                 };

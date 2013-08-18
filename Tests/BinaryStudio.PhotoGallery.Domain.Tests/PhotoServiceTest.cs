@@ -58,7 +58,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Id = 1,
                     OwnerId = 1,
-                    AlbumName = "albumName",
+                    Name = "albumName",
                     Photos = new Collection<PhotoModel>()
                 };
 
@@ -128,7 +128,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Id = 2,
                     OwnerId = 2,
-                    AlbumName = "albumName",
+                    Name = "albumName",
                     Photos = new Collection<PhotoModel>()
                 };
 

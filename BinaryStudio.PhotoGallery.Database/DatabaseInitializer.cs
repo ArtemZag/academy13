@@ -213,7 +213,7 @@ namespace BinaryStudio.PhotoGallery.Database
                 {
                     userModel.Albums.Add(new AlbumModel
                     {
-                        AlbumName = "Temporary",
+                        Name = "Temporary",
                         Description = "System album not for use",
                         IsDeleted = false,
                         Permissions = 11111,
@@ -246,7 +246,7 @@ namespace BinaryStudio.PhotoGallery.Database
                 UserModel currentUser = unitOfWork.Users.Find(x => x.LastName == "Towstonog");
                 currentUser.Albums.Add(new AlbumModel
                 {
-                    AlbumName = "First album",
+                    Name = "First album",
                     Description = "Default album by DBinit",
                     IsDeleted = false,
                     Permissions = 11111,
@@ -262,7 +262,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 #region adding photos to album with name "First album"
 
-                AlbumModel albumModel = unitOfWork.Albums.Find(album => album.AlbumName == "First album");
+                AlbumModel albumModel = unitOfWork.Albums.Find(album => album.Name == "First album");
 
                 GeneratePhotos(albumModel, unitOfWork);
 
@@ -274,7 +274,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 var albumForGolovin = new AlbumModel
                 {
-                    AlbumName = "Anton album",
+                    Name = "Anton album",
                     Description = "Default album by DBinit",
                     IsDeleted = false,
                     Permissions = 11111,
@@ -295,7 +295,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 #region adding photos and group to album with name "Anton album"
 
-                albumModel = unitOfWork.Albums.Find(album => album.AlbumName == "Anton album");
+                albumModel = unitOfWork.Albums.Find(album => album.Name == "Anton album");
 
                 var avialableGroup = new AvailableGroupModel
                 {

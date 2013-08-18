@@ -22,24 +22,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             IEnumerable<string> searchWords = searchArguments.SearchQuery.SplitSearchString();
 
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId);
+
+            if (searchArguments.IsSearchPhotosByDescription)
             {
-                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId,
-                    unitOfWork);
+                IEnumerable<PhotoFound> found = SearchByDescription(avialableAlbums, searchWords);
 
-                if (searchArguments.IsSearchPhotosByDescription)
-                {
-                    IEnumerable<PhotoFound> found = SearchByDescription(avialableAlbums, searchWords);
+                result.AddRange(found);
+            }
 
-                    result.AddRange(found);
-                }
+            if (searchArguments.IsSearchPhotosByTags)
+            {
+                IEnumerable<PhotoFound> found = SearchByTags(avialableAlbums, searchWords);
 
-                if (searchArguments.IsSearchPhotosByTags)
-                {
-                    IEnumerable<PhotoFound> found = SearchByTags(avialableAlbums, searchWords);
-
-                    result.AddRange(found);
-                }
+                result.AddRange(found);
             }
 
             return Group(result);

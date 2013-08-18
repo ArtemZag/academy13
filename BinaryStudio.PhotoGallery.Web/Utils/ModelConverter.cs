@@ -178,7 +178,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             var photoModel = (PhotoFound) found;
 
             AlbumModel album = albumService.GetAlbum(photoModel.AlbumId);
-            string albumName = album.AlbumName;
+            string albumName = album.Name;
 
             UserModel user = userService.GetUser(photoModel.OwnerId);
             string userName = user.FirstName + " " + user.LastName;

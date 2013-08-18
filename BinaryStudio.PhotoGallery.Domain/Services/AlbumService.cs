@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 #region "Temporary" album
                 new AlbumModel
                 {
-                    AlbumName = "Temporary",
+                    Name = "Temporary",
                     Description = "System album. Not for use",
                     OwnerId = -1,
                     IsDeleted = false,
@@ -40,10 +40,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userId, unitOfWork);
 
-                if (user.Albums.ToList().Find(album => album.AlbumName == albumModel.AlbumName) != null)
+                if (user.Albums.ToList().Find(album => album.Name == albumModel.Name) != null)
                 {
                     throw new AlbumAlreadyExistException(
-                        string.Format("Can't create album \"{0}\" because it is already exist", albumModel.AlbumName));
+                        string.Format("Can't create album \"{0}\" because it is already exist", albumModel.Name));
                 }
 
                 user.Albums.Add(albumModel);
@@ -70,7 +70,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             var albumModel = new AlbumModel
                 {
-                    AlbumName = albumName,
+                    Name = albumName,
                     OwnerId = userId
                 };
 
@@ -90,7 +90,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private bool IsAlbumSystem(AlbumModel album)
         {
-            return systemAlbumsList.Find(systemAlbum => systemAlbum.AlbumName == album.AlbumName) != null;
+            return systemAlbumsList.Find(systemAlbum => systemAlbum.Name == album.Name) != null;
         }
 
         public void DeleteAlbum(string userEmail, int albumId)
@@ -152,7 +152,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 AlbumModel foundAlbum =
-                    unitOfWork.Albums.Find(album => album.AlbumName == albumName && album.OwnerId == userId);
+                    unitOfWork.Albums.Find(album => album.Name == albumName && album.OwnerId == userId);
 
                 if (foundAlbum == null)
                 {
@@ -180,7 +180,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
 
                 AlbumModel foundAlbum =
-                    unitOfWork.Albums.Find(album => album.AlbumName == albumName && album.OwnerId == foundUser.Id);
+                    unitOfWork.Albums.Find(album => album.Name == albumName && album.OwnerId == foundUser.Id);
 
                 return foundAlbum != null;
             }

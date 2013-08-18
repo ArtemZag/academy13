@@ -46,8 +46,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             return
                 _albumService.GetAllAlbums(User.Identity.Name)
-                    .Where(album => album.AlbumName != "Temporary")
-                    .Select(album => album.AlbumName);
+                    .Where(album => album.Name != "Temporary")
+                    .Select(album => album.Name);
         }
     }
 }
