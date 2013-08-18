@@ -238,11 +238,12 @@
     <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Events\GlobalEventManager.cs" />
+    <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Utils\GlobalEventsHandler.cs" />
+    <Compile Include="Events\GlobalEventsHandler.cs" />
     <Compile Include="Hubs\NotificationTitles.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
