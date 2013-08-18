@@ -5,6 +5,8 @@
 
     self.element = options.element;
 
+    self.uploadId = ko.observable(-1);
+
     self.uploadHash = ko.observable(options.uploadHash);
 
     self.isInTempFolder = ko.observable(false);

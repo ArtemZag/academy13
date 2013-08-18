@@ -33,17 +33,6 @@
 
     var dropzone = new Dropzone(previewsContainer, dropzoneOptions);
 
-    dropzone.on('addedfile', function(file) {
-        var md5Hash = b64_md5(file.name + file.size);
-        var $preview = $(file.previewTemplate);
-        $preview.append('<input type="hidden" value="' + md5Hash + '"/>');
-    });
-
-    dropzone.on('sending', function(file) {
-        var $preview = $(file.previewTemplate);
-        $preview.addClass('dz-processing');
-    });
-
     dropzone.on('success', function(file, response) {
         responseData = response;
 
@@ -59,14 +48,14 @@
 
         $preview.find('.dz-error-message > span').attr('data-bind', 'text: errorMessage');
 
-        var hiddenInput = $preview.find('input[type=hidden]');
-
-        var hash = hiddenInput.attr('value');
-
-        hiddenInput.attr('data-bind', 'value: uploadHash');
+        var md5Hash = b64_md5(file.name + file.size);
+        
+        $preview.append('<input class="photo-hash" type="hidden" data-bind="value: uploadHash"/>');
+        
+        $preview.append('<input class="photo-id" type="hidden" data-bind="value: uploadId"/>');
 
         var preview = new PhotoPreviewViewModel({
-            uploadHash: hash,
+            uploadHash: md5Hash,
             isSelected: true,
             mediator: mediator,
             element: $preview
@@ -93,7 +82,7 @@
 
                 if (preview.isSaved() == false &&
                     preview.isInTempFolder() == false &&
-                    preview.uploadHash() == fileInfo.FileHash) {
+                    preview.uploadHash() == fileInfo.Hash) {
                     $preview = preview.element;
                     break;
                 }
@@ -102,6 +91,7 @@
             if ($preview == null) return;
 
             if (fileInfo.IsAccepted) {
+                preview.uploadId(fileInfo.Id);
                 $preview.addClass('dz-success');
                 preview.isInTempFolder(true);
             } else {
@@ -116,23 +106,13 @@
         responseData = null;
     });
 
-    dropzone.on("removedfile", function(file) {
-        for (var index = 0; index < self.previews().length; ++index) {
-            var preview = self.previews()[index];
-            console.log(preview);
-            if (preview.name === file.name) {
-                self.previews.remove(preview);
-                return;
-            }
-        }
-    });
-
     self.albums = ko.observableArray(typeof(options.albums) !== 'undefined' ? options.albums : []);
 
     var chosenAlbums = $(options.chosen);
     chosenAlbums.chosen({ no_results_text: '<a class="create-album">Create</a> album ' });
 
-    self.reloadChosen = function() {
+    self.reloadChosen = function () {
+        // Dropdown list of photos update his data only after calling this trigger
         chosenAlbums.trigger('chosen:updated');
     };
 
@@ -221,15 +201,15 @@
         var albumName = self.selectedAlbum();
 
         // Get all names of the selected photos
-        var selectedPhotoHashes = $.map(self.previews(), function(preview) {
+        var selectedPhotosId = $.map(self.previews(), function(preview) {
             if (preview.isSelected() === true) {
                 preview.element.removeClass('dz-success');
                 preview.element.addClass('dz-processing');
-                return preview.uploadHash();
+                return preview.uploadId();
             }
         });
 
-        $.post('Api/File/MovePhotos', { AlbumName: albumName, PhotoHashes: selectedPhotoHashes })
+        $.post('Api/File/Move', { AlbumName: albumName, PhotosId: selectedPhotosId })
             .done(function(response) {
                 $.map(response, function(fileInfo) {
                     var count = self.previews().length;
@@ -244,7 +224,7 @@
 
                         if (preview.isSaved() == false &&
                             preview.isInTempFolder() == true &&
-                            preview.uploadHash() == fileInfo.FileHash) {
+                            preview.uploadId() == fileInfo.Id) {
                             $preview = preview.element;
                             break;
                         }

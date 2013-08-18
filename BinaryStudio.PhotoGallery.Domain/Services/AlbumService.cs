@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -16,11 +15,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             _secureService = secureService;
         }
 
-        public void CreateAlbum(string userEmail, AlbumModel albumModel)
+        public AlbumModel CreateAlbum(int userId, AlbumModel albumModel)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userEmail, unitOfWork);
+                UserModel user = GetUser(userId, unitOfWork);
 
                 if (user.Albums.ToList().Find(album => album.AlbumName == albumModel.AlbumName) != null)
                 {
@@ -30,30 +29,34 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 user.Albums.Add(albumModel);
 
                 unitOfWork.SaveChanges();
+
+                return albumModel;
             }
         }
 
-        public void CreateAlbum(string userEmail, string albumName)
+        public AlbumModel CreateAlbum(string userEmail, string albumName)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                var albumModel = new AlbumModel
-                {
-                    AlbumName = albumName,
-                    OwnerId = user.Id
-                };
+                AlbumModel albumModel = CreateAlbum(user.Id, albumName);
 
-                try
-                {
-                    CreateAlbum(userEmail, albumModel);
-                }
-                catch (Exception exception)
-                {
-                    throw new Exception(exception.Message, exception);
-                }
+                return albumModel;
             }
+        }
+
+        public AlbumModel CreateAlbum(int userId, string albumName)
+        {
+            var albumModel = new AlbumModel
+            {
+                AlbumName = albumName,
+                OwnerId = userId
+            };
+
+            albumModel = CreateAlbum(userId, albumModel);
+
+            return albumModel;
         }
 
         public void DeleteAlbum(string userEmail, int albumId)
@@ -104,11 +107,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public int GetAlbumId(string albumName)
+        public int GetAlbumId(int userId, string albumName)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AlbumModel foundAlbum = unitOfWork.Albums.Find(album => album.AlbumName == albumName);
+                AlbumModel foundAlbum =
+                    unitOfWork.Albums.Find(album => album.AlbumName == albumName && album.OwnerId == userId);
 
                 if (foundAlbum == null)
                 {
@@ -116,6 +120,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 }
 
                 return foundAlbum.Id;
+            }
+        }
+
+        public int GetAlbumId(string userEmail, string albumName)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
+
+                return GetAlbumId(foundUser.Id, albumName);
             }
         }
 
