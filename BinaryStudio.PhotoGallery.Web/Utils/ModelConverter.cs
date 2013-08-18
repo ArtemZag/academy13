@@ -4,7 +4,6 @@ using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
-using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
@@ -12,41 +11,18 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 {
     internal class ModelConverter : IModelConverter
     {
-        private readonly IAlbumService albumService;
+        private readonly IAlbumService _albumService;
 
-        private readonly IPathUtil pathUtil;
-        private readonly IUrlUtil urlUtil;
-        private readonly IUserService userService;
+        private readonly IPathUtil _pathUtil;
+        private readonly IUrlUtil _urlUtil;
+        private readonly IUserService _userService;
 
         public ModelConverter(IPathUtil pathUtil, IAlbumService albumService, IUserService userService, IUrlUtil urlUtil)
         {
-            this.albumService = albumService;
-            this.userService = userService;
-
-            this.pathUtil = pathUtil;
-            this.urlUtil = urlUtil;
-        }
-
-        public UserModel GetModel(SignupViewModel registrationViewModel)
-        {
-            var userModel = new UserModel
-            {
-                Email = registrationViewModel.Email,
-                UserPassword = registrationViewModel.Password
-            };
-
-            return userModel;
-        }
-
-        public UserModel GetModel(SigninViewModel authorizationViewModel)
-        {
-            var userModel = new UserModel
-            {
-                Email = authorizationViewModel.Email,
-                UserPassword = authorizationViewModel.Password
-            };
-
-            return userModel;
+            _albumService = albumService;
+            _userService = userService;
+            _pathUtil = pathUtil;
+            _urlUtil = urlUtil;
         }
 
         public SearchArguments GetModel(SearchViewModel searchViewModel, int userId)
@@ -94,7 +70,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             {
                 OwnerId = userId,
                 AlbumId = albumId,
-                    Format = realFileFormat
+                Format = realFileFormat
             };
 
             return photoModel;
@@ -104,7 +80,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             // We need to grab photos from album's owner, not from photo's creator.
             // So needs to take an userID via albumModel.UserModelID
-            AlbumModel albumModel = albumService.GetAlbum(photoModel.AlbumId);
+            AlbumModel albumModel = _albumService.GetAlbum(photoModel.AlbumId);
 
             var viewModel = new PhotoViewModel
             {
@@ -115,7 +91,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 //        So it can be as equel to userId, which album contain this photo, so not.
                 //        Look at PhotoModel to check the meaning of property UserModelID
                 PhotoSource =
-                    pathUtil.BuildOriginalPhotoPath(albumModel.OwnerId, photoModel.AlbumId,
+                    _pathUtil.BuildOriginalPhotoPath(albumModel.OwnerId, photoModel.AlbumId,
                         photoModel.Id, photoModel.Format),
 
                 // Maaak: I think needs refactoring. Or another method,
@@ -123,10 +99,11 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 // Anton: we need know userId, albumId, photoId, format (jpg, png), size for getting thumbnail
 
                 PhotoThumbSource =
-                    pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id, photoModel.Format),
+                    _pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
+                        photoModel.Format),
                 AlbumId = photoModel.AlbumId,
                 PhotoId = photoModel.Id,
-                PhotoViewPageUrl = urlUtil.BuildPhotoViewUrl(photoModel.Id)
+                PhotoViewPageUrl = _urlUtil.BuildPhotoViewUrl(photoModel.Id)
             };
 
             return viewModel;
@@ -165,11 +142,11 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             return new UserFoundViewModel
             {
-                AvatarPath = pathUtil.BuildUserAvatarPath(userFound.Id),
+                AvatarPath = _pathUtil.BuildUserAvatarPath(userFound.Id),
                 Department = userFound.Department,
                 IsOnline = userFound.IsOnline,
                 Name = userFound.Name,
-                UserViewUri = urlUtil.BuildUserViewUrl(userFound.Id)
+                UserViewUri = _urlUtil.BuildUserViewUrl(userFound.Id)
             };
         }
 
@@ -177,23 +154,23 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             var photoModel = (PhotoFound) found;
 
-            AlbumModel album = albumService.GetAlbum(photoModel.AlbumId);
+            AlbumModel album = _albumService.GetAlbum(photoModel.AlbumId);
             string albumName = album.Name;
 
-            UserModel user = userService.GetUser(photoModel.OwnerId);
+            UserModel user = _userService.GetUser(photoModel.OwnerId);
             string userName = user.FirstName + " " + user.LastName;
 
-            string thumbnailPath = pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
+            string thumbnailPath = _pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
                 photoModel.Format);
 
             return new PhotoFoundViewModel
             {
                 ThumbnailPath = thumbnailPath,
-                PhotoViewUrl = urlUtil.BuildPhotoViewUrl(photoModel.Id),
+                PhotoViewUrl = _urlUtil.BuildPhotoViewUrl(photoModel.Id),
                 AlbumName = albumName,
-                AlbumViewUrl = urlUtil.BuildAlbumViewUrl(photoModel.AlbumId),
+                AlbumViewUrl = _urlUtil.BuildAlbumViewUrl(photoModel.AlbumId),
                 UserName = userName,
-                UserViewUrl = urlUtil.BuildUserViewUrl(photoModel.OwnerId),
+                UserViewUrl = _urlUtil.BuildUserViewUrl(photoModel.OwnerId),
                 DateOfCreation = photoModel.DateOfCreation,
                 Rating = photoModel.Rating
             };
