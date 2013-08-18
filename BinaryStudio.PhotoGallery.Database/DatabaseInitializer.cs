@@ -26,7 +26,6 @@ namespace BinaryStudio.PhotoGallery.Database
                 Email = "Admin@bingally.com",
                 FirstName = ";)",
                 LastName = ";)",
-                NickName = ";)",
                 Department = ";)",
                 Albums = new Collection<AlbumModel>(),
                 AuthInfos = new Collection<AuthInfoModel>(),
@@ -47,22 +46,20 @@ namespace BinaryStudio.PhotoGallery.Database
             #region Artem Zagorodnuk
 
             string userSalt = cryptoProvider.GetNewSalt();
-            
-            user = new UserModel
-                {
-                    Email = "ArtemZagorodnuk@bingally.com",
-                    FirstName = "Artem",
-                    LastName = "Zagorodnuk",
-                    NickName = ";)",
-                    Department = ".Net",
-                    Albums = new Collection<AlbumModel>(),
-                    AuthInfos = new Collection<AuthInfoModel>(),
-                    Groups = new Collection<GroupModel>(),
-                    IsActivated = true,
-                    IsAdmin = false,
-                    Salt = userSalt,
-                    UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
-                };
+            var user = new UserModel
+            {
+                Email = "ArtemZagorodnuk@bingally.com",
+                FirstName = "Artem",
+                LastName = "Zagorodnuk",
+                Department = ".Net",
+                Albums = new Collection<AlbumModel>(),
+                AuthInfos = new Collection<AuthInfoModel>(),
+                Groups = new Collection<GroupModel>(),
+                IsActivated = true,
+                IsAdmin = false,
+                Salt = userSalt,
+                UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
+            };
             userModelsList.Add(user);
 
             #endregion
@@ -75,7 +72,6 @@ namespace BinaryStudio.PhotoGallery.Database
                 Email = "AntonGolovin@bingally.com",
                 FirstName = "Anton",
                 LastName = "Golovin",
-                NickName = ";)",
                 Department = "Academy",
                 Albums = new Collection<AlbumModel>(),
                 AuthInfos = new Collection<AuthInfoModel>(),
@@ -97,7 +93,6 @@ namespace BinaryStudio.PhotoGallery.Database
                 Email = "AndreySpivakov@bingally.com",
                 FirstName = "Andrey",
                 LastName = "Spivakov",
-                NickName = ";)",
                 Department = "Academy",
                 Albums = new Collection<AlbumModel>(),
                 AuthInfos = new Collection<AuthInfoModel>(),
@@ -119,7 +114,6 @@ namespace BinaryStudio.PhotoGallery.Database
                 Email = "АлександрНосов@bingally.com",
                 FirstName = "Александр",
                 LastName = "Носов",
-                NickName = ";)",
                 Department = "Academy",
                 Albums = new Collection<AlbumModel>(),
                 AuthInfos = new Collection<AuthInfoModel>(),
@@ -141,7 +135,6 @@ namespace BinaryStudio.PhotoGallery.Database
                 Email = "MikhailBratukha@bingally.com",
                 FirstName = "Mikhail",
                 LastName = "Bratukha",
-                NickName = ";)",
                 Department = "Academy",
                 Albums = new Collection<AlbumModel>(),
                 AuthInfos = new Collection<AuthInfoModel>(),
@@ -163,7 +156,6 @@ namespace BinaryStudio.PhotoGallery.Database
                 Email = "OlegBeloy@bingally.com",
                 FirstName = "Oleg",
                 LastName = "Beloy",
-                NickName = ";)",
                 Department = "Academy",
                 Albums = new Collection<AlbumModel>(),
                 AuthInfos = new Collection<AuthInfoModel>(),
@@ -185,7 +177,6 @@ namespace BinaryStudio.PhotoGallery.Database
                 Email = "AlexanderTowstonog@bingally.com",
                 FirstName = "Alexander",
                 LastName = "Towstonog",
-                NickName = ";)",
                 Department = "Academy",
                 Albums = new Collection<AlbumModel>(),
                 AuthInfos = new Collection<AuthInfoModel>(),
@@ -236,6 +227,20 @@ namespace BinaryStudio.PhotoGallery.Database
                 }
                 unitOfWork.SaveChanges();
 
+                #region adding test groups
+
+                var group = new GroupModel
+                {
+                    OwnerID = 1,
+                    Description = "Test group"
+                };
+
+                unitOfWork.Groups.Add(group);
+
+                unitOfWork.SaveChanges();
+
+                #endregion
+
                 #region adding album to user with lastname Towstonog
 
                 UserModel currentUser = unitOfWork.Users.Find(x => x.LastName == "Towstonog");
@@ -257,11 +262,68 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 #region adding photos to album
 
-                var photosForAlbum = new Collection<PhotoModel>();
                 AlbumModel albumModel = unitOfWork.Albums.Find(album => album.AlbumName == "First album");
 
+                GeneratePhotos(albumModel, unitOfWork);
 
-                var generatedRandomComment = new StringBuilder();
+                #endregion
+
+                #region adding album to user with lastname Golovin
+
+                currentUser = unitOfWork.Users.Find(x => x.LastName == "Golovin");
+
+                var albumForGolovin = new AlbumModel
+                {
+                    AlbumName = "Anton album",
+                    Description = "Default album by DBinit",
+                    IsDeleted = false,
+                    Permissions = 11111,
+                    OwnerId = currentUser.Id,
+                    AlbumTags = new Collection<AlbumTagModel>(),
+                    AvailableGroups = new Collection<AvailableGroupModel>(),
+                    Photos = new Collection<PhotoModel>()
+                };
+
+                var currentGrup = unitOfWork.Groups.Find(x => x.OwnerID == 1);
+
+                currentUser.Groups.Add(currentGrup);
+                currentUser.Albums.Add(albumForGolovin);
+
+                unitOfWork.SaveChanges();
+
+                #endregion
+
+                #region adding photos and grup to album
+
+                albumModel = unitOfWork.Albums.Find(album => album.AlbumName == "Anton album");
+
+                var avialableGroup = new AvailableGroupModel
+                {
+                    AlbumId = albumModel.Id,
+                    GroupId = 1,
+                    CanAddComments = true,
+                    CanAddPhotos = true,
+                    CanSeeComments = true,
+                    CanSeeLikes = true,
+                    CanSeePhotos = true
+                };
+
+                albumForGolovin.AvailableGroups.Add(avialableGroup);
+
+
+                GeneratePhotos(albumModel, unitOfWork);
+
+                #endregion
+            }
+
+            base.Seed(databaseContext);
+        }
+
+        private void GeneratePhotos(AlbumModel albumModel, IUnitOfWork unitOfWork)
+        {
+            var photosForAlbum = new Collection<PhotoModel>();
+
+            var generatedRandomComment = new StringBuilder();
 
                 for (int i = 0; i < 29; i++)
                 {
@@ -282,6 +344,18 @@ namespace BinaryStudio.PhotoGallery.Database
                             -1) {Rating = Randomizer.GetNumber(64)});
                     }
 
+                    var tags = new List<PhotoTagModel>
+                    {
+                        new PhotoTagModel
+                        {
+                            TagName = "tag"
+                        },
+                        new PhotoTagModel
+                        {
+                            TagName = "check"
+                        }
+                    };
+
                     var photoModel = new PhotoModel
                     {
                         Format = "jpg",
@@ -290,7 +364,7 @@ namespace BinaryStudio.PhotoGallery.Database
                         AlbumId = albumModel.Id,
                         Likes = new Collection<UserModel>(),
                         Rating = 0,
-                        PhotoTags = new Collection<PhotoTagModel>(),
+                        PhotoTags = tags,
                         PhotoComments = comm,
                         IsDeleted = false
                     };
@@ -302,11 +376,6 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 unitOfWork.Albums.Update(albumModel);
                 unitOfWork.SaveChanges();
-
-                #endregion
-            }
-
-            base.Seed(databaseContext);
         }
     }
 }

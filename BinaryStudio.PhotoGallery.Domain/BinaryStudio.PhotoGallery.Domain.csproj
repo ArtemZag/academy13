@@ -76,6 +76,7 @@
     <Compile Include="Services\ISecureService.cs" />
     <Compile Include="Services\Search\ItemsExstensions.cs" />
     <Compile Include="Services\Search\IUserSearchService.cs" />
+    <Compile Include="Services\Search\SearchStringUtils.cs" />
     <Compile Include="Services\Search\UserSearchService.cs" />
     <Compile Include="Services\Search\SearchCache.cs" />
     <Compile Include="Services\Search\Results\IFound.cs" />

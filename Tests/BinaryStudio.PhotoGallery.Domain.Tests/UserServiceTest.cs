@@ -42,7 +42,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "bbb@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Nick",
                     FirstName = "First",
                     LastName = "Last"
                 };
@@ -63,7 +62,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "aaa@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Bill",
                     FirstName = "Billy",
                     LastName = "Last"
                 };
@@ -92,7 +90,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "sss@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Bill",
                     FirstName = "Billy",
                     LastName = "Last"
                 };
@@ -116,7 +113,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "aaa@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Bill",
                     FirstName = "Billy",
                     LastName = "Last"
                 };

@@ -37,7 +37,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "test1@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Nick",
                     FirstName = "First",
                     LastName = "Last",
                     Albums = new Collection<AlbumModel>()
@@ -65,7 +64,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "test2@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Nick",
                     FirstName = "First",
                     LastName = "Last",
                     Albums = new Collection<AlbumModel>()
