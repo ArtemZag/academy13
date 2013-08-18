@@ -20,7 +20,7 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Upload;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-    [Authorize]
+//    [Authorize]
     [RoutePrefix("Api/File")]
     public class FileController : ApiController
     {
@@ -33,6 +33,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         private readonly IPathUtil _pathUtil;
         private readonly IPhotoService _photoService;
         private readonly IUserService _userService;
+
         private int MAX_PHOTO_SIZE_IN_BYTES = 30*1024*1024; // 30 MB
 
         public FileController(
@@ -57,18 +58,27 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _cryptoProvider = cryptoProvider;
         }
 
-        /*[DELETE("Delete")]
-        public HttpResponseMessage Delete(string photoHash)
+        [DELETE]
+        public HttpResponseMessage Delete(int photoId)
         {
-            if (photoHash == null)
+            if (photoId <= 0)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Uknown error");
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Can't delete photo by invalid id");
             }
-        
-            return new HttpResponseMessage(HttpStatusCode.OK);
-        }*/
 
-        [POST("Move")]
+            try
+            {
+                _photoService.DeletePhoto(User.Identity.Name, photoId);
+            }
+            catch (NoEnoughPrivileges ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        }
+
+        [POST]
         public HttpResponseMessage Move([FromBody] SavePhotosViewModel viewModel)
         {
             if (viewModel == null || string.IsNullOrEmpty(viewModel.AlbumName) || !viewModel.PhotosId.Any())
@@ -169,7 +179,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             return response;
         }
 
-        [POST("Upload")]
+        [POST]
         public async Task<HttpResponseMessage> Upload()
         {
             // Check if the request contains multipart/form-data.

@@ -87,13 +87,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public void DeletePhoto(string userEmail, PhotoModel photo)
         {
+            this.DeletePhoto(userEmail, photo.Id);
+        }
+
+        public void DeletePhoto(string userEmail, int photoId)
+        {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                if (_secureService.CanUserDeletePhoto(user.Id, photo.Id))
+                if (_secureService.CanUserDeletePhoto(user.Id, photoId))
                 {
-                    PhotoModel photoToDelete = unitOfWork.Photos.Find(model => model.Id == photo.Id);
+                    PhotoModel photoToDelete = unitOfWork.Photos.Find(model => model.Id == photoId);
+
                     photoToDelete.IsDeleted = true;
 
                     unitOfWork.SaveChanges();

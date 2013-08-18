@@ -26,4 +26,11 @@
             self.isSelected(!self.isSelected());
         }
     };
+
+    self.removePhoto = function () {
+        $.ajax({
+            type: 'DELETE',
+            url: 'Api/File/' + self.uploadId()
+        });
+    };
 }
