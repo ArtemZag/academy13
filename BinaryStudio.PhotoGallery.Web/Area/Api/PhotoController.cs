@@ -24,12 +24,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         private readonly IPhotoService _photoService;
-        private readonly IModelConverter _modelConverter;
 
-        public PhotoController(IPhotoService photoService, IModelConverter modelConverter)
+        public PhotoController(IPhotoService photoService)
         {
             _photoService = photoService;
-            _modelConverter = modelConverter;
         }
 
         [POST("UserFlow")]
@@ -41,7 +39,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 viewModels = _photoService
                     .GetPhotos(User.Identity.Name, options.SkipCount, options.TakeCount)
-                    .Select(photoModel => _modelConverter.GetViewModel(photoModel)).ToList();
+                    .Select(PhotoViewModel.FromModel).ToList();
             }
             catch (Exception ex)
             {
@@ -69,7 +67,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 viewModels = _photoService
                     .GetPublicPhotos(User.Identity.Name, options.SkipCount, options.TakeCount)
-                    .Select(photoModel => _modelConverter.GetViewModel(photoModel)).ToList();
+                    .Select(PhotoViewModel.FromModel).ToList();
             }
             catch (Exception ex)
             {

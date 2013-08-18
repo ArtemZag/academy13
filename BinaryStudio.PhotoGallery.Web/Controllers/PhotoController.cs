@@ -5,7 +5,7 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
 using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Web.Utils;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -14,18 +14,18 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class PhotoController : Controller
     {
         private readonly IPhotoService _photoService;
-        private readonly IModelConverter _modelConverter;
 
-        public PhotoController(IPhotoService photoService, IModelConverter modelConverter)
+        public PhotoController(IPhotoService photoService)
         {
             _photoService = photoService;
-            _modelConverter = modelConverter;
         }
 
         [HttpPost]
         public ActionResult GetPhoto(int photoID)
         {
-            return Json(_modelConverter.GetViewModel(_photoService.GetPhoto(User.Identity.Name, photoID)));
+            var photoModel = _photoService.GetPhoto(User.Identity.Name, photoID);
+
+            return Json(PhotoViewModel.FromModel(photoModel));
         }
 
         [HttpPost]
@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             var photoModels = _photoService.GetPhotos(User.Identity.Name, albumName, begin, last);
 
-            return Json(photoModels.Select(model => _modelConverter.GetViewModel(model)).ToList());
+            return Json(photoModels.Select(PhotoViewModel.FromModel).ToList());
         }
 
         [POST]
@@ -41,7 +41,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             var photoModels = _photoService.GetPhotos(User.Identity.Name, albumID, begin, end);
 
-            return Json(photoModels.Select(model => _modelConverter.GetViewModel(model)).ToList());
+            return Json(photoModels.Select(PhotoViewModel.FromModel).ToList());
         }
 
         [POST]
@@ -49,7 +49,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             var likes = _photoService.GetLikes(User.Identity.Name, photoID);
 
-            return Json(likes.Select(model => _modelConverter.GetViewModel(model)).ToList());
+            return Json(likes.Select(UserViewModel.FromModel).ToList());
         }
 
         [POST]
@@ -59,7 +59,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             var likes = _photoService.GetLikes(User.Identity.Name, photoID);
 
-            return Json(likes.Select(model => _modelConverter.GetViewModel(model)).ToList());
+            return Json(likes.Select(UserViewModel.FromModel).ToList());
         }
         
         [HttpPost]

@@ -1,4 +1,6 @@
-﻿namespace BinaryStudio.PhotoGallery.Web.ViewModels
+﻿using BinaryStudio.PhotoGallery.Models;
+
+namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
 	public class UserViewModel
 	{
@@ -13,5 +15,16 @@
 		public int AlbumsCount { get; set; }
 
 		public bool IsOnline { get; set; }
+
+	    public static UserViewModel FromModel(UserModel userModel)
+	    {
+	        var viewModel = new UserViewModel
+	        {
+	            FirstName = userModel.FirstName,
+	            LastName = userModel.LastName
+	        };
+
+	        return viewModel;
+	    }
 	}
 }

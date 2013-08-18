@@ -2,8 +2,8 @@
 using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
+using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
@@ -16,13 +16,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     {
         private readonly IPhotoCommentService _photoCommentService;
         private readonly IUserService _userService;
-        private readonly IModelConverter _modelConverter;
 
-        public PhotoCommentController(IUserService userService, IPhotoCommentService photoCommentService, IModelConverter modelConverter)
+        public PhotoCommentController(IUserService userService, IPhotoCommentService photoCommentService)
         {
             _userService = userService;
             _photoCommentService = photoCommentService;
-            _modelConverter = modelConverter;
         }
 
 
@@ -31,12 +29,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             return Json(GetPhotoCommentsViewModel(_userService.GetUserId(User.Identity.Name), photoID, begin, end));
         }
-         
+
         [POST]
         public ActionResult AddPhotoComment(NewCommentViewModel newCommentViewModel)
         {
-            var newPhotoCommentModel = new PhotoCommentModel(_userService.GetUserId(User.Identity.Name), newCommentViewModel.PhotoID,
-                                                          newCommentViewModel.NewComment, newCommentViewModel.Reply);
+            var newPhotoCommentModel = new PhotoCommentModel(_userService.GetUserId(User.Identity.Name),
+                newCommentViewModel.PhotoID,
+                newCommentViewModel.NewComment, newCommentViewModel.Reply);
             try
             {
                 _photoCommentService.AddPhotoComment(_userService.GetUserId(User.Identity.Name), newPhotoCommentModel);
@@ -50,22 +49,19 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             // Needs refactoring
             // begin = 0 last = 100
-            return Json(GetPhotoCommentsViewModel(_userService.GetUserId(User.Identity.Name), newCommentViewModel.PhotoID, 0, 100));
+            return
+                Json(GetPhotoCommentsViewModel(_userService.GetUserId(User.Identity.Name), newCommentViewModel.PhotoID,
+                    0, 100));
         }
 
 
         /// <summary>
-        /// Gets photo comments and converts them to PhotoCommentViewModel
-        /// <param name="userID"></param>
-        /// <param name="photoID"></param>
-        /// <param name="begin"></param>
-        /// <param name="end"></param>
-        /// <returns></returns>
+        ///     Gets photo comments and converts them to PhotoCommentViewModel
         /// </summary>
         private List<PhotoCommentViewModel> GetPhotoCommentsViewModel(int userID, int photoID, int begin, int end)
         {
             IEnumerable<PhotoCommentModel> photoCommentModels;
-            var photoCommentViewModel = new List<PhotoCommentViewModel>();
+            var photoCommentViewModels = new List<PhotoCommentViewModel>();
 
             try
             {
@@ -73,19 +69,18 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             }
             catch (NoEnoughPrivileges)
             {
-                // Return information about this misstake to UI
+                // TODO Return information about this misstake to UI
                 throw;
             }
 
-
-            foreach (var photoCommentModel in photoCommentModels)
+            foreach (PhotoCommentModel photoCommentModel in photoCommentModels)
             {
-                var userModel = _userService.GetUser(photoCommentModel.UserModelId);
-                photoCommentViewModel.Add(_modelConverter.GetViewModel(photoCommentModel, userModel));
+                UserModel userModel = _userService.GetUser(photoCommentModel.UserModelId);
+
+                photoCommentViewModels.Add(PhotoCommentViewModel.FromModel(photoCommentModel, userModel));
             }
 
-            return photoCommentViewModel;
+            return photoCommentViewModels;
         }
     }
-    
 }
