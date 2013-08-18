@@ -76,5 +76,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="takeCount">Number of photos to be returned</param>
         /// <returns>List of photos</returns>
         IEnumerable<PhotoModel> GetPublicPhotos(string userEmail, int skipCount, int takeCount);
+
+        void DeletePhoto(string userEmail, int photoId);
     }
 }

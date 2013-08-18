@@ -54,6 +54,8 @@
         
         $preview.append('<input class="photo-id" type="hidden" data-bind="value: uploadId"/>');
 
+        $preview.find('.dz-remove').attr('data-bind', 'click: removePhoto');
+
         var preview = new PhotoPreviewViewModel({
             uploadHash: md5Hash,
             isSelected: true,
@@ -164,17 +166,7 @@
         return false;
     });
 
-    self.clearUploadedPhotos = function() {
-        for (var index = 0; index < self.previews().length; index++) {
-            var preview = self.previews()[index];
-            if (preview.isSaved() == true) {
-                preview.element.remove();
-                self.previews.remove(preview);
-                index--;
-            }
-        }
-
-        // Remove all previews with errors
+    self.cleanErrors = function() {
         $('.dz-error').remove();
     };
 
@@ -232,18 +224,15 @@
 
                     if ($preview == null) return;
 
-                    if (fileInfo.IsAccepted) {
-                        $preview.addClass('dz-success');
-                        preview.isSelected(false);
-                        preview.isSaved(true);
-                        preview.isInTempFolder(false);
-                    } else {
+                    if (!fileInfo.IsAccepted) {
                         $preview.find('.photo-checker').remove();
                         $preview.addClass('dz-error');
                         $preview.find('.dz-error-message > span').html(fileInfo.Error);
-                        self.previews.remove(preview);
-                        ko.cleanNode($preview[0]);
                     }
+
+                    ko.cleanNode($preview[0]);
+                    preview.element.remove();
+                    self.previews.remove(preview);
                 });
             })
             .fail(function () {
