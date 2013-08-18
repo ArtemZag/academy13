@@ -1,5 +1,4 @@
 ﻿@using System.Web.Optimization
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,35 +8,9 @@
         @Styles.Render("~/bundles/styles/pnotify")
 
         <title>@ViewBag.Title</title>
-        <style type="text/css">.viewPort { }</style>
     </head>
     <body>
-
-        <nav class="navbar navbar-fixed-top">
-            <a href="~/Home/Index" class="brand"><img src="~/Content/images/logo_small.png"/></a>
-            <ul class="nav">
-                <li><a href="~/Gallery">Gallery</a></li>
-                <li><a href="~/Albums/Index">Albums</a></li>
-                <li><a href="~/Groups">Groups</a></li>
-                <li><a href="~/Search">Search</a></li>
-            </ul>
-            <ul class="nav pull-right">
-                <li><a href="~/Upload" class="btn btn-success">Upload</a></li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                        <strong>@User.Identity.Name</strong>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="~/AdminPanel/Index">Administration</a></li>
-                        <li><a href="~/Home/News">Notifications</a></li>
-                        <li><a href="~/Profile">Profile</a></li>
-                        <li class="divider"></li>
-                        <li><a href="~/Authorization/Signout">Sign out</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
+        @{ Html.RenderAction("Menu", "Menu"); }
         <div id="main-render-place">
             @RenderBody()
         </div>
@@ -47,4 +20,3 @@
         @Scripts.Render("~/Scripts/Notifications.js")
     </body>
 </html>
-

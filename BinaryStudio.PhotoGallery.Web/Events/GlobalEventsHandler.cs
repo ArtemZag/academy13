@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
-using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;

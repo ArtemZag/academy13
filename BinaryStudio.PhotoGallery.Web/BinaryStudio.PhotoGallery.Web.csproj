@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -230,7 +230,9 @@
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\AlbumsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PhotoCommentController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -238,11 +240,12 @@
     <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Events\GlobalEventManager.cs" />
+    <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Utils\GlobalEventsHandler.cs" />
+    <Compile Include="Events\GlobalEventsHandler.cs" />
     <Compile Include="Hubs\NotificationTitles.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -255,6 +258,7 @@
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Authorization\SigninViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
+    <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\NewCommentViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\PhotoCommentViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\PhotoPageViewModel.cs" />
@@ -272,7 +276,8 @@
     <Compile Include="ViewModels\Search\PhotoFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\Search\UserFoundViewModel.cs" />
-    <Compile Include="ViewModels\Upload\SavePhotosViewModel.cs" />
+    <Compile Include="ViewModels\Upload\MovePhotosViewModel.cs" />
+    <Compile Include="ViewModels\Upload\UploadResultViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\albums-page.css" />
@@ -428,6 +433,7 @@
     <Content Include="Views\Search\Search.cshtml" />
     <Content Include="Views\Albums\Index.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
