@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -15,6 +16,24 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             _secureService = secureService;
         }
 
+
+        private readonly List<AlbumModel> systemAlbumsList = new List<AlbumModel>()
+            {
+                #region "Temporary" album
+                new AlbumModel
+                {
+                    AlbumName = "Temporary",
+                    Description = "System album. Not for use",
+                    OwnerId = -1,
+                    IsDeleted = false,
+                    Permissions = 11111,
+                    Photos = new Collection<PhotoModel>(),
+                    AvailableGroups = new Collection<AvailableGroupModel>(),
+                    AlbumTags = new Collection<AlbumTagModel>()
+                }
+                 #endregion
+            };
+
         public AlbumModel CreateAlbum(int userId, AlbumModel albumModel)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -23,7 +42,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 if (user.Albums.ToList().Find(album => album.AlbumName == albumModel.AlbumName) != null)
                 {
-                    throw new AlbumAlreadyExistException(string.Format("Can't create album \"{0}\" because it is already exist", albumModel.AlbumName));
+                    throw new AlbumAlreadyExistException(
+                        string.Format("Can't create album \"{0}\" because it is already exist", albumModel.AlbumName));
                 }
 
                 user.Albums.Add(albumModel);
@@ -59,6 +79,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return albumModel;
         }
 
+        public void CreateSystemAlbums(int userId)
+        {
+            foreach (var systemAlbum in systemAlbumsList)
+            {
+                systemAlbum.OwnerId = userId;
+                CreateAlbum(userId, systemAlbum);
+            }
+        }
+
+        private bool IsAlbumSystem(AlbumModel album)
+        {
+            return systemAlbumsList.Find(systemAlbum => systemAlbum.AlbumName == album.AlbumName) != null;
+        }
+
         public void DeleteAlbum(string userEmail, int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -66,7 +100,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumId);
 
-                if (album.AlbumName == "Temporary")
+                
+                if (IsAlbumSystem(album))
                 {
                     throw new AlbumNotFoundException(string.Format("Can't delete system album with id={0}", albumId));
                 }

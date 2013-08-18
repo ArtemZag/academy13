@@ -28,12 +28,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             var cryptoProvider = container.Resolve<ICryptoProvider>();
             var secureService = container.Resolve<ISecureService>();
+            var albumService = container.Resolve<IAlbumService>();
 
             _workFactory = new TestUnitOfWorkFactory();
 
             _photoService = new PhotoService(_workFactory, secureService);
-            _userService = new UserService(_workFactory, cryptoProvider);
-//            _albumService = new AlbumService(_workFactory);
+            _userService = new UserService(_workFactory, cryptoProvider,albumService);
+            _albumService = new AlbumService(_workFactory, secureService);
         }
 
         private IEnumerable<PhotoModel> GetListOfPhotos()

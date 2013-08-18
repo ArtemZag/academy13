@@ -22,10 +22,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             IUnityContainer container = Bootstrapper.Initialise();
 
             var cryptoProvidrer = container.Resolve<ICryptoProvider>();
+            var albumService = container.Resolve<IAlbumService>();
             var workFactory = new TestUnitOfWorkFactory();
 
 //            _albumService = new AlbumService(workFactory);
-            _userService = new UserService(workFactory, cryptoProvidrer);
+            _userService = new UserService(workFactory, cryptoProvidrer, albumService);
         }
 
         [Test]
