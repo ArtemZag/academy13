@@ -14,33 +14,41 @@ using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
+    [Authorize]
     [RoutePrefix("AdminPanel")]
     public class AdminPanelController : Controller
     {
-        private readonly IEmailSender emailSender;
-        private readonly IUserService userService;
-        private readonly IUsersMonitorTask usersMonitorTask;
+        private readonly IEmailSender _emailSender;
+        private readonly IUserService _userService;
+        private readonly IUsersMonitorTask _usersMonitorTask;
 
-        public AdminPanelController(IUserService userService, IUsersMonitorTask usersMonitorTask,
+        public AdminPanelController(
+            IUserService userService,
+            IUsersMonitorTask usersMonitorTask,
             IEmailSender emailSender)
         {
-            this.userService = userService;
-            this.usersMonitorTask = usersMonitorTask;
-            this.emailSender = emailSender;
+            _userService = userService;
+            _usersMonitorTask = usersMonitorTask;
+            _emailSender = emailSender;
         }
 
         /// <summary>
         ///     Administration page
         /// </summary>
-        [GET("")]
+        [GET]
         public ActionResult Index()
         {
-            List<UserModel> users = userService.GetAllUsers().ToList();
+            if (!this.CanExecuteActions)
+            {
+                return RedirectToAction("NotFound", "Error");
+            }
+
+            List<UserModel> users = _userService.GetAllUsers().ToList();
 
             // todo: it's ModelConverter role
             List<UserViewModel> extendedUserList = users.Select(user => new UserViewModel
             {
-                IsOnline = usersMonitorTask.IsOnline(user.Email),
+                IsOnline = _usersMonitorTask.IsOnline(user.Email),
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
@@ -52,15 +60,15 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         }
 
         [DELETE]
-        public HttpResponseMessage DeleteUser(string eMail)
+        public HttpResponseMessage DeleteUser(string userEmail)
         {
-            userService.DeleteUser(eMail);
+            _userService.DeleteUser(userEmail);
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
         [POST]
         public HttpResponseMessage SendInvite(UserViewModel invitedUser)
-        {
+        {            
             string host = ConfigurationManager.AppSettings["NotificationHost"];
             string fromEmail = ConfigurationManager.AppSettings["NotificationEmail"];
             string fromPass = ConfigurationManager.AppSettings["NotificationPassword"];
@@ -68,7 +76,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             string toEmail = invitedUser.Email;
 
             string activationLink = "http://localhost:57367/Authorization/Signup/" +
-                                    userService.CreateUser(invitedUser.Email, invitedUser.FirstName,
+                                    _userService.CreateUser(invitedUser.Email, invitedUser.FirstName,
                                         invitedUser.LastName);
 
             const string SUBJECT = "Binary Studio gallery invitation";
@@ -77,8 +85,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                                         " of Binary Studio! For the end of registration, please click on this link:\n{2} ",
                 invitedUser.FirstName, invitedUser.LastName, activationLink);
 
-            emailSender.Send(host, fromEmail, fromPass, toEmail, SUBJECT, text);
+            _emailSender.Send(host, fromEmail, fromPass, toEmail, SUBJECT, text);
             return new HttpResponseMessage(HttpStatusCode.OK);
+        }
+
+        private bool CanExecuteActions
+        {
+            get { return _userService.IsUserAdmin(User.Identity.Name); }
         }
     }
 }

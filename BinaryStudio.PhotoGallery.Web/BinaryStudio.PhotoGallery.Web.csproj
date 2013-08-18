@@ -230,7 +230,9 @@
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\AlbumsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PhotoCommentController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -256,6 +258,7 @@
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Authorization\SigninViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
+    <Compile Include="ViewModels\MenuViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\NewCommentViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\PhotoCommentViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\PhotoPageViewModel.cs" />
@@ -430,6 +433,7 @@
     <Content Include="Views\Search\Search.cshtml" />
     <Content Include="Views\Albums\Index.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
