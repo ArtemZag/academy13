@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BinaryStudio.PhotoGallery.Database;
@@ -24,7 +25,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId, unitOfWork);
+                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId,
+                    unitOfWork);
 
                 if (searchArguments.IsSearchPhotosByDescription)
                 {
@@ -38,9 +40,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     IEnumerable<PhotoFound> found = SearchByTags(avialableAlbums, searchWords);
 
                     result.AddRange(found);
-                } 
+                }
             }
-            
+
 
             return Group(result);
         }
@@ -88,13 +90,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                         Format = model.Format,
                         Rating = model.Rating,
                         DateOfCreation = model.DateOfCreation,
-                        Relevance = 1
+                        Relevance = CalculateRelevanceByTags(searchWords, model)
                     });
 
                 result.AddRange(found);
             }
 
             return result;
+        }
+
+        private int CalculateRelevanceByTags(IEnumerable<string> searchWords, PhotoModel photoModel)
+        {
+            return 
+                photoModel.PhotoTags.Sum(
+                    photoTagModel =>
+                        searchWords.Sum(searchWord => Regex.Matches(photoTagModel.TagName, searchWord).Count));
         }
 
         private int CalculateRelevanceByDescription(IEnumerable<string> searchWords, PhotoModel photoModel)

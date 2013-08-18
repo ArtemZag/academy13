@@ -31,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 {
                     IEnumerable<AlbumFound> found = SearchByCondition(searchWords, avialableAlbums,
                         model => searchWords.Any(searchWord => model.Name.Contains(searchWord)),
-                            GetRelevanceByName);
+                            CalculateRelevanceByName);
 
                     result.AddRange(found);
                 }
@@ -40,18 +40,34 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 {
                     IEnumerable<AlbumFound> found = SearchByCondition(searchWords, avialableAlbums,
                         model => searchWords.Any(searchWord => model.Description.Contains(searchWord)),
-                            GetRelevaceByDescription);
+                            CalculateRelevaceByDescription);
 
                     result.AddRange(found);
                 }
 
                 if (searchArguments.IsSearchAlbumsByTags)
                 {
-                    // todo
+                    IEnumerable<AlbumFound> found = SearchByTags(avialableAlbums, searchWords);
+
+                    result.AddRange(found);
                 }
             }
 
             return Group(result);
+        }
+
+        private IEnumerable<AlbumFound> SearchByTags(IEnumerable<AlbumModel> fromAlbums, IEnumerable<string> searchWords)
+        {
+            return fromAlbums.Where(
+                model => model.AlbumTags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
+                .Select(model => new AlbumFound
+                {
+                    Id = model.Id,
+                    DateOfCreation = model.DateOfCreation,
+                    Name = model.Name,
+                    OwnerId = model.OwnerId,
+                    Relevance = CalculateRelevanceByTags(searchWords, model)
+                });
         }
 
         private IEnumerable<AlbumFound> SearchByCondition(IEnumerable<string> searchWords, IEnumerable<AlbumModel> fromAlbums,
@@ -68,12 +84,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             });
         }
 
-        private int GetRelevanceByName(IEnumerable<string> searchWords, AlbumModel albumModel)
+        private int CalculateRelevanceByTags(IEnumerable<string> searchWords, AlbumModel albumModel)
+        {
+            return
+                albumModel.AlbumTags.Sum(
+                    albumTagModel =>
+                        searchWords.Sum(searchWord => Regex.Matches(albumTagModel.TagName, searchWord).Count));
+        }
+
+        private int CalculateRelevanceByName(IEnumerable<string> searchWords, AlbumModel albumModel)
         {
             return searchWords.Sum(searchWord => Regex.Matches(albumModel.Name.ToLower(), searchWord).Count);
         }
 
-        private int GetRelevaceByDescription(IEnumerable<string> searchWords, AlbumModel albumModel)
+        private int CalculateRelevaceByDescription(IEnumerable<string> searchWords, AlbumModel albumModel)
         {
             return searchWords.Sum(searchWord => Regex.Matches(albumModel.Description.ToLower(), searchWord).Count);
         }
