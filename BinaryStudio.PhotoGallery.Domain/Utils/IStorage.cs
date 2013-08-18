@@ -15,10 +15,5 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
         ///     Returnds pathes to thumbnails of all formats for specified photo.
         /// </summary>
         IEnumerable<string> GetThumnailsPaths(PhotoModel photo);
-
-        /// <summary>
-        ///     Returns pathes of temporary directories for each user.
-        /// </summary>
-        IEnumerable<string> GetTemporaryDirectoriesPaths();
     }
 }

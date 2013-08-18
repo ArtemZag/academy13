@@ -1,10 +1,7 @@
-﻿using BinaryStudio.PhotoGallery.Domain.Services.Search;
-using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
-using BinaryStudio.PhotoGallery.Models;
+﻿using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
-using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
 namespace BinaryStudio.PhotoGallery.Web.Utils
 {

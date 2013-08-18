@@ -72,11 +72,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             return result;
         }
 
-        public IEnumerable<string> GetTemporaryDirectoriesPaths()
-        {
-            return pathUtil.BuildTemporaryDirectoriesPaths();
-        }
-
         private string GetThumbnailsDirectoryPath(PhotoModel photo)
         {
             using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())

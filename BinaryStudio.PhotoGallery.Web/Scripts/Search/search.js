@@ -160,7 +160,8 @@
         function formatFields(value) {
 
             // date getting 
-            if (value.Type == "photo") {
+            if (value.Type == "photo" || value.Type == "album") {
+                
                 var dateEndIndex = value.DateOfCreation.indexOf("T");
                 value.DateOfCreation = value.DateOfCreation.substr(0, dateEndIndex);
             }

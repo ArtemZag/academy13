@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BinaryStudio.PhotoGallery.Core.EnumerableExtensions;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
@@ -62,14 +63,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return CanUserDoAction(userId, albumId, predicate);
         }
 
-        public IEnumerable<AlbumModel> GetAvailableAlbums(int userId)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                return GetAvailableAlbums(userId, unitOfWork);
-            }
-        }
-
         public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
         {
             UserModel user = GetUser(userId, unitOfWork);
@@ -81,7 +74,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
 
             IEnumerable<int> albumIds = unitOfWork.AvailableGroups.All().ToList().Join(userGroups,
-                avialableGroupModel => avialableGroupModel.Id, groupModel => groupModel.Id,
+                avialableGroupModel => avialableGroupModel.GroupId, groupModel => groupModel.Id,
                 (avialableGroupModel, groupModel) => new
                     {
                         avialableGroupModel.CanSeePhotos,
