@@ -62,7 +62,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 };
 
             _userService.CreateUser(user);
-            _albumService.CreateAlbum(user.Email, album);
+            _albumService.CreateAlbum(user.Id, album);
 
             var photo = new PhotoModel
                 {
@@ -132,7 +132,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 };
 
             _userService.CreateUser(user);
-            _albumService.CreateAlbum(user.Email, album);
+            _albumService.CreateAlbum(user.Id, album);
 
             _photoService.AddPhotos("some1@gmail.com", "albumName", photosToFill);
 

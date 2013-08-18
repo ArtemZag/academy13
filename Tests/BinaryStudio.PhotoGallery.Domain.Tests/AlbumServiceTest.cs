@@ -51,7 +51,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             // body
             _userService.CreateUser(userModel);
-            _albumService.CreateAlbum(userModel.Email, albumModel);
+            _albumService.CreateAlbum(userModel.Id, albumModel);
 
             // tear down
             userModel.Albums.Count.Should().Be(1);
@@ -79,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             // body
             _userService.CreateUser(userModel);
-            _albumService.CreateAlbum(userModel.Email, albumModel);
+            _albumService.CreateAlbum(userModel.Id, albumModel);
             int deletedAlbumsAfterCreation =
                 userModel.Albums.Select(model => model).Count(model => model.IsDeleted);
 
