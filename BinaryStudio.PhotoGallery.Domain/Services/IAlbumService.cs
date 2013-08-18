@@ -38,6 +38,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         AlbumModel CreateAlbum(int userId, string albumName);
 
+        void CreateSystemAlbums(int userId);
+
         /// <summary>
         ///     Deletes specified album.
         /// </summary>

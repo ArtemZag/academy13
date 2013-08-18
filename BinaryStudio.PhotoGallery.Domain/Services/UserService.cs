@@ -14,11 +14,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     internal class UserService : DbService, IUserService
     {
         private readonly ICryptoProvider _cryptoProvider;
+        private readonly IAlbumService _albumService;
 
-        public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider)
+        public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider, IAlbumService albumService)
             : base(workFactory)
         {
             _cryptoProvider = cryptoProvider;
+            _albumService = albumService;
         }
 
         public IEnumerable<UserModel> GetAllUsers()
@@ -130,18 +132,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 unitOfWork.Users.Add(userModel);
                 unitOfWork.SaveChanges();
 
-                userModel.Albums = new Collection<AlbumModel>
-                    {
-                        new AlbumModel
-                            {
-                                AlbumName = "Temporary",
-                                Description = "System album. Not for use",
-                                OwnerId = unitOfWork.Users.Find(user => user.Email == userEmail).Id
-                            }
-                    };
-
-                unitOfWork.Users.Update(userModel);
-                unitOfWork.SaveChanges();
+                var userId = unitOfWork.Users.Find(user => user.Email == userEmail).Id;
+                _albumService.CreateSystemAlbums(userId);
             }
 
             return userModel.Salt;

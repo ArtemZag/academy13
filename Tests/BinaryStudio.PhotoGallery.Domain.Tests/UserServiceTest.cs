@@ -18,9 +18,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             IUnityContainer container = Bootstrapper.Initialise();
 
             var cryptoProvider = container.Resolve<ICryptoProvider>(); // mock? 
+            var albumService = container.Resolve<IAlbumService>(); // mock? 
             var unitOfWorkFactory = new TestUnitOfWorkFactory();
 
-            userService = new UserService(unitOfWorkFactory, cryptoProvider);
+            userService = new UserService(unitOfWorkFactory, cryptoProvider, albumService);
         }
 
         [Test]
