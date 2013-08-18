@@ -31,8 +31,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 {
                     IEnumerable<UserFound> found = SearchByCondition(searchQuery,
                         model =>
-                            model.FirstName.ToLower().Contains(searchQuery.ToLower()) ||
-                            model.LastName.ToLower().Contains(searchQuery.ToLower()), GetRelevanceByName,
+                            model.FirstName.Contains(searchQuery) ||
+                            model.LastName.Contains(searchQuery), GetRelevanceByName,
                         unitOfWork);
 
                     result.AddRange(found);
@@ -41,7 +41,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchUserByDepartment)
                 {
                     IEnumerable<UserFound> found = SearchByCondition(searchQuery,
-                        model => model.Department.ToLower().Contains(searchQuery.ToLower()),
+                        model => model.Department.Contains(searchQuery),
                         GetRelevanceByDepartment,
                         unitOfWork);
 
