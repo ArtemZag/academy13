@@ -41,12 +41,11 @@ namespace BinaryStudio.PhotoGallery.Database
             #region userModels creating
 
             var userModelsList = new List<UserModel>();
-            UserModel user;
 
             #region Artem Zagorodnuk
 
             string userSalt = cryptoProvider.GetNewSalt();
-            user = new UserModel
+            var user = new UserModel
             {
                 Email = "ArtemZagorodnuk@bingally.com",
                 FirstName = "Artem",
@@ -69,7 +68,7 @@ namespace BinaryStudio.PhotoGallery.Database
             userSalt = cryptoProvider.GetNewSalt();
             user = new UserModel
             {
-                Email = "AntonGolovin@bingally.com",
+                Email = "anton@bingally.com",
                 FirstName = "Anton",
                 LastName = "Golovin",
                 Department = "Academy",
