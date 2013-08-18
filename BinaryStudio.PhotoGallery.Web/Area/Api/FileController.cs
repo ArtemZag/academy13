@@ -20,7 +20,7 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Upload;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-//    [Authorize]
+    [Authorize]
     [RoutePrefix("Api/File")]
     public class FileController : ApiController
     {
@@ -83,14 +83,14 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         [POST]
-        public HttpResponseMessage Move([FromBody] SavePhotosViewModel viewModel)
+        public HttpResponseMessage Move([FromBody] MovePhotosViewModel viewModel)
         {
             if (viewModel == null || string.IsNullOrEmpty(viewModel.AlbumName) || !viewModel.PhotosId.Any())
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Uknown error");
             }
 
-            var uploadFileInfos = new List<UploadFileInfo>();
+            var uploadFileInfos = new List<UploadResultViewModel>();
 
             try
             {
@@ -141,7 +141,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         }
                         catch (Exception)
                         {
-                            uploadFileInfos.Add(new UploadFileInfo
+                            uploadFileInfos.Add(new UploadResultViewModel
                             {
                                 Id = photoId,
                                 IsAccepted = false,
@@ -155,7 +155,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                         _photoService.UpdatePhoto(photoModel);
 
-                        uploadFileInfos.Add(new UploadFileInfo
+                        uploadFileInfos.Add(new UploadResultViewModel
                         {
                             Id = photoId,
                             IsAccepted = true
@@ -163,7 +163,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     }
                     else
                     {
-                        uploadFileInfos.Add(new UploadFileInfo
+                        uploadFileInfos.Add(new UploadResultViewModel
                         {
                             Id = photoId,
                             IsAccepted = false,
@@ -177,7 +177,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            var responseData = new ObjectContent<IEnumerable<UploadFileInfo>>
+            var responseData = new ObjectContent<IEnumerable<UploadResultViewModel>>
                 (uploadFileInfos, new JsonMediaTypeFormatter());
 
             var response = new HttpResponseMessage
@@ -199,7 +199,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
 
             // Key - file name, Value - error of the loading
-            var uploadFileInfos = new List<UploadFileInfo>();
+            var uploadFileInfos = new List<UploadResultViewModel>();
 
             try
             {
@@ -237,7 +237,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
 
-                        uploadFileInfos.Add(new UploadFileInfo
+                        uploadFileInfos.Add(new UploadResultViewModel
                         {
                             Hash = fileHash,
                             IsAccepted = false,
@@ -250,7 +250,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
 
-                        uploadFileInfos.Add(new UploadFileInfo
+                        uploadFileInfos.Add(new UploadResultViewModel
                         {
                             Hash = fileHash,
                             IsAccepted = false,
@@ -276,7 +276,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
 
-                        uploadFileInfos.Add(new UploadFileInfo
+                        uploadFileInfos.Add(new UploadResultViewModel
                         {
                             Hash = fileHash,
                             IsAccepted = false,
@@ -286,7 +286,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         continue;
                     }
 
-                    uploadFileInfos.Add(new UploadFileInfo
+                    uploadFileInfos.Add(new UploadResultViewModel
                     {
                         Hash = fileHash,
                         Id = photoId,
@@ -299,7 +299,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            var responseData = new ObjectContent<IList<UploadFileInfo>>
+            var responseData = new ObjectContent<IList<UploadResultViewModel>>
                 (uploadFileInfos, new JsonMediaTypeFormatter());
 
             var response = new HttpResponseMessage
@@ -309,14 +309,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             };
 
             return response;
-        }
-
-        private struct UploadFileInfo
-        {
-            public string Error;
-            public string Hash;
-            public int Id;
-            public bool IsAccepted;
         }
     }
 }

@@ -8,6 +8,7 @@
 }
 
 @Scripts.Render("~/bundles/scripts/jquery")
+
 <script src="~/Scripts/knockout-2.3.0.js"> </script>
 <script src="~/Scripts/knockout.mapping-latest.debug.js"> </script>
 
@@ -42,7 +43,6 @@
                 </div>
                 
                 <ul class="unstyled">
-                    <li class="search-info-item"><a data-bind="attr: { href: PhotoViewUrl }"><!--ko text: PhotoName--><!--/ko--></a></li>
                     <li class="search-info-item"><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: AlbumName--><!--/ko--></a></li>
                     <li class="search-info-item"><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
                     <li class="search-info-item"><!--ko text: DateOfCreation--><!--/ko--></li>

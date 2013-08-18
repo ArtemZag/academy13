@@ -76,7 +76,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 return
                     user.Albums.Select(model => model)
-                        .First(model => string.Equals(model.AlbumName, albumName) && !model.IsDeleted);
+                        .First(model => string.Equals(model.Name, albumName) && !model.IsDeleted);
             }
             catch
             {

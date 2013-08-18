@@ -1,12 +1,9 @@
 ﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Domain.Services.Search;
-using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
-using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
 namespace BinaryStudio.PhotoGallery.Web.Utils
 {
@@ -49,52 +46,13 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             return userModel;
         }
 
-        public SearchArguments GetModel(SearchViewModel searchViewModel, int userId)
-        {
-            return new SearchArguments
-            {
-                UserId = userId,
-                SearchCacheToken = searchViewModel.SearchCacheToken,
-                Interval = searchViewModel.Interval,
-                SearchQuery = searchViewModel.SearchQuery,
-                IsSearchPhotosByTags = searchViewModel.IsSearchPhotosByTags,
-                IsSearchPhotosByDescription = searchViewModel.IsSearchPhotosByDescription,
-                IsSearchAlbumsByName = searchViewModel.IsSearchAlbumsByName,
-                IsSearchAlbumsByTags = searchViewModel.IsSearchAlbumsByTags,
-                IsSearchAlbumsByDescription = searchViewModel.IsSearchAlbumsByDescription,
-                IsSearchUsersByName = searchViewModel.IsSearchUsersByName,
-                IsSearchUserByDepartment = searchViewModel.IsSearchUserByDepartment,
-                IsSearchByComments = searchViewModel.IsSearchByComments
-            };
-        }
-
-        public IFoundViewModel GetViewModel(IFound found)
-        {
-            IFoundViewModel result = null;
-
-            switch (found.Type)
-            {
-                case ItemType.Photo:
-
-                    result = GetPhotoFoundViewModel(found);
-                    break;
-
-                case ItemType.User:
-
-                    result = GetUserFoundViewModel(found);
-                    break;
-            }
-
-            return result;
-        }
-
         public PhotoModel GetPhotoModel(int userId, int albumId, string realFileFormat)
         {
             var photoModel = new PhotoModel
             {
                 OwnerId = userId,
                 AlbumId = albumId,
-                    Format = realFileFormat
+                Format = realFileFormat
             };
 
             return photoModel;
@@ -156,46 +114,6 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 // this shit needs fixing
                 Reply = photoCommentModel.Reply,
                 Text = photoCommentModel.Text
-            };
-        }
-
-        private IFoundViewModel GetUserFoundViewModel(IFound found)
-        {
-            var userFound = (UserFound) found;
-
-            return new UserFoundViewModel
-            {
-                AvatarPath = pathUtil.BuildUserAvatarPath(userFound.Id),
-                Department = userFound.Department,
-                IsOnline = userFound.IsOnline,
-                Name = userFound.Name,
-                UserViewUri = urlUtil.BuildUserViewUrl(userFound.Id)
-            };
-        }
-
-        private IFoundViewModel GetPhotoFoundViewModel(IFound found)
-        {
-            var photoModel = (PhotoFound) found;
-
-            AlbumModel album = albumService.GetAlbum(photoModel.AlbumId);
-            string albumName = album.AlbumName;
-
-            UserModel user = userService.GetUser(photoModel.OwnerId);
-            string userName = user.FirstName + " " + user.LastName;
-
-            string thumbnailPath = pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
-                photoModel.Format);
-
-            return new PhotoFoundViewModel
-            {
-                ThumbnailPath = thumbnailPath,
-                PhotoViewUrl = urlUtil.BuildPhotoViewUrl(photoModel.Id),
-                AlbumName = albumName,
-                AlbumViewUrl = urlUtil.BuildAlbumViewUrl(photoModel.AlbumId),
-                UserName = userName,
-                UserViewUrl = urlUtil.BuildUserViewUrl(photoModel.OwnerId),
-                DateOfCreation = photoModel.DateOfCreation,
-                Rating = photoModel.Rating
             };
         }
     }

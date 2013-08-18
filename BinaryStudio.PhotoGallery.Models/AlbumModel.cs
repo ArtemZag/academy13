@@ -14,9 +14,9 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreation = DateTime.Now;
         }
 
-        public AlbumModel(string albumName, int ownerId)
+        public AlbumModel(string name, int ownerId)
         {
-            AlbumName = albumName;
+            Name = name;
             OwnerId = ownerId;
             DateOfCreation = DateTime.Now;
             Permissions = 111; // in moment, it is just for future
@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         ///     Gets or sets the name of the album.
         /// </summary>
-        public string AlbumName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         ///     Gets or sets the description of the album.

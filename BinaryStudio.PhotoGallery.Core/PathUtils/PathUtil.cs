@@ -13,7 +13,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
     {
         private const string DELIMITER = @"\";
 
-        private const string THUMBNAIL_DIRECTORY_NAME = "thumbnail";
+        private const string THUMBNAIL_DIRECTORY_NAME = "thumbnails";
 
         private readonly string dataVirtualRoot;
 
