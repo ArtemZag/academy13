@@ -46,7 +46,7 @@ namespace BinaryStudio.PhotoGallery.Database
             #region Artem Zagorodnuk
 
             string userSalt = cryptoProvider.GetNewSalt();
-            var user = new UserModel
+            user = new UserModel
             {
                 Email = "ArtemZagorodnuk@bingally.com",
                 FirstName = "Artem",
