@@ -253,7 +253,9 @@
     <Compile Include="Registers\SearchCacheRegistry.cs" />
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
     <Compile Include="Utils\IModelConverter.cs" />
+    <Compile Include="Utils\ISearchModelConverter.cs" />
     <Compile Include="Utils\ModelConverter.cs" />
+    <Compile Include="Utils\SearchModelConverter.cs" />
     <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Authorization\SigninViewModel.cs" />
@@ -272,6 +274,7 @@
     <Content Include="Content\images\photo-page\like-icon.png" />
     <Content Include="Content\images\photo-page\unlike-icon.png" />
     <Content Include="Content\style-libs\jquery.pnotify.default.icons.css" />
+    <Compile Include="ViewModels\Search\AlbumFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\IFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\PhotoFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
@@ -309,7 +312,7 @@
     <Content Include="Scripts\Notifications.js" />
     <Content Include="Scripts\AlbumsPage\albums.js" />
     <Content Include="Scripts\off-screen-nav.js" />
-    <Compile Include="ViewModels\Search\SearchViewModel.cs" />
+    <Compile Include="ViewModels\Search\SearchRequestViewModel.cs" />
     <Content Include="Scripts\PhotoPage\photo.js" />
     <Content Include="Content\photo-page.css" />
   </ItemGroup>

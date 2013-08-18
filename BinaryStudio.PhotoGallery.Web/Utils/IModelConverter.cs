@@ -2,6 +2,7 @@
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 
@@ -9,9 +10,9 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 {
     public interface IModelConverter
     {
-        SearchArguments GetModel(SearchViewModel searchViewModel, int userId);
+        UserModel GetModel(SignupViewModel registrationViewModel);
 
-        IFoundViewModel GetViewModel(IFound found);
+        UserModel GetModel(SigninViewModel authorizationViewModel);
 
         PhotoModel GetPhotoModel(int userId, int albumId, string realFileFormat);
 
