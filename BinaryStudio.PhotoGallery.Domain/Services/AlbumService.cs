@@ -103,7 +103,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     return album;
                 }
 
-                throw new AlbumNotFoundException();
+                throw new AlbumNotFoundException(albumId.ToString());
             }
         }
 
@@ -116,7 +116,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 if (foundAlbum == null)
                 {
-                    throw new AlbumNotFoundException();
+                    throw new AlbumNotFoundException(albumName);
                 }
 
                 return foundAlbum.Id;

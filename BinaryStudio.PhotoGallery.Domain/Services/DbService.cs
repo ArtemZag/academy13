@@ -20,7 +20,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
             if (foundAlbum == null)
             {
-                throw new AlbumNotFoundException();
+                throw new AlbumNotFoundException(string.Format("Album with id {0} not found", albumId));
             }
 
             return foundAlbum;
@@ -65,7 +65,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
             catch
             {
-                throw new AlbumNotFoundException();
+                //todo: normal return message exception
+                throw new AlbumNotFoundException(string.Format("Album with id {0} not found", albumId));
             }
         }
 
@@ -79,7 +80,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
             catch
             {
-                throw new AlbumNotFoundException();
+                //todo: normal return message exception
+                throw new AlbumNotFoundException(string.Format("Album with id {0} not found", albumName));
             }
         }
 
@@ -93,7 +95,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
             catch
             {
-                throw new AlbumNotFoundException();
+                //todo: normal return message exception
+                throw new AlbumNotFoundException(string.Format("Album with id {0} not found", albumId));
             }
         }
 
