@@ -8,6 +8,20 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
     public class AlbumViewModel
     {
+        public static AlbumViewModel FromModel(AlbumModel mAlbum)
+        {
+            var viewModel = new AlbumViewModel()
+                {
+                    AlbumName = mAlbum.Name,
+                    AlbumTags = mAlbum.AlbumTags,
+                    Description = mAlbum.Description,
+                    Id = mAlbum.Id,
+                    Photos = new List<PhotoViewModel>()
+                };
+
+            return viewModel;
+        }
+
         public string collageSource { get; set; }
         public int Id { get; set; }
         public bool IsDeleted { get; set; }

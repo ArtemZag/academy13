@@ -18,40 +18,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 	[RoutePrefix("Api/Photo")]
     public class PhotoController : ApiController
     {
-        private readonly IPhotoService _photoService;
+        private readonly IPhotoService photoService;
 
         public PhotoController(IPhotoService photoService)
         {
-            _photoService = photoService;
-        }
-
-        [GET("{photoId}")]
-        public HttpResponseMessage GetPhoto(int photoId)
-        {
-            try
-            {
-                var photoModel = _photoService.GetPhoto(User.Identity.Name, photoId);
-
-                var photoViewModel = PhotoViewModel.FromModel(photoModel);
-
-                var responseData = new ObjectContent<PhotoViewModel>(photoViewModel, new JsonMediaTypeFormatter());
-
-                var response = new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = responseData
-                };
-
-                return response;
-            }
-            catch (NoEnoughPrivileges ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+            this.photoService = photoService;
         }
 
         [GET]
@@ -59,7 +30,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-                var photoModels = _photoService.GetPhotos(User.Identity.Name, albumName, skip, take);
+                var photoModels = photoService.GetPhotos(User.Identity.Name, albumName, skip, take);
 
                 var photoViewModels = photoModels.Select(PhotoViewModel.FromModel).ToList();
 
@@ -84,11 +55,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         [GET]
-        public HttpResponseMessage GetPhotos(int albumId, int skip, int take)
+        public HttpResponseMessage GetPhotos(int skip, int take, int albumId)
         {
             try
             {
-                var photoModels = _photoService.GetPhotos(User.Identity.Name, albumId, skip, take);
+                var photoModels = photoService.GetPhotos(User.Identity.Name, albumId, skip, take);
 
                 var photoViewModels = photoModels.Select(PhotoViewModel.FromModel).ToList();
 
@@ -117,11 +88,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-                var photoLikeViewModels = _photoService
+                var photoLikeViewModels = photoService
                     .GetLikes(User.Identity.Name, photoId)
                     .Select(PhotoLikeViewModel.FromModel)
                     .ToList();
-                
+
                 var responseData = new ObjectContent<IEnumerable<PhotoLikeViewModel>>(photoLikeViewModels, new JsonMediaTypeFormatter());
 
                 var response = new HttpResponseMessage
@@ -147,7 +118,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-                _photoService.AddLike(User.Identity.Name, photoId);
+                photoService.AddLike(User.Identity.Name, photoId);
             }
             catch (Exception ex)
             {
@@ -158,13 +129,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         [GET]
-	    public HttpResponseMessage GetAllUserPhotos(int skip, int take)
+        public HttpResponseMessage GetAllUserPhotos(int skip, int take)
         {
             List<PhotoViewModel> viewModels;
 
             try
             {
-                viewModels = _photoService
+                viewModels = photoService
                     .GetPhotos(User.Identity.Name, skip, take)
                     .Select(PhotoViewModel.FromModel).ToList();
             }
@@ -183,7 +154,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             };
 
             return response;
-	    }
+        }
+
 
         [GET]
         public HttpResponseMessage GetAllAvailablePhotos(int skip, int take)
@@ -192,7 +164,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                viewModels = _photoService
+                viewModels = photoService
                     .GetPublicPhotos(User.Identity.Name, skip, take)
                     .Select(PhotoViewModel.FromModel).ToList();
             }
@@ -211,6 +183,35 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             };
 
             return response;
+        }
+
+        [GET("{photoId}")]
+        public HttpResponseMessage GetPhoto(int photoId)
+        {
+            try
+            {
+                var photoModel = photoService.GetPhoto(User.Identity.Name, photoId);
+
+                var photoViewModel = PhotoViewModel.FromModel(photoModel);
+
+                var responseData = new ObjectContent<PhotoViewModel>(photoViewModel, new JsonMediaTypeFormatter());
+
+                var response = new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = responseData
+                };
+
+                return response;
+            }
+            catch (NoEnoughPrivileges ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }

@@ -161,7 +161,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
 // todo: create a criterions for grabing all user albums' IDs and check every for access permissions
 
-                return unitOfWork.Photos.Filter(model => model.UserId == user.Id)
+                return unitOfWork.Photos.Filter(model => model.OwnerId == user.Id)
                                  .Where(model => !model.IsDeleted)
                                  .OrderByDescending(model => model.DateOfCreation)
                                  .ThenBy(model => model.Id)
@@ -231,7 +231,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
-
 
                 var publicPhotos = _secureService.GetAvailableAlbums(user.Id, unitOfWork)
                                                  .SelectMany(it => it.Photos)

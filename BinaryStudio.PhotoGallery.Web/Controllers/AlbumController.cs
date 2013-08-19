@@ -15,19 +15,17 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class AlbumController : Controller
 	{
 	    private readonly IAlbumService albumService;
-	    private readonly IModelConverter modelConverter;
 
-        public AlbumController(IAlbumService albumService, IModelConverter modelConverter)
+        public AlbumController(IAlbumService albumService)
         {
             this.albumService = albumService;
-            this.modelConverter = modelConverter;
         }
 
 		[GET("{albumId}")]
         public ActionResult PhotoView(int albumId)
 		{
 		    var mAlbum = albumService.GetAlbum(albumId);
-            return View("Index", modelConverter.GetViewModel(mAlbum));
+            return View("Index", AlbumViewModel.FromModel(mAlbum));
         }
     }
 }
