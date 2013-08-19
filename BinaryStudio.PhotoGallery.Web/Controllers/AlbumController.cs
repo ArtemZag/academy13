@@ -27,11 +27,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult PhotoView(int albumId)
 		{
 		    var mAlbum = albumService.GetAlbum(albumId);
-		    var vmInfoAlbum = new InfoAlbumViewModel()
-		        {
-                    AlbumViewModel = modelConverter.GetViewModel(mAlbum);
-		        };
-            return View("Index", vmInfoAlbum);
+		    var vmAlbum = modelConverter.GetViewModel(mAlbum);
+            return View("Index", vmAlbum);
         }
     }
 }

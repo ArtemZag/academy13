@@ -254,7 +254,6 @@
     <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Authorization\SigninViewModel.cs" />
-    <Compile Include="ViewModels\InfoAlbumViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\NewCommentViewModel.cs" />
     <Compile Include="ViewModels\PhotoPage\PhotoCommentViewModel.cs" />
