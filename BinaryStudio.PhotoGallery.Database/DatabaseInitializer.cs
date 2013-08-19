@@ -19,175 +19,215 @@ namespace BinaryStudio.PhotoGallery.Database
 
             #region adminModel creation
 
-            string adminSalt = cryptoProvider.GetNewSalt();
+                string adminSalt = cryptoProvider.GetNewSalt();
 
-            var adminModel = new UserModel
-            {
-                Email = "Admin@bingally.com",
-                FirstName = ";)",
-                LastName = ";)",
-                Department = ";)",
-                Albums = new Collection<AlbumModel>(),
-                AuthInfos = new Collection<AuthInfoModel>(),
-                Groups = new Collection<GroupModel>(),
-                IsActivated = true,
-                IsAdmin = true,
-                Salt = adminSalt,
-                UserPassword = cryptoProvider.CreateHashForPassword("qwerty", adminSalt)
-            };
+                var adminModel = new UserModel
+                {
+                    Email = "Admin@bingally.com",
+                    FirstName = ";)",
+                    LastName = ";)",
+                    Department = ";)",
+                    Albums = new Collection<AlbumModel>(),
+                    AuthInfos = new Collection<AuthInfoModel>(),
+                    Groups = new Collection<GroupModel>(),
+                    IsActivated = true,
+                    IsAdmin = true,
+                    Salt = adminSalt,
+                    UserPassword = cryptoProvider.CreateHashForPassword("qwerty", adminSalt)
+                };
 
             #endregion
 
             #region userModels creating
 
-            var userModelsList = new List<UserModel>();
+                var userModelsList = new List<UserModel>();
 
-            #region Artem Zagorodnuk
+                #region Artem Zagorodnuk
 
-            string userSalt = cryptoProvider.GetNewSalt();
-            var user = new UserModel
-            {
-                Email = "ArtemZagorodnuk@bingally.com",
-                FirstName = "Artem",
-                LastName = "Zagorodnuk",
-                Department = ".Net",
-                Albums = new Collection<AlbumModel>(),
-                AuthInfos = new Collection<AuthInfoModel>(),
-                Groups = new Collection<GroupModel>(),
-                IsActivated = true,
-                IsAdmin = false,
-                Salt = userSalt,
-                UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
-            };
-            userModelsList.Add(user);
+                    string userSalt = cryptoProvider.GetNewSalt();
+                    var user = new UserModel
+                    {
+                        Email = "ArtemZagorodnuk@bingally.com",
+                        FirstName = "Artem",
+                        LastName = "Zagorodnuk",
+                        Department = ".Net",
+                        Albums = new Collection<AlbumModel>(),
+                        AuthInfos = new Collection<AuthInfoModel>(),
+                        Groups = new Collection<GroupModel>(),
+                        IsActivated = true,
+                        IsAdmin = false,
+                        Salt = userSalt,
+                        UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
+                    };
+                    userModelsList.Add(user);
+
+                #endregion
+
+                #region Anton Golovin
+
+                    userSalt = cryptoProvider.GetNewSalt();
+                    user = new UserModel
+                    {
+                        Email = "anton@bingally.com",
+                        FirstName = "Anton",
+                        LastName = "Golovin",
+                        Department = "Academy",
+                        Albums = new Collection<AlbumModel>(),
+                        AuthInfos = new Collection<AuthInfoModel>(),
+                        Groups = new Collection<GroupModel>(),
+                        IsActivated = true,
+                        IsAdmin = false,
+                        Salt = userSalt,
+                        UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
+                    };
+                    userModelsList.Add(user);
+
+                #endregion
+
+                #region Andrey Spivakov
+
+                    userSalt = cryptoProvider.GetNewSalt();
+                    user = new UserModel
+                    {
+                        Email = "AndreySpivakov@bingally.com",
+                        FirstName = "Andrey",
+                        LastName = "Spivakov",
+                        Department = "Academy",
+                        Albums = new Collection<AlbumModel>(),
+                        AuthInfos = new Collection<AuthInfoModel>(),
+                        Groups = new Collection<GroupModel>(),
+                        IsActivated = true,
+                        IsAdmin = false,
+                        Salt = userSalt,
+                        UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
+                    };
+                    userModelsList.Add(user);
+
+                #endregion
+
+                #region Александр Носов
+
+                    userSalt = cryptoProvider.GetNewSalt();
+                    user = new UserModel
+                    {
+                        Email = "АлександрНосов@bingally.com",
+                        FirstName = "Александр",
+                        LastName = "Носов",
+                        Department = "Academy",
+                        Albums = new Collection<AlbumModel>(),
+                        AuthInfos = new Collection<AuthInfoModel>(),
+                        Groups = new Collection<GroupModel>(),
+                        IsActivated = true,
+                        IsAdmin = false,
+                        Salt = userSalt,
+                        UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
+                    };
+                    userModelsList.Add(user);
+
+                #endregion
+
+                #region Mikhail Bratukha
+
+                    userSalt = cryptoProvider.GetNewSalt();
+                    user = new UserModel
+                    {
+                        Email = "MikhailBratukha@bingally.com",
+                        FirstName = "Mikhail",
+                        LastName = "Bratukha",
+                        Department = "Academy",
+                        Albums = new Collection<AlbumModel>(),
+                        AuthInfos = new Collection<AuthInfoModel>(),
+                        Groups = new Collection<GroupModel>(),
+                        IsActivated = true,
+                        IsAdmin = false,
+                        Salt = userSalt,
+                        UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
+                    };
+                    userModelsList.Add(user);
+
+                #endregion
+
+                #region Oleg Beloy
+
+                    userSalt = cryptoProvider.GetNewSalt();
+                    user = new UserModel
+                    {
+                        Email = "OlegBeloy@bingally.com",
+                        FirstName = "Oleg",
+                        LastName = "Beloy",
+                        Department = "Academy",
+                        Albums = new Collection<AlbumModel>(),
+                        AuthInfos = new Collection<AuthInfoModel>(),
+                        Groups = new Collection<GroupModel>(),
+                        IsActivated = true,
+                        IsAdmin = false,
+                        Salt = userSalt,
+                        UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
+                    };
+                    userModelsList.Add(user);
+
+                #endregion
+
+                #region Alexander Towstonog
+
+                    userSalt = cryptoProvider.GetNewSalt();
+                    user = new UserModel
+                    {
+                        Email = "AlexanderTowstonog@bingally.com",
+                        FirstName = "Alexander",
+                        LastName = "Towstonog",
+                        Department = "Academy",
+                        Albums = new Collection<AlbumModel>(),
+                        AuthInfos = new Collection<AuthInfoModel>(),
+                        Groups = new Collection<GroupModel>(),
+                        IsActivated = true,
+                        IsAdmin = false,
+                        Salt = userSalt,
+                        UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
+                    };
+                    userModelsList.Add(user);
+
+                #endregion
+
+                #region Kirill Buga
+
+                    userSalt = cryptoProvider.GetNewSalt();
+                    user = new UserModel
+                    {
+                        Email = "KirillBuga@bingally.com",
+                        FirstName = "Kirill",
+                        LastName = "Buga",
+                        Department = ".Net",
+                        Albums = new Collection<AlbumModel>(),
+                        AuthInfos = new Collection<AuthInfoModel>(),
+                        Groups = new Collection<GroupModel>(),
+                        IsActivated = true,
+                        IsAdmin = false,
+                        Salt = userSalt,
+                        UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
+                    };
+                    userModelsList.Add(user);
+
+                #endregion
 
             #endregion
 
-            #region Anton Golovin
+            #region systemGroups creating
 
-            userSalt = cryptoProvider.GetNewSalt();
-            user = new UserModel
-            {
-                Email = "anton@bingally.com",
-                FirstName = "Anton",
-                LastName = "Golovin",
-                Department = "Academy",
-                Albums = new Collection<AlbumModel>(),
-                AuthInfos = new Collection<AuthInfoModel>(),
-                Groups = new Collection<GroupModel>(),
-                IsActivated = true,
-                IsAdmin = false,
-                Salt = userSalt,
-                UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
-            };
-            userModelsList.Add(user);
+                var systemGroupList = new List<GroupModel>();
 
-            #endregion
+                GroupModel groupModel;
 
-            #region Andrey Spivakov
-
-            userSalt = cryptoProvider.GetNewSalt();
-            user = new UserModel
-            {
-                Email = "AndreySpivakov@bingally.com",
-                FirstName = "Andrey",
-                LastName = "Spivakov",
-                Department = "Academy",
-                Albums = new Collection<AlbumModel>(),
-                AuthInfos = new Collection<AuthInfoModel>(),
-                Groups = new Collection<GroupModel>(),
-                IsActivated = true,
-                IsAdmin = false,
-                Salt = userSalt,
-                UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
-            };
-            userModelsList.Add(user);
-
-            #endregion
-
-            #region Александр Носов
-
-            userSalt = cryptoProvider.GetNewSalt();
-            user = new UserModel
-            {
-                Email = "АлександрНосов@bingally.com",
-                FirstName = "Александр",
-                LastName = "Носов",
-                Department = "Academy",
-                Albums = new Collection<AlbumModel>(),
-                AuthInfos = new Collection<AuthInfoModel>(),
-                Groups = new Collection<GroupModel>(),
-                IsActivated = true,
-                IsAdmin = false,
-                Salt = userSalt,
-                UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
-            };
-            userModelsList.Add(user);
-
-            #endregion
-
-            #region Mikhail Bratukha
-
-            userSalt = cryptoProvider.GetNewSalt();
-            user = new UserModel
-            {
-                Email = "MikhailBratukha@bingally.com",
-                FirstName = "Mikhail",
-                LastName = "Bratukha",
-                Department = "Academy",
-                Albums = new Collection<AlbumModel>(),
-                AuthInfos = new Collection<AuthInfoModel>(),
-                Groups = new Collection<GroupModel>(),
-                IsActivated = true,
-                IsAdmin = false,
-                Salt = userSalt,
-                UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
-            };
-            userModelsList.Add(user);
-
-            #endregion
-
-            #region Oleg Beloy
-
-            userSalt = cryptoProvider.GetNewSalt();
-            user = new UserModel
-            {
-                Email = "OlegBeloy@bingally.com",
-                FirstName = "Oleg",
-                LastName = "Beloy",
-                Department = "Academy",
-                Albums = new Collection<AlbumModel>(),
-                AuthInfos = new Collection<AuthInfoModel>(),
-                Groups = new Collection<GroupModel>(),
-                IsActivated = true,
-                IsAdmin = false,
-                Salt = userSalt,
-                UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
-            };
-            userModelsList.Add(user);
-
-            #endregion
-
-            #region Alexander Towstonog
-
-            userSalt = cryptoProvider.GetNewSalt();
-            user = new UserModel
-            {
-                Email = "AlexanderTowstonog@bingally.com",
-                FirstName = "Alexander",
-                LastName = "Towstonog",
-                Department = "Academy",
-                Albums = new Collection<AlbumModel>(),
-                AuthInfos = new Collection<AuthInfoModel>(),
-                Groups = new Collection<GroupModel>(),
-                IsActivated = true,
-                IsAdmin = false,
-                Salt = userSalt,
-                UserPassword = cryptoProvider.CreateHashForPassword("qwerty", userSalt)
-            };
-            userModelsList.Add(user);
-
-            #endregion
+                #region BlockedUsers
+                groupModel = new GroupModel()
+                    {
+                        GroupName = "BlockedUsers",
+                        Description = "System group. Not for use",
+                        OwnerID = -1,
+                        Users = new Collection<UserModel>()
+                    };
+                systemGroupList.Add(groupModel);
+                #endregion
 
             #endregion
 
@@ -214,7 +254,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     userModel.Albums.Add(new AlbumModel
                     {
                         Name = "Temporary",
-                        Description = "System album not for use",
+                        Description = "System album. Not for use",
                         IsDeleted = false,
                         Permissions = 11111,
                         OwnerId = userModel.Id,
@@ -226,105 +266,114 @@ namespace BinaryStudio.PhotoGallery.Database
                 }
                 unitOfWork.SaveChanges();
 
+                // Adding all system groups (Owner for all groups is Admin)
+                var adminID = unitOfWork.Users.Find(a => a.Email == "Admin@bingally.com").Id;
+                foreach (var systemGroup in systemGroupList)
+                {
+                    systemGroup.OwnerID = adminID;
+                    unitOfWork.Groups.Add(systemGroup);
+                }
+                unitOfWork.SaveChanges();
+
                 #region adding test groups
 
-                var group = new GroupModel
-                {
-                    GroupName = "Test group",
-                    OwnerID = unitOfWork.Users.Find(a => a.Email == "Admin@bingally.com").Id,
-                    Description = "Test group"
-                };
+                    var group = new GroupModel
+                    {
+                        GroupName = "Test group",
+                        OwnerID = unitOfWork.Users.Find(a => a.Email == "Admin@bingally.com").Id,
+                        Description = "Test group"
+                    };
 
-                unitOfWork.Groups.Add(group);
+                    unitOfWork.Groups.Add(group);
 
-                unitOfWork.SaveChanges();
+                    unitOfWork.SaveChanges();
 
                 #endregion
 
                 #region adding album to user with lastname Towstonog
 
-                UserModel currentUser = unitOfWork.Users.Find(x => x.LastName == "Towstonog");
-                currentUser.Albums.Add(new AlbumModel
-                {
-                    Name = "First album",
-                    Description = "Default album by DBinit",
-                    IsDeleted = false,
-                    Permissions = 11111,
-                    OwnerId = currentUser.Id,
-                    AlbumTags = new Collection<AlbumTagModel>(),
-                    AvailableGroups = new Collection<AvailableGroupModel>(),
-                    Photos = new Collection<PhotoModel>()
-                });
-                unitOfWork.Users.Update(currentUser);
-                unitOfWork.SaveChanges();
+                    UserModel currentUser = unitOfWork.Users.Find(x => x.LastName == "Towstonog");
+                    currentUser.Albums.Add(new AlbumModel
+                    {
+                        Name = "First album",
+                        Description = "Default album by DBinit",
+                        IsDeleted = false,
+                        Permissions = 11111,
+                        OwnerId = currentUser.Id,
+                        AlbumTags = new Collection<AlbumTagModel>(),
+                        AvailableGroups = new Collection<AvailableGroupModel>(),
+                        Photos = new Collection<PhotoModel>()
+                    });
+                    unitOfWork.Users.Update(currentUser);
+                    unitOfWork.SaveChanges();
 
                 #endregion
 
                 #region adding photos and grup to album with name "First album"
 
-                AlbumModel albumModel = unitOfWork.Albums.Find(album => album.Name == "First album");
+                    AlbumModel albumModel = unitOfWork.Albums.Find(album => album.Name == "First album");
 
-                var avialableGroup = new AvailableGroupModel
-                {
-                    AlbumId = albumModel.Id,
-                    GroupId = 1,
-                    CanAddComments = true,
-                    CanAddPhotos = true,
-                    CanSeeComments = true,
-                    CanSeeLikes = true,
-                    CanSeePhotos = true
-                };
+                    var avialableGroup = new AvailableGroupModel
+                    {
+                        AlbumId = albumModel.Id,
+                        GroupId = 1,
+                        CanAddComments = true,
+                        CanAddPhotos = true,
+                        CanSeeComments = true,
+                        CanSeeLikes = true,
+                        CanSeePhotos = true
+                    };
 
-                albumModel.AvailableGroups.Add(avialableGroup);
+                    albumModel.AvailableGroups.Add(avialableGroup);
 
-                GeneratePhotos(albumModel, unitOfWork);
+                    GeneratePhotos(albumModel, unitOfWork);
 
                 #endregion
 
                 #region adding album to user with lastname Golovin
 
-                currentUser = unitOfWork.Users.Find(x => x.LastName == "Golovin");
+                    currentUser = unitOfWork.Users.Find(x => x.LastName == "Golovin");
 
-                var albumForGolovin = new AlbumModel
-                {
-                    Name = "Anton album",
-                    Description = "Default album by DBinit",
-                    IsDeleted = false,
-                    Permissions = 11111,
-                    OwnerId = currentUser.Id,
-                    AlbumTags = new Collection<AlbumTagModel>(),
-                    AvailableGroups = new Collection<AvailableGroupModel>(),
-                    Photos = new Collection<PhotoModel>()
-                };
+                    var albumForGolovin = new AlbumModel
+                    {
+                        Name = "Anton album",
+                        Description = "Default album by DBinit",
+                        IsDeleted = false,
+                        Permissions = 11111,
+                        OwnerId = currentUser.Id,
+                        AlbumTags = new Collection<AlbumTagModel>(),
+                        AvailableGroups = new Collection<AvailableGroupModel>(),
+                        Photos = new Collection<PhotoModel>()
+                    };
 
-                var currentGrup = unitOfWork.Groups.Find(x => x.OwnerID == 1);
+                    var currentGrup = unitOfWork.Groups.Find(x => x.OwnerID == 1);
 
-                currentUser.Groups.Add(currentGrup);
-                currentUser.Albums.Add(albumForGolovin);
+                    currentUser.Groups.Add(currentGrup);
+                    currentUser.Albums.Add(albumForGolovin);
 
-                unitOfWork.SaveChanges();
+                    unitOfWork.SaveChanges();
 
                 #endregion
 
                 #region adding photos and group to album with name "Anton album"
 
-                albumModel = unitOfWork.Albums.Find(album => album.Name == "Anton album");
+                    albumModel = unitOfWork.Albums.Find(album => album.Name == "Anton album");
 
-                avialableGroup = new AvailableGroupModel
-                {
-                    AlbumId = albumModel.Id,
-                    GroupId = 1,
-                    CanAddComments = true,
-                    CanAddPhotos = true,
-                    CanSeeComments = true,
-                    CanSeeLikes = true,
-                    CanSeePhotos = true
-                };
+                    avialableGroup = new AvailableGroupModel
+                    {
+                        AlbumId = albumModel.Id,
+                        GroupId = 1,
+                        CanAddComments = true,
+                        CanAddPhotos = true,
+                        CanSeeComments = true,
+                        CanSeeLikes = true,
+                        CanSeePhotos = true
+                    };
 
-                albumForGolovin.AvailableGroups.Add(avialableGroup);
+                    albumForGolovin.AvailableGroups.Add(avialableGroup);
 
 
-                GeneratePhotos(albumModel, unitOfWork);
+                    GeneratePhotos(albumModel, unitOfWork);
 
                 #endregion
             }
