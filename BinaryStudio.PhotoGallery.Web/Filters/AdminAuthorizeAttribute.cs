@@ -3,7 +3,7 @@ using System.Web.Routing;
 
 namespace BinaryStudio.PhotoGallery.Web.Filters
 {
-    public class CustomAuthorize : AuthorizeAttribute
+    public class AdminAuthorizeAttribute : AuthorizeAttribute
     {
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
