@@ -34,9 +34,6 @@ namespace BinaryStudio.PhotoGallery.Database
         public UnitOfWork()
         {
             _databaseContext = new DatabaseContext("BinaryStudio.PhotoGallery.Database.DatabaseContext");
-
-            // todo : remove this when problem with album service will be resolved
-            _databaseContext.Configuration.LazyLoadingEnabled = false;
             
             _albumTagLazy = new Lazy<IAlbumTagRepository>(() => new AlbumTagRepository(_databaseContext));
             _photoTagLazy = new Lazy<IPhotoTagRepository>(() => new PhotoTagRepository(_databaseContext));
