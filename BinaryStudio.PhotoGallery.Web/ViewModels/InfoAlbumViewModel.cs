@@ -9,6 +9,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
     public class InfoAlbumViewModel
     {
         public AlbumModel AlbumModel { get; set; }
-        public IEnumerable<PhotoModel> Photos { get; set; }
+        public List<PhotoViewModel> Photos { get; set; }
     }
 }
