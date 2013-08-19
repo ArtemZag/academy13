@@ -8,6 +8,6 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
     {
         IFoundViewModel GetViewModel(IFound found);
 
-        SearchArguments GetModel(SearchRequestViewModel searchViewModel, int userId);
+        SearchArguments GetModel(SearchViewModel searchViewModel, int userId);
     }
 }

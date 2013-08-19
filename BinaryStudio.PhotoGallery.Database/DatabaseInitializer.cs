@@ -260,9 +260,22 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 #endregion
 
-                #region adding photos to album with name "First album"
+                #region adding photos and grup to album with name "First album"
 
                 AlbumModel albumModel = unitOfWork.Albums.Find(album => album.Name == "First album");
+
+                var avialableGroup = new AvailableGroupModel
+                {
+                    AlbumId = albumModel.Id,
+                    GroupId = 1,
+                    CanAddComments = true,
+                    CanAddPhotos = true,
+                    CanSeeComments = true,
+                    CanSeeLikes = true,
+                    CanSeePhotos = true
+                };
+
+                albumModel.AvailableGroups.Add(avialableGroup);
 
                 GeneratePhotos(albumModel, unitOfWork);
 
@@ -297,7 +310,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 albumModel = unitOfWork.Albums.Find(album => album.Name == "Anton album");
 
-                var avialableGroup = new AvailableGroupModel
+                avialableGroup = new AvailableGroupModel
                 {
                     AlbumId = albumModel.Id,
                     GroupId = 1,

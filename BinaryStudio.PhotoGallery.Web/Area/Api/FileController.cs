@@ -15,7 +15,7 @@ using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.Utils;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Upload;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
@@ -29,7 +29,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         private readonly IDirectoryWrapper _directoryWrapper;
         private readonly IFileHelper _fileHelper;
         private readonly IFileWrapper _fileWrapper;
-        private readonly IModelConverter _modelConverter;
         private readonly IPathUtil _pathUtil;
         private readonly IPhotoService _photoService;
         private readonly IUserService _userService;
@@ -43,7 +42,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             IFileHelper fileHelper,
             IFileWrapper fileWrapper,
             IPhotoService photoService,
-            IModelConverter modelConverter,
             IAlbumService albumService,
             ICryptoProvider cryptoProvider)
         {
@@ -53,7 +51,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _fileHelper = fileHelper;
             _fileWrapper = fileWrapper;
             _photoService = photoService;
-            _modelConverter = modelConverter;
             _albumService = albumService;
             _cryptoProvider = cryptoProvider;
         }
@@ -264,7 +261,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                     int albumId = _albumService.GetAlbumId(User.Identity.Name, "Temporary");
 
-                    int photoId = _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, albumId, format)).Id;
+                    int photoId = _photoService.AddPhoto(PhotoViewModel.ToModel(userId, albumId, format)).Id;
 
                     string destFileName = string.Format("{0}\\{1}.{2}", pathToTempAlbum, photoId, format);
 

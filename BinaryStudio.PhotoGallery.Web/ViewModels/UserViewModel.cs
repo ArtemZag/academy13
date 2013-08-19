@@ -1,4 +1,6 @@
-﻿namespace BinaryStudio.PhotoGallery.Web.ViewModels
+﻿using BinaryStudio.PhotoGallery.Models;
+
+namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
 	public class UserViewModel
 	{

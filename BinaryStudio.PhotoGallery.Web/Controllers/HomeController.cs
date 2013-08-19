@@ -3,7 +3,6 @@ using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
@@ -13,12 +12,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IPhotoService _photoService;
-        private readonly IModelConverter _modelConverter;
 
-        public HomeController(IPhotoService photoService, IModelConverter modelConverter)
+        public HomeController(IPhotoService photoService)
         {
             _photoService = photoService;
-            _modelConverter = modelConverter;
         }
 
         /// <summary>
@@ -34,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             var infoViewModel = new InfoViewModel
             {
                 UserEmail = User.Identity.Name,
-                Photos = photoModels.Select(_modelConverter.GetViewModel).ToList()
+                Photos = photoModels.Select(PhotoViewModel.FromModel).ToList()
             };
 
             return View(infoViewModel);
@@ -44,7 +41,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult GetPhotosViaAjax(int startIndex, int endIndex)
         {
             var photos = _photoService.GetPhotos(User.Identity.Name, startIndex, endIndex)
-                .Select(_modelConverter.GetViewModel);
+                .Select(PhotoViewModel.FromModel);
             return Json(photos);
         }
     }

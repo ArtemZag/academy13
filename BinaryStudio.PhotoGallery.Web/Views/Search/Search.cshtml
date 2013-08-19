@@ -70,6 +70,22 @@
 
             </div>
             <!-- /ko -->
+            
+            <!--ko if: Type == 'album' -->
+            <div class="span7 found-item">
+                <div class="result-image">
+                    <a data-bind="attr: { href: AlbumViewUrl }">
+                        <img data-bind="attr: { src: ThumbnailPath }"/>
+                    </a>
+                </div>
+                
+                <ul class="unstyled">
+                    <li><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: Name--><!--/ko--></a></li>
+                    <li><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
+                    <li class="search-info-item"><!--ko text: DateOfCreation--><!--/ko--></li>
+                </ul>
+            </div>
+            <!--/ko -->
 
         </div>  
         

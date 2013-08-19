@@ -252,22 +252,21 @@
     <Compile Include="Registers\CleanupServiceRegistry.cs" />
     <Compile Include="Registers\SearchCacheRegistry.cs" />
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
-    <Compile Include="Utils\IModelConverter.cs" />
     <Compile Include="Utils\ISearchModelConverter.cs" />
-    <Compile Include="Utils\ModelConverter.cs" />
     <Compile Include="Utils\SearchModelConverter.cs" />
     <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Authorization\SigninViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
-    <Compile Include="ViewModels\PhotoPage\NewCommentViewModel.cs" />
-    <Compile Include="ViewModels\PhotoPage\PhotoCommentViewModel.cs" />
-    <Compile Include="ViewModels\PhotoPage\PhotoPageViewModel.cs" />
+    <Compile Include="ViewModels\Photo\NewCommentViewModel.cs" />
+    <Compile Include="ViewModels\Photo\PhotoCommentViewModel.cs" />
+    <Compile Include="ViewModels\Photo\PhotoLikeViewModel.cs" />
+    <Compile Include="ViewModels\Photo\PhotoPageViewModel.cs" />
     <Compile Include="ViewModels\PhotoViewModel.cs" />
     <Compile Include="ViewModels\Authorization\SignupViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
-    <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
+    <Compile Include="ViewModels\Photo\UserInfoViewModel.cs" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\style-libs\chosen-sprite.png" />
     <Content Include="Content\style-libs\pnotify.css" />
@@ -312,7 +311,7 @@
     <Content Include="Scripts\Notifications.js" />
     <Content Include="Scripts\AlbumsPage\albums.js" />
     <Content Include="Scripts\off-screen-nav.js" />
-    <Compile Include="ViewModels\Search\SearchRequestViewModel.cs" />
+    <Compile Include="ViewModels\Search\SearchViewModel.cs" />
     <Content Include="Scripts\PhotoPage\photo.js" />
     <Content Include="Content\photo-page.css" />
   </ItemGroup>

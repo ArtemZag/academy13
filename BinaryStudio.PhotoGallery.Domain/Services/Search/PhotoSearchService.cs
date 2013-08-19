@@ -22,21 +22,25 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             IEnumerable<string> searchWords = searchArguments.SearchQuery.SplitSearchString();
 
-            IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId);
-
-            if (searchArguments.IsSearchPhotosByDescription)
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<PhotoFound> found = SearchByDescription(avialableAlbums, searchWords);
+                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId, unitOfWork);
 
-                result.AddRange(found);
+                if (searchArguments.IsSearchPhotosByDescription)
+                {
+                    IEnumerable<PhotoFound> found = SearchByDescription(avialableAlbums, searchWords);
+
+                    result.AddRange(found);
+                }
+
+                if (searchArguments.IsSearchPhotosByTags)
+                {
+                    IEnumerable<PhotoFound> found = SearchByTags(avialableAlbums, searchWords);
+
+                    result.AddRange(found);
+                } 
             }
-
-            if (searchArguments.IsSearchPhotosByTags)
-            {
-                IEnumerable<PhotoFound> found = SearchByTags(avialableAlbums, searchWords);
-
-                result.AddRange(found);
-            }
+            
 
             return Group(result);
         }
@@ -98,10 +102,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return searchWords.Sum(searchWord => Regex.Matches(photoModel.Description.ToLower(), searchWord).Count);
         }
 
-        private IEnumerable<IFound> Group(IEnumerable<PhotoFound> data)
+        private IEnumerable<IFound> Group(IEnumerable<PhotoFound> photos)
         {
             return
-                data.GroupBy(
+                photos.GroupBy(
                     item => new {item.Id, item.OwnerId, item.AlbumId, item.Rating, item.DateOfCreation, item.Format})
                     .Select(items => new PhotoFound
                     {

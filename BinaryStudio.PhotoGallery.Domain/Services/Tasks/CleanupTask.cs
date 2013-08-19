@@ -37,8 +37,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
 
             photosToCleanup.ForEach(CleanPhoto);
             DeleteDbRows(photosToCleanup);
-
-            CleanTemporaryPhotos();
         }
 
         private List<PhotoModel> GetPhotosForCleanup()
@@ -53,18 +51,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
         {
             CleanOriginal(photo);
             CleanThumbnails(photo);
-        }
-
-        private void CleanTemporaryPhotos()
-        {
-            IEnumerable<string> temporaryPhotosDirectories = storage.GetTemporaryDirectoriesPaths();
-
-            foreach (string temporaryDirectoryPath in temporaryPhotosDirectories)
-            {
-                var directory = new DirectoryInfo(temporaryDirectoryPath);
-
-                DeleteFiles(directory);
-            }
         }
 
         private void CleanOriginal(PhotoModel photo)
@@ -127,14 +113,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
                 {
                     unitOfWork.Photos.Delete(photoModel);
                 }
-            }
-        }
-
-        private void DeleteFiles(DirectoryInfo directory)
-        {
-            foreach (FileInfo file in directory.GetFiles())
-            {
-                file.Delete();
             }
         }
 

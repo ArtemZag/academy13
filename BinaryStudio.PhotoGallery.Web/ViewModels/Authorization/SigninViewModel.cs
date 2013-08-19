@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Web.ViewModels.Authorization
 {
