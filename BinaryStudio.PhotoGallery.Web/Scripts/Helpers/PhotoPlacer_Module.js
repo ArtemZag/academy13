@@ -69,12 +69,17 @@
     var startIndex = 0;
 
     function ajaxPhotoLoad() {
-        $("#photopreloader").show(); 
-        $.get(controllerURl, { skip: startIndex, take: startIndex + photoPortion, albumId: albumId }, getPhotos);
+        $("#photopreloader").show();
+        console.log("send");
+        $.get(controllerURl, { skip: startIndex, take: startIndex + photoPortion, albumId: albumId }, getPhotos)
+            .fail(function() {
+                $("#photopreloader").hide();
+            });
     }
 
     function getPhotos(photos) {
         if (photos.length > 0) {
+            console.log("req");
             ko.utils.arrayPushAll(window.viewModel.Photos, photos);
             var $newPhotoContainers = $('#photoWrapper > div.invisible');
             var $photos = $newPhotoContainers.find("img:first");
@@ -83,7 +88,6 @@
             $photos.load(function () {
                 numLoad++;
                 if (numLoad == lenght) { //todo How to check by another way that all of photos have been loaded? 
-                    console.log("herein");
                     $photos = $.merge($LastRow, $photos);
                     $LastRow = calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
                     $newPhotoContainers.removeClass("invisible");
