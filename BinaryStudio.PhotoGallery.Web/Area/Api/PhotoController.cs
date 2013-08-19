@@ -20,6 +20,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             public int SkipCount { get; set; }
             public int TakeCount { get; set; }
+            public int AlbumId { get; set; }
         }
 
         private readonly IPhotoService _photoService;
@@ -40,7 +41,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 viewModels = _photoService
                     .GetPhotos(User.Identity.Name, options.SkipCount, options.TakeCount)
-                    .Select(photoModel => _modelConverter.GetViewModel(photoModel)).ToList();
+                    .Select(_modelConverter.GetViewModel).ToList();
             }
             catch (Exception ex)
             {
@@ -59,32 +60,60 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             return response;
 	    }
 
-        //[HttpPost]
-        //public HttpResponseMessage GetAllAvailablePhotos([FromBody] GetPhotosOptions options)
-        //{
-        //    List<PhotoViewModel> viewModels;
+        [HttpPost]
+        public HttpResponseMessage GetPhotosFromAlbum(GetPhotosOptions options)
+        {
+            List<PhotoViewModel> viewModels;
 
-        //    try
-        //    {
-        //        viewModels = _photoService
-        //            .GetPublicPhotos(User.Identity.Name, options.SkipCount, options.TakeCount)
-        //            .Select(photoModel => _modelConverter.GetViewModel(photoModel)).ToList();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-        //    }
+            try
+            {
+                viewModels = _photoService
+                    .GetPhotos(User.Identity.Name, options.AlbumId, options.SkipCount, options.TakeCount)
+                    .Select(_modelConverter.GetViewModel).ToList();
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
 
-        //    var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>
-        //        (viewModels, new JsonMediaTypeFormatter());
+            var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>
+                (viewModels, new JsonMediaTypeFormatter());
 
-        //    var response = new HttpResponseMessage
-        //    {
-        //        StatusCode = HttpStatusCode.OK,
-        //        Content = responseData
-        //    };
+            var response = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = responseData
+            };
 
-        //    return response;
-        //}
+            return response;
+        }
+
+        [HttpPost]
+        public HttpResponseMessage GetAllAvailablePhotos(GetPhotosOptions options)
+        {
+            List<PhotoViewModel> viewModels;
+
+            try
+            {
+                viewModels = _photoService
+                    .GetPublicPhotos(User.Identity.Name, options.SkipCount, options.TakeCount)
+                    .Select(_modelConverter.GetViewModel).ToList();
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>
+                (viewModels, new JsonMediaTypeFormatter());
+
+            var response = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = responseData
+            };
+
+            return response;
+        }
     }
 }

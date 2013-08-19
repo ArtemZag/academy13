@@ -1,4 +1,31 @@
-﻿@{
+﻿@using System.Web.Optimization
+@using PerpetuumSoft.Knockout
+@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumViewModel
+@{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "Albums | Bingally";
+    var preloaderpath = "/Content/images/photopreloader.gif";
+    var ko = Html.CreateKnockoutContext();
 }
+
+<img src="@preloaderpath" id="photopreloader" />
+<div id="photoWrapper">
+    @using(var photos = ko.Foreach(it => it.Photos))
+    {
+        <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
+            <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
+        </div>
+    }
+</div>
+
+
+@ko.Initialize(Model)
+<script type="text/javascript">
+    viewModel.gotoPhotoPage = function (data) {
+        self.location = data.PhotoViewPageUrl();
+    };
+</script>
+
+@ko.Apply(Model)
+@Scripts.Render("~/Scripts/Helpers/PhotoPlacer_Module.js")
+@Scripts.Render("~/Scripts/FlowPage/Init.js")

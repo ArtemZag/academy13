@@ -1,7 +1,7 @@
-﻿var PhotoPlacer_Module = (function(controllerURl) {
+﻿var PhotoPlacer_Module = (function (controllerURl) {
 
     var marginsOfPhotoCont;
-    $(window).load(function () {
+    $(document).ready(function () {
         $("#photoWrapper").append('<div class="photoContainer" style="display:none;"></div>');
         marginsOfPhotoCont = parseInt($('.photoContainer').css('margin-left'))
             + parseInt($('.photoContainer').css('margin-right'))
@@ -65,14 +65,6 @@
         return ($lastRow);
     }
 
-    function prepareToShow() {
-        var $newPhotoContainers = $('#photoWrapper > div.invisible');
-        var $photos = $newPhotoContainers.find("img:first");
-        $photos = $.merge($LastRow, $photos);
-        $LastRow = calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
-        $newPhotoContainers.removeClass("invisible");
-    }
-
     var photoPortion = 25;
     var startIndex = 0;
 
@@ -84,16 +76,24 @@
     function getPhotos(photos) {
         if (photos.length > 0) {
             ko.utils.arrayPushAll(window.viewModel.Photos, photos);
-            setTimeout(prepareToShow(), 5000);
-            busy = false;
+            var $newPhotoContainers = $('#photoWrapper > div.invisible');
+            var $photos = $newPhotoContainers.find("img:first");
+            var numLoad = 0;
+            $photos.load(function () {
+                numLoad++;
+                if (numLoad == $photos.length) { //todo How to check by another way that all of photos have been loaded? 
+                    console.log("herein");
+                    $photos = $.merge($LastRow, $photos);
+                    $LastRow = calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
+                    $newPhotoContainers.removeClass("invisible");
+                }
+            });
             startIndex += photoPortion;
+            busy = false;
         } else {
             $(window).unbind("scroll");
         }
         $("#photopreloader").hide();
     }
-});
-
-$(document).ready(function () {
-    PhotoPlacer_Module("/Api/Photo/GetAllUserPhotos");
+    
 });

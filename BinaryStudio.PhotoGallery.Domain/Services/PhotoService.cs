@@ -142,7 +142,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 // todo: create a criterions for grabing all user albums' IDs and check every for access permissions
                 return unitOfWork.Photos.Filter(model => model.UserId == user.Id)
                                  .Where(model => !model.IsDeleted)
-                                 .OrderBy(model => model.DateOfCreation)
+                                 .OrderByDescending(model => model.DateOfCreation)
                                  .ThenBy(model => model.Id)
                                  .Skip(skipCount)
                                  .Take(takeCount)
@@ -195,19 +195,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<PhotoModel> GetPublicPhotos(string userEmail, int skipCount, int takeCount)
         {
+
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 var user = GetUser(userEmail, unitOfWork);
 
-                var allAvailableAlbums = (IEnumerable<PhotoModel>) _secureService.GetAvailableAlbums(user.Id, unitOfWork)
-                    .OrderBy(album => album.DateOfCreation)
-                    .Select(album => unitOfWork.Photos.Filter(photo => photo.AlbumId == album.Id)
-                        .Where(photo => !photo.IsDeleted));
-
-                return allAvailableAlbums.OrderBy(photo => photo.DateOfCreation)
-                    .ThenBy(photo => photo.Id)
-                    .Skip(skipCount)
-                    .Take(takeCount);
+                var publicPhotos = _secureService.GetAvailableAlbums(user.Id, unitOfWork)
+                                                 .SelectMany(it => it.Photos)
+                                                 .Where(photo => !photo.IsDeleted)
+                                                 .OrderByDescending(photo => photo.DateOfCreation)
+                                                 .ThenBy(photo => photo.Id)
+                                                 .Skip(skipCount)
+                                                 .Take(takeCount);
+                return publicPhotos;
             }
         }
     }
