@@ -3,7 +3,7 @@
     public class SearchArguments
     {
         /// <summary>
-        /// User is searching
+        ///     User is searching
         /// </summary>
         public int UserId { get; set; }
 

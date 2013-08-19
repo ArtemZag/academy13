@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BinaryStudio.PhotoGallery.Database;
@@ -101,7 +100,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
         private int CalculateRelevanceByTags(IEnumerable<string> searchWords, PhotoModel photoModel)
         {
-            return 
+            return
                 photoModel.PhotoTags.Sum(
                     photoTagModel =>
                         searchWords.Sum(searchWord => Regex.Matches(photoTagModel.TagName, searchWord).Count));

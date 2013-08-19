@@ -67,7 +67,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     });
         }
 
-        private IEnumerable<UserFound> SearchByCondition(IEnumerable<string> searchWords, Expression<Func<UserModel, bool>> predicate,
+        private IEnumerable<UserFound> SearchByCondition(IEnumerable<string> searchWords,
+            Expression<Func<UserModel, bool>> predicate,
             Func<IEnumerable<string>, UserModel, int> getRelevance, IUnitOfWork unitOfWork)
         {
             IEnumerable<UserFound> found = unitOfWork.Users.Filter(predicate).ToList().Select(model => new UserFound

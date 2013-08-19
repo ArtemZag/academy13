@@ -8,19 +8,24 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     internal class SearchService : DbService, ISearchService
     {
+        private readonly IAlbumSearchService albumSearchService;
+        private readonly ICommentSearchService commentSearchService;
         private readonly IPhotoSearchService photoSearchService;
 
         private readonly ISearchCacheTask searchCacheTask;
         private readonly IUserSearchService userSearchService;
-        private readonly IAlbumSearchService albumSearchService;
 
         public SearchService(IUnitOfWorkFactory workFactory, IPhotoSearchService photoSearchService,
-            IUserSearchService userSearchService, IAlbumSearchService albumSearchService, ISearchCacheTask searchCacheTask)
+            IUserSearchService userSearchService, IAlbumSearchService albumSearchService,
+            ICommentSearchService commentSearchService,
+            ISearchCacheTask searchCacheTask)
             : base(workFactory)
         {
             this.photoSearchService = photoSearchService;
             this.userSearchService = userSearchService;
             this.albumSearchService = albumSearchService;
+            this.commentSearchService = commentSearchService;
+
             this.searchCacheTask = searchCacheTask;
         }
 
@@ -53,7 +58,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     result.AddRange(albumSearchService.Search(searchArguments));
                 }
 
-                // todo: search by comments
+                if (searchArguments.IsSearchByComments)
+                {
+                    result.AddRange(commentSearchService.Search(searchArguments));
+                }
 
                 resultToken = searchCacheTask.AddCache(result.RemoveElements(searchArguments.Interval));
                 result = result.TakeInterval(searchArguments.Interval).ToList();
