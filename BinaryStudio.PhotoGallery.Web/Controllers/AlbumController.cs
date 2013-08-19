@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Web.Utils;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
@@ -13,11 +14,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 	[RoutePrefix("Album")]
     public class AlbumController : Controller
 	{
-	    private IAlbumService albumService;
+	    private readonly IAlbumService albumService;
+	    private readonly IModelConverter modelConverter;
 
-        public AlbumController(IAlbumService albumService)
+        public AlbumController(IAlbumService albumService, IModelConverter modelConverter)
         {
             this.albumService = albumService;
+            this.modelConverter = modelConverter;
         }
 
 		[GET("{albumId}")]
@@ -26,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 		    var mAlbum = albumService.GetAlbum(albumId);
 		    var vmInfoAlbum = new InfoAlbumViewModel()
 		        {
-                    AlbumModel = mAlbum
+                    AlbumViewModel = modelConverter.GetViewModel(mAlbum);
 		        };
             return View("Index", vmInfoAlbum);
         }

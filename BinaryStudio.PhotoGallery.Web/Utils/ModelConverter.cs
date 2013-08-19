@@ -1,4 +1,6 @@
-﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
@@ -183,6 +185,20 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 };
 
             return viewModel;
+        }
+
+        public AlbumViewModel GetViewModel(AlbumModel mAlbum)
+        {
+            var vmPhotos = mAlbum.Photos.Select(GetViewModel).ToList();
+
+            return new AlbumViewModel
+                {
+                    AlbumName = mAlbum.AlbumName,
+                    AlbumTags = mAlbum.AlbumTags,
+                    Description = mAlbum.Description,
+                    Id = mAlbum.Id,
+                    Photos = vmPhotos
+                };
         }
 
         public UserViewModel GetViewModel(UserModel userModel)

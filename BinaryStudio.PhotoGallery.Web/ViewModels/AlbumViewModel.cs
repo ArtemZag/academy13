@@ -16,5 +16,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         public DateTime DateOfCreation { get; set; }
         public int UserModelId { get; set; }
         public virtual ICollection<AlbumTagModel> AlbumTags { get; set; }
+        public List<PhotoViewModel> Photos { get; set; }
     }
 }
