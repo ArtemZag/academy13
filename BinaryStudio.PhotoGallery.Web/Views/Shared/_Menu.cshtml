@@ -1,10 +1,10 @@
 ﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.MenuViewModel
 
 <nav class="navbar navbar-fixed-top">
-    <a href="~/Home/Index" class="brand"><img src="~/Content/images/logo_small.png"/></a>
+    <a href="~/" class="brand"><img src="~/Content/images/logo_small.png"/></a>
     <ul class="nav">
         <li><a href="~/Gallery">Gallery</a></li>
-        <li><a href="~/Albums/Index">Albums</a></li>
+        <li><a href="~/Albums">Albums</a></li>
         <li><a href="~/Groups">Groups</a></li>
         <li><a href="~/Search">Search</a></li>
     </ul>
@@ -19,10 +19,10 @@
                 @{
                     if (Model.IsAdmin)
                     {
-                        <li><a href="~/AdminPanel/Index">Administration</a></li>
+                        <li><a href="~/AdminPanel">Administration</a></li>
                     }
                 }
-                <li><a href="~/Home/News">Notifications</a></li>
+                <li><a href="~/News">Notifications</a></li>
                 <li><a href="~/Profile">Profile</a></li>
                 <li class="divider"></li>
                 <li><a href="~/Authorization/Signout">Sign out</a></li>

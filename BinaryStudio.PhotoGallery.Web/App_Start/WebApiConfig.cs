@@ -7,8 +7,16 @@ namespace BinaryStudio.PhotoGallery.Web
     {
         public static void Register(HttpConfiguration config)
         {
-            config.Routes.MapHttpRoute("DefaultApiWithAction", "Api/{controller}/{action}");
-            config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { Id = RouteParameter.Optional });
+            config.Routes.MapHttpRoute(
+                name: "DefaultApiWithAction",
+                routeTemplate: "Api/{controller}/{action}/{id}",
+                defaults: new {id = RouteParameter.Optional});
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "Api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional });
+
             config.Filters.Add(new ValidateModelAttribute());
         }
     }
