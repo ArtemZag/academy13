@@ -23,13 +23,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             public int AlbumId { get; set; }
         }
 
-        private readonly IPhotoService _photoService;
-        private readonly IModelConverter _modelConverter;
+        private readonly IPhotoService photoService;
+        private readonly IModelConverter modelConverter;
 
         public PhotoController(IPhotoService photoService, IModelConverter modelConverter)
         {
-            _photoService = photoService;
-            _modelConverter = modelConverter;
+            this.photoService = photoService;
+            this.modelConverter = modelConverter;
         }
 
         [HttpPost]
@@ -39,9 +39,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                viewModels = _photoService
+                viewModels = photoService
                     .GetPhotos(User.Identity.Name, options.SkipCount, options.TakeCount)
-                    .Select(_modelConverter.GetViewModel).ToList();
+                    .Select(modelConverter.GetViewModel).ToList();
             }
             catch (Exception ex)
             {
@@ -67,9 +67,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                viewModels = _photoService
+                viewModels = photoService
                     .GetPhotos(User.Identity.Name, options.AlbumId, options.SkipCount, options.TakeCount)
-                    .Select(_modelConverter.GetViewModel).ToList();
+                    .Select(modelConverter.GetViewModel).ToList();
             }
             catch (Exception ex)
             {
@@ -95,9 +95,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                viewModels = _photoService
+                viewModels = photoService
                     .GetPublicPhotos(User.Identity.Name, options.SkipCount, options.TakeCount)
-                    .Select(_modelConverter.GetViewModel).ToList();
+                    .Select(modelConverter.GetViewModel).ToList();
             }
             catch (Exception ex)
             {

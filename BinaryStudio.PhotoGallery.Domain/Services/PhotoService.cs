@@ -122,7 +122,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     return unitOfWork.Photos.Filter(model => model.AlbumId == albumId)
                                      .Where(model => !model.IsDeleted)
-                                     .OrderBy(model => model.DateOfCreation)
+                                     .OrderByDescending(model => model.DateOfCreation)
                                      .ThenBy(model => model.Id)
                                      .Skip(skipCount)
                                      .Take(takeCount)

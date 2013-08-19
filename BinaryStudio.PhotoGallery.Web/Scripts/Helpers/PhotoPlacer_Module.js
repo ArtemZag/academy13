@@ -78,10 +78,11 @@
             ko.utils.arrayPushAll(window.viewModel.Photos, photos);
             var $newPhotoContainers = $('#photoWrapper > div.invisible');
             var $photos = $newPhotoContainers.find("img:first");
+            var lenght = $photos.length;
             var numLoad = 0;
             $photos.load(function () {
                 numLoad++;
-                if (numLoad == $photos.length) { //todo How to check by another way that all of photos have been loaded? 
+                if (numLoad == lenght) { //todo How to check by another way that all of photos have been loaded? 
                     console.log("herein");
                     $photos = $.merge($LastRow, $photos);
                     $LastRow = calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);

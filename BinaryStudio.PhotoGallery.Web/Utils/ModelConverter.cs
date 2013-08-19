@@ -189,15 +189,13 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         public AlbumViewModel GetViewModel(AlbumModel mAlbum)
         {
-            var vmPhotos = mAlbum.Photos.Select(GetViewModel).ToList();
-
             return new AlbumViewModel
                 {
                     AlbumName = mAlbum.AlbumName,
                     AlbumTags = mAlbum.AlbumTags,
                     Description = mAlbum.Description,
                     Id = mAlbum.Id,
-                    Photos = vmPhotos
+                    Photos = new List<PhotoViewModel>()
                 };
         }
 

@@ -30,7 +30,7 @@
 @ko.Initialize(Model)
 <script type="text/javascript">
     $(document).ready(function () {
-        PhotoPlacer_Module("/Api/Photo/GetPhotosFromAlbum", window.viewModel.AlbumModel.Id);
+        PhotoPlacer_Module("/Api/Photo/GetPhotosFromAlbum", window.viewModel.Id());
     });
 
     viewModel.gotoPhotoPage = function (data) {
@@ -40,4 +40,3 @@
 
 @ko.Apply(Model)
 @Scripts.Render("~/Scripts/Helpers/PhotoPlacer_Module.js")
-@Scripts.Render("~/Scripts/FlowPage/InitAlbum.js")
