@@ -7,7 +7,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
     public static class ItemsExtensions
     {
         /// <summary>
-        /// Removes first N elements
+        ///     Removes first N elements
         /// </summary>
         public static IEnumerable<IFound> RemoveElements(this IEnumerable<IFound> items, int interval)
         {
@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
         public static IEnumerable<IFound> TakeInterval(this IEnumerable<IFound> items, int interval)
         {
-            return items.OrderByDescending(found => found.Relevance).Take(interval);            
+            return items.OrderByDescending(found => found.Relevance).Take(interval);
         }
     }
 }

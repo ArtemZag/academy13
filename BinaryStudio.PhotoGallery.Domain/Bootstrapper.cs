@@ -21,6 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain
             container.RegisterType<IPhotoSearchService, PhotoSearchService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IUserSearchService, UserSearchService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IAlbumSearchService, AlbumSearchService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ICommentSearchService, CommentSearchService>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISearchCacheTask, SearchCacheTask>(new ContainerControlledLifetimeManager());
             container.RegisterType<ISecureService, SecureService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IGroupService, GroupService>(new ContainerControlledLifetimeManager());

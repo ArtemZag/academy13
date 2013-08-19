@@ -4,6 +4,7 @@
     {
         Photo,
         Album,
-        User
+        User,
+        Comment
     }
 }

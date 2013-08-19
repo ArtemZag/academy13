@@ -25,13 +25,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId, unitOfWork);
+                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId,
+                    unitOfWork);
 
                 if (searchArguments.IsSearchAlbumsByName)
                 {
                     IEnumerable<AlbumFound> found = SearchByCondition(searchWords, avialableAlbums,
                         model => searchWords.Any(searchWord => model.Name.Contains(searchWord)),
-                            GetRelevanceByName);
+                        CalculateRelevanceByName);
 
                     result.AddRange(found);
                 }
@@ -40,21 +41,38 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 {
                     IEnumerable<AlbumFound> found = SearchByCondition(searchWords, avialableAlbums,
                         model => searchWords.Any(searchWord => model.Description.Contains(searchWord)),
-                            GetRelevaceByDescription);
+                        CalculateRelevaceByDescription);
 
                     result.AddRange(found);
                 }
 
                 if (searchArguments.IsSearchAlbumsByTags)
                 {
-                    // todo
+                    IEnumerable<AlbumFound> found = SearchByTags(avialableAlbums, searchWords);
+
+                    result.AddRange(found);
                 }
             }
 
             return Group(result);
         }
 
-        private IEnumerable<AlbumFound> SearchByCondition(IEnumerable<string> searchWords, IEnumerable<AlbumModel> fromAlbums,
+        private IEnumerable<AlbumFound> SearchByTags(IEnumerable<AlbumModel> fromAlbums, IEnumerable<string> searchWords)
+        {
+            return fromAlbums.Where(
+                model => model.AlbumTags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
+                .Select(model => new AlbumFound
+                {
+                    Id = model.Id,
+                    DateOfCreation = model.DateOfCreation,
+                    Name = model.Name,
+                    OwnerId = model.OwnerId,
+                    Relevance = CalculateRelevanceByTags(searchWords, model)
+                });
+        }
+
+        private IEnumerable<AlbumFound> SearchByCondition(IEnumerable<string> searchWords,
+            IEnumerable<AlbumModel> fromAlbums,
             Func<AlbumModel, bool> predicate,
             Func<IEnumerable<string>, AlbumModel, int> getRelevance)
         {
@@ -68,12 +86,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             });
         }
 
-        private int GetRelevanceByName(IEnumerable<string> searchWords, AlbumModel albumModel)
+        private int CalculateRelevanceByTags(IEnumerable<string> searchWords, AlbumModel albumModel)
+        {
+            return
+                albumModel.AlbumTags.Sum(
+                    albumTagModel =>
+                        searchWords.Sum(searchWord => Regex.Matches(albumTagModel.TagName, searchWord).Count));
+        }
+
+        private int CalculateRelevanceByName(IEnumerable<string> searchWords, AlbumModel albumModel)
         {
             return searchWords.Sum(searchWord => Regex.Matches(albumModel.Name.ToLower(), searchWord).Count);
         }
 
-        private int GetRelevaceByDescription(IEnumerable<string> searchWords, AlbumModel albumModel)
+        private int CalculateRelevaceByDescription(IEnumerable<string> searchWords, AlbumModel albumModel)
         {
             return searchWords.Sum(searchWord => Regex.Matches(albumModel.Description.ToLower(), searchWord).Count);
         }
@@ -81,7 +107,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         private IEnumerable<IFound> Group(IEnumerable<AlbumFound> albums)
         {
             return
-                albums.GroupBy(item => new { item.Id, item.DateOfCreation, item.Name, item.OwnerId, item.Type })
+                albums.GroupBy(item => new {item.Id, item.DateOfCreation, item.Name, item.OwnerId, item.Type})
                     .Select(items => new AlbumFound
                     {
                         Id = items.Key.Id,

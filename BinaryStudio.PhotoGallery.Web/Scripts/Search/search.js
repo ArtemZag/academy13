@@ -160,10 +160,16 @@
         function formatFields(value) {
 
             // date getting 
-            if (value.Type == "photo" || value.Type == "album") {
+            if (value.Type == "photo" || value.Type == "album" || value.Type == "comment") {
                 
                 var dateEndIndex = value.DateOfCreation.indexOf("T");
-                value.DateOfCreation = value.DateOfCreation.substr(0, dateEndIndex);
+                
+                var date = value.DateOfCreation.substr(0, dateEndIndex);
+
+                var timeMinutesEndIndex = value.DateOfCreation.lastIndexOf(":");
+                var time = value.DateOfCreation.substr(dateEndIndex + 1, timeMinutesEndIndex);
+
+                value.DateOfCreation = date + " " + time;
             }
         }
     }
