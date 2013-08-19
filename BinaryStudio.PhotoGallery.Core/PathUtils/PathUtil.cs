@@ -17,9 +17,27 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         private readonly string dataVirtualRoot;
 
+        private static readonly string appPath;
+        private static readonly string dataFolderName;
+        private static readonly string photosFolderName;
+        private static readonly string usersFolder;
+        private static readonly string avatarFileName;
+        private static readonly string thumbnailsFolderName;
+        private static readonly string collagesFolderName;
         public PathUtil()
         {
-            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
+            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"]; 
+        }
+
+        static PathUtil()
+        {
+            appPath = HttpRuntime.AppDomainAppPath;
+            dataFolderName = ConfigurationManager.AppSettings["dataFolderName"];
+            photosFolderName = ConfigurationManager.AppSettings["photosFolderName"];
+            avatarFileName = ConfigurationManager.AppSettings["AvatarFileName"];
+            thumbnailsFolderName = ConfigurationManager.AppSettings["ThumbnailsFolderName"];
+            collagesFolderName = ConfigurationManager.AppSettings["CollagesFolderName"];
+            usersFolder = BuildPathToUsersFolderOnServer();
         }
 
         public string BuildPhotoDirectoryPath()
@@ -120,6 +138,51 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             var userTempPath = BuildTemporaryDirectoryPath(userPath);
 
             return HostingEnvironment.MapPath(userTempPath);
+        }
+
+        private static string BuildPathToUsersFolderOnServer()
+        {
+            var stringBuilder = new StringBuilder(appPath);
+            return stringBuilder.Append(dataFolderName)
+                                .Append(DELIMITER)
+                                .Append(photosFolderName).ToString();
+        }
+
+        public static string BuildPathToUserFolderOnServer(int userId)
+        {
+            var stringBuilder = new StringBuilder(usersFolder);
+            return stringBuilder.Append(DELIMITER).
+                                 Append(userId).ToString();
+        }
+
+        public static string BuildPathToUserAvatarOnServer(int userId)
+        {
+            var stringBuilder = new StringBuilder(BuildPathToUserFolderOnServer(userId));
+            return stringBuilder.Append(DELIMITER).
+                                 Append(avatarFileName).ToString();
+        }
+
+        public static string BuildPathToUserAlbumFolderOnServer(int userId, int albumId)
+        {
+            var stringBuilder = new StringBuilder(BuildPathToUserFolderOnServer(userId));
+            return stringBuilder.Append(DELIMITER).
+                                 Append(albumId).ToString();
+        }
+
+        public static string BuildPathToUserAlbumThumbnailsFolderOnServer(int userId, int albumId, int thumbnailsSize)
+        {
+            var stringBuilder = new StringBuilder(BuildPathToUserAlbumFolderOnServer(userId, albumId));
+            return stringBuilder.Append(DELIMITER).
+                                 Append(thumbnailsFolderName)
+                                .Append(DELIMITER)
+                                .Append(thumbnailsSize).ToString();
+        }
+
+        public static string BuildPathToUserAlbumCollagesFolderOnServer(int userId, int albumId)
+        {
+            var stringBuilder = new StringBuilder(BuildPathToUserAlbumFolderOnServer(userId, albumId));
+            return stringBuilder.Append(DELIMITER).
+                                 Append(collagesFolderName).ToString();
         }
 
         private string GetDataDirectory()
