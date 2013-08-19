@@ -79,6 +79,10 @@
     <Compile Include="Services\Search\ItemsExstensions.cs" />
     <Compile Include="Services\Search\IUserSearchService.cs" />
     <Compile Include="Services\Search\Results\AlbumFound.cs" />
+    <Compile Include="Services\Search\CommentSearchService.cs" />
+    <Compile Include="Services\Search\ICommentSearchService.cs" />
+    <Compile Include="Services\Search\IItemSearchService.cs" />
+    <Compile Include="Services\Search\Results\CommentFound.cs" />
     <Compile Include="Services\Search\SearchStringUtils.cs" />
     <Compile Include="Services\Search\UserSearchService.cs" />
     <Compile Include="Services\Search\SearchCache.cs" />

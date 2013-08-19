@@ -1,6 +1,6 @@
 ﻿namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
-    internal interface IUserSearchService : IItemSearchService
+    internal interface ICommentSearchService : IItemSearchService
     {
     }
 }
