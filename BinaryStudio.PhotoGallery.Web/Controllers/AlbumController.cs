@@ -20,7 +20,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             this.albumService = albumService;
         }
 
-		[GET("/{albumId}")]
+		[GET("{albumId}")]
         public ActionResult PhotoView(int albumId)
 		{
 		    var mAlbum = albumService.GetAlbum(albumId);

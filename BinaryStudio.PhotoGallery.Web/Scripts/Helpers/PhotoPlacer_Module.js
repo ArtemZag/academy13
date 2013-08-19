@@ -1,4 +1,4 @@
-﻿var PhotoPlacer_Module = (function (controllerURl) {
+﻿var PhotoPlacer_Module = (function (controllerURl, albumId) {
 
     var marginsOfPhotoCont;
     $(document).ready(function () {
@@ -70,7 +70,7 @@
 
     function ajaxPhotoLoad() {
         $("#photopreloader").show(); 
-        $.post(controllerURl, { SkipCount: startIndex, TakeCount: startIndex + photoPortion }, getPhotos);
+        $.post(controllerURl, { SkipCount: startIndex, TakeCount: startIndex + photoPortion, AlbumId: albumId }, getPhotos);
     }
 
     function getPhotos(photos) {
