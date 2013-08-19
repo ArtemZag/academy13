@@ -15,9 +15,6 @@
     var preloaderpath = "/Content/images/photopreloader.gif";
     var ko = Html.CreateKnockoutContext();
 }
-
-
-
  
 <img src="@preloaderpath" id="photopreloader" />
 <div id="photoWrapper">
@@ -33,9 +30,10 @@
 @ko.Initialize(Model)
 <script type="text/javascript">
     viewModel.gotoPhotoPage = function (data) {
-        self.location = data.PhotoViewPageUrl();
+        self.location = data.PhotoViewPageUrl;
     };
 </script>
 
 @ko.Apply(Model)
-@Scripts.Render("~/Scripts/FlowPage/photo_placer.js")
+@Scripts.Render("~/Scripts/Helpers/PhotoPlacer_Module.js")
+@Scripts.Render("~/Scripts/FlowPage/Init.js")

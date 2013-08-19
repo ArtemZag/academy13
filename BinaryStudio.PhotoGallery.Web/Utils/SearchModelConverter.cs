@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
+﻿using System.Runtime.Serialization;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
@@ -24,6 +25,25 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             this.albumService = albumService;
         }
 
+        public SearchArguments GetModel(SearchViewModel searchViewModel, int userId)
+        {
+            return new SearchArguments
+            {
+                UserId = userId,
+                SearchCacheToken = searchViewModel.SearchCacheToken,
+                Interval = searchViewModel.Interval,
+                SearchQuery = searchViewModel.SearchQuery,
+                IsSearchPhotosByTags = searchViewModel.IsSearchPhotosByTags,
+                IsSearchPhotosByDescription = searchViewModel.IsSearchPhotosByDescription,
+                IsSearchAlbumsByName = searchViewModel.IsSearchAlbumsByName,
+                IsSearchAlbumsByTags = searchViewModel.IsSearchAlbumsByTags,
+                IsSearchAlbumsByDescription = searchViewModel.IsSearchAlbumsByDescription,
+                IsSearchUsersByName = searchViewModel.IsSearchUsersByName,
+                IsSearchUserByDepartment = searchViewModel.IsSearchUserByDepartment,
+                IsSearchByComments = searchViewModel.IsSearchByComments
+            };
+        }
+
         public IFoundViewModel GetViewModel(IFound found)
         {
             IFoundViewModel result = null;
@@ -44,27 +64,31 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
                     result = GetAlbumFoundViewModel(found);
                     break;
+
+                case ItemType.Comment:
+
+                    result = GetCommentFoundViewModel(found);
+                    break;
             }
 
             return result;
         }
 
-        public SearchArguments GetModel(SearchViewModel searchViewModel, int userId)
+        private IFoundViewModel GetCommentFoundViewModel(IFound found)
         {
-            return new SearchArguments
+            var commentFound = (CommentFound) found;
+
+            UserModel user = userService.GetUser(commentFound.OwnerId);
+            string userName = user.FirstName + " " + user.LastName;
+
+            return new CommentFoundViewModel
             {
-                UserId = userId,
-                SearchCacheToken = searchViewModel.SearchCacheToken,
-                Interval = searchViewModel.Interval,
-                SearchQuery = searchViewModel.SearchQuery,
-                IsSearchPhotosByTags = searchViewModel.IsSearchPhotosByTags,
-                IsSearchPhotosByDescription = searchViewModel.IsSearchPhotosByDescription,
-                IsSearchAlbumsByName = searchViewModel.IsSearchAlbumsByName,
-                IsSearchAlbumsByTags = searchViewModel.IsSearchAlbumsByTags,
-                IsSearchAlbumsByDescription = searchViewModel.IsSearchAlbumsByDescription,
-                IsSearchUsersByName = searchViewModel.IsSearchUsersByName,
-                IsSearchUserByDepartment = searchViewModel.IsSearchUserByDepartment,
-                IsSearchByComments = searchViewModel.IsSearchByComments
+                CommentUrl = urlUtil.BuildCommentUrl(commentFound.PhotoId, commentFound.Id),
+                DateOfCreation = commentFound.DateOfCreation,
+                UserName = userName,
+                Text = commentFound.Text,
+                UserViewUrl = urlUtil.BuildUserViewUrl(commentFound.OwnerId),
+                UserAvatarPath = pathUtil.BuildUserAvatarPath(commentFound.OwnerId)
             };
         }
 

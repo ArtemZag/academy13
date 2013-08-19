@@ -1,4 +1,42 @@
-﻿@{
+﻿@using PerpetuumSoft.Knockout
+@using System.Web.Optimization
+@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumViewModel
+
+<script src="@Url.Content("~/Scripts/knockout-2.3.0.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")" type="text/javascript"></script> 
+@Scripts.Render("~/bundles/scripts/bootstrap")
+@Styles.Render("~/Content/photo_flow.css")
+
+@{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    ViewBag.Title = "Albums | Bingally";
+    ViewBag.Title = "Album | Bingally";
+    var preloaderpath = "/Content/images/photopreloader.gif";
+    var ko = Html.CreateKnockoutContext();
 }
+ 
+<img src="@preloaderpath" id="photopreloader" />
+<div id="photoWrapper">
+    @using (var photos = ko.Foreach(it => it.Photos))
+    {
+        <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
+            <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
+        </div>
+    }
+</div>
+
+
+@ko.Initialize(Model)
+<script type="text/javascript">
+    $(document).ready(function () {
+        PhotoPlacer_Module("/Api/Photo/GetPhotosFromAlbum", window.viewModel.Id());
+    });
+
+    viewModel.gotoPhotoPage = function (data) {
+        self.location = data.PhotoViewPageUrl();
+    };
+</script>
+
+@ko.Apply(Model)
+@Scripts.Render("~/Scripts/Helpers/PhotoPlacer_Module.js")

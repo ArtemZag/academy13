@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    
     var container = $("#container");
     var info = $("#userInformation");
     var windowObject = $(window);
@@ -31,14 +32,6 @@
     downloadUserInfo();
     downloadNextPartionOfAlbums();
     numberOfAlbums = 5;
-    
-    $(document).bind('keypress', function(e) {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) {
-            
-            // Ctrl-Enter pressed   
-        }
-    });
 
     function downloadUserInfo() {
         $.post("/Albums/GetUserInfo", getInfo);

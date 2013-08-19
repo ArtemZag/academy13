@@ -46,6 +46,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                                     DateOfCreation = commentModel.DateOfCreating,
                                     Id = commentModel.Id,
                                     OwnerId = commentModel.UserModelId,
+                                    PhotoId = commentModel.PhotoModelId,
                                     Text = commentModel.Text,
                                     Relevance = CalculateRelevanceByText(searchWords, commentModel)
                                 }));
@@ -63,12 +64,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
         private IEnumerable<IFound> Group(IEnumerable<CommentFound> comments)
         {
-            return comments.GroupBy(item => new {item.Id, item.OwnerId, item.Text, item.Type, item.DateOfCreation})
+            return comments.GroupBy(item => new {item.Id, item.OwnerId, item.Text, item.Type, item.DateOfCreation, item.PhotoId})
                 .Select(items => new CommentFound
                 {
                     DateOfCreation = items.Key.DateOfCreation,
                     Id = items.Key.Id,
                     OwnerId = items.Key.OwnerId,
+                    PhotoId = items.Key.PhotoId,
                     Text = items.Key.Text,
                     Relevance = items.Sum(item => item.Relevance)
                 });

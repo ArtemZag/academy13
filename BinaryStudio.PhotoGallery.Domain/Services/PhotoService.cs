@@ -140,12 +140,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 if (_secureService.CanUserViewPhotos(user.Id, albumId))
                 {
                     return unitOfWork.Photos.Filter(model => model.AlbumId == albumId)
-                        .Where(model => !model.IsDeleted)
-                        .OrderBy(model => model.DateOfCreation)
-                        .ThenBy(model => model.Id)
-                        .Skip(skipCount)
-                        .Take(takeCount)
-                        .ToList();
+
+                                     .Where(model => !model.IsDeleted)
+                                     .OrderByDescending(model => model.DateOfCreation)
+                                     .ThenBy(model => model.Id)
+                                     .Skip(skipCount)
+                                     .Take(takeCount)
+                                     .ToList();
                 }
 
                 throw new NoEnoughPrivileges("User can't get access to photos", null);
@@ -159,13 +160,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
 
 // todo: create a criterions for grabing all user albums' IDs and check every for access permissions
+
                 return unitOfWork.Photos.Filter(model => model.OwnerId == user.Id)
-                    .Where(model => !model.IsDeleted)
-                    .OrderBy(model => model.DateOfCreation)
-                    .ThenBy(model => model.Id)
-                    .Skip(skipCount)
-                    .Take(takeCount)
-                    .ToList();
+                                 .Where(model => !model.IsDeleted)
+                                 .OrderByDescending(model => model.DateOfCreation)
+                                 .ThenBy(model => model.Id)
+                                 .Skip(skipCount)
+                                 .Take(takeCount)
+                                 .ToList();
             }
         }
 
@@ -225,20 +227,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<PhotoModel> GetPublicPhotos(string userEmail, int skipCount, int takeCount)
         {
+
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                var allAvailablePhotos =
-                    (IEnumerable<PhotoModel>) _secureService.GetAvailableAlbums(user.Id, unitOfWork)
-                        .OrderBy(album => album.DateOfCreation)
-                        .Select(album => unitOfWork.Photos.Filter(photo => photo.AlbumId == album.Id)
-                            .Where(photo => !photo.IsDeleted));
-
-                return allAvailablePhotos.OrderBy(photo => photo.DateOfCreation)
-                    .ThenBy(photo => photo.Id)
-                    .Skip(skipCount)
-                    .Take(takeCount);
+                var publicPhotos = _secureService.GetAvailableAlbums(user.Id, unitOfWork)
+                                                 .SelectMany(it => it.Photos)
+                                                 .Where(photo => !photo.IsDeleted)
+                                                 .OrderByDescending(photo => photo.DateOfCreation)
+                                                 .ThenBy(photo => photo.Id)
+                                                 .Skip(skipCount)
+                                                 .Take(takeCount);
+                return publicPhotos;
             }
         }
     }
