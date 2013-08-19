@@ -11,9 +11,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         private readonly IAlbumSearchService albumSearchService;
         private readonly ICommentSearchService commentSearchService;
         private readonly IPhotoSearchService photoSearchService;
+        private readonly IUserSearchService userSearchService;
 
         private readonly ISearchCacheTask searchCacheTask;
-        private readonly IUserSearchService userSearchService;
 
         public SearchService(IUnitOfWorkFactory workFactory, IPhotoSearchService photoSearchService,
             IUserSearchService userSearchService, IAlbumSearchService albumSearchService,

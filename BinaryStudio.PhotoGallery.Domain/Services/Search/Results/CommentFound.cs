@@ -8,6 +8,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search.Results
 
         public int OwnerId { get; set; }
 
+        public int PhotoId { get; set; }
+
         public DateTime DateOfCreation { get; set; }
 
         public string Text { get; set; }

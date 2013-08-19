@@ -274,6 +274,7 @@
     <Content Include="Content\images\photo-page\unlike-icon.png" />
     <Content Include="Content\style-libs\jquery.pnotify.default.icons.css" />
     <Compile Include="ViewModels\Search\AlbumFoundViewModel.cs" />
+    <Compile Include="ViewModels\Search\CommentFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\IFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\PhotoFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
