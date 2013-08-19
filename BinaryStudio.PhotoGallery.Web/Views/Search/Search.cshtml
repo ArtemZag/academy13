@@ -13,6 +13,7 @@
 <script src="~/Scripts/knockout.mapping-latest.debug.js"> </script>
 
 <script src="~/Scripts/Search/search.js"> </script>
+@Scripts.Render("~/bundles/scripts/bootstrap")
 
 @Styles.Render("~/Content/search.css")
 
@@ -60,10 +61,10 @@
                 </div>
                 
                 <ul class="unstyled">
-                    <li><a data-bind="attr: { href: UserViewUri }"><!--ko text: Name--><!--/ko--></a></li>
-                    <li><!--ko text: Department--><!--/ko--></li>
+                    <li class="search-info-item"><a data-bind="attr: { href: UserViewUri }"><!--ko text: Name--><!--/ko--></a></li>
+                    <li class="search-info-item"><!--ko text: Department--><!--/ko--></li>
                     <!-- ko if: IsOnline -->
-                    <li>Online</li>
+                    <li class="search-info-item">Online</li>
                     <!-- /ko -->
                 </ul>
 
@@ -79,9 +80,25 @@
                 </div>
                 
                 <ul class="unstyled">
-                    <li><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: Name--><!--/ko--></a></li>
-                    <li><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
+                    <li class="search-info-item"><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: Name--><!--/ko--></a></li>
+                    <li class="search-info-item"><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
                     <li class="search-info-item"><!--ko text: DateOfCreation--><!--/ko--></li>
+                </ul>
+            </div>
+            <!--/ko -->
+            
+            <!--ko if: Type == 'comment' -->
+            <div class="span7 found-item">
+                <div class="result-image">
+                    <a data-bind="attr: { href: UserViewUrl }">
+                        <img data-bind="attr: {src: UserAvatarPath }"/>
+                    </a>
+                </div>
+                
+                <ul class="unstyled">
+                    <li class="search-info-item"><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
+                    <li class="search-info-item"><!--ko text: DateOfCreation--><!--/ko--></li>
+                    <li class="search-info-item"><!--ko text: Text--><!--/ko--></li>
                 </ul>
             </div>
             <!--/ko -->
