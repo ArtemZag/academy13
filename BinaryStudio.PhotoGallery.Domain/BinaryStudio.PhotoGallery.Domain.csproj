@@ -66,6 +66,7 @@
     <Compile Include="Exceptions\NoEnoughPrivileges.cs" />
     <Compile Include="Exceptions\RepentSlave.cs" />
     <Compile Include="Exceptions\UserAlreadyExistException.cs" />
+    <Compile Include="Exceptions\UserHaveNoEnoughPrivilegesException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="GlobalEventsAggregator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,8 +74,16 @@
     <Compile Include="Services\GroupService.cs" />
     <Compile Include="Services\IGroupService.cs" />
     <Compile Include="Services\ISecureService.cs" />
+    <Compile Include="Services\Search\AlbumSearchService.cs" />
+    <Compile Include="Services\Search\IAlbumSearchService.cs" />
     <Compile Include="Services\Search\ItemsExstensions.cs" />
     <Compile Include="Services\Search\IUserSearchService.cs" />
+    <Compile Include="Services\Search\Results\AlbumFound.cs" />
+    <Compile Include="Services\Search\CommentSearchService.cs" />
+    <Compile Include="Services\Search\ICommentSearchService.cs" />
+    <Compile Include="Services\Search\IItemSearchService.cs" />
+    <Compile Include="Services\Search\Results\CommentFound.cs" />
+    <Compile Include="Services\Search\SearchStringUtils.cs" />
     <Compile Include="Services\Search\UserSearchService.cs" />
     <Compile Include="Services\Search\SearchCache.cs" />
     <Compile Include="Services\Search\Results\IFound.cs" />

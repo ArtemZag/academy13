@@ -8,6 +8,7 @@
 }
 
 @Scripts.Render("~/bundles/scripts/jquery")
+
 <script src="~/Scripts/knockout-2.3.0.js"> </script>
 <script src="~/Scripts/knockout.mapping-latest.debug.js"> </script>
 
@@ -17,7 +18,7 @@
 
          
 <div class="container">
-         
+    
     <div class="span12">
 
         <form class="form-search center" data-bind="submit: search">
@@ -42,7 +43,6 @@
                 </div>
                 
                 <ul class="unstyled">
-                    <li class="search-info-item"><a data-bind="attr: { href: PhotoViewUrl }"><!--ko text: PhotoName--><!--/ko--></a></li>
                     <li class="search-info-item"><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: AlbumName--><!--/ko--></a></li>
                     <li class="search-info-item"><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
                     <li class="search-info-item"><!--ko text: DateOfCreation--><!--/ko--></li>
@@ -70,20 +70,32 @@
 
             </div>
             <!-- /ko -->
+            
+            <!--ko if: Type == 'album' -->
+            <div class="span7 found-item">
+                <div class="result-image">
+                    <a data-bind="attr: { href: AlbumViewUrl }">
+                        <img data-bind="attr: { src: ThumbnailPath }"/>
+                    </a>
+                </div>
+                
+                <ul class="unstyled">
+                    <li><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: Name--><!--/ko--></a></li>
+                    <li><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
+                    <li class="search-info-item"><!--ko text: DateOfCreation--><!--/ko--></li>
+                </ul>
+            </div>
+            <!--/ko -->
 
         </div>  
         
         <div class="span3 offset2">
             
-            <div class="search-panel" id="searchPanel">
+            <div class="search-panel">
                 <!-- Search photos by -->
                 <strong>Search photos by</strong>
             
                 <div class="search-options-offset">
-                    <label class="checkbox">
-                        <input type="checkbox" data-bind="checked: isSearchPhotosByName"> <small>name</small>
-                    </label>
-            
                     <label class="checkbox">
                         <input type="checkbox" data-bind="checked: isSearchPhotosByTags"> <small>tags</small>
                     </label>

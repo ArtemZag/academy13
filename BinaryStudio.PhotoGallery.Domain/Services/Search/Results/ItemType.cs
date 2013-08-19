@@ -3,6 +3,8 @@
     public enum ItemType
     {
         Photo,
-        User
+        Album,
+        User,
+        Comment
     }
 }

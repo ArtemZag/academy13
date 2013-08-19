@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
-
-namespace BinaryStudio.PhotoGallery.Domain.Services.Search
+﻿namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
-    public interface IUserSearchService
+    internal interface IUserSearchService : IItemSearchService
     {
-        IEnumerable<IFound> Search(SearchArguments searchArguments);
     }
 }

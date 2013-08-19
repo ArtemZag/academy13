@@ -23,25 +23,26 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         {
             var result = new List<UserFound>();
 
-            string searchQuery = searchArguments.SearchQuery;
+            IEnumerable<string> searchWords = searchArguments.SearchQuery.SplitSearchString();
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 if (searchArguments.IsSearchUsersByName)
                 {
-                    IEnumerable<UserFound> found = SearchByCondition(searchQuery,
+                    IEnumerable<UserFound> found = SearchByCondition(searchWords,
                         model =>
-                            model.FirstName.ToLower().Contains(searchQuery.ToLower()) ||
-                            model.LastName.ToLower().Contains(searchQuery.ToLower()), GetRelevanceByName,
-                        unitOfWork);
+                            searchWords.Any(
+                                searchWord =>
+                                    model.FirstName.Contains(searchWord) || model.LastName.Contains(searchWord)),
+                        GetRelevanceByName, unitOfWork);
 
                     result.AddRange(found);
                 }
 
                 if (searchArguments.IsSearchUserByDepartment)
                 {
-                    IEnumerable<UserFound> found = SearchByCondition(searchQuery,
-                        model => model.Department.ToLower().Contains(searchQuery.ToLower()),
+                    IEnumerable<UserFound> found = SearchByCondition(searchWords,
+                        model => searchWords.Any(searchWord => model.Department.Contains(searchWord)),
                         GetRelevanceByDepartment,
                         unitOfWork);
 
@@ -66,8 +67,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     });
         }
 
-        private IEnumerable<UserFound> SearchByCondition(string searchQuery, Expression<Func<UserModel, bool>> predicate,
-            Func<string, UserModel, int> getRelevance, IUnitOfWork unitOfWork)
+        private IEnumerable<UserFound> SearchByCondition(IEnumerable<string> searchWords,
+            Expression<Func<UserModel, bool>> predicate,
+            Func<IEnumerable<string>, UserModel, int> getRelevance, IUnitOfWork unitOfWork)
         {
             IEnumerable<UserFound> found = unitOfWork.Users.Filter(predicate).ToList().Select(model => new UserFound
             {
@@ -75,22 +77,25 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 Department = model.Department,
                 IsOnline = usersMonitorTask.IsOnline(model.Email),
                 Name = model.FirstName + " " + model.LastName,
-                Relevance = getRelevance(searchQuery, model)
+                Relevance = getRelevance(searchWords, model)
             });
 
             return found;
         }
 
-        private int GetRelevanceByName(string searchQuery, UserModel userModel)
+        private int GetRelevanceByName(IEnumerable<string> searchWords, UserModel userModel)
         {
-            string name = userModel.FirstName + " " + userModel.LastName;
-
-            return Regex.Matches(name.ToLower(), searchQuery.ToLower()).Count;
+            return
+                searchWords.Sum(
+                    searchWord =>
+                        Regex.Matches(userModel.FirstName.ToLower(), searchWord).Count +
+                        Regex.Matches(userModel.LastName.ToLower(), searchWord).Count);
         }
 
-        private int GetRelevanceByDepartment(string searchQuery, UserModel userModel)
+        private int GetRelevanceByDepartment(IEnumerable<string> searchWords, UserModel userModel)
         {
-            return Regex.Matches(userModel.Department.ToLower(), searchQuery.ToLower()).Count;
+            return searchWords.Sum(
+                searchWord => Regex.Matches(userModel.Department.ToLower(), searchWord).Count);
         }
     }
 }

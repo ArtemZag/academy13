@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="EnumerableExtensions\Extensions.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\IFileHelper.cs" />
     <Compile Include="IOUtils\FileRenameException.cs" />

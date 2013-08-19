@@ -60,7 +60,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
 
             foreach (string thumbnailFormatPath in thumnailFormatsPaths)
             {
-                string currentThumbnail = Path.Combine(thumbnailFormatPath, photo.Id + photo.Format);
+                // todo
+                string currentThumbnail = Path.Combine(thumbnailFormatPath, photo.Id.ToString());
 
                 if (File.Exists(currentThumbnail))
                 {
@@ -69,11 +70,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
             }
 
             return result;
-        }
-
-        public IEnumerable<string> GetTemporaryDirectoriesPaths()
-        {
-            return pathUtil.BuildTemporaryDirectoriesPaths();
         }
 
         private string GetThumbnailsDirectoryPath(PhotoModel photo)

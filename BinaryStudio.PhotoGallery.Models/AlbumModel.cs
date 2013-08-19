@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace BinaryStudio.PhotoGallery.Models
 {
     /// <summary>
-    /// The class that represents album
+    ///     The class that represents album
     /// </summary>
     public class AlbumModel
     {
@@ -14,43 +14,43 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreation = DateTime.Now;
         }
 
-        public AlbumModel(string albumName, int ownerId)
+        public AlbumModel(string name, int ownerId)
         {
-            AlbumName = albumName;
+            Name = name;
             OwnerId = ownerId;
             DateOfCreation = DateTime.Now;
             Permissions = 111; // in moment, it is just for future
         }
-        
+
         /// <summary>
-        /// Gets or sets the album id.
+        ///     Gets or sets the album id.
         /// </summary>
         public int Id { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets the album state.
+        ///     Gets or sets the album state.
         /// </summary>
         public bool IsDeleted { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the album.
+        ///     Gets or sets the name of the album.
         /// </summary>
-        public string AlbumName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the description of the album.
+        ///     Gets or sets the description of the album.
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the date and time of album creation.
+        ///     Gets or sets the date and time of album creation.
         /// </summary>
         public DateTime DateOfCreation { get; set; }
 
         /// <summary>
-        /// Gets or sets the permissions for aldum: what goups of user can see and add comments of photo.
+        ///     Gets or sets the permissions for aldum: what goups of user can see and add comments of photo.
         /// </summary>
-        public int Permissions { get; set; } 
+        public int Permissions { get; set; }
 
         public int OwnerId { get; set; }
 

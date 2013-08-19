@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace BinaryStudio.PhotoGalery.Core.Tests
+namespace BinaryStudio.PhotoGallery.Core.Tests
 {
     [TestFixture]
     public class DirectoryWrapperTests

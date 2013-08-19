@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BinaryStudio.PhotoGallery.Database;
@@ -21,97 +20,34 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         {
             var result = new List<PhotoFound>();
 
-            string searchQuery = searchArguments.SearchQuery;
+            IEnumerable<string> searchWords = searchArguments.SearchQuery.SplitSearchString();
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId,
                     unitOfWork);
 
-                if (searchArguments.IsSearchPhotosByName)
-                {
-                    IEnumerable<PhotoFound> found = SearchByCondition(avialableAlbums, searchQuery, model =>
-                        model.PhotoName.ToLower().Contains(searchQuery.ToLower()) &&
-                        !model.IsDeleted, GetRelevanceByName);
-
-                    result.AddRange(found);
-                }
-
                 if (searchArguments.IsSearchPhotosByDescription)
                 {
-                    IEnumerable<PhotoFound> found = SearchByCondition(avialableAlbums, searchQuery, model =>
-                        model.Description.ToLower().Contains(searchQuery.ToLower()) && !model.IsDeleted,
-                        GetRelevanceByDescription);
+                    IEnumerable<PhotoFound> found = SearchByDescription(avialableAlbums, searchWords);
 
                     result.AddRange(found);
                 }
 
                 if (searchArguments.IsSearchPhotosByTags)
                 {
-                    IEnumerable<PhotoFound> found = SearchByTags(avialableAlbums, searchQuery);
+                    IEnumerable<PhotoFound> found = SearchByTags(avialableAlbums, searchWords);
 
                     result.AddRange(found);
                 }
             }
 
+
             return Group(result);
         }
 
-        private IEnumerable<IFound> Group(IEnumerable<PhotoFound> data)
-        {
-            return
-                data.GroupBy(
-                    item =>
-                        new
-                        {
-                            item.Id,
-                            item.UserId,
-                            item.AlbumId,
-                            item.Rating,
-                            item.DateOfCreation,
-                            item.PhotoName,
-                            item.Format
-                        })
-                    .Select(items => new PhotoFound
-                    {
-                        Id = items.Key.Id,
-                        UserId = items.Key.UserId,
-                        AlbumId = items.Key.AlbumId,
-                        PhotoName = items.Key.PhotoName,
-                        Format = items.Key.Format,
-                        Rating = items.Key.Rating,
-                        DateOfCreation = items.Key.DateOfCreation,
-                        Relevance = items.Sum(item => item.Relevance)
-                    });
-        }
-
-        private IEnumerable<PhotoFound> SearchByCondition(IEnumerable<AlbumModel> fromAlbums, string searchQuery,
-            Func<PhotoModel, bool> predicate,
-            Func<string, PhotoModel, int> getRelevance)
-        {
-            var result = new List<PhotoFound>();
-
-            foreach (AlbumModel album in fromAlbums)
-            {
-                IEnumerable<PhotoFound> found = album.Photos.Where(predicate).Select(model => new PhotoFound
-                {
-                    Id = model.Id,
-                    UserId = model.UserId,
-                    AlbumId = model.AlbumId,
-                    PhotoName = model.PhotoName,
-                    Format = model.Format,
-                    Rating = model.Rating,
-                    DateOfCreation = model.DateOfCreation,
-                    Relevance = getRelevance(searchQuery, model)
-                });
-
-                result.AddRange(found);
-            }
-
-            return result;
-        }
-
-        private IEnumerable<PhotoFound> SearchByTags(IEnumerable<AlbumModel> fromAlbums, string searchQuery)
+        private IEnumerable<PhotoFound> SearchByDescription(IEnumerable<AlbumModel> fromAlbums,
+            IEnumerable<string> searchWords)
         {
             var result = new List<PhotoFound>();
 
@@ -119,18 +55,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             {
                 IEnumerable<PhotoFound> found =
                     album.Photos.Where(
-                        model => model.PhotoTags.Any(
-                                tagModel => tagModel.TagName.ToLower().Contains(searchQuery.ToLower())))
+                        model => searchWords.Any(model.Description.ToLower().Contains) && !model.IsDeleted)
                         .Select(model => new PhotoFound
                         {
                             Id = model.Id,
-                            UserId = model.UserId,
+                            OwnerId = model.OwnerId,
                             AlbumId = model.AlbumId,
-                            PhotoName = model.PhotoName,
                             Format = model.Format,
                             Rating = model.Rating,
                             DateOfCreation = model.DateOfCreation,
-                            Relevance = 1
+                            Relevance = CalculateRelevanceByDescription(searchWords, model)
                         });
 
                 result.AddRange(found);
@@ -139,14 +73,59 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return result;
         }
 
-        private int GetRelevanceByName(string searchQuery, PhotoModel photoModel)
+        private IEnumerable<PhotoFound> SearchByTags(IEnumerable<AlbumModel> fromAlbums, IEnumerable<string> searchWords)
         {
-            return Regex.Matches(photoModel.PhotoName.ToLower(), searchQuery.ToLower()).Count;
+            var result = new List<PhotoFound>();
+
+            foreach (AlbumModel albumModel in fromAlbums)
+            {
+                IEnumerable<PhotoFound> found = albumModel.Photos.Where(
+                    model => model.PhotoTags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
+                    .Select(model => new PhotoFound
+                    {
+                        Id = model.Id,
+                        OwnerId = model.OwnerId,
+                        AlbumId = model.AlbumId,
+                        Format = model.Format,
+                        Rating = model.Rating,
+                        DateOfCreation = model.DateOfCreation,
+                        Relevance = CalculateRelevanceByTags(searchWords, model)
+                    });
+
+                result.AddRange(found);
+            }
+
+            return result;
         }
 
-        private int GetRelevanceByDescription(string searchQuery, PhotoModel photoModel)
+        private int CalculateRelevanceByTags(IEnumerable<string> searchWords, PhotoModel photoModel)
         {
-            return Regex.Matches(photoModel.Description.ToLower(), searchQuery.ToLower()).Count;
+            return
+                photoModel.PhotoTags.Sum(
+                    photoTagModel =>
+                        searchWords.Sum(searchWord => Regex.Matches(photoTagModel.TagName, searchWord).Count));
+        }
+
+        private int CalculateRelevanceByDescription(IEnumerable<string> searchWords, PhotoModel photoModel)
+        {
+            return searchWords.Sum(searchWord => Regex.Matches(photoModel.Description.ToLower(), searchWord).Count);
+        }
+
+        private IEnumerable<IFound> Group(IEnumerable<PhotoFound> photos)
+        {
+            return
+                photos.GroupBy(
+                    item => new {item.Id, item.OwnerId, item.AlbumId, item.Rating, item.DateOfCreation, item.Format})
+                    .Select(items => new PhotoFound
+                    {
+                        Id = items.Key.Id,
+                        OwnerId = items.Key.OwnerId,
+                        AlbumId = items.Key.AlbumId,
+                        Format = items.Key.Format,
+                        Rating = items.Key.Rating,
+                        DateOfCreation = items.Key.DateOfCreation,
+                        Relevance = items.Sum(item => item.Relevance)
+                    });
         }
     }
 }

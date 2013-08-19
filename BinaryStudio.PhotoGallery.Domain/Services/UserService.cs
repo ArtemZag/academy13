@@ -1,24 +1,25 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Data.Entity;
+using System.Linq;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
-using System.Linq;
-using System.Data.Entity;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class UserService : DbService, IUserService
     {
+        private readonly IAlbumService _albumService;
         private readonly ICryptoProvider _cryptoProvider;
 
-        public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider)
+        public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider, IAlbumService albumService)
             : base(workFactory)
         {
             _cryptoProvider = cryptoProvider;
+            _albumService = albumService;
         }
 
         public IEnumerable<UserModel> GetAllUsers()
@@ -27,10 +28,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 return
                     unitOfWork.Users.All()
-                              .Include(g => g.Albums)
-                              .Include(g => g.Groups)
-                              .Include(g => g.AuthInfos)
-                              .ToList();
+                        .Include(g => g.Albums)
+                        .Include(g => g.Groups)
+                        .Include(g => g.AuthInfos)
+                        .ToList();
             }
         }
 
@@ -52,13 +53,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public UserModel GetUnactivatedUser(string hash)
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var foundUser = unitOfWork.Users.Find(user => !user.IsActivated && user.Salt == hash);
+                UserModel foundUser = unitOfWork.Users.Find(user => !user.IsActivated && user.Salt == hash);
 
                 if (foundUser == null)
                 {
-                    throw new UserNotFoundException("Inactive user with hash '" + hash + "' not found");
+                    throw new UserNotFoundException("Inactive user with invite '" + hash + "' not found");
                 }
 
                 return foundUser;
@@ -67,7 +68,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<UserModel> GetUnactivatedUsers()
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 return unitOfWork.Users.Filter(user => !user.IsActivated);
             }
@@ -111,49 +112,47 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
 
             var userModel = new UserModel
-                {
-                    Email = userEmail,
-                    FirstName = userFirstName,
-                    LastName = userLastName,
-                    IsAdmin = false,
-                    IsActivated = false,
-                    // Here is our HASH for activating link
-                    Salt = Randomizer.GetString(16),
-                    // Empty password field is not good 
-                    UserPassword =
-                        _cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), _cryptoProvider.GetNewSalt())
-                   
-                };
+            {
+                Email = userEmail,
+                FirstName = userFirstName,
+                LastName = userLastName,
+                IsAdmin = false,
+                IsActivated = false,
+                // Here is our HASH for activating link
+                Salt = Randomizer.GetString(16),
+                // Empty password field is not good 
+                UserPassword =
+                    _cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), _cryptoProvider.GetNewSalt())
+            };
 
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 unitOfWork.Users.Add(userModel);
                 unitOfWork.SaveChanges();
 
-                userModel.Albums = new Collection<AlbumModel>
-                    {
-                        new AlbumModel
-                            {
-                                AlbumName = "Temporary",
-                                Description = "System album. Not for use",
-                                OwnerId = unitOfWork.Users.Find(user => user.Email == userEmail).Id
-                            }
-                    };
-
-                unitOfWork.Users.Update(userModel);
-                unitOfWork.SaveChanges();
+                int userId = unitOfWork.Users.Find(user => user.Email == userEmail).Id;
+                _albumService.CreateSystemAlbums(userId);
             }
 
             return userModel.Salt;
         }
 
-        public void ActivateUser(string userEmail, string userPassword /*, string hash*/)
+        public void ActivateUser(string userEmail, string userPassword, string invite)
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var userModel = this.GetUser(userEmail, unitOfWork);
+                UserModel userModel = GetUser(userEmail, unitOfWork);
 
-                if (userModel.IsActivated /* || (userModel.Salt != hash)*/) throw new UserNotFoundException(userEmail);
+                if (userModel.IsActivated)
+                {
+                    throw new UserAlreadyExistException(string.Format("User {0} already activated", userEmail));
+                }
+
+                if (userModel.Salt != invite)
+                {
+                    throw new UserNotFoundException(string.Format("User with email {0} not found in activation list",
+                        userEmail));
+                }
 
                 userModel.Salt = _cryptoProvider.GetNewSalt();
 
@@ -228,16 +227,22 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return
                     authInfoRepository.Contains(
                         model =>
-                        string.Equals(model.AuthProvider, authProvider) && string.Equals(model.AuthProviderToken, token));
+                            string.Equals(model.AuthProvider, authProvider) &&
+                            string.Equals(model.AuthProviderToken, token));
             }
         }
 
-        public void MakeUserGod(int godID, int slaveID)
+        public bool IsUserAdmin(string userEmail)
+        {
+            return this.GetUser(userEmail).IsAdmin;
+        }
+
+        public void MakeUserGod(int godId, int slaveId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var god = GetUser(godID, unitOfWork);
-                var slave = GetUser(slaveID, unitOfWork);
+                UserModel god = GetUser(godId, unitOfWork);
+                UserModel slave = GetUser(slaveId, unitOfWork);
 
                 if (!god.IsAdmin)
                 {

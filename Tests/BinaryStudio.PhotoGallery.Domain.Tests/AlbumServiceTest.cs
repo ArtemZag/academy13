@@ -22,10 +22,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             IUnityContainer container = Bootstrapper.Initialise();
 
             var cryptoProvidrer = container.Resolve<ICryptoProvider>();
+            var albumService = container.Resolve<IAlbumService>();
             var workFactory = new TestUnitOfWorkFactory();
 
 //            _albumService = new AlbumService(workFactory);
-            _userService = new UserService(workFactory, cryptoProvidrer);
+            _userService = new UserService(workFactory, cryptoProvidrer, albumService);
         }
 
         [Test]
@@ -36,7 +37,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "test1@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Nick",
                     FirstName = "First",
                     LastName = "Last",
                     Albums = new Collection<AlbumModel>()
@@ -44,14 +44,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             var albumModel = new AlbumModel
                 {
-                    AlbumName = "name",
+                    Name = "name",
                     DateOfCreation = DateTime.Now,
                     Description = "description"
                 };
 
             // body
             _userService.CreateUser(userModel);
-            _albumService.CreateAlbum(userModel.Email, albumModel);
+            _albumService.CreateAlbum(userModel.Id, albumModel);
 
             // tear down
             userModel.Albums.Count.Should().Be(1);
@@ -64,7 +64,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "test2@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Nick",
                     FirstName = "First",
                     LastName = "Last",
                     Albums = new Collection<AlbumModel>()
@@ -72,14 +71,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             var albumModel = new AlbumModel
                 {
-                    AlbumName = "name",
+                    Name = "name",
                     DateOfCreation = DateTime.Now,
                     Description = "description"
                 };
 
             // body
             _userService.CreateUser(userModel);
-            _albumService.CreateAlbum(userModel.Email, albumModel);
+            _albumService.CreateAlbum(userModel.Id, albumModel);
             int deletedAlbumsAfterCreation =
                 userModel.Albums.Select(model => model).Count(model => model.IsDeleted);
 

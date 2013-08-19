@@ -6,19 +6,24 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     public interface IPhotoService
     {
         /// <summary>
-        ///     Adds photo by specidied user to his album.
+        ///     Adds photoModel by specidied user to his album.
         /// </summary>
-        void AddPhoto(string userEmail, string albumName, PhotoModel photo);
+        PhotoModel AddPhoto(string userEmail, string albumName, PhotoModel photoModel);
 
-        void AddPhoto(PhotoModel photo);
+        PhotoModel AddPhoto(PhotoModel photoModel);
 
         /// <summary>
         ///     Adds photos by specidied user to his album.
         /// </summary>
-        void AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
-        
+        IEnumerable<int> AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
+
         /// <summary>
-        ///     Deletes specified photo
+        ///     Updates photo by photoModel
+        /// </summary>
+        PhotoModel UpdatePhoto(PhotoModel photoModel);
+
+        /// <summary>
+        ///     Deletes specified photoModel
         /// </summary>
         void DeletePhoto(string userEmail, PhotoModel photo);
 
@@ -41,33 +46,37 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="takeCount">Ending of the interval.</param>
         IEnumerable<PhotoModel> GetPhotos(string userEmail, int skipCount, int takeCount);
 
-        PhotoModel GetPhoto(string userEmail, int photoID);
+        PhotoModel GetPhoto(string userEmail, int photoId);
+
+        PhotoModel GetPhoto(int userId, int photoId);
 
 
         /// <summary>
-        /// Gets all likes for photo
+        ///     Gets all likes for photoModel
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="photoID"></param>
+        /// <param name="photoId"></param>
         /// <returns></returns>
-        IEnumerable<UserModel> GetLikes(string userEmail, int photoID);
+        IEnumerable<UserModel> GetLikes(string userEmail, int photoId);
 
 
         /// <summary>
-        /// Add like to photo from user
+        ///     Add like to photoModel from user
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="photoID"></param>
-        void AddLike(string userEmail, int photoID);
+        /// <param name="photoId"></param>
+        void AddLike(string userEmail, int photoId);
 
 
         /// <summary>
-        /// Get all photos, visible by permissions to current user
+        ///     Get all photos, visible by permissions to current user
         /// </summary>
         /// <param name="userEmail"></param>
-        /// <param name="skipCount">Offset of the first photo in list</param>
+        /// <param name="skipCount">Offset of the first photoModel in list</param>
         /// <param name="takeCount">Number of photos to be returned</param>
         /// <returns>List of photos</returns>
         IEnumerable<PhotoModel> GetPublicPhotos(string userEmail, int skipCount, int takeCount);
+
+        void DeletePhoto(string userEmail, int photoId);
     }
 }

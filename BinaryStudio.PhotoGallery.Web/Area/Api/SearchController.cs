@@ -14,14 +14,14 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     [Authorize]
     public class SearchController : ApiController
     {
-        private readonly IModelConverter modelConverter;
+        private readonly ISearchModelConverter searchModelConverter;
         private readonly ISearchService searchService;
         private readonly IUserService userService;
 
-        public SearchController(ISearchService searchService, IModelConverter modelConverter, IUserService userService)
+        public SearchController(ISearchService searchService, ISearchModelConverter searchModelConverter, IUserService userService)
         {
             this.searchService = searchService;
-            this.modelConverter = modelConverter;
+            this.searchModelConverter = searchModelConverter;
             this.userService = userService;
         }
 
@@ -30,13 +30,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             string usersEmail = User.Identity.Name;
             UserModel user = userService.GetUser(usersEmail);
 
-            SearchArguments searchArguments = modelConverter.GetModel(searchViewModel, user.Id);
+            SearchArguments searchArguments = searchModelConverter.GetModel(searchViewModel, user.Id);
 
             SearchResult result = searchService.Search(searchArguments);
 
             var resultViewModel = new SearchResultViewModel
             {
-                Items = result.Value.Select(found => modelConverter.GetViewModel(found)),
+                Items = result.Value.Select(found => searchModelConverter.GetViewModel(found)),
                 SearchCacheToken = result.SearchCacheToken
             };
 

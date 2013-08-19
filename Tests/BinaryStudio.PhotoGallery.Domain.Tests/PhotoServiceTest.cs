@@ -28,12 +28,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             var cryptoProvider = container.Resolve<ICryptoProvider>();
             var secureService = container.Resolve<ISecureService>();
+            var albumService = container.Resolve<IAlbumService>();
 
             _workFactory = new TestUnitOfWorkFactory();
 
             _photoService = new PhotoService(_workFactory, secureService);
-            _userService = new UserService(_workFactory, cryptoProvider);
-//            _albumService = new AlbumService(_workFactory);
+            _userService = new UserService(_workFactory, cryptoProvider,albumService);
+            _albumService = new AlbumService(_workFactory, secureService);
         }
 
         private IEnumerable<PhotoModel> GetListOfPhotos()
@@ -57,12 +58,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Id = 1,
                     OwnerId = 1,
-                    AlbumName = "albumName",
+                    Name = "albumName",
                     Photos = new Collection<PhotoModel>()
                 };
 
             _userService.CreateUser(user);
-            _albumService.CreateAlbum(user.Email, album);
+            _albumService.CreateAlbum(user.Id, album);
 
             var photo = new PhotoModel
                 {
@@ -127,12 +128,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Id = 2,
                     OwnerId = 2,
-                    AlbumName = "albumName",
+                    Name = "albumName",
                     Photos = new Collection<PhotoModel>()
                 };
 
             _userService.CreateUser(user);
-            _albumService.CreateAlbum(user.Email, album);
+            _albumService.CreateAlbum(user.Id, album);
 
             _photoService.AddPhotos("some1@gmail.com", "albumName", photosToFill);
 

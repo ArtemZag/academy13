@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
@@ -12,6 +13,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
         }
 
+        private readonly List<string> _systemGroupList = new List<string>()
+            {
+                "BlockedUsers"
+            };
+
+        private bool IsGroupSystem(GroupModel groupModel)
+        {
+            return _systemGroupList.Contains(groupModel.GroupName);
+        }
+
         //todo: add check permission for creating group event 
         public void Create(int userID, GroupModel groupModel)
         {
@@ -21,7 +32,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     throw new GroupAlreadyExistException(groupModel.GroupName);
                 }
-
+                if (IsGroupSystem(groupModel))
+                {
+                    throw new GroupAlreadyExistException(groupModel.GroupName);
+                }
                 unitOfWork.Groups.Add(groupModel);
                 unitOfWork.SaveChanges();
             }
@@ -154,6 +168,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     var group = GetGroup(groupID);
                     var owner = GetUser(ownerID, unitOfWork);
+
+                    if (IsGroupSystem(group))
+                    {
+                        throw new GroupAlreadyExistException(group.GroupName);
+                    }
 
                     if (group.OwnerID == ownerID || owner.IsAdmin)
                     {

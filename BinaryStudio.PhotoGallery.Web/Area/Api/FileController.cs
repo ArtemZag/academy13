@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,7 +14,8 @@ using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Web.Utils;
+using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Upload;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
@@ -25,22 +24,16 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     [RoutePrefix("Api/File")]
     public class FileController : ApiController
     {
-        private struct UploadFileInfo
-        {
-            public string FileHash;
-            public bool IsAccepted;
-            public string Error;
-        }
-
-        private readonly IUserService _userService;
-	    private readonly IPathUtil _pathUtil;
-	    private readonly IDirectoryWrapper _directoryWrapper;
-	    private readonly IFileHelper _fileHelper;
-	    private readonly IFileWrapper _fileWrapper;
-        private readonly IPhotoService _photoService;
-        private readonly IModelConverter _modelConverter;
         private readonly IAlbumService _albumService;
         private readonly ICryptoProvider _cryptoProvider;
+        private readonly IDirectoryWrapper _directoryWrapper;
+        private readonly IFileHelper _fileHelper;
+        private readonly IFileWrapper _fileWrapper;
+        private readonly IPathUtil _pathUtil;
+        private readonly IPhotoService _photoService;
+        private readonly IUserService _userService;
+
+        private int MAX_PHOTO_SIZE_IN_BYTES = 30*1024*1024; // 30 MB
 
         public FileController(
             IUserService userService,
@@ -49,98 +42,129 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             IFileHelper fileHelper,
             IFileWrapper fileWrapper,
             IPhotoService photoService,
-            IModelConverter modelConverter,
             IAlbumService albumService,
             ICryptoProvider cryptoProvider)
         {
             _userService = userService;
             _pathUtil = pathUtil;
-	        _directoryWrapper = directoryWrapper;
-	        _fileHelper = fileHelper;
-	        _fileWrapper = fileWrapper;
-	        _photoService = photoService;
-            _modelConverter = modelConverter;
+            _directoryWrapper = directoryWrapper;
+            _fileHelper = fileHelper;
+            _fileWrapper = fileWrapper;
+            _photoService = photoService;
             _albumService = albumService;
             _cryptoProvider = cryptoProvider;
         }
 
-        [POST("MovePhotos")]
-        public HttpResponseMessage MovePhotos([FromBody] SavePhotosViewModel viewModel)
+        [DELETE("{photoId}")]
+        public HttpResponseMessage Delete(int photoId)
         {
-            if (viewModel == null || string.IsNullOrEmpty(viewModel.AlbumName) || !viewModel.PhotoHashes.Any())
+            if (photoId <= 0)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Can't delete photo by invalid id");
+            }
+
+            try
+            {
+                _photoService.DeletePhoto(User.Identity.Name, photoId);
+            }
+            catch (NoEnoughPrivileges ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        }
+
+        [POST]
+        public HttpResponseMessage Move([FromBody] MovePhotosViewModel viewModel)
+        {
+            if (viewModel == null || string.IsNullOrEmpty(viewModel.AlbumName) || !viewModel.PhotosId.Any())
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Uknown error");
             }
 
-            var uploadFileInfos = new List<UploadFileInfo>();
+            var uploadFileInfos = new List<UploadResultViewModel>();
 
             try
             {
-                var userId = _userService.GetUserId(User.Identity.Name);
+                int userId = _userService.GetUserId(User.Identity.Name);
 
-                var albumId = 0;
+                int albumId = 0;
 
                 try
                 {
-                    albumId = _albumService.GetAlbumId(viewModel.AlbumName);
+                    albumId = _albumService.GetAlbumId(userId, viewModel.AlbumName);
                 }
                 catch (AlbumNotFoundException)
                 {
-                    _albumService.CreateAlbum(User.Identity.Name, viewModel.AlbumName);
-                    albumId = _albumService.GetAlbumId(viewModel.AlbumName);
+                    albumId = _albumService.CreateAlbum(userId, viewModel.AlbumName).Id;
                 }
 
-                // Get path to the temporary folder in the user folder
-                var pathToTempFolder = _pathUtil.BuildAbsoluteTemporaryDirectoryPath(userId);
+                // Get temporary album Id
+                int tempAlbumId = _albumService.GetAlbumId(userId, "Temporary");
 
-                var pathToAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, albumId);
+                // Get path to the temporary album folder
+                string pathToTempAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, tempAlbumId);
 
-                if (!_directoryWrapper.Exists(pathToAlbum))
+                // Get path to the destination album folder
+                string pathToDestAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, albumId);
+
+                if (!_directoryWrapper.Exists(pathToDestAlbum))
                 {
-                    _directoryWrapper.CreateDirectory(pathToAlbum);
+                    _directoryWrapper.CreateDirectory(pathToDestAlbum);
                 }
 
-                foreach (var fileName in viewModel.PhotoHashes)
+                foreach (int photoId in viewModel.PhotosId)
                 {
-                    var filePath = string.Format("{0}\\{1}", pathToTempFolder, fileName);
+                    PhotoModel photoModel = _photoService.GetPhoto(userId, photoId);
 
-                    var fileExist = _fileWrapper.Exists(filePath);
+                    string fileInTempAlbum = string.Format("{0}\\{1}.{2}", pathToTempAlbum, photoModel.Id,
+                        photoModel.Format);
+
+                    string fileInDestAlbum = string.Format("{0}\\{1}.{2}", pathToDestAlbum, photoModel.Id,
+                        photoModel.Format);
+
+                    bool fileExist = _fileWrapper.Exists(fileInTempAlbum);
 
                     if (fileExist)
                     {
-                        _photoService.AddPhoto(_modelConverter.GetPhotoModel(userId, albumId, fileName));
-
-                        var newFilePath = string.Format("{0}\\{1}", pathToAlbum, fileName);
-
                         try
                         {
-                            _fileWrapper.Move(filePath, newFilePath);
+                            _fileWrapper.Move(fileInTempAlbum, fileInDestAlbum);
                         }
                         catch (Exception)
                         {
-                            uploadFileInfos.Add(new UploadFileInfo
+                            uploadFileInfos.Add(new UploadResultViewModel
                             {
-                                FileHash = fileName,
+                                Id = photoId,
                                 IsAccepted = false,
-                                Error = string.Format("Can't save photo to album '{0}'", viewModel.AlbumName)
+                                Error = "Can't save photo to selected album"
                             });
 
                             continue;
                         }
 
-                        uploadFileInfos.Add(new UploadFileInfo
+                        photoModel.AlbumId = albumId;
+
+                        _photoService.UpdatePhoto(photoModel);
+
+                        uploadFileInfos.Add(new UploadResultViewModel
                         {
-                            FileHash = fileName,
+                            Id = photoId,
                             IsAccepted = true
                         });
                     }
                     else
                     {
-                        uploadFileInfos.Add(new UploadFileInfo
+                        uploadFileInfos.Add(new UploadResultViewModel
                         {
-                            FileHash = fileName,
+                            Id = photoId,
                             IsAccepted = false,
-                            Error = "Photo not found in temp folder"
+                            Error = "Photo is not found in temporary album"
                         });
                     }
                 }
@@ -150,7 +174,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            var responseData = new ObjectContent<IEnumerable<UploadFileInfo>>
+            var responseData = new ObjectContent<IEnumerable<UploadResultViewModel>>
                 (uploadFileInfos, new JsonMediaTypeFormatter());
 
             var response = new HttpResponseMessage
@@ -161,8 +185,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             return response;
         }
-        
-        [POST("Upload")]
+
+        [POST]
         public async Task<HttpResponseMessage> Upload()
         {
             // Check if the request contains multipart/form-data.
@@ -172,76 +196,97 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
 
             // Key - file name, Value - error of the loading
-            var uploadFileInfos = new List<UploadFileInfo>();
+            var uploadFileInfos = new List<UploadResultViewModel>();
 
             try
             {
                 // Get user ID from DB
-                var userId = _userService.GetUserId(User.Identity.Name);
+                int userId = _userService.GetUserId(User.Identity.Name);
 
-                // Get path to the temporary folder in the user folder
-                var pathToTempFolder = _pathUtil.BuildAbsoluteTemporaryDirectoryPath(userId);
+                // Get temporary album Id
+                int tempAlbumId = _albumService.GetAlbumId(userId, "Temporary");
+
+                // Get path to the temporary album folder
+                string pathToTempAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, tempAlbumId);
 
                 // Create directory, if it isn't exist
-                if (!_directoryWrapper.Exists(pathToTempFolder))
+                if (!_directoryWrapper.Exists(pathToTempAlbum))
                 {
-                    _directoryWrapper.CreateDirectory(pathToTempFolder);
+                    _directoryWrapper.CreateDirectory(pathToTempAlbum);
                 }
 
                 // TODO create this instance with fabrik
-                var provider = new MultipartFormDataStreamProvider(pathToTempFolder);
+                var provider = new MultipartFormDataStreamProvider(pathToTempAlbum);
 
-                // Read the form data from request TODO must be wrapped too
+                // Read the form data from request (save all files in selected folder) TODO must be wrapped too
                 await Request.Content.ReadAsMultipartAsync(provider);
 
-                // Check all files
+                // Check all uploaded files
                 foreach (MultipartFileData fileData in provider.FileData)
                 {
-                    var originalFileName = fileData.Headers.ContentDisposition.FileName.Trim('"');
+                    string originalFileName = fileData.Headers.ContentDisposition.FileName.Trim('"');
 
-                    var fileSize = _fileHelper.GetFileSize(fileData.LocalFileName);
+                    long fileSize = _fileHelper.GetFileSize(fileData.LocalFileName);
 
-                    var fileHash = _cryptoProvider.GetHash(string.Format("{0}{1}", originalFileName, fileSize));
+                    string fileHash = _cryptoProvider.GetHash(string.Format("{0}{1}", originalFileName, fileSize));
 
-                    var fileName = Path.GetInvalidFileNameChars().Aggregate(fileHash, (current, c) => current.Replace(c.ToString(), ""));
+                    if (fileSize > MAX_PHOTO_SIZE_IN_BYTES)
+                    {
+                        _fileWrapper.Delete(fileData.LocalFileName);
 
-                    var temporaryFileName = string.Format("{0}\\{1}", pathToTempFolder, fileName);
+                        uploadFileInfos.Add(new UploadResultViewModel
+                        {
+                            Hash = fileHash,
+                            IsAccepted = false,
+                            Error = "This file contains no image data"
+                        });
+                    }
 
                     // Is it really image file format ?
                     if (!_fileHelper.IsImageFile(fileData.LocalFileName))
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
 
-                        uploadFileInfos.Add(new UploadFileInfo
+                        uploadFileInfos.Add(new UploadResultViewModel
                         {
-                            FileHash = fileHash,
+                            Hash = fileHash,
+                            IsAccepted = false,
                             Error = "This file contains no image data"
                         });
 
                         continue;
                     }
 
+                    string format = _fileHelper.GetRealFileFormat(fileData.LocalFileName);
+
+                    int albumId = _albumService.GetAlbumId(User.Identity.Name, "Temporary");
+
+                    int photoId = _photoService.AddPhoto(PhotoViewModel.ToModel(userId, albumId, format)).Id;
+
+                    string destFileName = string.Format("{0}\\{1}.{2}", pathToTempAlbum, photoId, format);
+
                     try
                     {
-                        _fileWrapper.Move(fileData.LocalFileName, temporaryFileName);
+                        _fileWrapper.Move(fileData.LocalFileName, destFileName);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
 
-                        uploadFileInfos.Add(new UploadFileInfo
+                        uploadFileInfos.Add(new UploadResultViewModel
                         {
-                            FileHash = fileHash,
+                            Hash = fileHash,
                             IsAccepted = false,
-                            Error = "Can't save this file"
+                            Error = "File already uploaded"
                         });
 
                         continue;
                     }
 
-                    uploadFileInfos.Add(new UploadFileInfo
+                    uploadFileInfos.Add(new UploadResultViewModel
                     {
-                        FileHash = fileHash,
+                        Hash = fileHash,
+                        Id = photoId,
                         IsAccepted = true
                     });
                 }
@@ -251,7 +296,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            var responseData = new ObjectContent<IList<UploadFileInfo>>
+            var responseData = new ObjectContent<IList<UploadResultViewModel>>
                 (uploadFileInfos, new JsonMediaTypeFormatter());
 
             var response = new HttpResponseMessage

@@ -1,7 +1,5 @@
 ﻿$(document).ready(function() {
 
-    $("#searchPanel input[type=checkbox]").attr("checked", "checked");
-
     function searchViewModel() {
 
         var self = this;
@@ -16,7 +14,6 @@
 
         self.searchQuery = ko.observable();
 
-        self.isSearchPhotosByName = ko.observable(true);
         self.isSearchPhotosByTags = ko.observable(true);
         self.isSearchPhotosByDescription = ko.observable(true);
 
@@ -39,11 +36,6 @@
         };
 
         self.searchQuery.subscribe(function() {
-
-            isModelChanged = true;
-        });
-
-        self.isSearchPhotosByName.subscribe(function() {
 
             isModelChanged = true;
         });
@@ -168,9 +160,16 @@
         function formatFields(value) {
 
             // date getting 
-            if (value.Type == "photo") {
+            if (value.Type == "photo" || value.Type == "album" || value.Type == "comment") {
+                
                 var dateEndIndex = value.DateOfCreation.indexOf("T");
-                value.DateOfCreation = value.DateOfCreation.substr(0, dateEndIndex);
+                
+                var date = value.DateOfCreation.substr(0, dateEndIndex);
+
+                var timeMinutesEndIndex = value.DateOfCreation.lastIndexOf(":");
+                var time = value.DateOfCreation.substr(dateEndIndex + 1, timeMinutesEndIndex);
+
+                value.DateOfCreation = date + " " + time;
             }
         }
     }

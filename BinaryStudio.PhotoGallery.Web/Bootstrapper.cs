@@ -30,7 +30,6 @@ namespace BinaryStudio.PhotoGallery.Web
         {
             var container = new UnityContainer();
             RegisterTypes(container);
-
             return container;
         }
 
@@ -39,8 +38,8 @@ namespace BinaryStudio.PhotoGallery.Web
             // register all your components with the container here
             // it is NOT necessary to register your controllers
             // e.g. container.RegisterType<ITestService, TestService>();   
-            
-            container.RegisterType<IModelConverter, ModelConverter>();
+
+            container.RegisterType<ISearchModelConverter, SearchModelConverter>();
 
             Domain.Bootstrapper.RegisterTypes(container);
             Database.Bootstrapper.RegisterTypes(container);
@@ -61,7 +60,7 @@ namespace BinaryStudio.PhotoGallery.Web
 
     public class SignalRUnityDependencyResolver : DefaultDependencyResolver
     {
-        private IUnityContainer _container;
+        private readonly IUnityContainer _container;
 
         public SignalRUnityDependencyResolver(IUnityContainer container)
         {
@@ -71,14 +70,13 @@ namespace BinaryStudio.PhotoGallery.Web
         public override object GetService(Type serviceType)
         {
             if (_container.IsRegistered(serviceType)) return _container.Resolve(serviceType);
-            else return base.GetService(serviceType);
+            return base.GetService(serviceType);
         }
 
         public override IEnumerable<object> GetServices(Type serviceType)
         {
             if (_container.IsRegistered(serviceType)) return _container.ResolveAll(serviceType);
-            else return base.GetServices(serviceType);
+            return base.GetServices(serviceType);
         }
-
     }
 }

@@ -230,7 +230,9 @@
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\AlbumsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\PhotoCommentController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -238,41 +240,47 @@
     <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Events\GlobalEventManager.cs" />
+    <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Utils\GlobalEventsHandler.cs" />
+    <Compile Include="Events\GlobalEventsHandler.cs" />
     <Compile Include="Hubs\NotificationTitles.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers\CleanupServiceRegistry.cs" />
     <Compile Include="Registers\SearchCacheRegistry.cs" />
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
-    <Compile Include="Utils\IModelConverter.cs" />
-    <Compile Include="Utils\ModelConverter.cs" />
+    <Compile Include="Utils\ISearchModelConverter.cs" />
+    <Compile Include="Utils\SearchModelConverter.cs" />
     <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Authorization\SigninViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
-    <Compile Include="ViewModels\PhotoPage\NewCommentViewModel.cs" />
-    <Compile Include="ViewModels\PhotoPage\PhotoCommentViewModel.cs" />
-    <Compile Include="ViewModels\PhotoPage\PhotoPageViewModel.cs" />
+    <Compile Include="ViewModels\MenuViewModel.cs" />
+    <Compile Include="ViewModels\Photo\NewCommentViewModel.cs" />
+    <Compile Include="ViewModels\Photo\PhotoCommentViewModel.cs" />
+    <Compile Include="ViewModels\Photo\PhotoLikeViewModel.cs" />
+    <Compile Include="ViewModels\Photo\PhotoPageViewModel.cs" />
     <Compile Include="ViewModels\PhotoViewModel.cs" />
     <Compile Include="ViewModels\Authorization\SignupViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
-    <Compile Include="ViewModels\PhotoPage\UserInfoViewModel.cs" />
+    <Compile Include="ViewModels\Photo\UserInfoViewModel.cs" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\style-libs\chosen-sprite.png" />
     <Content Include="Content\style-libs\pnotify.css" />
     <Content Include="Content\images\photo-page\like-icon.png" />
     <Content Include="Content\images\photo-page\unlike-icon.png" />
     <Content Include="Content\style-libs\jquery.pnotify.default.icons.css" />
+    <Compile Include="ViewModels\Search\AlbumFoundViewModel.cs" />
+    <Compile Include="ViewModels\Search\CommentFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\IFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\PhotoFoundViewModel.cs" />
     <Compile Include="ViewModels\Search\SearchResultViewModel.cs" />
     <Compile Include="ViewModels\Search\UserFoundViewModel.cs" />
-    <Compile Include="ViewModels\Upload\SavePhotosViewModel.cs" />
+    <Compile Include="ViewModels\Upload\MovePhotosViewModel.cs" />
+    <Compile Include="ViewModels\Upload\UploadResultViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\albums-page.css" />
@@ -430,6 +438,7 @@
     <Content Include="Views\Search\Search.cshtml" />
     <Content Include="Views\Albums\Index.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Shared\_Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

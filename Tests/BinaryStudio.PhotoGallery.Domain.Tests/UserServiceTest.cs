@@ -18,9 +18,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             IUnityContainer container = Bootstrapper.Initialise();
 
             var cryptoProvider = container.Resolve<ICryptoProvider>(); // mock? 
+            var albumService = container.Resolve<IAlbumService>(); // mock? 
             var unitOfWorkFactory = new TestUnitOfWorkFactory();
 
-            userService = new UserService(unitOfWorkFactory, cryptoProvider);
+            userService = new UserService(unitOfWorkFactory, cryptoProvider, albumService);
         }
 
         [Test]
@@ -41,7 +42,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "bbb@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Nick",
                     FirstName = "First",
                     LastName = "Last"
                 };
@@ -62,7 +62,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "aaa@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Bill",
                     FirstName = "Billy",
                     LastName = "Last"
                 };
@@ -91,7 +90,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "sss@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Bill",
                     FirstName = "Billy",
                     LastName = "Last"
                 };
@@ -115,7 +113,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 {
                     Email = "aaa@gmail.com",
                     UserPassword = "abc123",
-                    NickName = "Bill",
                     FirstName = "Billy",
                     LastName = "Last"
                 };

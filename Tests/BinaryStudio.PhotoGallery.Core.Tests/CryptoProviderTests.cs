@@ -1,9 +1,8 @@
 ﻿using BinaryStudio.PhotoGallery.Core.UserUtils;
 using FluentAssertions;
-using Microsoft.Practices.Unity;
 using NUnit.Framework;
 
-namespace BinaryStudio.PhotoGalery.Core.Tests
+namespace BinaryStudio.PhotoGallery.Core.Tests
 {
     [TestFixture]
     internal class CryptoProviderTests
@@ -12,9 +11,7 @@ namespace BinaryStudio.PhotoGalery.Core.Tests
 
         public CryptoProviderTests()
         {
-            IUnityContainer container = Bootstrapper.Initialise();
-
-            cryptoProvider = container.Resolve<ICryptoProvider>();
+            cryptoProvider = new CryptoProvider();
         }
 
         [Test]

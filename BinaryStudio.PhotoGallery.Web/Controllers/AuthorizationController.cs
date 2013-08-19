@@ -50,10 +50,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return View(new SigninViewModel());
         }
 
-        [GET("Signup/{hash}")]
-        public ActionResult SignUp(string hash)
+        [GET("Signup/{invite}")]
+        public ActionResult SignUp(string invite)
         {
-            if (string.IsNullOrEmpty(hash))
+            if (string.IsNullOrEmpty(invite))
             {
                 if (User.Identity.IsAuthenticated)
                 {
@@ -75,12 +75,12 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             try
             {
-                var user = _userService.GetUnactivatedUser(hash);
+                var user = _userService.GetUnactivatedUser(invite);
                 signupViewModel.Email = user.Email;
             }
             catch (UserNotFoundException)
             {
-                RedirectToAction("Signin", "Authorization");
+                return RedirectToAction("Signin", "Authorization");
             }
             
             return View(signupViewModel);

@@ -1,5 +1,4 @@
 ﻿@using System.Web.Optimization
-
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "Upload | Bingally";
@@ -23,9 +22,9 @@
     &nbsp;&nbsp;
     <button class="btn btn-danger" data-bind="click: startMoving, enable: canMovePhotos">Move photos</button>
     &nbsp;
-    <button class="btn btn-inverse" data-bind="enable: canClearUploadedPhotos, click: clearUploadedPhotos">Clear uploaded</button>
+    <button class="btn btn-inverse" data-bind="click: cleanErrors">Clean errors</button>
     <div id="select-all-photos">
-        <input type="checkbox" data-bind="enable: canSelectAllPhotos, checked: chekedAllPhotos, click: selectAllPhotos"> Select all photos&nbsp;
+        <input type="checkbox" data-bind="enable: canSelectAllPhotos, checked: chekedAllPhotos"> Select all photos&nbsp;
     </div>
 </div>
 

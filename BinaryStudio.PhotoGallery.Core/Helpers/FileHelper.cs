@@ -9,7 +9,7 @@ using Winista.Mime;
 
 namespace BinaryStudio.PhotoGallery.Core.Helpers
 {
-    public class FileHelper : IFileHelper
+    internal class FileHelper : IFileHelper
     {
         private readonly IFileWrapper _fileWrapper;
 
@@ -18,11 +18,11 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             _fileWrapper = fileWrapper;
         }
 
-        public string GetMimeTypeOfFile(string fileName)
+        private MimeType GetMimeType(string fileName)
         {
             if (!_fileWrapper.Exists(fileName))
             {
-                throw new FileNotFoundException(fileName + " not found");
+                throw new FileNotFoundException("File '" + fileName + "' not found");
             }
 
             var allMimeTypes = new MimeTypes();
@@ -38,7 +38,21 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
                 return null;
             }
 
+            return mimeType;
+        }
+
+        public string GetMimeTypeOfFile(string fileName)
+        {
+            var mimeType = this.GetMimeType(fileName);
+
             return mimeType != null ? mimeType.Name : "unknown/unknown";
+        }
+
+        public string GetRealFileFormat(string fileName)
+        {
+            var mimeType = this.GetMimeType(fileName);
+
+            return mimeType != null ? mimeType.SubType : "unknown";
         }
 
         public bool IsImageFile(string fileName)

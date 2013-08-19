@@ -8,24 +8,30 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     internal class SearchService : DbService, ISearchService
     {
+        private readonly IAlbumSearchService albumSearchService;
+        private readonly ICommentSearchService commentSearchService;
         private readonly IPhotoSearchService photoSearchService;
-
-        private readonly ISearchCacheTask searchCacheTask;
         private readonly IUserSearchService userSearchService;
 
+        private readonly ISearchCacheTask searchCacheTask;
+
         public SearchService(IUnitOfWorkFactory workFactory, IPhotoSearchService photoSearchService,
-            IUserSearchService userSearchService,
+            IUserSearchService userSearchService, IAlbumSearchService albumSearchService,
+            ICommentSearchService commentSearchService,
             ISearchCacheTask searchCacheTask)
             : base(workFactory)
         {
             this.photoSearchService = photoSearchService;
             this.userSearchService = userSearchService;
+            this.albumSearchService = albumSearchService;
+            this.commentSearchService = commentSearchService;
+
             this.searchCacheTask = searchCacheTask;
         }
 
         public SearchResult Search(SearchArguments searchArguments)
         {
-            var resultItems = new List<IFound>();
+            var result = new List<IFound>();
 
             string resultToken = searchArguments.SearchCacheToken;
 
@@ -33,29 +39,37 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             {
                 SearchCache searchCache = searchCacheTask.DeductCache(resultToken, searchArguments.Interval);
 
-                resultItems.AddRange(searchCache.Value);
+                result.AddRange(searchCache.Value);
             }
             else
             {
                 if (searchArguments.IsSearchByPhotos)
                 {
-                    resultItems.AddRange(photoSearchService.Search(searchArguments));
+                    result.AddRange(photoSearchService.Search(searchArguments));
                 }
 
                 if (searchArguments.IsSearchByUsers)
                 {
-                    resultItems.AddRange(userSearchService.Search(searchArguments));
+                    result.AddRange(userSearchService.Search(searchArguments));
                 }
 
-                // todo: search by other types
+                if (searchArguments.IsSearchByAlbums)
+                {
+                    result.AddRange(albumSearchService.Search(searchArguments));
+                }
 
-                resultToken = searchCacheTask.AddCache(resultItems.RemoveElements(searchArguments.Interval));
-                resultItems = resultItems.TakeInterval(searchArguments.Interval).ToList();
+                if (searchArguments.IsSearchByComments)
+                {
+                    result.AddRange(commentSearchService.Search(searchArguments));
+                }
+
+                resultToken = searchCacheTask.AddCache(result.RemoveElements(searchArguments.Interval));
+                result = result.TakeInterval(searchArguments.Interval).ToList();
             }
 
             return new SearchResult
             {
-                Value = resultItems,
+                Value = result.OrderByDescending(found => found.Relevance),
                 SearchCacheToken = resultToken
             };
         }
