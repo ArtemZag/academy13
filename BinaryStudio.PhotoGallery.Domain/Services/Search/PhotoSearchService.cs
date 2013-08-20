@@ -42,7 +42,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 }
             }
 
-
             return Group(result);
         }
 

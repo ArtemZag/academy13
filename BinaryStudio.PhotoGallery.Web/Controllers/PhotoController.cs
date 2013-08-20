@@ -16,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             /* var photoModel = _photoService.GetPhoto(Int32.Parse(photoId));
             var photoPath = new List<string>();
 */
-            return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
+            return Redirect(FB.CreateAuthUrl(Randomizer.GetString(16)));
             //FB.AddPhotosToAlbum(photoPath,"MakTest",);
         }
 

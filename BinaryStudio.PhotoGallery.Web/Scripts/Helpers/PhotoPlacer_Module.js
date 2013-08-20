@@ -69,11 +69,11 @@
     var startIndex = 0;
 
     function ajaxPhotoLoad() {
-        $("#photopreloader").show();
+        $("#loader").show();
         console.log("send");
         $.get(controllerURl + '/' + startIndex + '/' + photoPortion, getPhotos)
             .fail(function() {
-                $("#photopreloader").hide();
+                $("#loader").hide();
             });
     }
 
@@ -98,7 +98,7 @@
         } else {
             $(window).unbind("scroll");
         }
-        $("#photopreloader").hide();
+        $("#loader").hide();
     }
     
 });

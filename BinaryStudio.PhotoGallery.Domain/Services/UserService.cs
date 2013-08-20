@@ -12,14 +12,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class UserService : DbService, IUserService
     {
-        private readonly IAlbumService _albumService;
-        private readonly ICryptoProvider _cryptoProvider;
+        private readonly IAlbumService albumService;
+        private readonly ICryptoProvider cryptoProvider;
 
         public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider, IAlbumService albumService)
             : base(workFactory)
         {
-            _cryptoProvider = cryptoProvider;
-            _albumService = albumService;
+            this.cryptoProvider = cryptoProvider;
+            this.albumService = albumService;
         }
 
         public IEnumerable<UserModel> GetAllUsers()
@@ -93,8 +93,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
             if (provider == AuthInfoModel.ProviderType.Local)
             {
-                user.Salt = _cryptoProvider.GetNewSalt();
-                user.UserPassword = _cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
+                user.Salt = cryptoProvider.GetNewSalt();
+                user.UserPassword = cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
             }
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -122,7 +122,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 Salt = Randomizer.GetString(16),
                 // Empty password field is not good 
                 UserPassword =
-                    _cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), _cryptoProvider.GetNewSalt())
+                    cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), cryptoProvider.GetNewSalt())
             };
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -131,7 +131,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 unitOfWork.SaveChanges();
 
                 int userId = unitOfWork.Users.Find(user => user.Email == userEmail).Id;
-                _albumService.CreateSystemAlbums(userId);
+                albumService.CreateSystemAlbums(userId);
             }
 
             return userModel.Salt;
@@ -154,9 +154,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         userEmail));
                 }
 
-                userModel.Salt = _cryptoProvider.GetNewSalt();
+                userModel.Salt = cryptoProvider.GetNewSalt();
 
-                userModel.UserPassword = _cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
+                userModel.UserPassword = cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
                 userModel.IsActivated = true;
 
 
@@ -192,7 +192,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     UserModel user = GetUser(userEmail, unitOfWork);
 
-                    result = _cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
+                    result = cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
                 }
             }
             catch (UserNotFoundException)
@@ -234,7 +234,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public bool IsUserAdmin(string userEmail)
         {
-            return this.GetUser(userEmail).IsAdmin;
+            return GetUser(userEmail).IsAdmin;
         }
 
         public void MakeUserGod(int godId, int slaveId)

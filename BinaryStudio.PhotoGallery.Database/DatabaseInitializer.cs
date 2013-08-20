@@ -231,7 +231,7 @@ namespace BinaryStudio.PhotoGallery.Database
                 var group = new GroupModel
                 {
                     GroupName = "Test group",
-                    OwnerID = unitOfWork.Users.Find(a => a.Email == "Admin@bingally.com").Id,
+                    OwnerId = unitOfWork.Users.Find(a => a.Email == "Admin@bingally.com").Id,
                     Description = "Test group"
                 };
 
@@ -297,7 +297,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     Photos = new Collection<PhotoModel>()
                 };
 
-                var currentGrup = unitOfWork.Groups.Find(x => x.OwnerID == 1);
+                var currentGrup = unitOfWork.Groups.Find(x => x.OwnerId == 1);
 
                 currentUser.Groups.Add(currentGrup);
                 currentUser.Albums.Add(albumForGolovin);

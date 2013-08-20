@@ -15,7 +15,7 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-//    [Authorize]
+    [Authorize]
     [RoutePrefix("api/photo")]
     public class PhotoController : ApiController
     {

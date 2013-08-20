@@ -8,25 +8,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class GroupService : DbService, IGroupService
     {
+        private readonly List<string> systemGroupList = new List<string>
+        {
+            "BlockedUsers"
+        };
+
         public GroupService(IUnitOfWorkFactory workFactory)
             : base(workFactory)
         {
         }
 
-        private readonly List<string> _systemGroupList = new List<string>()
-            {
-                "BlockedUsers"
-            };
-
-        private bool IsGroupSystem(GroupModel groupModel)
-        {
-            return _systemGroupList.Contains(groupModel.GroupName);
-        }
-
         //todo: add check permission for creating group event 
-        public void Create(int userID, GroupModel groupModel)
+        public void Create(int userId, GroupModel groupModel)
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 if (unitOfWork.Groups.Find(group => group.GroupName == groupModel.GroupName) != null)
                 {
@@ -42,17 +37,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         //todo: add check permission for creating group event 
-        public void Create(int userID, string groupName)
+        public void Create(int userId, string groupName)
         {
             var groupModel = new GroupModel
-                {
-                    GroupName = groupName,
-                    OwnerID = userID
-                };
+            {
+                GroupName = groupName,
+                OwnerId = userId
+            };
 
             try
             {
-                this.Create(userID, groupModel);
+                Create(userId, groupModel);
             }
             catch (Exception exception)
             {
@@ -60,13 +55,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public GroupModel GetGroup(int groupID)
+        public GroupModel GetGroup(int groupId)
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 try
                 {
-                    return GetGroup(groupID, unitOfWork);
+                    return GetGroup(groupId, unitOfWork);
                 }
                 catch (Exception exception)
                 {
@@ -76,19 +71,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         //todo: add check permission for adding group event 
-        public void AddUser(int ownerID, int userID, int groupID)
+        public void AddUser(int ownerId, int userId, int groupId)
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 try
                 {
-                    var group = GetGroup(groupID);
-                    var owner = GetUser(ownerID, unitOfWork);
-                    var user = GetUser(userID, unitOfWork);
+                    GroupModel group = GetGroup(groupId);
+                    UserModel owner = GetUser(ownerId, unitOfWork);
+                    UserModel user = GetUser(userId, unitOfWork);
 
-                    if (group.OwnerID == ownerID || owner.IsAdmin)
+                    if (group.OwnerId == ownerId || owner.IsAdmin)
                     {
-                        unitOfWork.Groups.Find(groupID).Users.Add(user);
+                        unitOfWork.Groups.Find(groupId).Users.Add(user);
                         unitOfWork.SaveChanges();
                     }
                 }
@@ -100,15 +95,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         //todo: add check permission for adding group event 
-        public void AddUser(int ownerID, int userID, string groupName)
+        public void AddUser(int ownerId, int userId, string groupName)
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 try
                 {
-                    var group = GetGroup(groupName, unitOfWork);
+                    GroupModel group = GetGroup(groupName, unitOfWork);
 
-                    this.AddUser(ownerID, userID, group.Id);
+                    AddUser(ownerId, userId, group.Id);
                 }
                 catch (Exception exception)
                 {
@@ -118,19 +113,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         //todo: add check permission for adding group event
-        public void RemoveUser(int ownerID, int userID, int groupID)
+        public void RemoveUser(int ownerId, int userId, int groupId)
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 try
                 {
-                    var group = GetGroup(groupID);
-                    var owner = GetUser(ownerID, unitOfWork);
-                    var user = GetUser(userID, unitOfWork);
+                    GroupModel group = GetGroup(groupId);
+                    UserModel owner = GetUser(ownerId, unitOfWork);
+                    UserModel user = GetUser(userId, unitOfWork);
 
-                    if (group.OwnerID == ownerID || owner.IsAdmin)
+                    if (group.OwnerId == ownerId || owner.IsAdmin)
                     {
-                        unitOfWork.Groups.Find(groupID).Users.Remove(user);
+                        unitOfWork.Groups.Find(groupId).Users.Remove(user);
                         unitOfWork.SaveChanges();
                     }
                 }
@@ -142,15 +137,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         //todo: add check permission for adding group event
-        public void RemoveUser(int ownerID, int userID, string groupName)
+        public void RemoveUser(int ownerId, int userId, string groupName)
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 try
                 {
-                    var group = GetGroup(groupName, unitOfWork);
+                    GroupModel group = GetGroup(groupName, unitOfWork);
 
-                    this.RemoveUser(ownerID, userID, group.Id);
+                    RemoveUser(ownerId, userId, group.Id);
                 }
                 catch (Exception exception)
                 {
@@ -160,21 +155,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         //todo: add check permission for deleting group event
-        public void Delete(int ownerID, int groupID)
+        public void Delete(int ownerId, int groupId)
         {
-            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 try
                 {
-                    var group = GetGroup(groupID);
-                    var owner = GetUser(ownerID, unitOfWork);
+                    GroupModel group = GetGroup(groupId);
+                    UserModel owner = GetUser(ownerId, unitOfWork);
 
                     if (IsGroupSystem(group))
                     {
                         throw new GroupAlreadyExistException(group.GroupName);
                     }
 
-                    if (group.OwnerID == ownerID || owner.IsAdmin)
+                    if (group.OwnerId == ownerId || owner.IsAdmin)
                     {
                         unitOfWork.Groups.Delete(group);
                         unitOfWork.SaveChanges();
@@ -185,6 +180,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     throw new Exception(exception.Message, exception);
                 }
             }
+        }
+
+        private bool IsGroupSystem(GroupModel groupModel)
+        {
+            return systemGroupList.Contains(groupModel.GroupName);
         }
     }
 }

@@ -11,16 +11,16 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
 {
     internal class FileHelper : IFileHelper
     {
-        private readonly IFileWrapper _fileWrapper;
+        private readonly IFileWrapper fileWrapper;
 
         public FileHelper(IFileWrapper fileWrapper)
         {
-            _fileWrapper = fileWrapper;
+            this.fileWrapper = fileWrapper;
         }
 
         private MimeType GetMimeType(string fileName)
         {
-            if (!_fileWrapper.Exists(fileName))
+            if (!fileWrapper.Exists(fileName))
             {
                 throw new FileNotFoundException("File '" + fileName + "' not found");
             }
@@ -43,14 +43,14 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
 
         public string GetMimeTypeOfFile(string fileName)
         {
-            var mimeType = this.GetMimeType(fileName);
+            var mimeType = GetMimeType(fileName);
 
             return mimeType != null ? mimeType.Name : "unknown/unknown";
         }
 
         public string GetRealFileFormat(string fileName)
         {
-            var mimeType = this.GetMimeType(fileName);
+            var mimeType = GetMimeType(fileName);
 
             return mimeType != null ? mimeType.SubType : "unknown";
         }
@@ -103,7 +103,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
                 throw new ArgumentNullException("destName");
             }
 
-            if (!_fileWrapper.Exists(sourceName))
+            if (!fileWrapper.Exists(sourceName))
             {
                 throw new FileNotFoundException(string.Format("Source file '{0}' not found", sourceName));
             }
@@ -118,7 +118,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             long number = 1;
 
             // Create new file name, while it exist
-            while (_fileWrapper.Exists(newFileNameWithPath.ToString()))
+            while (fileWrapper.Exists(newFileNameWithPath.ToString()))
             {
                 var leftBraketIndex = fileName.ToString().LastIndexOf('(');
                 var rightBraketIndex = fileName.ToString().LastIndexOf(')');
@@ -131,9 +131,9 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
                 }
                 else
                 {
-                    const string pattern = @"\s[(]\d+[)]$"; // ' (12)' oder ' (1)' and etc.
+                    const string PATTERN = @"\s[(]\d+[)]$"; // ' (12)' oder ' (1)' and etc.
 
-                    var regEx = new Regex(pattern);
+                    var regEx = new Regex(PATTERN);
 
                     var fileNumberFound = regEx.IsMatch(fileName.ToString());
 
@@ -155,7 +155,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
                 number++;
             }
 
-            _fileWrapper.Move(sourceName, newFileNameWithPath.ToString());
+            fileWrapper.Move(sourceName, newFileNameWithPath.ToString());
         }
 
         public long GetFileSize(string path)

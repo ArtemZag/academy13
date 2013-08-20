@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace BinaryStudio.PhotoGallery.Core.PathUtils
+namespace BinaryStudio.PhotoGallery.Core.IOUtils
 {
     public interface IDirectoryWrapper
     {
