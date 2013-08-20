@@ -110,7 +110,7 @@ namespace BinaryStudio.PhotoGallery.Web.Events
                                        "ответил на ваш комментарий к фотографии."
                                        , mWhoseComment.FirstName, mWhoseComment.LastName);
             _hubNotify.Clients.Group(mParentCommentOwner.Email)
-                          .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
+                          .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildCommentUrl(mComment.PhotoModelId ,mComment.Id));
         }
 
         public static GlobalEventsHandler Instance
