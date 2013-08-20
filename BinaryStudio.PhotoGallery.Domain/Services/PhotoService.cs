@@ -9,10 +9,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     internal class PhotoService : DbService, IPhotoService
     {
         private readonly ISecureService _secureService;
+        private readonly IGlobalEventsAggregator _eventsAggregator;
 
-        public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
+        public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator) : base(workFactory)
         {
             _secureService = secureService;
+            _eventsAggregator = eventsAggregator;
         }
 
         public PhotoModel AddPhoto(PhotoModel photoModel)
@@ -198,6 +200,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public PhotoModel GetPhotoWithoutRightsCheck(int photoId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                PhotoModel photoModel = unitOfWork.Photos.Find(photoId);
+                return photoModel;
+            }
+        }
+
+
         public IEnumerable<UserModel> GetLikes(string userEmail, int photoId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -222,6 +234,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 unitOfWork.Photos.Find(photoId).Likes.Add(user);
                 unitOfWork.SaveChanges();
+
+                _eventsAggregator.PushCommentAddedEvent(user, photoId);
             }
         }
 
