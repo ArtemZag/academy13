@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
                     if (userExist)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToRoute("login");
                     }
 
                     // Clear cookie
@@ -63,7 +63,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
                     if (userExist)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToRoute("");
                     }
                     // Clear cookie
                     FormsAuthentication.SignOut();
@@ -79,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             }
             catch (UserNotFoundException)
             {
-                return RedirectToAction("Signin", "Account");
+                return RedirectToRoute("login");
             }
             
             return View(signupViewModel);
@@ -132,14 +132,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             FB.AddPhotosToAlbum(photoCollection, "Bingally", token);
            var albumList =  FB.GetListOfAlbums(token);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToRoute("");
         }
 
         [GET("signout")]
         public ActionResult SignOut()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Signin", "Account");
+            return RedirectToRoute("login");
         }
 
         [HttpGet]
