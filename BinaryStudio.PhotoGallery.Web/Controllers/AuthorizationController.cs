@@ -44,7 +44,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             }
             if (service == "facebook")
             {
-                return Redirect(FB.CreateAuthURL(Randomizer.GetString(16)));
+                return Redirect(FB.CreateAuthUrl(Randomizer.GetString(16)));
             }
             
             return View(new SigninViewModel());

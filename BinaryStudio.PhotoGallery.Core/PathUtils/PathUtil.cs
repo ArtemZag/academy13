@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
+﻿using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
@@ -27,12 +24,13 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public PathUtil()
         {
-            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"]; 
+            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
         }
 
+        #region TODO! Change this, please
         static PathUtil()
         {
-            appPath = HttpRuntime.AppDomainAppPath;
+            appPath = ConfigurationManager.AppSettings["DataDirectory"];
             dataFolderName = ConfigurationManager.AppSettings["dataFolderName"];
             photosFolderName = ConfigurationManager.AppSettings["photosFolderName"];
             avatarFileName = ConfigurationManager.AppSettings["AvatarFileName"];
@@ -40,6 +38,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             collagesFolderName = ConfigurationManager.AppSettings["CollagesFolderName"];
             usersFolder = BuildPathToUsersFolderOnServer();
         }
+        #endregion
 
         public string BuildPhotoDirectoryPath()
         {
@@ -70,7 +69,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        public string BuildAbsoluteAlbumPath(int userId, int albumId)
+        public string BuildAbsoluteTemporaryAlbumPath(int userId, int albumId)
         {
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
@@ -141,6 +140,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return HostingEnvironment.MapPath(userTempPath);
         }
 
+        #region TODO! Change this, please
         private static string BuildPathToUsersFolderOnServer()
         {
             var stringBuilder = new StringBuilder(appPath);
@@ -185,6 +185,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return stringBuilder.Append(DELIMITER).
                                  Append(collagesFolderName).ToString();
         }
+        #endregion
 
         private string GetDataDirectory()
         {

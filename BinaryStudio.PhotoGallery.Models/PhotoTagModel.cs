@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets the photo tag ID.
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the photo tag name.

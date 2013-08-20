@@ -108,10 +108,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 int tempAlbumId = _albumService.GetAlbumId(userId, "Temporary");
 
                 // Get path to the temporary album folder
-                string pathToTempAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, tempAlbumId);
+                string pathToTempAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(userId, tempAlbumId);
 
                 // Get path to the destination album folder
-                string pathToDestAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, albumId);
+                string pathToDestAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(userId, albumId);
 
                 if (!_directoryWrapper.Exists(pathToDestAlbum))
                 {
@@ -207,7 +207,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 int tempAlbumId = _albumService.GetAlbumId(userId, "Temporary");
 
                 // Get path to the temporary album folder
-                string pathToTempAlbum = _pathUtil.BuildAbsoluteAlbumPath(userId, tempAlbumId);
+                string pathToTempAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(userId, tempAlbumId);
 
                 // Create directory, if it isn't exist
                 if (!_directoryWrapper.Exists(pathToTempAlbum))

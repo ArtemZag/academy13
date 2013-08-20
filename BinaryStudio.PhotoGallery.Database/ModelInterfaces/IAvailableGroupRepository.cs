@@ -7,8 +7,8 @@ namespace BinaryStudio.PhotoGallery.Database.ModelInterfaces
         /// <summary>
         /// Adds group that will have some permissions in work with album
         /// </summary>
-        /// <param name="groupID">ID of group with permissions</param>
-        /// <param name="albumID">Album ID</param>
-        void Add(int groupID, int albumID);
+        /// <param name="groupId">ID of group with permissions</param>
+        /// <param name="albumId">Album ID</param>
+        void Add(int groupId, int albumId);
     }
 }

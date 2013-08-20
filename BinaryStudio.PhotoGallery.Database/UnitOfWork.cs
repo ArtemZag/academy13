@@ -6,26 +6,26 @@ namespace BinaryStudio.PhotoGallery.Database
 {
     internal class UnitOfWork : IUnitOfWork
     {
-        private readonly DatabaseContext _databaseContext;
+        private readonly DatabaseContext databaseContext;
 
 
-        private readonly Lazy<IUserRepository> _usersLazy;
+        private readonly Lazy<IUserRepository> usersLazy;
 
-        private readonly Lazy<IGroupRepository> _groupLazy;
+        private readonly Lazy<IGroupRepository> groupLazy;
 
-        private readonly Lazy<IAvailableGroupRepository> _availableGroupLazy;
+        private readonly Lazy<IAvailableGroupRepository> availableGroupLazy;
 
-        private readonly Lazy<IAuthInfoRepository> _authInfoLazy;
+        private readonly Lazy<IAuthInfoRepository> authInfoLazy;
 
-        private readonly Lazy<IPhotoRepository> _photoLazy;
+        private readonly Lazy<IPhotoRepository> photoLazy;
 
-        private readonly Lazy<IPhotoCommentRepository> _photoCommentLazy;
+        private readonly Lazy<IPhotoCommentRepository> photoCommentLazy;
 
-        private readonly Lazy<IAlbumRepository> _albumLazy;
+        private readonly Lazy<IAlbumRepository> albumLazy;
 
-        private readonly Lazy<IPhotoTagRepository> _photoTagLazy;
+        private readonly Lazy<IPhotoTagRepository> photoTagLazy;
 
-        private readonly Lazy<IAlbumTagRepository> _albumTagLazy;
+        private readonly Lazy<IAlbumTagRepository> albumTagLazy;
 
 
         /// <summary>
@@ -33,17 +33,17 @@ namespace BinaryStudio.PhotoGallery.Database
         /// </summary>
         public UnitOfWork()
         {
-            _databaseContext = new DatabaseContext("BinaryStudio.PhotoGallery.Database.DatabaseContext");
+            databaseContext = new DatabaseContext("BinaryStudio.PhotoGallery.Database.DatabaseContext");
             
-            _albumTagLazy = new Lazy<IAlbumTagRepository>(() => new AlbumTagRepository(_databaseContext));
-            _photoTagLazy = new Lazy<IPhotoTagRepository>(() => new PhotoTagRepository(_databaseContext));
-            _albumLazy = new Lazy<IAlbumRepository>(() => new AlbumRepository(_databaseContext));
-            _photoCommentLazy = new Lazy<IPhotoCommentRepository>(() => new PhotoCommentRepository(_databaseContext));
-            _photoLazy = new Lazy<IPhotoRepository>(() => new PhotoRepository(_databaseContext));
-            _authInfoLazy = new Lazy<IAuthInfoRepository>(() => new AuthInfoRepository(_databaseContext));
-            _availableGroupLazy = new Lazy<IAvailableGroupRepository>(() => new AvailableGroupRepository(_databaseContext));
-            _groupLazy = new Lazy<IGroupRepository>(() => new GroupRepository(_databaseContext));
-            _usersLazy = new Lazy<IUserRepository>(() => new UserRepository(_databaseContext));
+            albumTagLazy = new Lazy<IAlbumTagRepository>(() => new AlbumTagRepository(databaseContext));
+            photoTagLazy = new Lazy<IPhotoTagRepository>(() => new PhotoTagRepository(databaseContext));
+            albumLazy = new Lazy<IAlbumRepository>(() => new AlbumRepository(databaseContext));
+            photoCommentLazy = new Lazy<IPhotoCommentRepository>(() => new PhotoCommentRepository(databaseContext));
+            photoLazy = new Lazy<IPhotoRepository>(() => new PhotoRepository(databaseContext));
+            authInfoLazy = new Lazy<IAuthInfoRepository>(() => new AuthInfoRepository(databaseContext));
+            availableGroupLazy = new Lazy<IAvailableGroupRepository>(() => new AvailableGroupRepository(databaseContext));
+            groupLazy = new Lazy<IGroupRepository>(() => new GroupRepository(databaseContext));
+            usersLazy = new Lazy<IUserRepository>(() => new UserRepository(databaseContext));
             
         }
 
@@ -52,7 +52,7 @@ namespace BinaryStudio.PhotoGallery.Database
         /// </summary>
         public void Dispose()
         {
-            _databaseContext.Dispose();
+            databaseContext.Dispose();
         }
 
         /// <summary>
@@ -60,52 +60,52 @@ namespace BinaryStudio.PhotoGallery.Database
         /// </summary>
         public void SaveChanges()
         {
-            _databaseContext.SaveChanges();
+            databaseContext.SaveChanges();
         }
 
         public IUserRepository Users
         {
-            get { return this._usersLazy.Value; }
+            get { return this.usersLazy.Value; }
         }
 
         public IGroupRepository Groups
         {
-            get { return this._groupLazy.Value; }
+            get { return this.groupLazy.Value; }
         }
 
         public IAvailableGroupRepository AvailableGroups
         {
-            get { return this._availableGroupLazy.Value; }
+            get { return this.availableGroupLazy.Value; }
         }
 
         public IAuthInfoRepository AuthInfos
         {
-            get { return this._authInfoLazy.Value; }
+            get { return this.authInfoLazy.Value; }
         }
 
         public IPhotoRepository Photos
         {
-            get { return this._photoLazy.Value; }
+            get { return this.photoLazy.Value; }
         }
 
         public IPhotoCommentRepository PhotoComments
         {
-            get { return this._photoCommentLazy.Value; }
+            get { return this.photoCommentLazy.Value; }
         }
 
         public IAlbumRepository Albums
         {
-            get { return this._albumLazy.Value; }
+            get { return this.albumLazy.Value; }
         }
 
         public IAlbumTagRepository AlbumTags
         {
-            get { return _albumTagLazy.Value; }
+            get { return albumTagLazy.Value; }
         }
 
         public IPhotoTagRepository PhotoTags
         {
-            get { return _photoTagLazy.Value; }
+            get { return photoTagLazy.Value; }
         }
     }
 }
