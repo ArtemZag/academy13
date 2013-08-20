@@ -2,8 +2,6 @@
 
     var marginsOfPhotoCont;
     $(document).ready(function () {
-        $("#loader").hide();
-
         $("#photoWrapper").append('<div class="photoContainer" style="display:none;"></div>');
         marginsOfPhotoCont = parseInt($('.photoContainer').css('margin-left'))
             + parseInt($('.photoContainer').css('margin-right'))
