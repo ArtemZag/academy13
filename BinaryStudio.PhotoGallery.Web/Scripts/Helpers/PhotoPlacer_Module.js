@@ -70,7 +70,6 @@
 
     function ajaxPhotoLoad() {
         $("#loader").show();
-        console.log("send");
         $.get(controllerURl, { skip: startIndex, take: startIndex + photoPortion, albumId: albumId }, getPhotos)
             .fail(function() {
                 $("#loader").hide();
@@ -79,7 +78,6 @@
 
     function getPhotos(photos) {
         if (photos.length > 0) {
-            console.log("req");
             ko.utils.arrayPushAll(window.viewModel.Photos, photos);
             var $newPhotoContainers = $('#photoWrapper > div.invisible');
             var $photos = $newPhotoContainers.find("img:first");
