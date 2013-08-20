@@ -1,23 +1,24 @@
-﻿@using PerpetuumSoft.Knockout
-@using System.Web.Optimization
-@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumViewModel
+﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.ViewModels
+@using PerpetuumSoft.Knockout
+@model AlbumViewModel
 
-<script src="@Url.Content("~/Scripts/knockout-2.3.0.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")" type="text/javascript"></script> 
+<script src="@Url.Content("~/Scripts/knockout-2.3.0.js")" type="text/javascript"> </script>
+<script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"> </script>
+<script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"> </script>
+<script src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")" type="text/javascript"> </script> 
 @Scripts.Render("~/bundles/scripts/bootstrap")
 
-@Styles.Render("~/Content/photo_flow.css")
+@Styles.Render("~/Content/photo-flow.css")
 @Styles.Render("~/Content/spinner.css")
 
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "Album | Bingally";
-    var ko = Html.CreateKnockoutContext();
+    KnockoutContext<AlbumViewModel> ko = Html.CreateKnockoutContext();
 }
  
-<div id="photopreloader">
+<div id="loader">
     <ul class="spinner">
         <li></li>
         <li></li>
@@ -26,7 +27,7 @@
     </ul>
 </div>
 <div id="photoWrapper">
-    @using (var photos = ko.Foreach(it => it.Photos))
+    @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it.Photos))
     {
         <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
             <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
@@ -37,11 +38,11 @@
 
 @ko.Initialize(Model)
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function() {
         PhotoPlacer_Module("/Api/Photo/GetPhotos", window.viewModel.Id());
     });
 
-    viewModel.gotoPhotoPage = function (data) {
+    viewModel.gotoPhotoPage = function(data) {
         self.location = data.PhotoViewPageUrl();
     };
 </script>

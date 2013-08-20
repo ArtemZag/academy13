@@ -1,5 +1,7 @@
 ﻿$(document).ready(function () {
 
+    $("#loader").hide();
+
     function searchViewModel() {
 
         var self = this;
@@ -119,12 +121,16 @@
 
     function sendSearchRequest() {
 
+        $("#loader").show();
+        
         $.get("api/search", JSON.parse(ko.toJSON(viewModel)), function (searchResult) {
 
             viewModel.searchCacheToken = searchResult.SearchCacheToken;
 
             addResultItems(searchResult.Items);
             resizeImages();
+
+            $("#loader").hide();
         });
     }
 

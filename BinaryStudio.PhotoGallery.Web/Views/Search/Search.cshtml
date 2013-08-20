@@ -1,21 +1,21 @@
 ﻿@using System.Web.Optimization
-@model BinaryStudio.PhotoGallery.Web.ViewModels.Search.SearchViewModel
-
 
 @{
     ViewBag.Title = "Search | Bingally";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-@Scripts.Render("~/bundles/scripts/jquery")
-
-<script src="~/Scripts/knockout-2.3.0.js"> </script>
-<script src="~/Scripts/knockout.mapping-latest.debug.js"> </script>
-
-<script src="~/Scripts/Search/search.js"> </script>
-@Scripts.Render("~/bundles/scripts/bootstrap")
-
 @Styles.Render("~/Content/search.css")
+@Styles.Render("~/Content/spinner.css")
+
+<div id="loader">
+    <ul class="spinner">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
 
 <div class="container">
     
@@ -167,3 +167,11 @@
 
     </div><!-- .row -->
 </div><!-- .container -->
+
+@Scripts.Render("~/bundles/scripts/jquery")
+@Scripts.Render("~/bundles/scripts/bootstrap")
+
+@Scripts.Render("~/bundles/scripts/knockout")
+@Scripts.Render("~/bundles/scripts/knockout.mapping-latest.debug")
+
+@Scripts.Render("~/Scripts/Search/search.js")

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using BinaryStudio.PhotoGallery.Core.EnumerableExtensions;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Models;
@@ -27,6 +28,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId,
                     unitOfWork);
 
+                avialableAlbums.ToDebugOutput();
+
                 if (searchArguments.IsSearchPhotosByDescription)
                 {
                     IEnumerable<PhotoFound> found = SearchByDescription(avialableAlbums, searchWords);
@@ -41,7 +44,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     result.AddRange(found);
                 }
             }
-
 
             return Group(result);
         }
