@@ -8,7 +8,8 @@
 <script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"> </script>
 <script src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")" type="text/javascript"> </script> 
 @Scripts.Render("~/bundles/scripts/bootstrap")
-@Styles.Render("~/Content/photo_flow.css")
+
+@Styles.Render("~/Content/photo-flow.css")
 @Styles.Render("~/Content/spinner.css")
 
 
@@ -18,7 +19,7 @@
     KnockoutContext<InfoViewModel> ko = Html.CreateKnockoutContext();
 }
  
-<div id="photopreloader">
+<div id="loader">
     <ul class="spinner">
         <li></li>
         <li></li>
