@@ -13,7 +13,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
             var viewModel = new AlbumViewModel()
                 {
                     AlbumName = mAlbum.Name,
-                    AlbumTags = mAlbum.AlbumTags,
                     Description = mAlbum.Description,
                     Id = mAlbum.Id,
                     Photos = new List<PhotoViewModel>()
