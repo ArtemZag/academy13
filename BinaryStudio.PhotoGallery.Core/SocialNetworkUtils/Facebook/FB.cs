@@ -8,9 +8,9 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
 {
     public static class FB
     {
-        private const string AppID = "659826524046756";
-        private const string AppSecret = "1e75119f703323257a5ebcbafe3687e6";
-        private const string RedirectionURL = "http://localhost:57367/Account/FacebookCallBack/";
+        private const string APP_ID = "659826524046756";
+        private const string APP_SECRET = "1e75119f703323257a5ebcbafe3687e6";
+        private const string REDIRECTION_URL = "http://localhost:57367/Account/FacebookCallBack/";
 
         public static string FirstName { get; private set; }
         public static string LastName { get; private set; }
@@ -45,20 +45,20 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
         public static void AddPhotosToAlbum(IEnumerable<string> photos, string albumName, string token)
         {
             var facebookClient = new FacebookClient(token);
-            var albumID = "";
+            var albumId = "";
 
             //Reads album infos
             dynamic albums = facebookClient.Get("/me/albums");
             foreach (dynamic albumInfo in albums.data)
             {
                 if (albumInfo.name != albumName) continue;
-                albumID = albumInfo.id;
+                albumId = albumInfo.id;
                 break;
             }
 
-            if (string.IsNullOrEmpty(albumID))
+            if (string.IsNullOrEmpty(albumId))
             {
-                albumID = CreateAlbum(albumName, "Created by Bingally", token);
+                albumId = CreateAlbum(albumName, "Created by Bingally", token);
             }
 
             foreach (var photo in photos)
@@ -72,7 +72,7 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
                         FileName = Randomizer.GetString(8) + ".jpg"
                     }.SetValue(attachement);
 
-                facebookClient.PostTaskAsync(albumID + "/photos", parameters);
+                facebookClient.PostTaskAsync(albumId + "/photos", parameters);
             }
 
             /*//Get the Pictures inside the album this gives JASON objects list that has photo attributes 
@@ -85,16 +85,16 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
         /// </summary>
         /// <param name="userSecret">user unic key</param>
         /// <returns>URL-tyle string request</returns>
-        public static string CreateAuthURL(string userSecret)
+        public static string CreateAuthUrl(string userSecret)
         {
             var stringBuilder = new StringBuilder();
 
             stringBuilder.Append("https://www.facebook.com/dialog/oauth?client_id=");
-            stringBuilder.Append(AppID);
+            stringBuilder.Append(APP_ID);
             stringBuilder.Append("&client_secret=");
-            stringBuilder.Append(AppSecret);
+            stringBuilder.Append(APP_SECRET);
             stringBuilder.Append("&redirect_uri=");
-            stringBuilder.Append(RedirectionURL);
+            stringBuilder.Append(REDIRECTION_URL);
             stringBuilder.Append(userSecret);
             stringBuilder.Append("&response_type=code&scope=email,user_photos");
 
@@ -113,10 +113,9 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook
 
             dynamic result = facebookClient.Post("oauth/access_token", new
             {
-                client_id = AppID,
-                client_secret = AppSecret,
-                redirect_uri = RedirectionURL+userSecret,
-                code = code
+                client_id = APP_ID,
+                client_secret = APP_SECRET,
+                redirect_uri = REDIRECTION_URL+userSecret,
             });
            
             return result.access_token;

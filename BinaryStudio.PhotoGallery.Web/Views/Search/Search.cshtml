@@ -1,26 +1,26 @@
 ﻿@using System.Web.Optimization
-@model BinaryStudio.PhotoGallery.Web.ViewModels.Search.SearchViewModel
-
 
 @{
     ViewBag.Title = "Search | Bingally";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-@Scripts.Render("~/bundles/scripts/jquery")
-
-<script src="~/Scripts/knockout-2.3.0.js"> </script>
-<script src="~/Scripts/knockout.mapping-latest.debug.js"> </script>
-
-<script src="~/Scripts/Search/search.js"> </script>
-
 @Styles.Render("~/Content/search.css")
+@Styles.Render("~/Content/spinner.css")
 
-         
+<div id="loader">
+    <ul class="spinner">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+
 <div class="container">
     
     <div class="span12">
-
+        
         <form class="form-search center" data-bind="submit: search">
             <div class="input-append">
                 <input type="text" class="span5 search-query" data-bind="value: searchQuery">
@@ -61,10 +61,10 @@
                 </div>
                 
                 <ul class="unstyled">
-                    <li><a data-bind="attr: { href: UserViewUri }"><!--ko text: Name--><!--/ko--></a></li>
-                    <li><!--ko text: Department--><!--/ko--></li>
+                    <li class="search-info-item"><a data-bind="attr: { href: UserViewUri }"><!--ko text: Name--><!--/ko--></a></li>
+                    <li class="search-info-item"><!--ko text: Department--><!--/ko--></li>
                     <!-- ko if: IsOnline -->
-                    <li>Online</li>
+                    <li class="search-info-item">Online</li>
                     <!-- /ko -->
                 </ul>
 
@@ -80,9 +80,25 @@
                 </div>
                 
                 <ul class="unstyled">
-                    <li><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: Name--><!--/ko--></a></li>
-                    <li><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
+                    <li class="search-info-item"><a data-bind="attr: { href: AlbumViewUrl }"><!--ko text: Name--><!--/ko--></a></li>
+                    <li class="search-info-item"><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
                     <li class="search-info-item"><!--ko text: DateOfCreation--><!--/ko--></li>
+                </ul>
+            </div>
+            <!--/ko -->
+            
+            <!--ko if: Type == 'comment' -->
+            <div class="span7 found-item">
+                <div class="result-image">
+                    <a data-bind="attr: { href: UserViewUrl }">
+                        <img data-bind="attr: {src: UserAvatarPath }"/>
+                    </a>
+                </div>
+                
+                <ul class="unstyled">
+                    <li class="search-info-item"><a data-bind="attr: { href: UserViewUrl }"><!--ko text: UserName--><!--/ko--></a></li>
+                    <li class="search-info-item"><!--ko text: DateOfCreation--><!--/ko--></li>
+                    <li class="search-info-item"><!--ko text: Text--><!--/ko--></li>
                 </ul>
             </div>
             <!--/ko -->
@@ -151,3 +167,11 @@
 
     </div><!-- .row -->
 </div><!-- .container -->
+
+@Scripts.Render("~/bundles/scripts/jquery")
+@Scripts.Render("~/bundles/scripts/bootstrap")
+
+@Scripts.Render("~/bundles/scripts/knockout")
+@Scripts.Render("~/bundles/scripts/knockout.mapping-latest.debug")
+
+@Scripts.Render("~/Scripts/Search/search.js")

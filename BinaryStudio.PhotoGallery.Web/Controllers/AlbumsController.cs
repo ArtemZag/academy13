@@ -60,7 +60,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 		                        {
 		                            new AlbumTagModel()
 		                                {
-		                                    ID = 0,
+		                                    Id = 0,
 		                                    TagName = "fun images",
 		                                    Albums = null
 		                                }

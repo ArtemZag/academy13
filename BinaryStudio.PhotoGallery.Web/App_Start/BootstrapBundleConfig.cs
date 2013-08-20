@@ -1,3 +1,4 @@
+using System.Security.Principal;
 using System.Web.Optimization;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(BinaryStudio.PhotoGallery.Web.App_Start.BootstrapBundleConfig), "RegisterBundles")]
@@ -35,6 +36,9 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
                 "~/Scripts/knockout-{version}.js"
                 ));
 
+            BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/knockout.mapping-latest.debug").Include(
+                "~/Scripts/knockout.mapping-latest.debug.js"));
+
             BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/chosen").Include(
                 "~/Scripts/chosen.jquery.js"
                 ));
@@ -46,7 +50,6 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
             BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/md5").Include(
                 "~/Scripts/md5.js"
                 ));
-
 
             BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/bootstrap").Include(
                 "~/Content/style-libs/bootstrap.css",

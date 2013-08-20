@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BinaryStudio.PhotoGallery.Models;
+﻿using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -12,62 +7,62 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         /// Creates new group by model
         /// </summary>
-        /// <param name="userID">Group owner</param>
+        /// <param name="userId">Group owner</param>
         /// <param name="groupModel"></param>
-        void Create(int userID, GroupModel groupModel);
+        void Create(int userId, GroupModel groupModel);
 
         /// <summary>
         /// Creates new group by name
         /// </summary>
-        /// <param name="userID">Group owner</param>
+        /// <param name="userId">Group owner</param>
         /// <param name="groupName"></param>
-        void Create(int userID, string groupName);
+        void Create(int userId, string groupName);
 
         /// <summary>
         /// Gets groupModel by it's ID
         /// </summary>
-        /// <param name="groupID"></param>
+        /// <param name="groupId"></param>
         /// <returns></returns>
-        GroupModel GetGroup(int groupID);
+        GroupModel GetGroup(int groupId);
 
         /// <summary>
         /// Adds user to group by groupID
         /// </summary>
-        /// <param name="ownerID">Group ownerID</param>
-        /// <param name="userID">User to add</param>
-        /// <param name="groupID"></param>
-        void AddUser(int ownerID, int userID, int groupID);
+        /// <param name="ownerId">Group ownerID</param>
+        /// <param name="userId">User to add</param>
+        /// <param name="groupId"></param>
+        void AddUser(int ownerId, int userId, int groupId);
 
         /// <summary>
         /// Adds user to group by groupName
         /// </summary>
-        /// <param name="ownerID">Group ownerID</param>
-        /// <param name="userID">User to add</param>
+        /// <param name="ownerId">Group ownerID</param>
+        /// <param name="userId">User to add</param>
         /// <param name="groupName"></param>
-        void AddUser(int ownerID, int userID, string groupName);
+        void AddUser(int ownerId, int userId, string groupName);
 
         /// <summary>
         /// Remove user from group by its ID
         /// </summary>
-        /// <param name="ownerID">Group ownerID</param>
-        /// <param name="userID">User to add</param>
-        /// <param name="groupID"></param>
-        void RemoveUser(int ownerID, int userID, int groupID);
+        /// <param name="ownerId">Group ownerID</param>
+        /// <param name="userId">User to add</param>
+        /// <param name="groupId"></param>
+        void RemoveUser(int ownerId, int userId, int groupId);
 
         /// <summary>
         /// Remove user from group by its name
         /// </summary>
-        /// <param name="ownerID">Group ownerID</param>
-        /// <param name="userID">User to add</param>
+        /// <param name="ownerId">Group ownerID</param>
+        /// <param name="userId">User to add</param>
         /// <param name="groupName"></param>
-        void RemoveUser(int ownerID, int userID, string groupName);
+        void RemoveUser(int ownerId, int userId, string groupName);
 
         /// <summary>
         /// Delete group by its ID
         /// </summary>
-        /// <param name="ownerID">Group ownerID</param>
-        /// <param name="groupID"></param>
-        void Delete(int ownerID, int groupID);
+        /// <param name="ownerId">Group ownerID</param>
+        /// <param name="groupId"></param>
+        void Delete(int ownerId, int groupId);
 
     }
 }
