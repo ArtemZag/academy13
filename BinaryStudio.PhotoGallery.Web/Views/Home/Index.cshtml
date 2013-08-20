@@ -38,6 +38,10 @@
 
 @ko.Initialize(Model)
 <script type="text/javascript">
+    $(document).ready(function () {
+        PhotoPlacer_Module("/Api/Photo/GetAllAvailablePhotos");
+    });
+
     viewModel.gotoPhotoPage = function(data) {
         self.location = data.PhotoViewPageUrl;
     };
@@ -45,4 +49,3 @@
 
 @ko.Apply(Model)
 @Scripts.Render("~/Scripts/Helpers/PhotoPlacer_Module.js")
-@Scripts.Render("~/Scripts/FlowPage/Init.js")

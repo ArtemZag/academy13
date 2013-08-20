@@ -302,7 +302,6 @@
     <Content Include="Scripts\Authorization\signup.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
-    <Content Include="Scripts\FlowPage\Init.js" />
     <Content Include="Scripts\jquery.pnotify.js" />
     <Content Include="Scripts\jquery.pnotify.min.js" />
     <Content Include="Scripts\jquery.signalR-1.1.3.js" />
@@ -443,6 +442,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\FlowPage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
