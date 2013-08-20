@@ -5,8 +5,7 @@
     var windowObject = $(window);
     var documentObject = $(document);
     var numberOfAlbums = 10;
-    var startIndex = 0;
-    var endIndex = numberOfAlbums - 1;
+    var skipCount = 0;
     /*var canvas = document.getElementById("canv");
     var ctx = canvas.getContext('2d');
     var colors = ["yellow", "orange", "red", "blue", "indigo"];
@@ -43,9 +42,8 @@
     }
 
     function downloadNextPartionOfAlbums() {
-        $.post("/Albums/GetAlbums", { start: startIndex, end: endIndex }, getAlbums);
-        startIndex += numberOfAlbums;
-        endIndex += numberOfAlbums;
+        $.post("/Albums/GetAlbums", { start: skipCount, end: numberOfAlbums }, getAlbums);
+        skipCount += numberOfAlbums;
     }
     function getAlbums(albums) {
         var length = albums.length;

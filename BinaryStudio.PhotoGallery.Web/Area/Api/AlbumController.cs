@@ -4,13 +4,13 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AttributeRouting;
-using AttributeRouting.Web.Mvc;
+using AttributeRouting.Web.Http;
 using BinaryStudio.PhotoGallery.Domain.Services;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [Authorize]
-    [RoutePrefix("Api/Album")]
+    [RoutePrefix("api/album")]
     public class AlbumController : ApiController
     {
         private readonly IAlbumService _albumService;
@@ -20,8 +20,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _albumService = albumService;
         }
 
-        [POST]
-        public HttpResponseMessage CreateNewAlbum([FromBody] string albumName)
+        [POST("")]
+        public HttpResponseMessage Create([FromBody] string albumName)
         {
             if (albumName == null)
             {
@@ -41,8 +41,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             return new HttpResponseMessage(HttpStatusCode.Created);
         }
 
-        [GET]
-        public IEnumerable<string> GetAllAlbumsName()
+        [GET("all/name")]
+        public IEnumerable<string> GetAllNames()
         {
             return
                 _albumService.GetAllAlbums(User.Identity.Name)

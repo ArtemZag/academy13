@@ -21,8 +21,8 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Upload;
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [Authorize]
-    [RoutePrefix("Api/File")]
-    public class FileController : ApiController
+    [RoutePrefix("api/upload")]
+    public class UploadController : ApiController
     {
         private readonly IAlbumService _albumService;
         private readonly ICryptoProvider _cryptoProvider;
@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
         private int MAX_PHOTO_SIZE_IN_BYTES = 30*1024*1024; // 30 MB
 
-        public FileController(
+        public UploadController(
             IUserService userService,
             IPathUtil pathUtil,
             IDirectoryWrapper directoryWrapper,
@@ -55,7 +55,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _cryptoProvider = cryptoProvider;
         }
 
-        [DELETE("{photoId}")]
+        [DELETE("{photoId:int}")]
         public HttpResponseMessage Delete(int photoId)
         {
             if (photoId <= 0)
@@ -79,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        [POST]
+        [POST("move")]
         public HttpResponseMessage Move([FromBody] MovePhotosViewModel viewModel)
         {
             if (viewModel == null || string.IsNullOrEmpty(viewModel.AlbumName) || !viewModel.PhotosId.Any())
@@ -186,7 +186,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             return response;
         }
 
-        [POST]
+        [POST("")]
         public async Task<HttpResponseMessage> Upload()
         {
             // Check if the request contains multipart/form-data.

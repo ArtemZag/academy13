@@ -71,7 +71,7 @@
     function ajaxPhotoLoad() {
         $("#photopreloader").show();
         console.log("send");
-        $.get(controllerURl, { skip: startIndex, take: startIndex + photoPortion, albumId: albumId }, getPhotos)
+        $.get(controllerURl + '/' + startIndex + '/' + photoPortion, getPhotos)
             .fail(function() {
                 $("#photopreloader").hide();
             });

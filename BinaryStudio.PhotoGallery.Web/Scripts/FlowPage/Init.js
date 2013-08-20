@@ -1,3 +1,3 @@
 ﻿$(document).ready(function () {
-    PhotoPlacer_Module("/Api/Photo/GetAllUserPhotos");
+    PhotoPlacer_Module("/api/photo/all-users");
 });

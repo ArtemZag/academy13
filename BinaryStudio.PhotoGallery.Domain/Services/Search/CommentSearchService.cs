@@ -45,8 +45,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                                 {
                                     DateOfCreation = commentModel.DateOfCreating,
                                     Id = commentModel.Id,
-                                    OwnerId = commentModel.UserModelId,
-                                    PhotoId = commentModel.PhotoModelId,
+                                    OwnerId = commentModel.UserId,
+                                    PhotoId = commentModel.PhotoId,
                                     Text = commentModel.Text,
                                     Relevance = CalculateRelevanceByText(searchWords, commentModel)
                                 }));

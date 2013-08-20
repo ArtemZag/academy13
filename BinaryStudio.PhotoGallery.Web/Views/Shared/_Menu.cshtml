@@ -3,13 +3,11 @@
 <nav class="navbar navbar-fixed-top">
     <a href="~/" class="brand"><img src="~/Content/images/logo_small.png"/></a>
     <ul class="nav">
-        <li><a href="~/Gallery">Gallery</a></li>
-        <li><a href="~/Albums">Albums</a></li>
-        <li><a href="~/Groups">Groups</a></li>
-        <li><a href="~/Search">Search</a></li>
+        <li><a href="~/albums">Albums</a></li>
+        <li><a href="~/search">Search</a></li>
     </ul>
     <ul class="nav pull-right">
-        <li><a href="~/Upload" class="btn btn-success">Upload</a></li>
+        <li><a href="~/upload" class="btn btn-success">Upload</a></li>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown">
                 <strong>@Model.UserEmail</strong>
@@ -19,13 +17,13 @@
                 @{
                     if (Model.IsAdmin)
                     {
-                        <li><a href="~/AdminPanel">Administration</a></li>
+                        <li><a href="~/admin">Administration</a></li>
                     }
                 }
-                <li><a href="~/News">Notifications</a></li>
-                <li><a href="~/Profile">Profile</a></li>
+                <li><a href="~/news">Notifications</a></li>
+                <li><a href="~/profile">Profile</a></li>
                 <li class="divider"></li>
-                <li><a href="~/Authorization/Signout">Sign out</a></li>
+                <li><a href="~/signout">Sign out</a></li>
             </ul>
         </li>
     </ul>

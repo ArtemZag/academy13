@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using AttributeRouting;
-using AttributeRouting.Web.Mvc;
+using AttributeRouting.Web.Http;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
@@ -15,8 +15,8 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-    [Authorize]
-    [RoutePrefix("Api/Photo")]
+//    [Authorize]
+    [RoutePrefix("api/photo")]
     public class PhotoController : ApiController
     {
         private readonly IPhotoService _photoService;
@@ -55,7 +55,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-        [GET]
+        [GET("?{albumName}&{skip:int}&{take:int}")]
         public HttpResponseMessage GetPhotos(string albumName, int skip, int take)
         {
             try
@@ -85,8 +85,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-        [GET]
-        public HttpResponseMessage GetPhotos(int skip, int take, int albumId)
+        [GET("?{albumId:int}&{skip:int}&{take:int}")]
+        public HttpResponseMessage GetPhotos(int albumId, int skip, int take)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-        [GET("GetLikes/{photoId}")]
+        [GET("{photoId:int}/likes")]
         public HttpResponseMessage GetLikes(int photoId)
         {
             try
@@ -146,8 +146,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-        [POST("AddLike/{photoId}")]
-        // TODO Must be replaced with PUT method [but it not work, while it forbidden in server settings]
+        [POST("like")]
         public HttpResponseMessage AddLike(int photoId)
         {
             try
@@ -159,64 +158,61 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            return GetLikes(photoId);
+            return new HttpResponseMessage(HttpStatusCode.Created);
         }
 
-        [GET]
+//        [GET("all?{skip:int}&{take:int}")] // TODO Activate this in new generation of Web API
+        [GET("all/{skip:int}/{take:int}")]
         public HttpResponseMessage GetAllUserPhotos(int skip, int take)
         {
-            List<PhotoViewModel> viewModels;
-
             try
             {
-                viewModels = _photoService
+                List<PhotoViewModel> viewModels = _photoService
                     .GetPhotos(User.Identity.Name, skip, take)
                     .Select(PhotoViewModel.FromModel).ToList();
+
+                var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>
+                (viewModels, new JsonMediaTypeFormatter());
+
+                var response = new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = responseData
+                };
+
+                return response;
             }
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>
-                (viewModels, new JsonMediaTypeFormatter());
-
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = responseData
-            };
-
-            return response;
         }
 
-
-        [GET]
-        public HttpResponseMessage GetAllAvailablePhotos(int skip, int take)
+//        [GET("allusers?{skip:int}&{take:int}")] // TODO Activate this in new generation of Web API
+        [GET("all-users/{skip:int}/{take:int}")]
+        public HttpResponseMessage GetAllPublicPhotos(int skip, int take)
         {
-            List<PhotoViewModel> viewModels;
-
             try
             {
-                viewModels = _photoService
+                List<PhotoViewModel> viewModels = _photoService
                     .GetPublicPhotos(User.Identity.Name, skip, take)
                     .Select(PhotoViewModel.FromModel).ToList();
+
+                var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>
+                (viewModels, new JsonMediaTypeFormatter());
+
+                var response = new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = responseData
+                };
+
+                return response;
             }
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>
-                (viewModels, new JsonMediaTypeFormatter());
-
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = responseData
-            };
-
-            return response;
         }
     }
 }

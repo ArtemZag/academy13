@@ -19,15 +19,15 @@
                 <span class="effeckt-label">Sign in</span>
                 <span class="effeckt-spinner effeckt-spinner-blue"></span>
             </button>
-            <a href="~/Authorization/RemindPass" class="btn btn-link">Forgot password?</a>
+            <a href="~/remind" class="btn btn-link">Forgot password?</a>
         </form>
         <div class="error-field"></div>
         <hr />
         <div class="social">
-            <a href="~/Authorization/Signin/vkontakte"><img src="~/Content/images/vkontakte_logo.png" /></a>
-            <a href="~/Authorization/Signin/facebook"><img src="~/Content/images/facebook_logo.png"/></a>
-            <a href="~/Authorization/Signin/twitter"><img src="~/Content/images/twitter_logo.png" /></a>
-            <a href="~/Authorization/Signin/github"><img src="~/Content/images/github_logo.png" /></a>
+            <a href="~/login/vkontakte"><img src="~/Content/images/vkontakte_logo.png" /></a>
+            <a href="~/login/facebook"><img src="~/Content/images/facebook_logo.png"/></a>
+            <a href="~/login/twitter"><img src="~/Content/images/twitter_logo.png" /></a>
+            <a href="~/login/github"><img src="~/Content/images/github_logo.png" /></a>
         </div>
     </div>
 </div>
@@ -37,5 +37,5 @@
 @Scripts.Render("~/bundles/scripts/jquery.validate")
 @Scripts.Render("~/bundles/scripts/opentip")
 
-@Scripts.Render("~/Scripts/Authorization/signin.js")
-@Scripts.Render("~/Scripts/Authorization/signin.validate.js")
+@Scripts.Render("~/Scripts/Account/signin.js")
+@Scripts.Render("~/Scripts/Account/signin.validate.js")

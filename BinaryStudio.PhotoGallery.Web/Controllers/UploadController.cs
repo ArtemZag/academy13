@@ -4,11 +4,12 @@ using AttributeRouting.Web.Mvc;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-	[RoutePrefix("StaticContent")]
-    public class StaticContentController : Controller
+    [Authorize]
+    [RoutePrefix("upload")]
+    public class UploadController : Controller
     {
 		[GET("")]
-        public ActionResult PageNotFound()
+        public ActionResult Index()
         {
             return View();
         }

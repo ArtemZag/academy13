@@ -10,12 +10,13 @@ using BinaryStudio.PhotoGallery.Core.EmailUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.Filters;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    [Authorize]
-    [RoutePrefix("AdminPanel")]
+    [AdminAuthorize]
+    [RoutePrefix("admin")]
     public class AdminPanelController : Controller
     {
         private readonly IEmailSender _emailSender;
@@ -35,14 +36,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <summary>
         ///     Administration page
         /// </summary>
-        [GET]
+        [GET("")]
         public ActionResult Index()
         {
-            if (!this.CanExecuteActions)
-            {
-                return RedirectToAction("NotFound", "Error");
-            }
-
             List<UserModel> users = _userService.GetAllUsers().ToList();
 
             // todo: it's ModelConverter role
@@ -59,16 +55,16 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return View(new UsersListViewModel {UserViewModels = extendedUserList});
         }
 
-        [DELETE]
+        [DELETE("user/delete")]
         public HttpResponseMessage DeleteUser(string userEmail)
         {
             _userService.DeleteUser(userEmail);
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        [POST]
+        [POST("user/invite")]
         public HttpResponseMessage SendInvite(UserViewModel invitedUser)
-        {            
+        {
             string host = ConfigurationManager.AppSettings["NotificationHost"];
             string fromEmail = ConfigurationManager.AppSettings["NotificationEmail"];
             string fromPass = ConfigurationManager.AppSettings["NotificationPassword"];
@@ -87,11 +83,6 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             _emailSender.Send(host, fromEmail, fromPass, toEmail, SUBJECT, text);
             return new HttpResponseMessage(HttpStatusCode.OK);
-        }
-
-        private bool CanExecuteActions
-        {
-            get { return _userService.IsUserAdmin(User.Identity.Name); }
         }
     }
 }
