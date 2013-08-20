@@ -1,4 +1,4 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
 
     function searchViewModel() {
 
@@ -26,7 +26,7 @@
 
         self.isSearchByComments = ko.observable(true);
 
-        searchViewModel.prototype.toJSON = function() {
+        searchViewModel.prototype.toJSON = function () {
 
             var copy = ko.toJS(self);
 
@@ -35,63 +35,57 @@
             return copy;
         };
 
-        self.searchQuery.subscribe(function() {
+        self.searchQuery.subscribe(function () {
 
             isModelChanged = true;
         });
 
-        self.isSearchPhotosByTags.subscribe(function() {
+        self.isSearchPhotosByTags.subscribe(function () {
 
             isModelChanged = true;
         });
 
-        self.isSearchPhotosByDescription.subscribe(function() {
+        self.isSearchPhotosByDescription.subscribe(function () {
 
             isModelChanged = true;
         });
 
-        self.isSearchAlbumsByName.subscribe(function() {
+        self.isSearchAlbumsByName.subscribe(function () {
 
             isModelChanged = true;
         });
 
-        self.isSearchAlbumsByTags.subscribe(function() {
+        self.isSearchAlbumsByTags.subscribe(function () {
 
             isModelChanged = true;
         });
 
-        self.isSearchAlbumsByDescription.subscribe(function() {
+        self.isSearchAlbumsByDescription.subscribe(function () {
 
             isModelChanged = true;
         });
 
-        self.isSearchUsersByName.subscribe(function() {
+        self.isSearchUsersByName.subscribe(function () {
 
             isModelChanged = true;
         });
 
-        self.isSearchUserByDepartment.subscribe(function() {
+        self.isSearchUserByDepartment.subscribe(function () {
 
             isModelChanged = true;
         });
 
-        self.isSearchByComments.subscribe(function() {
+        self.isSearchByComments.subscribe(function () {
 
             isModelChanged = true;
         });
 
-        self.searchQuery.subscribe(function() {
+        self.searchQuery.subscribe(function () {
 
             isModelChanged = true;
         });
 
-        self.resetSearchResult = function() {
-
-            self.foundItems.removeAll();
-            self.searchCacheToken = "no token";
-        };
-
-        self.checkModelChange = function() {
+        self.checkModelChange = function () {
 
             if (isModelChanged) {
 
@@ -101,79 +95,131 @@
             isModelChanged = false;
         };
 
-        self.search = function() {
+        self.resetSearchResult = function () {
+
+            self.foundItems.removeAll();
+            self.searchCacheToken = "no token";
+        };
+
+        self.search = function () {
 
             self.checkModelChange();
 
             self.searchQuery($.trim(self.searchQuery()));
 
-            if (self.searchQuery()) {
+            if (self.searchQuery() && self.foundItems().length == 0) {
 
-                $.get("api/search", JSON.parse(ko.toJSON(self)), function(searchResult) {
-
-                    self.searchCacheToken = searchResult.SearchCacheToken;
-
-                    // adding search result items to observable array
-                    $.each(searchResult.Items, function(index, value) {
-
-                        formatFields(value);
-
-                        self.foundItems.push(value);
-                    });
-
-                    setTimeout(function() {
-                        setImageSize();
-                    }, 900);
-                });
-                
-                function setImageSize() {
-
-                    $(".result-image").each(function () {
-
-                        var maxWidth = 180;
-                        var maxHeight = 180;
-                        var ratio = 0;
-                        var width = $(this).width();
-                        var height = $(this).height();
-
-                        if (width > maxWidth) {
-
-                            ratio = maxWidth / width;
-                            $(this).css("width", maxWidth);
-                            $(this).css("height", height * ratio);
-                            height = height * ratio;
-                            width = width * ratio;
-                        }
-
-                        if (height > maxHeight) {
-
-                            ratio = maxHeight / height;
-                            $(this).css("height", maxHeight);
-                            $(this).css("width", width * ratio);
-                            width = width * ratio;
-                        }
-                    });
-                }
+                sendSearchRequest();
             }
         };
-        
-        function formatFields(value) {
+    }
 
-            // date getting 
-            if (value.Type == "photo" || value.Type == "album" || value.Type == "comment") {
-                
-                var dateEndIndex = value.DateOfCreation.indexOf("T");
-                
-                var date = value.DateOfCreation.substr(0, dateEndIndex);
+    var viewModel = new searchViewModel();
+    ko.applyBindings(viewModel);
 
-                var timeMinutesEndIndex = value.DateOfCreation.lastIndexOf(":");
-                var time = value.DateOfCreation.substr(dateEndIndex + 1, timeMinutesEndIndex);
+    function sendSearchRequest() {
 
-                value.DateOfCreation = date + " " + time;
+        $.get("api/search", JSON.parse(ko.toJSON(viewModel)), function (searchResult) {
+
+            viewModel.searchCacheToken = searchResult.SearchCacheToken;
+
+            addResultItems(searchResult.Items);
+            resizeImages();
+        });
+    }
+
+    function addResultItems(items) {
+
+        $.each(items, function (index, value) {
+
+            formatFields(value);
+
+            viewModel.foundItems.push(value);
+        });
+    }
+
+    // todo: delete
+
+    function resizeImages() {
+
+        setTimeout(function () {
+            setImageSize();
+        }, 900);
+    }
+
+    // transforms some fileds for result item
+
+    function formatFields(value) {
+
+
+        if (value.Type == "photo" || value.Type == "album" || value.Type == "comment") {
+
+            value.DateOfCreation = formatDate(value.DateOfCreation);
+
+            if (value.Type == "comment") {
+
+                if (value.Text.length > 140) {
+                    value.Text = value.Text.substring(0, 140) + "..";
+                }
             }
         }
     }
 
-    ko.applyBindings(new searchViewModel());
-    
+    function formatDate(dateTime) {
+
+        var dateEndIndex = dateTime.indexOf("T");
+        var timeEndIndex = dateTime.lastIndexOf(":");
+
+        var date = dateTime.substring(0, dateEndIndex);
+        var time = dateTime.substring(dateEndIndex + 1, timeEndIndex);
+
+        return date + " " + time;
+    }
+
+    // todo: delete
+
+    function setImageSize() {
+
+        $(".result-image").each(function () {
+
+            var maxWidth = 180;
+            var maxHeight = 180;
+            var width = $(this).width();
+            var height = $(this).height();
+
+            var ratio;
+
+            if (width > maxWidth) {
+
+                ratio = maxWidth / width;
+                $(this).css("width", maxWidth);
+                $(this).css("height", height * ratio);
+                height = height * ratio;
+                width = width * ratio;
+            }
+
+            if (height > maxHeight) {
+
+                ratio = maxHeight / height;
+                $(this).css("height", maxHeight);
+                $(this).css("width", width * ratio);
+            }
+        });
+    }
+
+    $(window).scroll(function () {
+
+        var totalHeight, currentScroll, visibleHeight;
+
+        currentScroll = $(document).scrollTop();
+
+        totalHeight = document.body.offsetHeight;
+
+        visibleHeight = document.documentElement.clientHeight;
+
+        // scroll to bottom event
+        if (visibleHeight + currentScroll >= totalHeight) {
+            sendSearchRequest();
+        }
+    });
 });

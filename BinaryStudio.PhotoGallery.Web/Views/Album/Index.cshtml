@@ -7,16 +7,24 @@
 <script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery-2.0.3.min.js")" type="text/javascript"></script> 
 @Scripts.Render("~/bundles/scripts/bootstrap")
+
 @Styles.Render("~/Content/photo_flow.css")
+@Styles.Render("~/Content/spinner.css")
 
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "Album | Bingally";
-    var preloaderpath = "/Content/images/photopreloader.gif";
     var ko = Html.CreateKnockoutContext();
 }
  
-<img src="@preloaderpath" id="photopreloader" />
+<div id="photopreloader">
+    <ul class="spinner">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
 <div id="photoWrapper">
     @using (var photos = ko.Foreach(it => it.Photos))
     {
