@@ -24,5 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="userID">Who wants to add comment</param>
         /// <param name="newPhotoCommentModel"></param>
         void AddPhotoComment(int userID, PhotoCommentModel newPhotoCommentModel);
+
+        PhotoCommentModel GetPhotoComment(int commentId);
     }
 }

@@ -56,5 +56,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 
             }
         }
+
+        public PhotoCommentModel GetPhotoComment(int commentId)
+        {
+            using (var unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.PhotoComments.Find(commentId);
+            }
+        }
+
     }
 }

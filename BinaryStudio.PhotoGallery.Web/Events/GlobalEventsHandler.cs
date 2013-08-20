@@ -13,93 +13,109 @@ namespace BinaryStudio.PhotoGallery.Web.Events
 
     public class GlobalEventsHandler : IGlobalEventsHandler
     {
-        private static GlobalEventsHandler instance;
-        private readonly IGlobalEventsAggregator eventsAggregator;
-        private readonly IUserService userService;
-        private readonly IPhotoService photoService;
-        private readonly IHubContext hubNotify;
-        private readonly IUrlUtil urlUtil;
-        private readonly IAlbumService albumService;
+        private static GlobalEventsHandler _instance;
+        private readonly IGlobalEventsAggregator _eventsAggregator;
+        private readonly IUserService _userService;
+        private readonly IPhotoService _photoService;
+        private readonly IHubContext _hubNotify;
+        private readonly IUrlUtil _urlUtil;
+        private readonly IAlbumService _albumService;
+        private readonly IPhotoCommentService _commentService;
 
         public GlobalEventsHandler(){}
 
+
+        // todo: refactor all methods it this class by the some html template
+        // todo: refactor when id will be added to cookies to reduce database requests
         public GlobalEventsHandler(IGlobalEventsAggregator eventsAggregator, IUserService userService, IPhotoService photoService, 
-            IAlbumService albumService, IUrlUtil urlUtil)
+            IAlbumService albumService, IUrlUtil urlUtil, IPhotoCommentService commentService)
         {
-            this.eventsAggregator = eventsAggregator;
-            this.userService = userService;
-            this.photoService = photoService;
-            this.hubNotify = GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>();
-            this.urlUtil = urlUtil;
-            this.albumService = albumService;
+            _eventsAggregator = eventsAggregator;
+            _userService = userService;
+            _photoService = photoService;
+            _hubNotify = GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>();
+            _urlUtil = urlUtil;
+            _albumService = albumService;
+            _commentService = commentService;
 
             //subscribe to events
-            this.eventsAggregator.CommentAdded += PhotoCommentAddedCaused;
-            this.eventsAggregator.PhotoAdded += PhotoAddedCaused;
-            this.eventsAggregator.LikeToPhotoAdded += LikeToPhotoAddedCaused;
-            this.eventsAggregator.SomeoneRepliedToComment += SomeoneRepliedToCommentCaused;
+            _eventsAggregator.CommentAdded += PhotoCommentAddedCaused;
+            _eventsAggregator.PhotoAdded += PhotoAddedCaused;
+            _eventsAggregator.LikeToPhotoAdded += LikeToPhotoAddedCaused;
+            _eventsAggregator.SomeoneRepliedToComment += SomeoneRepliedToCommentCaused;
         }
 
         public void PhotoCommentAddedCaused(PhotoCommentModel mComment)
         {
 
-            var mUser = userService.GetUser(mComment.UserModelId);
-            var mPhoto = photoService.GetPhoto(mUser.Email, mComment.PhotoModelId);
+            var mUser = _userService.GetUser(mComment.UserModelId);
+            var mPhoto = _photoService.GetPhoto(mUser.Email, mComment.PhotoModelId);
 
             if (mPhoto.OwnerId != mComment.UserModelId)
             {
-                var mPhotoOwner = userService.GetUser(mPhoto.OwnerId);
+                var mPhotoOwner = _userService.GetUser(mPhoto.OwnerId);
 
                 mPhotoOwner.Email = mPhotoOwner.Email.ToLower(); // todo: remove and refactor, when id to cookies will be added
 
                 var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
-                                         "добавил комментарий к вашей <span class='highlight_what'>фотографии</span>."
+                                         "добавил комментарий к вашей фотографии."
                                          , mUser.FirstName, mUser.LastName);
-                hubNotify.Clients.Group(mPhotoOwner.Email).SendNotification(NotificationTitles.CommentAdded, noty, urlUtil.BuildPhotoViewUrl(mPhoto.Id));
+                _hubNotify.Clients.Group(mPhotoOwner.Email).SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
             }
         }
 
         public void PhotoAddedCaused(PhotoModel mPhoto)
         {
-            var mAlbum = albumService.GetAlbum(mPhoto.AlbumId);
+            var mAlbum = _albumService.GetAlbum(mPhoto.AlbumId);
 
             if (mPhoto.OwnerId != mAlbum.OwnerId)
             {
-                var mPhotoOwner = userService.GetUser(mPhoto.OwnerId);
-                var mAlbumOwner = userService.GetUser(mAlbum.OwnerId);
+                var mPhotoOwner = _userService.GetUser(mPhoto.OwnerId);
+                var mAlbumOwner = _userService.GetUser(mAlbum.OwnerId);
 
                 mAlbumOwner.Email = mAlbumOwner.Email.ToLower(); // todo: remove and refactor, when id to cookies will be added
 
                 var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
-                                         "добавил <span class='highlight_what'>фотографию</span> в ваш альбом {2}"
+                                         "добавил фотографию в ваш альбом {2}"
                                          , mPhotoOwner.FirstName, mPhotoOwner.LastName, mPhoto.Name);
-                hubNotify.Clients.Group(mAlbumOwner.Email)
-                          .SendNotification(NotificationTitles.CommentAdded, noty, urlUtil.BuildPhotoViewUrl(mPhoto.Id));
+                _hubNotify.Clients.Group(mAlbumOwner.Email)
+                          .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
             }
         }
 
         public void LikeToPhotoAddedCaused(UserModel mWhoseLike, int photoId)
         {
-            var mPhoto = photoService.GetPhotoWithoutRightsCheck(photoId);
-            var mPhotoOwner = userService.GetUser(mPhoto.OwnerId);
-
+            var mPhoto = _photoService.GetPhotoWithoutRightsCheck(photoId);
+           
+            var mPhotoOwner = _userService.GetUser(mPhoto.OwnerId);
             mPhotoOwner.Email = mPhotoOwner.Email.ToLower(); // todo: remove and refactor, when id to cookies will be added
 
             var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
-                                         "поставил Like вашей <span class='highlight_what'>фотографии</span>."
+                                         "поставил Like вашей фотографии."
                                          , mWhoseLike.FirstName, mWhoseLike.LastName);
-            hubNotify.Clients.Group(mPhotoOwner.Email)
-                          .SendNotification(NotificationTitles.CommentAdded, noty, urlUtil.BuildPhotoViewUrl(mPhoto.Id));
+            _hubNotify.Clients.Group(mPhotoOwner.Email)
+                          .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
         }
 
         public void SomeoneRepliedToCommentCaused(PhotoCommentModel mComment)
         {
-            
+            var mWhoseComment = _userService.GetUser(mComment.UserModelId);
+
+            var mParentComment =  _commentService.GetPhotoComment(mComment.Reply);
+
+            var mParentCommentOwner = _userService.GetUser(mParentComment.UserModelId);
+            mParentCommentOwner.Email = mParentCommentOwner.Email.ToLower(); // todo: remove and refactor, when id to cookies will be added
+
+            var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
+                                       "ответил на ваш комментарий к фотографии."
+                                       , mWhoseComment.FirstName, mWhoseComment.LastName);
+            _hubNotify.Clients.Group(mParentCommentOwner.Email)
+                          .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
         }
 
         public static GlobalEventsHandler Instance
         {
-            get { return instance ?? (instance = new GlobalEventsHandler()); }
+            get { return _instance ?? (_instance = new GlobalEventsHandler()); }
         }
     }
 
