@@ -233,12 +233,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
 
                 var publicPhotos = _secureService.GetAvailableAlbums(user.Id, unitOfWork)
-                                                 .SelectMany(it => it.Photos)
+                                                 .SelectMany(it => GetPhotos(user.Email, it.Id, skipCount, takeCount))
                                                  .Where(photo => !photo.IsDeleted)
                                                  .OrderByDescending(photo => photo.DateOfCreation)
-                                                 .ThenBy(photo => photo.Id)
-                                                 .Skip(skipCount)
-                                                 .Take(takeCount);
+                                                 .ThenBy(photo => photo.Id);
                 return publicPhotos;
             }
         }

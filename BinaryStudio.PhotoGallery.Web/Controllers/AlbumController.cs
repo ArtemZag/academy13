@@ -15,10 +15,12 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class AlbumController : Controller
 	{
 	    private readonly IAlbumService albumService;
+	    private readonly IPhotoService photoService;
 
-        public AlbumController(IAlbumService albumService)
+        public AlbumController(IAlbumService albumService, IPhotoService photoService)
         {
             this.albumService = albumService;
+            this.photoService = photoService;
         }
 
 		[GET("{albumId}")]
