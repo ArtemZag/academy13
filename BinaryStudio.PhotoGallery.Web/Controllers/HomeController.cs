@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     [RoutePrefix("")]
     public class HomeController : Controller
     {
-        [GET("")]
+        [GET("", RouteName = "PublicFlow")]
         public ActionResult Index()
         {
             var infoViewModel = new InfoViewModel

@@ -26,8 +26,6 @@ namespace BinaryStudio.PhotoGallery.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            AttributeRoutingConfig.Start();
-
             IUnityContainer container = Bootstrapper.Initialise();
             System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
 

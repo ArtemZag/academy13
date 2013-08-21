@@ -2,17 +2,22 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
-    @Styles.Render("~/bundles/styles/bootstrap")
-    @Styles.Render("~/bundles/styles/opentip")
-    @Styles.Render("~/Content/auth-page.css")
-</head>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>@ViewBag.Title</title>
+        @Styles.Render("~/bundles/styles/bootstrap")
+        @Styles.Render("~/bundles/styles/opentip")
+        @Styles.Render("~/Content/auth-page.css")
+        
+        
+        @Scripts.Render("~/bundles/scripts/jquery")
+        @Scripts.Render("~/bundles/scripts/jquery.validate")
+        @Scripts.Render("~/bundles/scripts/opentip")
+        
+        @Scripts.Render("~/Scripts/Helpers/animation.js")
+    </head>
     <body>
         <div id="full-screen-shadow"></div>
         @RenderBody()
     </body>
-    
-    @Scripts.Render("~/Scripts/Helpers/animation.js")
 </html>
