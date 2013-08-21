@@ -46,7 +46,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     return photoModel;
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photos");
+                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -69,7 +69,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     return photoModels.Select(photo => photo.Id).ToList();
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photos");
+                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -106,7 +106,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 }
                 else
                 {
-                    throw new NoEnoughPrivileges("User can't get access to photos");
+                    throw new NoEnoughPrivilegesException("User can't get access to photos");
                 }
             }
         }
@@ -127,7 +127,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         .ToList();
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photos");
+                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -148,7 +148,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         .ToList();
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photos");
+                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -193,7 +193,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     return photoModel;
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photos");
+                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -209,7 +209,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     return photo.Likes.ToList();
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photoModel's likes");
+                throw new NoEnoughPrivilegesException("User can't get access to photoModel's likes");
             }
         }
 
