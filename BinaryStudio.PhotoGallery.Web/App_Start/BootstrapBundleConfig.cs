@@ -26,6 +26,10 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
 
             BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/jquery.validate").Include(
                 "~/Scripts/jquery.validate.js"
+                ));            
+            
+            BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/jquery.pnotify").Include(
+                "~/Scripts/jquery.pnotify.js"
                 ));
 
             BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/opentip").Include(

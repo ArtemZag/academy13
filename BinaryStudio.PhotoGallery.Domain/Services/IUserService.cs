@@ -27,7 +27,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         int GetUserId(string userEmail);
 
         void CreateUser(UserModel userModel, AuthInfoModel.ProviderType providerType = AuthInfoModel.ProviderType.Local);
-
+        void Update(UserModel user);
 
         /// <summary>
         ///     Creates base user record in database for future activating it

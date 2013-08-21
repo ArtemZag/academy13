@@ -15,5 +15,16 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 		public int AlbumsCount { get; set; }
 
 		public bool IsOnline { get; set; }
+
+        public static UserViewModel ToViewModel(UserModel model)
+        {
+            return new UserViewModel
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                IsAdmin = model.IsAdmin
+            };
+        }
 	}
 }
