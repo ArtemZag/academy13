@@ -13,12 +13,12 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreating = DateTime.Now;
         }
 
-        public PhotoCommentModel(int userModelId,  int photoModelId, string text, int reply)
+        public PhotoCommentModel(int userId,  int photoId, string text, int reply)
         {
             Reply = reply;
             Text = text;
-            PhotoModelId = photoModelId;
-            UserModelId = userModelId;
+            PhotoId = photoId;
+            UserId = userId;
             DateOfCreating = DateTime.Now;
         }
 
@@ -49,7 +49,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// </summary>
         public int Reply { get; set; }
 
-        public int PhotoModelId  { get; set; }
-        public int UserModelId { get; set; }
+        public int PhotoId  { get; set; }
+        public int UserId { get; set; }
     }
 }

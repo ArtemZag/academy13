@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Security;
 using AttributeRouting;
-using AttributeRouting.Web.Mvc;
+using AttributeRouting.Web.Http;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -13,17 +13,17 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    [RoutePrefix("Authorization")]
-    public class AuthorizationController : Controller
+    [RoutePrefix("")]
+    public class AccountController : Controller
     {
         private readonly IUserService _userService;
 
-        public AuthorizationController(IUserService userService)
+        public AccountController(IUserService userService)
         {
             _userService = userService;
         }
 
-        [GET("Signin/{service}")]
+        [GET("login/{service?}")]
         public ActionResult SignIn(string service)
         {
             if (string.IsNullOrEmpty(service))
@@ -35,13 +35,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
                     if (userExist)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToRoute("login");
                     }
 
                     // Clear cookie
                     FormsAuthentication.SignOut();
                 }
             }
+
             if (service == "facebook")
             {
                 return Redirect(FB.CreateAuthUrl(Randomizer.GetString(16)));
@@ -50,7 +51,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return View(new SigninViewModel());
         }
 
-        [GET("Signup/{invite}")]
+        [GET("registration/{invite}")]
         public ActionResult SignUp(string invite)
         {
             if (string.IsNullOrEmpty(invite))
@@ -62,13 +63,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
                     if (userExist)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToRoute("");
                     }
                     // Clear cookie
                     FormsAuthentication.SignOut();
                 }
-
-                RedirectToAction("Signin", "Authorization");
             }
 
             var signupViewModel = new SignupViewModel();
@@ -80,13 +79,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             }
             catch (UserNotFoundException)
             {
-                return RedirectToAction("Signin", "Authorization");
+                return RedirectToRoute("login");
             }
             
             return View(signupViewModel);
         }
 
-        [GET("FacebookCallBack/{userSecret}")]
+        [GET("facebook?{userSecret}&{code}")]
         public RedirectToRouteResult FacebookCallBack(string userSecret, string code)
         {
             var token = FB.GetAccessToken(userSecret, code);
@@ -133,23 +132,25 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             FB.AddPhotosToAlbum(photoCollection, "Bingally", token);
            var albumList =  FB.GetListOfAlbums(token);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToRoute("");
         }
 
-        [GET]
+        [GET("signout")]
         public ActionResult SignOut()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Signin", "Authorization");
+            return RedirectToRoute("login");
         }
 
-        [GET]
+        [HttpGet]
+        [GET("remind")]
         public ActionResult RemindPass()
         {
             return View(new RemindPassViewModel());
         }
 
-        [POST]
+        [HttpPost]
+        [POST("remind")]
         public ActionResult RemindPass(RemindPassViewModel remindPassViewModel)
         {
             return View();

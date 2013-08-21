@@ -15,7 +15,7 @@
 
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    ViewBag.Title = "User flow | Bingally";
+    ViewBag.Title = "Public photos | Bingally";
     KnockoutContext<InfoViewModel> ko = Html.CreateKnockoutContext();
 }
  
@@ -40,7 +40,7 @@
 @ko.Initialize(Model)
 <script type="text/javascript">
     $(document).ready(function () {
-        PhotoPlacer_Module("/Api/Photo/GetAllAvailablePhotos");
+        PhotoPlacer_Module("/api/photo/all-users");
     });
 
     viewModel.gotoPhotoPage = function(data) {

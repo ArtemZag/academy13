@@ -7,7 +7,7 @@ namespace BinaryStudio.PhotoGallery.Core
     // that's why it was renamed to Randomizer
     public static class Randomizer
     {
-        private static readonly Random random = new Random();
+        private static readonly Random Random = new Random();
         private const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 
         public static string GetString(int size)
@@ -16,14 +16,14 @@ namespace BinaryStudio.PhotoGallery.Core
 
             for (var i = 0; i < size; i++)
             {
-                stringBuilder.Append(CHARS[random.Next(CHARS.Length)]);
+                stringBuilder.Append(CHARS[Random.Next(CHARS.Length)]);
             }
             return stringBuilder.ToString();
         }
 
         public static int GetNumber(int maxNumber)
         {
-            return random.Next(maxNumber);
+            return Random.Next(maxNumber);
         }
     }
 }

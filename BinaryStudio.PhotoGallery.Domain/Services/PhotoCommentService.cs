@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 if (secureService.CanUserViewComments(userId, albumId))
                 {
-                    return unitOfWork.PhotoComments.Filter(model => model.PhotoModelId == photoId)
+                    return unitOfWork.PhotoComments.Filter(model => model.PhotoId == photoId)
                                      .OrderBy(model => model.DateOfCreating)
                                      .ThenBy(model => model.Id)
                                      .Skip(begin).Take(last - begin)
@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var albumId = unitOfWork.Photos.Find(newPhotoCommentModel.PhotoModelId).AlbumId;
+                var albumId = unitOfWork.Photos.Find(newPhotoCommentModel.PhotoId).AlbumId;
 
                 if (secureService.CanUserAddComment(userId, albumId))
                 {

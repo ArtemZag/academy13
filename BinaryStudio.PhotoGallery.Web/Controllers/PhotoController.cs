@@ -7,21 +7,21 @@ using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     [Authorize]
-    [RoutePrefix("Photo")]
+    [RoutePrefix("photo")]
     public class PhotoController : Controller
     {
-        [HttpPost]
-        public ActionResult FbSync(string photoID)
+        [POST("facebook/{photoId:int}")]
+        public ActionResult FbSync(int photoId)
         {
-            /* var photoModel = _photoService.GetPhoto(Int32.Parse(photoID));
+            /* var photoModel = _photoService.GetPhoto(Int32.Parse(photoId));
             var photoPath = new List<string>();
 */
             return Redirect(FB.CreateAuthUrl(Randomizer.GetString(16)));
             //FB.AddPhotosToAlbum(photoPath,"MakTest",);
         }
 
-        [GET("{photoId}")]
-        public ActionResult Index(string photoId)
+        [GET("{photoId:int}")]
+        public ActionResult Index(int photoId)
         {
             ViewBag.PhotoID = photoId;
             return View();

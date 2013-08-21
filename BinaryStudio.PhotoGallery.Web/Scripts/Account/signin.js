@@ -13,7 +13,7 @@
 
     var baseURL = "http://" + window.location.host;
     
-    addClickEventTo($("#signin-button"), baseURL + '/Api/Authorization/Signin');
+    addClickEventTo($("#signin-button"), baseURL + '/api/login');
 
     loginPanel.find('input[type=email], input[type=password]')
         .on('focus', function() {
@@ -45,7 +45,7 @@
                         },
                         function() {
                             shadow.fadeOut(500, function() {
-                                window.location = baseURL + '/Home/Index';
+                                window.location = baseURL + '/';
                             });
                         });
                 })

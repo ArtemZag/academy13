@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Web.Http;
-using AttributeRouting;
 using System.Net.Http;
-using AttributeRouting.Web.Mvc;
 using System.Net;
 using System.Web.Security;
+using AttributeRouting;
+using AttributeRouting.Web.Http;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-    [RoutePrefix("Api/Authorization")]
-    public class AuthorizationController : ApiController
+    [RoutePrefix("api")]
+    public class AccountController : ApiController
     {
         private readonly IUserService _userService;
 
-        public AuthorizationController(IUserService userService)
+        public AccountController(IUserService userService)
         {
             _userService = userService;
         }
 
-        [POST]
+        [POST("login")]
         public HttpResponseMessage Signin([FromBody] SigninViewModel viewModel)
         {
             if (viewModel == null)
@@ -29,19 +29,26 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unknown error");
             }
 
-            var userNotValid = !_userService.IsUserValid(viewModel.Email, viewModel.Password);
-
-            if (userNotValid)
+            try
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Incorrect email or password");
-            }
+                var userNotValid = !_userService.IsUserValid(viewModel.Email, viewModel.Password);
 
-            FormsAuthentication.SetAuthCookie(viewModel.Email.ToLower(), viewModel.RememberMe);
+                if (userNotValid)
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Incorrect email or password");
+                }
+
+                FormsAuthentication.SetAuthCookie(viewModel.Email.ToLower(), viewModel.RememberMe);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
 
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        [POST]
+        [POST("registration")]
         public HttpResponseMessage Signup([FromBody] SignupViewModel viewModel)
         {
             if (viewModel == null)
@@ -52,7 +59,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 _userService.ActivateUser(viewModel.Email, viewModel.Password, viewModel.Invite);
+
                 FormsAuthentication.SetAuthCookie(viewModel.Email.ToLower(), false);
+
+                return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch (UserAlreadyExistException ex)
             {
@@ -62,8 +72,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }
 }

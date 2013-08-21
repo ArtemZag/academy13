@@ -43,10 +43,10 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
         public void PhotoCommentAddedCaused(PhotoCommentModel mComment)
         {
-            var mUser = _userService.GetUser(mComment.UserModelId);
-            var mPhoto = _photoService.GetPhoto(mUser.Email, mComment.PhotoModelId);
+            var mUser = _userService.GetUser(mComment.UserId);
+            var mPhoto = _photoService.GetPhoto(mUser.Email, mComment.PhotoId);
 
-            if (mPhoto.OwnerId != mComment.UserModelId)
+            if (mPhoto.OwnerId != mComment.UserId)
             {
                 var mPhotoOwner = _userService.GetUser(mPhoto.OwnerId);
                 var _hubNotify = GlobalHost.ConnectionManager.GetHubContext<NotificationsHub>();
