@@ -130,30 +130,35 @@
 
         $("#loader").show();
 
-        $.get("api/search", JSON.parse(ko.toJSON(viewModel)), function(searchResult) {
+        $.get("api/search", JSON.parse(ko.toJSON(viewModel)))
+            .done(function(searchResult) {
 
-            viewModel.searchCacheToken = searchResult.SearchCacheToken;
+                viewModel.searchCacheToken = searchResult.SearchCacheToken;
 
-            addResultItems(searchResult.Items);
-            resizeImages();
+                addResultItems(searchResult.Items);
+                resizeImages();
 
-            $("#loader").hide();
+                $("#loader").hide();
 
-            viewModel.incrementInterval();
-        });
+                viewModel.incrementInterval();
+            })
+            .fail(function() {
+
+                $("#loader").hide();
+            });
     }
 
     function addResultItems(items) {
 
-        // todo 
-        if (items.length != 0) {
-            $.each(items, function(index, value) {
+        // todo: debug
+        console.log(items.length);
 
-                formatFields(value);
+        $.each(items, function(index, value) {
 
-                viewModel.foundItems.push(value);
-            });
-        }
+            formatFields(value);
+
+            viewModel.foundItems.push(value);
+        });
     }
 
     // todo: delete
@@ -236,7 +241,7 @@
 
         // scroll to bottom event
         if (visibleHeight + currentScroll >= totalHeight) {
-            
+
             if (viewModel.searchQuery()) {
                 sendSearchRequest();
             }
