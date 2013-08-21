@@ -250,6 +250,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 return unitOfWork.Photos.All()
                                   .OrderByDescending(model => model.DateOfCreation)
+                                  .ThenBy(photo => photo.Id)
                                   .Where(photo => avalAlbumsIds.Contains(photo.AlbumId))
                                   .Take(takeCount)
                                   .Skip(skipCount)
