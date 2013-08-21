@@ -1,12 +1,14 @@
 ﻿using System.Web.Mvc;
+using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
+    [RoutePrefix("search")]
     public class SearchController : Controller
     {
-        [GET("Search")]
-        public ActionResult Search()
+        [GET("")]
+        public ActionResult Index()
         {
             return View();
         }

@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using AttributeRouting;
+using AttributeRouting.Web.Http;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
@@ -16,7 +17,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             _userService = userService;
         }
 
-        [ChildActionOnly]
+        [GET("Menu")]
+        [ChildActionOnly] // TODO it must be refactored after adding IPrincipal
         public ActionResult Menu()
         {
             var menu = new MenuViewModel

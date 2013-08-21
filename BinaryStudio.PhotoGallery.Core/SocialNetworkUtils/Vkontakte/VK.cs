@@ -2,7 +2,7 @@
 
 namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Vkontakte
 {
-    public class VK : IVK
+    public class VK : IVk
     {
         public string CreateAlbum(string albumName, string description, string token)
         {

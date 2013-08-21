@@ -6,12 +6,12 @@ namespace BinaryStudio.PhotoGallery.Core.SocialNetworkUtils
     public class SocialNetworkFactory : ISocialNetworkFactory
     {
 
-        public ISocialNetwork getFacebookUnit()
+        public ISocialNetwork GetFacebookUnit()
         {
             return null;
         }
 
-        public ISocialNetwork getVK()
+        public ISocialNetwork GetVk()
         {
             return new VK();
         }

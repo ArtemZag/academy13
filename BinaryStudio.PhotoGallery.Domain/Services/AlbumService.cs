@@ -9,16 +9,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class AlbumService : DbService, IAlbumService
     {
-        private readonly ISecureService _secureService;
+        private readonly ISecureService secureService;
 
         public AlbumService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
         {
-            _secureService = secureService;
+            this.secureService = secureService;
         }
 
 
-        private readonly List<AlbumModel> _systemAlbumsList = new List<AlbumModel>()
-            {
+        private readonly List<AlbumModel> systemAlbumsList = new List<AlbumModel>
+        {
                 #region "Temporary" album
                 new AlbumModel
                 {
@@ -81,7 +81,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public void CreateSystemAlbums(int userId)
         {
-            foreach (var systemAlbum in _systemAlbumsList)
+            foreach (var systemAlbum in systemAlbumsList)
             {
                 systemAlbum.OwnerId = userId;
                 CreateAlbum(userId, systemAlbum);
@@ -90,7 +90,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private bool IsAlbumSystem(AlbumModel album)
         {
-            return _systemAlbumsList.Find(systemAlbum => systemAlbum.Name == album.Name) != null;
+            return systemAlbumsList.Find(systemAlbum => systemAlbum.Name == album.Name) != null;
         }
 
         public void DeleteAlbum(string userEmail, int albumId)
@@ -205,7 +205,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
         {
-            return _secureService.GetAvailableAlbums(userId, unitOfWork);
+            return secureService.GetAvailableAlbums(userId, unitOfWork);
         }
     }
 }

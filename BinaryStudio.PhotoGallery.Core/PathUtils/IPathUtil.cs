@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace BinaryStudio.PhotoGallery.Core.PathUtils
+﻿namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
     public interface IPathUtil
     {
@@ -29,6 +27,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         string BuildAbsoluteTemporaryDirectoryPath(int userId);
 
         /// <returns>Path in format "C:\\ololo\\ololo"</returns>
-        string BuildAbsoluteAlbumPath(int userId, int albumId);
+        string BuildAbsoluteTemporaryAlbumPath(int userId, int albumId);
     }
 }

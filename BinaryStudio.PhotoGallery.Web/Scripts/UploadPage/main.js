@@ -6,7 +6,7 @@
     
     $('.chosen-search > input').attr('placeholder', 'Type album name to find or create it');
 
-    $.get('Api/Album')
+    $.get('api/album/all/name')
         .done(function (response) {
             response.splice(0, 0, '');
             vm.albums(response);

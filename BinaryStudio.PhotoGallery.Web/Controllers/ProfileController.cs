@@ -4,10 +4,10 @@ using AttributeRouting.Web.Mvc;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-	[RoutePrefix("Profile")]
+    [RoutePrefix("profile")]
     public class ProfileController : Controller
     {
-		[GET("")]
+        [GET("")]
         public ActionResult Index()
         {
             return View();

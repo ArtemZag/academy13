@@ -10,9 +10,9 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
         {
         }
 
-        public void Add(int groupID, int albumID)
+        public void Add(int groupId, int albumId)
         {
-            base.Add(new AvailableGroupModel(groupID, albumID));
+            base.Add(new AvailableGroupModel(groupId, albumId));
         }
     }
 }

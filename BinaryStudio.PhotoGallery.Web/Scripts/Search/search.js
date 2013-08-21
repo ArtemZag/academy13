@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+    
     $("#loader").hide();
 
     function searchViewModel() {

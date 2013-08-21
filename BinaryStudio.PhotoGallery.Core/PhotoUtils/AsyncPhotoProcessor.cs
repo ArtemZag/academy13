@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
@@ -18,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         //
         private IEnumerable<string> array;
         //
-        private string pathToUsers;
+        private readonly string pathToUsers;
         // путь к папке с альбомом
         private readonly string relativePath;
         // максимальная высота фотографии
@@ -80,7 +78,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         {
             CreateDirectoryIfNotExists(pathToThumbnail);
             bool created = false;
-            object syncRoot = new object();
+            var syncRoot = new object();
             IEnumerable<string> files = ImageFormatHelper.GetImages(relativePath);
 
             Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
@@ -111,7 +109,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         {
             CreateDirectoryIfNotExists(pathToThumbnail);
             bool deleted = false;
-            object syncRoot = new object();
+            var syncRoot = new object();
             IEnumerable<string> files = ImageFormatHelper.GetImages(pathToThumbnail);
 
             Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
