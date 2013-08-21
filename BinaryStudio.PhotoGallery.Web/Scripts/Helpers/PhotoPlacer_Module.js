@@ -93,7 +93,8 @@
             });
             startIndex += photoPortion;
             busy = false;
-        } else {
+        } 
+        if (photos.length < photoPortion) {
             $(window).unbind("scroll");
         }
         $("#loader").hide();

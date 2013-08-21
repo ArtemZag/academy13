@@ -235,7 +235,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 unitOfWork.Photos.Find(photoId).Likes.Add(user);
                 unitOfWork.SaveChanges();
 
-                _eventsAggregator.PushCommentAddedEvent(user, photoId);
+                _eventsAggregator.PushLikeToPhotoAddedEvent(user, photoId);
             }
         }
 
