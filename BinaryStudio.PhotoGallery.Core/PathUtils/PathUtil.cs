@@ -11,6 +11,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private const string DELIMITER = @"\";
 
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnails";
+        private const string PHOTOS_DIRECTORY_NAME = "photos";
 
         private readonly string dataVirtualRoot;
 
@@ -26,7 +27,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private readonly string thumbExtension;
         public PathUtil()
         {
-            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
+            dataVirtualRoot = ConfigurationManager.AppSettings["DataFolderName"];
 
         #region TODO! Change this, please
             appPath = ConfigurationManager.AppSettings["DataDirectory"];
@@ -43,8 +44,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string BuildPhotoDirectoryPath()
         {
-            const string PHOTOS_DIRECTORY_NAME = "photos";
-
             var builder = new StringBuilder();
             builder.Append(GetDataDirectory())
                    .Append(DELIMITER)

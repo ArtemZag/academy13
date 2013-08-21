@@ -55,7 +55,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-        [GET("{albumId:int}/{skip:int}/{take:int}")]
+        [GET("?{albumId:int}&{skip:int}&{take:int}")]
         public HttpResponseMessage GetPhotos(int albumId, int skip, int take)
         {
             try
