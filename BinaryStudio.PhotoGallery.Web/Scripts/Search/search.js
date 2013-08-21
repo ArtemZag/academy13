@@ -8,12 +8,10 @@
 
         var isModelChanged = false;
         
-        var interval = 10;
-
         self.searchCacheToken = "no token";
 
         self.skip = 0;
-        self.take = self.skip + interval;
+        self.take = 10;
 
         self.foundItems = ko.observableArray();
 
@@ -104,6 +102,7 @@
 
             self.foundItems.removeAll();
             self.searchCacheToken = "no token";
+            self.skip = 0;
         };
 
         self.search = function () {
@@ -120,8 +119,7 @@
 
         self.incrementInterval = function() {
 
-            self.begin += interval;
-            self.end += interval;
+            self.skip += self.take;
         };
     }
 

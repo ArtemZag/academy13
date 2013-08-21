@@ -12,7 +12,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
         /// <summary>
         /// Deducts part of the cache and returns this part
         /// </summary>
-        SearchCache GetCache(string token, int skip, int take);
+        SearchCache GetCache(string token);
 
         bool ContainsToken(string token);
 
