@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using BinaryStudio.PhotoGallery.Core.EnumerableExtensions;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
@@ -66,12 +64,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 }
 
                 result = result.OrderByDescending(found => found.Relevance).ToList();
+
                 resultToken = searchCacheTask.AddCache(result);
             }
 
             return new SearchResult
             {
-                Value = result.Skip(searchArguments.Skip).Take(searchArguments.Take).ToList(),
+                Value = result.Skip(searchArguments.Skip).Take(searchArguments.Take),
                 SearchCacheToken = resultToken
             };
         }
