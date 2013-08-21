@@ -53,7 +53,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 return response;
             }
-            catch (NoEnoughPrivileges ex)
+            catch (NoEnoughPrivilegesException ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
@@ -75,7 +75,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 _photoCommentService.AddPhotoComment(userId, photoCommentModel);
             }
-            catch (NoEnoughPrivileges ex)
+            catch (NoEnoughPrivilegesException ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }

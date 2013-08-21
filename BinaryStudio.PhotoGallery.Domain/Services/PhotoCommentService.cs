@@ -32,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                                      .ToList();
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to comments", null);
+                throw new NoEnoughPrivilegesException("User can't get access to comments", null);
             }
         }
 
@@ -50,7 +50,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 }
                 else
                 {
-                    throw new NoEnoughPrivileges("User can't get access to comments", null);
+                    throw new NoEnoughPrivilegesException("User can't get access to comments", null);
                 }
                 
             }
