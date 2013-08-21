@@ -227,18 +227,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<PhotoModel> GetPublicPhotos(string userEmail, int skipCount, int takeCount)
         {
-
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                var avalAlbumsIds = secureService.GetAvailableAlbums(user.Id, unitOfWork).Select(album => album.Id);
+                IEnumerable<int> avialableAlbumsIds = secureService.GetAvailableAlbums(user.Id, unitOfWork).Select(album => album.Id);
 
                 return unitOfWork.Photos.All()
+                                  .Where(photo => avialableAlbumsIds.Contains(photo.AlbumId))
                                   .OrderByDescending(model => model.DateOfCreation)
-                                  .Where(photo => avalAlbumsIds.Contains(photo.AlbumId))
-                                  .Take(takeCount)
                                   .Skip(skipCount)
+                                  .Take(takeCount)
                                   .ToList();
             }
         }
