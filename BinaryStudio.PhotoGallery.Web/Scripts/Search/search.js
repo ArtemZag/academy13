@@ -126,6 +126,9 @@
     var viewModel = new searchViewModel();
     ko.applyBindings(viewModel);
 
+    // is request
+    var busy = false;
+
     function sendSearchRequest() {
 
         $("#loader").show();
@@ -139,19 +142,18 @@
                 resizeImages();
 
                 $("#loader").hide();
+                busy = false;
 
                 viewModel.incrementInterval();
             })
             .fail(function() {
 
                 $("#loader").hide();
+                busy = false;
             });
     }
 
     function addResultItems(items) {
-
-        // todo: debug
-        console.log(items.length);
 
         $.each(items, function(index, value) {
 
@@ -231,19 +233,18 @@
 
     $(window).scroll(function() {
 
-        var totalHeight, currentScroll, visibleHeight;
+        if (!busy) {
+            busy = true;
+            var scrHeight = $(window).height();
+            var underScroll = $(this).scrollTop();
+            var divHeight = $("#items").height();
+            
+            var scrollPosition = scrHeight + underScroll;
 
-        currentScroll = $(document).scrollTop();
-
-        totalHeight = document.body.offsetHeight;
-
-        visibleHeight = document.documentElement.clientHeight;
-
-        // scroll to bottom event
-        if (visibleHeight + currentScroll >= totalHeight) {
-
-            if (viewModel.searchQuery()) {
+            if (divHeight - scrollPosition < 200 && viewModel.searchQuery()) {
                 sendSearchRequest();
+            } else {
+                busy = false;
             }
         }
     });
