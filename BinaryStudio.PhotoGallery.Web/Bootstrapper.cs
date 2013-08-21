@@ -45,8 +45,10 @@ namespace BinaryStudio.PhotoGallery.Web
             Core.Bootstrapper.RegisterTypes(container);
 
             container.RegisterType<IGlobalEventsAggregator, GlobalEventsAggregator>(new ContainerControlledLifetimeManager());
+            container.RegisterType<INotificationsEventManager, NotificationsEventManager>(new ContainerControlledLifetimeManager());
             container.RegisterType<IGlobalEventsHandler, GlobalEventsHandler>(new ContainerControlledLifetimeManager());
             container.RegisterInstance(container.Resolve<IGlobalEventsHandler>());
+            
         }
 
     }

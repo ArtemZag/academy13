@@ -239,7 +239,7 @@
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\PhotoController.cs" />
-    <Compile Include="Events\GlobalEventManager.cs" />
+    <Compile Include="Events\NotificationsEventManager.cs" />
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
