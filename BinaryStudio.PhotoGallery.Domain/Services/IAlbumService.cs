@@ -24,6 +24,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="albumId">Album Id</param>
         AlbumModel GetAlbum(int albumId);
 
+        int AlbumsCount(int userId);
+
+        IEnumerable<AlbumModel> GetAlbumsRange(int userId, int skipCount, int takeCount);
+
+        IEnumerable<AlbumTagModel> GetTags(int albumId);
+
         /// <summary>
         ///     Gets all albums for specified user.
         /// </summary>

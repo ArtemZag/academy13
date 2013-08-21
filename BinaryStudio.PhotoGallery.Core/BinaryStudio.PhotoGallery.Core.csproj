@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BinaryStudio.PhotoGallery.Domain">
+      <HintPath>..\BinaryStudio.PhotoGallery.Domain\bin\Debug\BinaryStudio.PhotoGallery.Domain.dll</HintPath>
+    </Reference>
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.6.4.2\lib\net45\Facebook.dll</HintPath>
     </Reference>
