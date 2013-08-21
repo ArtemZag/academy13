@@ -7,12 +7,6 @@
 	ViewBag.Title = "Administration | Bingally";
 }
 @Styles.Render("~/Content/admin-page.css")
-@Scripts.Render("~/bundles/scripts/jquery")
-@Scripts.Render("~/bundles/scripts/jquery.validate")
-@Scripts.Render("~/bundles/scripts/knockout")
-@Scripts.Render("~/Scripts/AdminPanel/AdminPage.js")
-@Scripts.Render("~/bundles/scripts/bootstrap")
-@Scripts.Render("~/Scripts/AdminPanel/UserSlider.js")
 
 <div class="user-container" data-bind="foreach: Users">
 			<a href="" >
@@ -85,3 +79,7 @@
 		Bingally.AdminPage.initializeViewModel(initData);
 	});
 </script>
+
+@Scripts.Render("~/bundles/scripts/jquery.validate")
+@Scripts.Render("~/Scripts/AdminPanel/AdminPage.js")
+@Scripts.Render("~/Scripts/AdminPanel/UserSlider.js")
