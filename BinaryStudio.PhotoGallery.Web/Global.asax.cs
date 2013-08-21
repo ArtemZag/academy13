@@ -38,10 +38,5 @@ namespace BinaryStudio.PhotoGallery.Web
             // TaskManager.Initialize(new UsersMonitorRegistry(container.Resolve<IUsersMonitorTask>()));
             // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
         }
-
-        public void Auhorization_Request()
-        {
-            Debug.WriteLine("work");
-        }
     }
 }

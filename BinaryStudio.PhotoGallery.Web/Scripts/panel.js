@@ -19,6 +19,7 @@
                 $(".to_top").addClass("visible");
                 $(".to_top").css("cursor", "pointer");
                 $(".to_top").fadeIn(500);
+                $(".arrow").fadeIn(500);
                 $(".to_top").click(function () {
                     $("body, html").animate({ scrollTop: 0 }, 800);
                     $(".to_top").fadeOut(300);

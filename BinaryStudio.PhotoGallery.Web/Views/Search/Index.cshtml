@@ -8,16 +8,6 @@
 @Styles.Render("~/Content/spinner.css")
 @Styles.Render("~/Content/panel.css")
 
-
-<div class="to_top">
-    <div class="to_top_opacity"></div>
-    <div class="to_top_panel" title="Наверх">
-        <div class="to_top_button">
-            <span class="arrow">↑</span> <span class="label">наверх</span>
-        </div>  
-    </div>
-</div>
-
 <div id="loader">
     <ul class="spinner">
         <li></li>
@@ -25,6 +15,15 @@
         <li></li>
         <li></li>
     </ul>
+</div>
+
+<div class="to_top">
+    <div class="to_top_opacity"></div>
+    <div class="to_top_panel" title="Up">
+        <div class="to_top_button">
+            <span class="arrow">↑ up</span>
+        </div>  
+    </div>
 </div>
 
 <div class="container">
@@ -179,3 +178,4 @@
 </div><!-- .container -->
 
 @Scripts.Render("~/Scripts/Search/search.js")
+@Scripts.Render("~/Scripts/panel.js")
