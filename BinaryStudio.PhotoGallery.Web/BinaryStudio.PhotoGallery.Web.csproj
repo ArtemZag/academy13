@@ -259,7 +259,6 @@
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
     <Compile Include="Utils\ISearchModelConverter.cs" />
     <Compile Include="Utils\SearchModelConverter.cs" />
-    <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Authorization\SigninViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
@@ -289,6 +288,7 @@
     <Compile Include="ViewModels\Search\UserFoundViewModel.cs" />
     <Compile Include="ViewModels\Upload\MovePhotosViewModel.cs" />
     <Compile Include="ViewModels\Upload\UploadResultViewModel.cs" />
+    <Compile Include="ViewModels\UserInfoViewModel.cs" />
     <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\albums-page.css" />

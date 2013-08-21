@@ -11,10 +11,10 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private const string DELIMITER = @"\";
 
         private const string THUMBNAIL_DIRECTORY_NAME = "thumbnails";
-        private const string PHOTOS_DIRECTORY_NAME = "photos";
 
         private readonly string dataVirtualRoot;
 
+<<<<<<< HEAD
         private readonly string appPath;
         private readonly string dataFolderName;
         private readonly string photosFolderName;
@@ -22,15 +22,32 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private readonly string avatarFileName;
         private readonly string thumbnailsFolderName;
         private readonly string collagesFolderName;
-
         private readonly string noAvatarPath;
         private readonly string thumbExtension;
         public PathUtil()
         {
-            dataVirtualRoot = ConfigurationManager.AppSettings["DataFolderName"];
+            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
+
+            appPath = HttpRuntime.AppDomainAppPath;
+=======
+        private static readonly string appPath;
+        private static readonly string dataFolderName;
+        private static readonly string photosFolderName;
+        private static readonly string usersFolder;
+        private static readonly string avatarFileName;
+        private static readonly string thumbnailsFolderName;
+        private static readonly string collagesFolderName;
+
+        public PathUtil()
+        {
+            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
+        }
 
         #region TODO! Change this, please
+        static PathUtil()
+        {
             appPath = ConfigurationManager.AppSettings["DataDirectory"];
+>>>>>>> origin/Development
             dataFolderName = ConfigurationManager.AppSettings["dataFolderName"];
             photosFolderName = ConfigurationManager.AppSettings["photosFolderName"];
             avatarFileName = ConfigurationManager.AppSettings["AvatarFileName"];
@@ -44,6 +61,8 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string BuildPhotoDirectoryPath()
         {
+            const string PHOTOS_DIRECTORY_NAME = "photos";
+
             var builder = new StringBuilder();
             builder.Append(GetDataDirectory())
                    .Append(DELIMITER)
@@ -140,7 +159,12 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return HostingEnvironment.MapPath(userTempPath);
         }
 
+<<<<<<< HEAD
         public string BuildPathToUsersFolderOnServer()
+=======
+        #region TODO! Change this, please
+        private static string BuildPathToUsersFolderOnServer()
+>>>>>>> origin/Development
         {
             var stringBuilder = new StringBuilder(appPath);
             return stringBuilder.Append(dataFolderName)
@@ -184,10 +208,11 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return stringBuilder.Append(DELIMITER).
                                  Append(collagesFolderName).ToString();
         }
+        #endregion
 
         public string GetEndUserReference(string absolutePath)
         {
-            int index = absolutePath.LastIndexOf(dataFolderName); // TODO EXECAPTION HERE
+            int index = absolutePath.LastIndexOf(dataFolderName);
             return absolutePath.Remove(0, index - 1).Replace(@"\", "/");
         }
 

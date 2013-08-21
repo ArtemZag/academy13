@@ -27,7 +27,8 @@
         string BuildAbsoluteTemporaryDirectoryPath(int userId);
 
         /// <returns>Path in format "C:\\ololo\\ololo"</returns>
-        string BuildAbsoluteTemporaryAlbumPath(int userId, int albumId);
+<<<<<<< HEAD
+        string BuildAbsoluteAlbumPath(int userId, int albumId);
 
         string BuildPathToUsersFolderOnServer();
 
@@ -52,5 +53,8 @@
         string MakeFileNameWithExtension(string name);
 
         string MakePathToCollage(int userId,int albumId,int lenght);
+=======
+        string BuildAbsoluteTemporaryAlbumPath(int userId, int albumId);
+>>>>>>> origin/Development
     }
 }
