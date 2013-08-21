@@ -163,7 +163,7 @@
 
     function addLike(photoId) {
         // TODO Must be replaced with PUT method
-        $.post("/api/photo/" + photoId() + "/like", setLikes);
+        $.post('/api/photo/like', { '' : photoId() }, setLikes);
     }
 
     function setPhotoSize(w, h) {
