@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -128,6 +129,35 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 }
 
                 throw new NoEnoughPrivileges("User can't get access to photos", null);
+            }
+        }
+        public int PhotoCount(int userId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                return unitOfWork.Photos.Filter(model => model.OwnerId == userId).Count();
+        }
+
+        public DateTime LastPhotoAdded(int userId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                return unitOfWork.Photos.Filter(model => model.OwnerId == userId)
+                                 .OrderByDescending(model => model.DateOfCreation)
+                                 .Skip(0)
+                                 .Take(1)
+                                 .ToList()
+                                 .FirstOrDefault()
+                                 .DateOfCreation;
+        }
+
+        public IEnumerable<PhotoModel> GetLastPhotos(int userId, int skipCount, int takeCount)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Photos.Filter(model => model.OwnerId == userId)
+                                               .OrderByDescending(model => model.DateOfCreation)
+                                               .Skip(skipCount)
+                                               .Take(takeCount)
+                                               .ToList();
             }
         }
 

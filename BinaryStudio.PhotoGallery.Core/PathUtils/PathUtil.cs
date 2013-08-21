@@ -17,26 +17,27 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         private readonly string dataVirtualRoot;
 
-        private static readonly string appPath;
-        private static readonly string dataFolderName;
-        private static readonly string photosFolderName;
-        private static readonly string usersFolder;
-        private static readonly string avatarFileName;
-        private static readonly string thumbnailsFolderName;
-        private static readonly string collagesFolderName;
+        private readonly string appPath;
+        private readonly string dataFolderName;
+        private readonly string photosFolderName;
+        private readonly string usersFolder;
+        private readonly string avatarFileName;
+        private readonly string thumbnailsFolderName;
+        private readonly string collagesFolderName;
+        private readonly string noAvatarPath;
+        private readonly string thumbExtension;
         public PathUtil()
         {
-            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"]; 
-        }
+            dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
 
-        static PathUtil()
-        {
             appPath = HttpRuntime.AppDomainAppPath;
             dataFolderName = ConfigurationManager.AppSettings["dataFolderName"];
             photosFolderName = ConfigurationManager.AppSettings["photosFolderName"];
             avatarFileName = ConfigurationManager.AppSettings["AvatarFileName"];
             thumbnailsFolderName = ConfigurationManager.AppSettings["ThumbnailsFolderName"];
             collagesFolderName = ConfigurationManager.AppSettings["CollagesFolderName"];
+            noAvatarPath = ConfigurationManager.AppSettings["customAvatarPath"];
+            thumbExtension = ConfigurationManager.AppSettings["ThumbnailExtension"];
             usersFolder = BuildPathToUsersFolderOnServer();
         }
 
@@ -140,7 +141,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return HostingEnvironment.MapPath(userTempPath);
         }
 
-        private static string BuildPathToUsersFolderOnServer()
+        public string BuildPathToUsersFolderOnServer()
         {
             var stringBuilder = new StringBuilder(appPath);
             return stringBuilder.Append(dataFolderName)
@@ -148,28 +149,28 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
                                 .Append(photosFolderName).ToString();
         }
 
-        public static string BuildPathToUserFolderOnServer(int userId)
+        public string BuildPathToUserFolderOnServer(int userId)
         {
             var stringBuilder = new StringBuilder(usersFolder);
             return stringBuilder.Append(DELIMITER).
                                  Append(userId).ToString();
         }
 
-        public static string BuildPathToUserAvatarOnServer(int userId)
+        public string BuildPathToUserAvatarOnServer(int userId)
         {
             var stringBuilder = new StringBuilder(BuildPathToUserFolderOnServer(userId));
             return stringBuilder.Append(DELIMITER).
                                  Append(avatarFileName).ToString();
         }
 
-        public static string BuildPathToUserAlbumFolderOnServer(int userId, int albumId)
+        public string BuildPathToUserAlbumFolderOnServer(int userId, int albumId)
         {
             var stringBuilder = new StringBuilder(BuildPathToUserFolderOnServer(userId));
             return stringBuilder.Append(DELIMITER).
                                  Append(albumId).ToString();
         }
 
-        public static string BuildPathToUserAlbumThumbnailsFolderOnServer(int userId, int albumId, int thumbnailsSize)
+        public string BuildPathToUserAlbumThumbnailsFolderOnServer(int userId, int albumId, int thumbnailsSize)
         {
             var stringBuilder = new StringBuilder(BuildPathToUserAlbumFolderOnServer(userId, albumId));
             return stringBuilder.Append(DELIMITER).
@@ -178,11 +179,50 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
                                 .Append(thumbnailsSize).ToString();
         }
 
-        public static string BuildPathToUserAlbumCollagesFolderOnServer(int userId, int albumId)
+        public string BuildPathToUserAlbumCollagesFolderOnServer(int userId, int albumId)
         {
             var stringBuilder = new StringBuilder(BuildPathToUserAlbumFolderOnServer(userId, albumId));
             return stringBuilder.Append(DELIMITER).
                                  Append(collagesFolderName).ToString();
+        }
+
+        public string GetEndUserReference(string absolutePath)
+        {
+            int index = absolutePath.LastIndexOf(dataFolderName);
+            return absolutePath.Remove(0, index - 1).Replace(@"\", "/");
+        }
+
+        public string MakeFileNameWithExtension(string name)
+        {
+            return string.Format(@"{0}{1}", name, thumbExtension);
+        }
+
+        public string BuildPathToOriginalFileOnServer(int userId, int albumId, string originalName)
+        {
+            var stringBuilder = new StringBuilder(BuildPathToUserAlbumFolderOnServer(userId, albumId));
+            return stringBuilder.Append(DELIMITER).
+                                 Append(originalName).ToString();
+        }
+
+        public string BuildPathToThumbnailFileOnServer(int userId, int albumId, int thumbnailsSize, string originalPath)
+        {
+            var stringBuilder = new StringBuilder(BuildPathToUserAlbumThumbnailsFolderOnServer(userId,albumId,thumbnailsSize));
+            return stringBuilder.Append(DELIMITER).
+                                 Append(MakeFileNameWithExtension(Path.GetFileNameWithoutExtension(originalPath)))
+                                .ToString();
+        }
+
+        public string NoAvatar()
+        {
+            return noAvatarPath;
+        }
+
+        public string MakePathToCollage(int userId, int albumId, int lenght)
+        {
+            var stringBuilder = new StringBuilder(BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId));
+            return stringBuilder.Append(DELIMITER)
+                                .Append(MakeFileNameWithExtension(Randomizer.GetString(lenght)))
+                                .ToString();
         }
 
         private string GetDataDirectory()

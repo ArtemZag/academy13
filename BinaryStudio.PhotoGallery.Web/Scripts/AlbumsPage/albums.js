@@ -1,12 +1,14 @@
 ﻿$(document).ready(function () {
-    
-    var container = $("#container");
+
+    var container = $(".albums");
     var info = $("#userInformation");
+    var tool = $("#toolbar");
+    var table = $("#content");
     var windowObject = $(window);
     var documentObject = $(document);
     var numberOfAlbums = 10;
     var startIndex = 0;
-    var endIndex = numberOfAlbums - 1;
+    var endIndex = numberOfAlbums;
     /*var canvas = document.getElementById("canv");
     var ctx = canvas.getContext('2d');
     var colors = ["yellow", "orange", "red", "blue", "indigo"];
@@ -27,14 +29,19 @@
     var yMinIndent = 5;
     var xIndent;
     var yIndent;*/
-
+    
     windowObject.scroll(scrolling);
+    windowObject.resize(resizeTable);
+    resizeTable();
     downloadUserInfo();
     downloadNextPartionOfAlbums();
-    numberOfAlbums = 5;
 
     function downloadUserInfo() {
         $.post("/Albums/GetUserInfo", getInfo);
+    }
+
+    function resizeTable() {
+        table.height(windowObject.height() - tool.height());
     }
 
     function getInfo(inf) {
@@ -50,9 +57,16 @@
     function getAlbums(albums) {
         var length = albums.length;
         if (length > 0) {
+            alert('yes');
             container.html(
                 $("#collageTmpl").render(albums));
         } else {
+            alert(startIndex + ' ' + numberOfAlbums);
+            if (startIndex - numberOfAlbums == 0) {
+                alert('no anought albums here');
+                container.html(
+                $("#uploadTmpl").render());
+            }
             windowObject.unbind("scroll");
         }
     }

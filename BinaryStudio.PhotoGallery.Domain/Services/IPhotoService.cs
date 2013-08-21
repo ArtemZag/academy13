@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -27,6 +28,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         void DeletePhoto(string userEmail, PhotoModel photo);
 
+        int PhotoCount(int userId);
+
+        DateTime LastPhotoAdded(int userId);
+
+        IEnumerable<PhotoModel> GetLastPhotos(int userId, int skipCount, int takeCount);
         /// <summary>
         ///     Returns specified interval of photos (sorted by date) from specified album.
         /// </summary>

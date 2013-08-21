@@ -120,6 +120,27 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public int AlbumsCount(int userId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                return unitOfWork.Albums.Filter(model => model.OwnerId == userId && !model.IsDeleted).Sum(model => 1);
+        }
+
+        public IEnumerable<AlbumModel> GetAlbumsRange(int userId, int skipCount, int takeCount)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                return
+                    unitOfWork.Albums.Filter(model => model.OwnerId == userId && !model.IsDeleted)
+                              .OrderByDescending(model => model.DateOfCreation)
+                              .Skip(skipCount)
+                              .Take(takeCount)
+                              .ToList();
+        }
+        public IEnumerable<AlbumTagModel> GetTags(int albumId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                return unitOfWork.AlbumTags.Filter(tag => tag.ID == albumId).ToList();
+        }
         public IEnumerable<AlbumModel> GetAllAlbums(string userEmail)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

@@ -8,194 +8,196 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
 
 namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
-    public class AsyncPhotoProcessor : IAsyncPhotoProcessor
+    public class AsyncPhotoProcessor
     {
-        private const int MIN_HEIGHT = 1;
-        private const int MAX_HEIGHT = 1024;
-        //
-        private IEnumerable<string> array;
-        //
-        private string pathToUsers;
-        // путь к папке с альбомом
-        private readonly string relativePath;
-        // максимальная высота фотографии
+        private static readonly int MinHeight;
+        private static readonly int MaxHeight;
+        private static readonly Random rnd;
+        private static readonly int avatarMaxSize;
+        private static readonly int MaxAvatarBound;
+
+        private readonly IPathUtil util;
+        private readonly object syncRoot;
         private readonly int maxHeight;
-        // путь к папке с превью
-        private readonly string pathToThumbnail;
-        // путь к папке с collages
-        private readonly string pathToCollages;
-        //
         private readonly int userId;
-        //
         private readonly int albumId;
-        //генератор случайных чисел для класса, ибо он часто используется
-        private readonly Random rnd;
-        public AsyncPhotoProcessor(string pathToUsersFolder, int userId, int albumId, int maxHeight)
+        
+        static AsyncPhotoProcessor()
+        {
+            MinHeight = 1;
+            MaxHeight = 1024;
+            MaxAvatarBound = 96;
+            //KB
+            avatarMaxSize = 1024*8;
+            rnd = new Random((int)DateTime.Now.Ticks);
+        }
+
+        public AsyncPhotoProcessor(int userId, int albumId, int maxHeight, IPathUtil util)
         {
             this.maxHeight = maxHeight;
 
-            if (maxHeight < MIN_HEIGHT)
-                throw new ArgumentException(string.Format("Invalid height. Parameter must be greater then {0}", MIN_HEIGHT));
+            if (maxHeight < MinHeight)
+                throw new ArgumentException(string.Format("Invalid height. Parameter must be greater then {0}",
+                                                          MinHeight));
 
-            if (maxHeight > MAX_HEIGHT)
-                throw new ArgumentException(string.Format("Invalid height. Parameter must be less or equal then {0}", MAX_HEIGHT));
+            if (maxHeight > MaxHeight)
+                throw new ArgumentException(string.Format("Invalid height. Parameter must be less or equal then {0}",
+                                                          MaxHeight));
 
             this.albumId = albumId;
+            this.util = util;
             this.userId = userId;
             if (albumId < 0 || userId < 0)
                 throw new ArgumentException("Invalid userId and albumId");
 
-            pathToUsers = pathToUsersFolder;
-
-            if (pathToUsers == null)
-                throw new NullReferenceException("Path to users folder is null");
-
-            relativePath = Path.Combine(pathToUsers, userId.ToString(), albumId.ToString());
-
-            if (relativePath == null)
-                throw new NullReferenceException("Relative path is null");
-
-            if (!Directory.Exists(relativePath))
-                Directory.CreateDirectory(relativePath);
-
-            pathToThumbnail = string.Format(@"{0}\thumbnail\{1}", relativePath, maxHeight);
-            pathToCollages = string.Format(@"{0}\collages", relativePath);
-            rnd = new Random((int)DateTime.Now.Ticks);
-        }
-        public string GetUserAvatar()
-        {
-            return ImageFormatHelper.GetImages(Path.Combine(pathToUsers, userId.ToString())).FirstOrDefault();
-        }
-
-        private void CreateDirectoryIfNotExists(string path)
-        {
-            Directory.CreateDirectory(path);
-        }
-
-        // создаёт превью, заданного в конструкторе размера, для файлов превью которых отсутствуют
-        public bool CreateThumbnailsIfNotExist()
-        {
-            CreateDirectoryIfNotExists(pathToThumbnail);
-            bool created = false;
-            object syncRoot = new object();
-            IEnumerable<string> files = ImageFormatHelper.GetImages(relativePath);
-
-            Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
-                             path =>
-                             {
-                                 // получаем имя изображения
-                                 string imageName = Path.GetFileNameWithoutExtension(path);
-                                 // получаем путь к thumbnail изображения
-                                 string pathToThumbnailOfImage = Path.Combine(pathToThumbnail,
-                                                                              string.Format("{0}.jpg", imageName));
-                                 // если на диске нет thumbnail для текущего изображения то создадим его и сохраним на диске
-                                 if (!File.Exists(pathToThumbnailOfImage))
-                                 {
-                                     Image image = Image.FromFile(path);
-                                     Size size = CalculateThumbSize(image.Size);
-                                     image = image.GetThumbnailImage(size.Width, size.Height,
-                                                                     () => false, IntPtr.Zero);
-                                     image.Save(pathToThumbnailOfImage, ImageFormat.Jpeg);
-                                     lock (syncRoot)
-                                         created = true;
-                                 }
-                             });
-            return created;
-        }
-
-        // удаляет миниатюру заданного размера для отсутствующих исходных файлов
-        public bool DeleteThumbnailsIfOriginalNotExist()
-        {
-            CreateDirectoryIfNotExists(pathToThumbnail);
-            bool deleted = false;
-            object syncRoot = new object();
-            IEnumerable<string> files = ImageFormatHelper.GetImages(pathToThumbnail);
-
-            Parallel.ForEach(files, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount },
-                             path =>
-                             {
-                                 string srcName = Path.GetFileNameWithoutExtension(path);
-                                 string pathToSrcOfImage = Path.Combine(relativePath,
-                                                                        string.Format("{0}.jpg", srcName));
-                                 if (!File.Exists(pathToSrcOfImage))
-                                 {
-                                     File.Delete(path);
-                                     lock (syncRoot)
-                                         deleted = true;
-                                 }
-                             });
-            return deleted;
-        }
-
-        private void DeleteCollages()
-        {
-            if (Directory.Exists(pathToCollages))
-                Directory.Delete(pathToCollages, true);
+            syncRoot = new object();
         }
 
         public void SyncOriginalAndThumbnailImages()
         {
-            bool anyDeleted = DeleteThumbnailsIfOriginalNotExist();
-            bool anyCreated = CreateThumbnailsIfNotExist();
+            bool modified,deleted,created;
+            modified = deleted = created = false;
 
-            if (anyDeleted || anyCreated)
+            var pathToThumb = util.BuildPathToUserAlbumThumbnailsFolderOnServer(userId, albumId, maxHeight);
+            var userAlbumPath = util.BuildPathToUserAlbumFolderOnServer(userId, albumId);
+
+            CreateDirectoriesIfNotExists(pathToThumb);
+            var files = ImageFormatHelper.GetImages(userAlbumPath);
+
+            Parallel.ForEach(files, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount},
+                             path =>
+                                 {
+                                     var pathToThumbnailOfImage =
+                                         util.BuildPathToThumbnailFileOnServer(userId, albumId, maxHeight, path);
+                                     
+                                     deleted = DeleteThumbnailIfOriginalNotExists(path, pathToThumbnailOfImage);
+                                     if (!deleted)
+                                         created = CreateThumbnailIfNotExists(path, pathToThumbnailOfImage, maxHeight);
+
+                                     lock (syncRoot)
+                                         modified |= deleted | created;
+                                 });
+
+
+            if (modified)
                 DeleteCollages();
+        }
+
+        private void CreateDirectoriesIfNotExists(params string[] paths)
+        {
+            foreach (var path in paths.Where(path => !Directory.Exists(path)))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
+        private bool CreateThumbnailIfNotExists(string pathToOriginal, string pathToThumbnail,int maxSize)
+        {
+            if (!File.Exists(pathToThumbnail))
+            {
+                ThumbnailCreationAction(pathToOriginal, pathToThumbnail, maxSize, false);
+                return true;
+            }
+            return false;
+        }
+
+        private void ThumbnailCreationAction(string pathToOriginal, string pathToThumbnail,int maxSize,bool twoBounds=true)
+        {
+            using (var image = Image.FromFile(pathToOriginal))
+            {
+                var size = CalculateThumbSize(image.Size, maxSize, twoBounds);
+                using (var thumb = image.GetThumbnailImage(size.Width, size.Height,
+                                                           () => false, IntPtr.Zero))
+                {
+                    thumb.Save(pathToThumbnail, ImageFormat.Jpeg);
+                }
+            }
+        }
+
+        private bool DeleteThumbnailIfOriginalNotExists(string pathToOriginal, string pathToThumbnail)
+        {
+            if (!File.Exists(pathToOriginal))
+            {
+                File.Delete(pathToThumbnail);
+                return true;
+            }
+            return false;
+        }
+
+        public string GetUserAvatar()
+        {
+            var path = util.BuildPathToUserAvatarOnServer(userId);
+            var info = new FileInfo(path);
+            if (info.Exists)
+            {
+                if (info.Length < avatarMaxSize)
+                {
+                    return util.GetEndUserReference(info.FullName);
+                }
+                else
+                {
+                    var s = util.BuildPathToUserFolderOnServer(userId);
+                    s = Path.Combine(s,util.MakeFileNameWithExtension(Randomizer.GetString(15)));
+                    ThumbnailCreationAction(info.FullName, s, MaxAvatarBound);
+                    var newThumb = new FileInfo(s);
+                    newThumb.Replace(info.FullName, Path.GetDirectoryName(newThumb.FullName) + @"\avatar_big.jpg");
+                    return util.BuildPathToUserAvatarOnServer(userId);
+                }
+            }
+            return util.NoAvatar();
+        }
+        
+        private void DeleteCollages()
+        {
+            string path = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
+
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
         }
 
         public string CreateCollageIfNotExist(int width, int rows)
         {
-            if (Directory.Exists(pathToCollages))
-            {
-                return ((List<string>)ImageFormatHelper.GetImages(pathToCollages))[0];
-            }
-            return MakeCollage(width, rows);
+            string path = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
+
+            if (Directory.Exists(path))
+                return util.GetEndUserReference(ImageFormatHelper.GetImages(path).ToList().First());
+
+            return util.GetEndUserReference(MakeCollage(width, rows));
         }
 
-        public static IEnumerable<string> GetThumbnails(string pathToUsers, int userId, int albumId, int maxHeight)
+        private IEnumerable<string> GetThumbnails()
         {
-            string fullPath = Path.Combine(pathToUsers, userId.ToString(), albumId.ToString(), "thumbnail", maxHeight.ToString());
+            string fullPath = util.BuildPathToUserAlbumThumbnailsFolderOnServer(userId, albumId, maxHeight);
+            
             if (Directory.Exists(fullPath))
-            {
-                IEnumerable<string> files = ImageFormatHelper.GetImages(fullPath);
-                if (files == null || !files.Any())
-                    throw new FileNotFoundException("Файлы не найдены!");
+                return ImageFormatHelper.GetImages(fullPath);
 
-                return files;
-            }
             return null;
         }
 
-        public IEnumerable<string> GetThumbnails()
-        {
-            return GetThumbnails(pathToUsers, userId, albumId, maxHeight);
-        }
-
-        //застелить collage миниатюрами
         private void TileTheImage(Graphics grfx, IEnumerable<string> enumerable, int width, int heigth)
         {
             int iter = 0;
             int sumWidth = 0;
             foreach (var file in enumerable)
             {
-                Image thumbImage = Image.FromFile(file);
-                grfx.DrawImageUnscaled(thumbImage, sumWidth, iter);
-                sumWidth += thumbImage.Width;
-                if (sumWidth >= width)
+                using (var thumbImage = Image.FromFile(file))
                 {
-                    sumWidth = 0;
-                    iter += maxHeight;
-                    if (iter >= heigth)
-                        break;
+                    grfx.DrawImageUnscaled(thumbImage, sumWidth, iter);
+                    sumWidth += thumbImage.Width;
+                    if (sumWidth >= width)
+                    {
+                        sumWidth = 0;
+                        iter += maxHeight;
+                        if (iter >= heigth)
+                            break;
+                    }
                 }
             }
-        }
-
-        public void SetUpForRandomEnumerable(IEnumerable<string> arr)
-        {
-            array = arr;
         }
 
         private void SetUpGraphics(Graphics grfx)
@@ -208,31 +210,37 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         public string MakeCollage(int width, int rows)
         {
             int height = rows * maxHeight;
-            Image img = new Bitmap(width, height);
+            string pathToCollage = util.MakePathToCollage(userId, albumId, rnd.Next(5, 15));
+            string pathToCollages = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
+            
+            using (Image img = new Bitmap(width, height))
+            {
+                Graphics grfx = Graphics.FromImage(img);
+                SetUpGraphics(grfx);
 
-            Graphics grfx = Graphics.FromImage(img);
-            SetUpGraphics(grfx);
+                TileTheImage(grfx, GetEnumerator(GetThumbnails()), width, height);
 
-            SetUpForRandomEnumerable(GetThumbnails());
-            TileTheImage(grfx, GetEnumerator(), width, height);
-
-            string collageName = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            string result = string.Format(@"{0}\{1}.jpg", pathToCollages, collageName);
-
-            CreateDirectoryIfNotExists(pathToCollages);
-            img.Save(result, ImageFormat.Jpeg);
-
-            return result;
+                CreateDirectoriesIfNotExists(pathToCollages);
+                img.Save(pathToCollage, ImageFormat.Jpeg);
+            }
+            return util.GetEndUserReference(pathToCollage);
         }
 
-        private Size CalculateThumbSize(Size size)
+        private static Size CalculateThumbSize(Size size, int maxSize, bool twoBounds)
         {
-            // делает высоту постоянной, а ширина изменяется в соответствии с пропорцией
-            return new Size((int)((size.Width / (double)size.Height) * maxHeight), maxHeight);
+            if (twoBounds)
+            {
+                if (size.Width > size.Height)
+                    return new Size(maxSize, (int) (((double) size.Height/size.Width)*maxSize));
+            }
+
+            return new Size((int) (((double) size.Width/size.Height)*maxSize), maxSize);
         }
-        public IEnumerable<string> GetEnumerator()
+
+
+        public IEnumerable<string> GetEnumerator(IEnumerable<string> enumerable)
         {
-            string[] arr = array.ToArray();
+            string[] arr = enumerable.ToArray();
             int length = arr.Length;
 
             List<int> indexes =
