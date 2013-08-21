@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using AttributeRouting;
-using AttributeRouting.Web.Http;
+using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
@@ -55,37 +55,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-        [GET("?{albumName}&{skip:int}&{take:int}")]
-        public HttpResponseMessage GetPhotos(string albumName, int skip, int take)
-        {
-            try
-            {
-                IEnumerable<PhotoModel> photoModels = _photoService.GetPhotos(User.Identity.Name, albumName, skip, take);
-
-                List<PhotoViewModel> photoViewModels = photoModels.Select(PhotoViewModel.FromModel).ToList();
-
-                var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>(photoViewModels,
-                    new JsonMediaTypeFormatter());
-
-                var response = new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = responseData
-                };
-
-                return response;
-            }
-            catch (NoEnoughPrivilegesException ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [GET("?{albumId:int}&{skip:int}&{take:int}")]
+        [GET("{albumId:int}/{skip:int}/{take:int}")]
         public HttpResponseMessage GetPhotos(int albumId, int skip, int take)
         {
             try
