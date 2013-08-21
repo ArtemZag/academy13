@@ -7,10 +7,13 @@
         var self = this;
 
         var isModelChanged = false;
+        
+        var interval = 10;
 
         self.searchCacheToken = "no token";
 
-        self.interval = 10;
+        self.skip = 0;
+        self.take = self.skip + interval;
 
         self.foundItems = ko.observableArray();
 
@@ -114,6 +117,12 @@
                 sendSearchRequest();
             }
         };
+
+        self.incrementInterval = function() {
+
+            self.begin += interval;
+            self.end += interval;
+        };
     }
 
     var viewModel = new searchViewModel();
@@ -131,6 +140,8 @@
             resizeImages();
 
             $("#loader").hide();
+
+            viewModel.incrementInterval();
         });
     }
 
@@ -145,7 +156,7 @@
     }
 
     // todo: delete
-
+    
     function resizeImages() {
 
         setTimeout(function () {
@@ -156,7 +167,6 @@
     // transforms some fileds for result item
 
     function formatFields(value) {
-
 
         if (value.Type == "photo" || value.Type == "album" || value.Type == "comment") {
 

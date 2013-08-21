@@ -66,7 +66,6 @@
     <Compile Include="Services\ISecureService.cs" />
     <Compile Include="Services\Search\AlbumSearchService.cs" />
     <Compile Include="Services\Search\IAlbumSearchService.cs" />
-    <Compile Include="Services\Search\ItemsExstensions.cs" />
     <Compile Include="Services\Search\IUserSearchService.cs" />
     <Compile Include="Services\Search\Results\AlbumFound.cs" />
     <Compile Include="Services\Search\CommentSearchService.cs" />
