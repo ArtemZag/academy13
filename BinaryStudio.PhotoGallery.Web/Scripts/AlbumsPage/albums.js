@@ -57,7 +57,6 @@
     function getAlbums(albums) {
         var length = albums.length;
         if (length > 0) {
-            alert('yes');
             container.html(
                 $("#collageTmpl").render(albums));
         } else {
