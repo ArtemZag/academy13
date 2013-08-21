@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
@@ -44,17 +45,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
             }
         }
 
-        public SearchCache DeductCache(string token, int interval)
+        public SearchCache GetCache(string token, int skip, int take)
         {
-            SearchCache cashe = caches[token];
+            SearchCache cache = caches[token];
 
             var result = new SearchCache
             {
-                Value = cashe.Value.TakeInterval(interval),
-                LifeTime = cashe.LifeTime
+                Value = cache.Value.Skip(skip).Take(take),
+                LifeTime = cache.LifeTime
             };
-
-            cashe.Value = cashe.Value.RemoveElements(interval);
 
             return result;
         }

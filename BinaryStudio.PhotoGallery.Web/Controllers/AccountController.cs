@@ -23,7 +23,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             _userService = userService;
         }
 
-        [GET("login/{service?}")]
+        [GET("login/{service?}", RouteName = "Login")]
         public ActionResult SignIn(string service)
         {
             if (string.IsNullOrEmpty(service))
@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
                     if (userExist)
                     {
-                        return RedirectToRoute("login");
+                        return RedirectToRoute("PublicFlow");
                     }
 
                     // Clear cookie
@@ -51,7 +51,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return View(new SigninViewModel());
         }
 
-        [GET("registration/{invite}")]
+        [GET("registration/{invite}", RouteName = "Registration")]
         public ActionResult SignUp(string invite)
         {
             if (string.IsNullOrEmpty(invite))
@@ -63,7 +63,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
                     if (userExist)
                     {
-                        return RedirectToRoute("");
+                        return RedirectToRoute("PublicFlow");
                     }
                     // Clear cookie
                     FormsAuthentication.SignOut();
@@ -79,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             }
             catch (UserNotFoundException)
             {
-                return RedirectToRoute("login");
+                return RedirectToRoute("Login");
             }
             
             return View(signupViewModel);
@@ -132,14 +132,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             FB.AddPhotosToAlbum(photoCollection, "Bingally", token);
            var albumList =  FB.GetListOfAlbums(token);
 
-            return RedirectToRoute("");
+            return RedirectToRoute("PublicFlow");
         }
 
         [GET("signout")]
         public ActionResult SignOut()
         {
             FormsAuthentication.SignOut();
-            return RedirectToRoute("login");
+            return RedirectToRoute("Login");
         }
 
         [HttpGet]

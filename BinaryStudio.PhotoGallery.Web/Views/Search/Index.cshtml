@@ -1,5 +1,4 @@
 ﻿@using System.Web.Optimization
-
 @{
     ViewBag.Title = "Search | Bingally";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -7,6 +6,7 @@
 
 @Styles.Render("~/Content/search.css")
 @Styles.Render("~/Content/spinner.css")
+@Styles.Render("~/Content/panel.css")
 
 <div id="loader">
     <ul class="spinner">
@@ -15,6 +15,15 @@
         <li></li>
         <li></li>
     </ul>
+</div>
+
+<div class="to_top">
+    <div class="to_top_opacity"></div>
+    <div class="to_top_panel" title="Up">
+        <div class="to_top_button">
+            <span class="arrow">↑ up</span>
+        </div>  
+    </div>
 </div>
 
 <div class="container">
@@ -168,10 +177,5 @@
     </div><!-- .row -->
 </div><!-- .container -->
 
-@Scripts.Render("~/bundles/scripts/jquery")
-@Scripts.Render("~/bundles/scripts/bootstrap")
-
-@Scripts.Render("~/bundles/scripts/knockout")
-@Scripts.Render("~/bundles/scripts/knockout.mapping-latest.debug")
-
 @Scripts.Render("~/Scripts/Search/search.js")
+@Scripts.Render("~/Scripts/panel.js")

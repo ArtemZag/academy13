@@ -48,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     return photoModel;
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photos", null);
+                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -71,7 +71,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     return photoModels.Select(photo => photo.Id).ToList();
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photos", null);
+                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -108,7 +108,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 }
                 else
                 {
-                    throw new NoEnoughPrivileges("User can't get access to photos", null);
+                    throw new NoEnoughPrivilegesException("User can't get access to photos");
                 }
             }
         }
@@ -129,7 +129,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         .ToList();
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photos", null);
+                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -142,16 +142,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 if (secureService.CanUserViewPhotos(user.Id, albumId))
                 {
                     return unitOfWork.Photos.Filter(model => model.AlbumId == albumId)
-
-                                     .Where(model => !model.IsDeleted)
-                                     .OrderByDescending(model => model.DateOfCreation)
-                                     .ThenBy(model => model.Id)
-                                     .Skip(skipCount)
-                                     .Take(takeCount)
-                                     .ToList();
+                        .Where(model => !model.IsDeleted)
+                        .OrderByDescending(model => model.DateOfCreation)
+                        .ThenBy(model => model.Id)
+                        .Skip(skipCount)
+                        .Take(takeCount)
+                        .ToList();
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photos", null);
+                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -161,15 +160,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-// todo: create a criterions for grabing all user albums' IDs and check every for access permissions
+                // todo: create a criterions for grabing all user albums' IDs and check every for access permissions
 
                 return unitOfWork.Photos.Filter(model => model.OwnerId == user.Id)
-                                 .Where(model => !model.IsDeleted)
-                                 .OrderByDescending(model => model.DateOfCreation)
-                                 .ThenBy(model => model.Id)
-                                 .Skip(skipCount)
-                                 .Take(takeCount)
-                                 .ToList();
+                    .Where(model => !model.IsDeleted)
+                    .OrderByDescending(model => model.DateOfCreation)
+                    .ThenBy(model => model.Id)
+                    .Skip(skipCount)
+                    .Take(takeCount)
+                    .ToList();
             }
         }
 
@@ -179,7 +178,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                var photoModel = GetPhoto(user.Id, photoId);
+                PhotoModel photoModel = GetPhoto(user.Id, photoId);
 
                 return photoModel;
             }
@@ -196,7 +195,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     return photoModel;
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photos", null);
+                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -222,7 +221,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     return photo.Likes.ToList();
                 }
 
-                throw new NoEnoughPrivileges("User can't get access to photoModel's likes", null);
+                throw new NoEnoughPrivilegesException("User can't get access to photoModel's likes");
             }
         }
 
@@ -241,20 +240,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<PhotoModel> GetPublicPhotos(string userEmail, int skipCount, int takeCount)
         {
-
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userEmail, unitOfWork);
 
-                var avalAlbumsIds = secureService.GetAvailableAlbums(user.Id, unitOfWork).Select(album => album.Id);
+                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(user.Id, unitOfWork);
 
-                return unitOfWork.Photos.All()
-                                  .OrderByDescending(model => model.DateOfCreation)
-                                  .ThenBy(photo => photo.Id)
-                                  .Where(photo => avalAlbumsIds.Contains(photo.AlbumId))
-                                  .Take(takeCount)
-                                  .Skip(skipCount)
-                                  .ToList();
+                return
+                    avialableAlbums.SelectMany(model => model.Photos)
+                        .OrderByDescending(model => model.DateOfCreation)
+                        .ThenBy(photo => photo.Id)
+                        .Skip(skipCount)
+                        .Take(takeCount)
+                        .ToList();
             }
         }
     }

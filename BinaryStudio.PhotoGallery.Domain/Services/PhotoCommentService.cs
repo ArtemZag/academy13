@@ -26,13 +26,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 if (secureService.CanUserViewComments(userId, albumId))
                 {
                     return unitOfWork.PhotoComments.Filter(model => model.PhotoId == photoId)
-                                     .OrderBy(model => model.DateOfCreating)
-                                     .ThenBy(model => model.Id)
-                                     .Skip(begin).Take(last - begin)
-                                     .ToList();
+                        .OrderBy(model => model.DateOfCreating)
+                        .ThenBy(model => model.Id)
+                        .Skip(begin).Take(last - begin)
+                        .ToList();
                 }
-
-                throw new NoEnoughPrivileges("User can't get access to comments", null);
+                else
+                {
+                    throw new NoEnoughPrivilegesException("User can't get access to comments");
+                }
             }
         }
 
@@ -50,9 +52,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 }
                 else
                 {
-                    throw new NoEnoughPrivileges("User can't get access to comments", null);
+                    throw new NoEnoughPrivilegesException("User can't get access to comments");
                 }
-                
             }
         }
 

@@ -162,10 +162,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Checks if user take a part in even one group, that have enough permissions to do some action
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="albumId"></param>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
         private bool CanUserDoAction(int userId, int albumId, Predicate<AvailableGroupModel> predicate)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -201,11 +197,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Gets available group or creates if doesn't exist.
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="groupId"></param>
-        /// <param name="albumId"></param>
-        /// <param name="unitOfWork"></param>
-        /// <returns></returns>
         private AvailableGroupModel GetAvailableGroup(int userId, int groupId, int albumId, IUnitOfWork unitOfWork)
         {
             AlbumModel album = GetAlbum(albumId, unitOfWork);

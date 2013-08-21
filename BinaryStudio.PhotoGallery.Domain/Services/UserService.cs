@@ -104,6 +104,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public void Update(UserModel userModel)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                unitOfWork.Users.Update(userModel);
+                unitOfWork.SaveChanges();
+            }
+        }
+
         public string CreateUser(string userEmail, string userFirstName, string userLastName)
         {
             if (IsUserExist(userEmail))

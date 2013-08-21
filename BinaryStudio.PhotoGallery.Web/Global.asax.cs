@@ -1,9 +1,13 @@
-﻿using System.Web;
+﻿using System.Diagnostics;
+using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Web.App_Start;
+using BinaryStudio.PhotoGallery.Web.Registers;
+using FluentScheduler;
 using Microsoft.Practices.Unity;
 using PerpetuumSoft.Knockout;
 
@@ -25,8 +29,6 @@ namespace BinaryStudio.PhotoGallery.Web
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-
-            AttributeRoutingConfig.Start();
 
             IUnityContainer container = Bootstrapper.Initialise();
             System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());

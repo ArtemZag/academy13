@@ -45,7 +45,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 return response;
             }
-            catch (NoEnoughPrivileges ex)
+            catch (NoEnoughPrivilegesException ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
@@ -75,7 +75,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 return response;
             }
-            catch (NoEnoughPrivileges ex)
+            catch (NoEnoughPrivilegesException ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
@@ -105,7 +105,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 return response;
             }
-            catch (NoEnoughPrivileges ex)
+            catch (NoEnoughPrivilegesException ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
@@ -136,7 +136,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 return response;
             }
-            catch (NoEnoughPrivileges ex)
+            catch (NoEnoughPrivilegesException ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
@@ -147,7 +147,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         [POST("like")]
-        public HttpResponseMessage AddLike(int photoId)
+        public HttpResponseMessage AddLike([FromBody] int photoId)
         {
             try
             {
@@ -172,7 +172,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     .Select(PhotoViewModel.FromModel).ToList();
 
                 var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>
-                (viewModels, new JsonMediaTypeFormatter());
+                    (viewModels, new JsonMediaTypeFormatter());
 
                 var response = new HttpResponseMessage
                 {
@@ -199,7 +199,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     .Select(PhotoViewModel.FromModel).ToList();
 
                 var responseData = new ObjectContent<IEnumerable<PhotoViewModel>>
-                (viewModels, new JsonMediaTypeFormatter());
+                    (viewModels, new JsonMediaTypeFormatter());
 
                 var response = new HttpResponseMessage
                 {
