@@ -220,27 +220,27 @@
     <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="App_Start\AttributeRoutingHttpConfig.cs" />
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
-    <Compile Include="Area\Api\AuthorizationController.cs" />
+    <Compile Include="Area\Api\AccountController.cs" />
     <Compile Include="Area\Api\AlbumController.cs" />
-    <Compile Include="Area\Api\FileController.cs" />
+    <Compile Include="Area\Api\UserController.cs" />
+    <Compile Include="Area\Api\UploadController.cs" />
+    <Compile Include="Area\Api\PhotoCommentController.cs" />
     <Compile Include="Area\Api\PhotoController.cs" />
     <Compile Include="Area\Api\SearchController.cs" />
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Controllers\AuthorizationController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminPanelController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
-    <Compile Include="Controllers\PhotoCommentController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
-    <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\PhotoController.cs" />
-    <Compile Include="Controllers\StaticContentController.cs" />
     <Compile Include="Events\GlobalEventManager.cs" />
-    <Compile Include="Filters\CustomAuthorize.cs" />
+    <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -248,6 +248,7 @@
     <Compile Include="Events\GlobalEventsHandler.cs" />
     <Compile Include="Hubs\NotificationTitles.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
+    <Compile Include="Infrastructure\Extensions\ControllerExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registers\CleanupServiceRegistry.cs" />
     <Compile Include="Registers\SearchCacheRegistry.cs" />
@@ -266,7 +267,10 @@
     <Compile Include="ViewModels\Authorization\SignupViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\Photo\UserInfoViewModel.cs" />
+    <Content Include="Content\profile-page.css" />
     <Content Include="Content\images\camera.png" />
+    <Content Include="Content\panel.css" />
+    <Content Include="Content\spinner.css" />
     <Content Include="Content\style-libs\chosen-sprite.png" />
     <Content Include="Content\style-libs\pnotify.css" />
     <Content Include="Content\images\photo-page\like-icon.png" />
@@ -296,8 +300,8 @@
     <Content Include="Content\search.css" />
     <Content Include="Content\style-libs\chosen.css" />
     <Content Include="Scripts\AdminPanel\AdminPage.js" />
-    <Content Include="Scripts\Authorization\signup.validate.js" />
-    <Content Include="Scripts\Authorization\signup.js" />
+    <Content Include="Scripts\Account\signup.validate.js" />
+    <Content Include="Scripts\Account\signup.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\jquery.pnotify.js" />
@@ -305,6 +309,8 @@
     <Content Include="Scripts\jquery.signalR-1.1.3.js" />
     <Content Include="Scripts\jquery.signalR-1.1.3.min.js" />
     <Content Include="Scripts\jsrender.js" />
+    <Content Include="Scripts\knockout.mapping-latest.debug.js" />
+    <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\md5-min.js" />
     <Content Include="Scripts\md5.js" />
     <Content Include="Scripts\mediator.js" />
@@ -313,6 +319,7 @@
     <Content Include="Scripts\AlbumsPage\albums.js" />
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
+    <Content Include="Scripts\panel.js" />
     <Content Include="Scripts\PhotoPage\photo.js" />
     <Content Include="Content\photo-page.css" />
   </ItemGroup>
@@ -369,11 +376,11 @@
     <Content Include="Content\images\twitter_logo.png" />
     <Content Include="Content\images\vkontakte_logo.png" />
     <Content Include="Content\style-libs\dropzone.css" />
-    <Content Include="Content\photo_flow.css" />
+    <Content Include="Content\photo-flow.css" />
     <Content Include="Content\style-libs\opentip.css" />
     <Content Include="Content\upload-page.css" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\Authorization\signin.validate.js" />
+    <Content Include="Scripts\Account\signin.validate.js" />
     <Content Include="Scripts\bootstrap-tags.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -385,7 +392,6 @@
     <Content Include="Scripts\dropzone.js" />
     <Content Include="Scripts\dropzone.min.js" />
     <Content Include="Scripts\Helpers\animation.js" />
-    <Content Include="Scripts\Helpers\utils.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -393,16 +399,12 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\knockout-2.3.0.debug.js" />
     <Content Include="Scripts\knockout-2.3.0.js" />
-    <Content Include="Scripts\Authorization\signin.js" />
+    <Content Include="Scripts\Account\signin.js" />
     <Content Include="Scripts\opentip-jquery.js" />
     <Content Include="Scripts\opentip-jquery.min.js" />
-    <Content Include="Scripts\knockout.mapping-latest.debug.js" />
-    <Content Include="Scripts\knockout.mapping-latest.js" />
-    <Content Include="Scripts\knockout.mapping-latest.debug.js" />
-    <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\perpetuum.knockout.js" />
     <Content Include="Scripts\PhotoPage\photoViewModel.js" />
-    <Content Include="Scripts\FlowPage\photo_placer.js" />
+    <Content Include="Scripts\Helpers\PhotoPlacer_Module.js" />
     <Content Include="Scripts\Search\search.js" />
     <Content Include="Scripts\UploadPage\main.js" />
     <Content Include="Scripts\UploadPage\PhotoPreviewViewModel.js" />
@@ -419,27 +421,26 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Scripts\jquery-2.0.3.min.map" />
-    <Content Include="Views\Authorization\Signin.cshtml" />
-    <Content Include="Views\Authorization\Signup.cshtml" />
+    <Content Include="Views\Account\Signin.cshtml" />
+    <Content Include="Views\Account\Signup.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_MainLayout.cshtml" />
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
-    <Content Include="Views\Authorization\RemindPass.cshtml" />
+    <Content Include="Views\Account\RemindPass.cshtml" />
     <Content Include="Views\Album\Index.cshtml" />
-    <Content Include="Views\Home\Gallery.cshtml" />
-    <Content Include="Views\Home\Groups.cshtml" />
     <Content Include="Views\AdminPanel\Index.cshtml" />
-    <Content Include="Views\FIle\Upload.cshtml" />
-    <Content Include="Views\Album\PhotoView.cshtml" />
+    <Content Include="Views\Upload\Index.cshtml" />
     <Content Include="Views\Photo\Index.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
-    <Content Include="Views\Search\Search.cshtml" />
+    <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\Albums\Index.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Shared\_Menu.cshtml" />
+    <Content Include="Views\Profile\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\FlowPage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

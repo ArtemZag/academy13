@@ -1,5 +1,4 @@
-﻿using System.Runtime.Serialization;
-using BinaryStudio.PhotoGallery.Core.PathUtils;
+﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
@@ -31,13 +30,19 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             {
                 UserId = userId,
                 SearchCacheToken = searchViewModel.SearchCacheToken,
-                Interval = searchViewModel.Interval,
+
+                Skip = searchViewModel.Skip,
+                Take = searchViewModel.Take,
+
                 SearchQuery = searchViewModel.SearchQuery,
+
                 IsSearchPhotosByTags = searchViewModel.IsSearchPhotosByTags,
                 IsSearchPhotosByDescription = searchViewModel.IsSearchPhotosByDescription,
+
                 IsSearchAlbumsByName = searchViewModel.IsSearchAlbumsByName,
                 IsSearchAlbumsByTags = searchViewModel.IsSearchAlbumsByTags,
                 IsSearchAlbumsByDescription = searchViewModel.IsSearchAlbumsByDescription,
+
                 IsSearchUsersByName = searchViewModel.IsSearchUsersByName,
                 IsSearchUserByDepartment = searchViewModel.IsSearchUserByDepartment,
                 IsSearchByComments = searchViewModel.IsSearchByComments

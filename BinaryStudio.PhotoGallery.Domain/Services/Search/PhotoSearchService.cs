@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using BinaryStudio.PhotoGallery.Core.EnumerableExtensions;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Models;
@@ -41,7 +43,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     result.AddRange(found);
                 }
             }
-
 
             return Group(result);
         }

@@ -4,15 +4,14 @@ using AttributeRouting.Web.Mvc;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-	[RoutePrefix("Error")]
+	[RoutePrefix("")]
     public class ErrorController : Controller
     {
-		[GET]
+		[GET("notfound")]
         public ActionResult NotFound()
 		{
 		    Response.StatusCode = 404;
             return View();
         }
-
     }
 }

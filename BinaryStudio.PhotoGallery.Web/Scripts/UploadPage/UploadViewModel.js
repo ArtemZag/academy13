@@ -126,7 +126,7 @@
         self.reloadChosen();
 
         // added '=' in request before albumName (otherwise it send null into controller)
-        $.post('/Api/Album', { '': albumName });
+        $.post('/api/album', { '': albumName });
     };
 
     self.selectedAlbum = ko.observable('');
@@ -201,7 +201,7 @@
             }
         });
 
-        $.post('/Api/File/Move', { AlbumName: albumName, PhotosId: selectedPhotosId })
+        $.post('/api/upload/move', { AlbumName: albumName, PhotosId: selectedPhotosId })
             .done(function(response) {
                 $.map(response, function(fileInfo) {
                     var count = self.previews().length;

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Models;
+﻿using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain
 {
@@ -29,11 +23,11 @@ namespace BinaryStudio.PhotoGallery.Domain
         public event PhotoAddedHandler PhotoAdded;
         public event LikeToPhotoAddedHandler LikeToPhotoAdded;
 
-        private static GlobalEventsAggregator _instance;
+        private static GlobalEventsAggregator instance;
 
         public static GlobalEventsAggregator Instance
         {
-            get { return _instance ?? (_instance = new GlobalEventsAggregator()); }
+            get { return instance ?? (instance = new GlobalEventsAggregator()); }
         }
 
         public void PushCommentAddedEvent(PhotoCommentModel mComment)

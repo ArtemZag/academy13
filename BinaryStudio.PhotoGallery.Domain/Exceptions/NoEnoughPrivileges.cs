@@ -1,11 +1,10 @@
 ﻿using System;
 
-
 namespace BinaryStudio.PhotoGallery.Domain.Exceptions
 {
-    public class NoEnoughPrivileges : Exception
+    public class NoEnoughPrivilegesException : Exception
     {
-        public NoEnoughPrivileges(string message, Exception innerException) : base(message, innerException)
+        public NoEnoughPrivilegesException(string message) : base(message)
         {
         }
     }

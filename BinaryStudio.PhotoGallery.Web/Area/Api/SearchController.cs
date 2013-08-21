@@ -2,6 +2,9 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using AttributeRouting;
+using AttributeRouting.Web.Http;
+using BinaryStudio.PhotoGallery.Core.EnumerableExtensions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
@@ -12,6 +15,7 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Search;
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [Authorize]
+    [RoutePrefix("api/search")]
     public class SearchController : ApiController
     {
         private readonly ISearchModelConverter searchModelConverter;
@@ -25,6 +29,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             this.userService = userService;
         }
 
+        [GET("")]
         public HttpResponseMessage GetSearch([FromUri] SearchViewModel searchViewModel)
         {
             string usersEmail = User.Identity.Name;

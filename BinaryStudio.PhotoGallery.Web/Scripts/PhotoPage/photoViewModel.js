@@ -65,13 +65,13 @@
         };
 
         self.AddComment = function() {
-            $.post("/PhotoComment/AddPhotoComment", { NewComment: self.newComment(), PhotoId: self.PhotoId() }, function(data) {
+            $.post("/api/photo/comment", { NewComment: self.newComment(), PhotoId: self.PhotoId() }, function(data) {
                 setComments(data);
             });
         };
 
         self.fbSync = function() {
-            $.post("/Photo/FbSync", { photoID: "2" });
+            $.get("/photo/facebook", { photoId: "2" });
         };
 
         self.ShowLeftSideMenu = function() {
@@ -113,11 +113,11 @@
     model.PhotoId(id);
 
     function getFirstPhoto() {
-        $.get("/Api/Photo/" + model.PhotoId(), getAllPhotosFromAlbum);
+        $.get("/api/photo/" + model.PhotoId(), getAllPhotosFromAlbum);
     }
 
     function getAllPhotosFromAlbum(photo) {
-        $.get("/Api/Photo?albumId=" + photo.AlbumId + "&skip=" + 0 + "&take=" + 100, setPhotoArray);
+        $.get("/api/photo?albumId=" + photo.AlbumId + "&skip=" + 0 + "&take=" + 100, setPhotoArray);
     }
 
     function setPhotoArray(photos) {
@@ -143,8 +143,8 @@
         // todo: needs fixing
         window.history.pushState("", "", "/Photo/" + model.PhotoId());
 
-        $.post("/PhotoComment/GetPhotoComments", { photoID: photo.PhotoId, begin: 0, end: 50 }, setComments);
-        $.get("/Api/Photo/GetLikes/" + model.PhotoId(), setLikes);
+        $.get("/api/photo/" + photo.PhotoId + "/comments", { skip: 0, take: 50 }, setComments);
+        $.get("/api/photo/" + model.PhotoId() + "/likes", setLikes);
     }
 
     function setComments(comm) {
@@ -163,7 +163,7 @@
 
     function addLike(photoId) {
         // TODO Must be replaced with PUT method
-        $.post("/Api/Photo/AddLike/" + photoId(), setLikes);
+        $.post('/api/photo/like', { '' : photoId() }, setLikes);
     }
 
     function setPhotoSize(w, h) {

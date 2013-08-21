@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -9,51 +8,49 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class PhotoCommentService: DbService, IPhotoCommentService
     {
-        private readonly ISecureService _secureService;
-        private readonly IGlobalEventsAggregator _eventsAggregator;
+        private readonly ISecureService secureService;
+        private readonly IGlobalEventsAggregator eventsAggregator;
 
         public PhotoCommentService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator) : base(workFactory)
         {
-            _secureService = secureService;
-            _eventsAggregator = eventsAggregator;
+            this.secureService = secureService;
+            this.eventsAggregator = eventsAggregator;
         }
 
-        public IEnumerable<PhotoCommentModel> GetPhotoComments(int userID, int photoID, int begin, int last)
+        public IEnumerable<PhotoCommentModel> GetPhotoComments(int userId, int photoId, int begin, int last)
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var albumID = unitOfWork.Photos.Find(photoID).AlbumId;
+                var albumId = unitOfWork.Photos.Find(photoId).AlbumId;
 
-                if (_secureService.CanUserViewComments(userID, albumID))
+                if (secureService.CanUserViewComments(userId, albumId))
                 {
-                    return unitOfWork.PhotoComments.Filter(model => model.PhotoModelId == photoID)
-                                     .OrderBy(model => model.DateOfCreating)
-                                     .ThenBy(model => model.Id)
-                                     .Skip(begin).Take(last - begin)
-                                     .ToList();
+                    return unitOfWork.PhotoComments.Filter(model => model.PhotoId == photoId)
+                        .OrderBy(model => model.DateOfCreating)
+                        .ThenBy(model => model.Id)
+                        .Skip(begin).Take(last - begin)
+                        .ToList();
                 }
-
-                throw new NoEnoughPrivileges("User can't get access to comments", null);
+                throw new NoEnoughPrivilegesException("User can't get access to comments");
             }
         }
 
-        public void AddPhotoComment(int userID, PhotoCommentModel newPhotoCommentModel)
+        public void AddPhotoComment(int userId, PhotoCommentModel newPhotoCommentModel)
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var albumID = unitOfWork.Photos.Find(newPhotoCommentModel.PhotoModelId).AlbumId;
+                var albumId = unitOfWork.Photos.Find(newPhotoCommentModel.PhotoId).AlbumId;
 
-                if (_secureService.CanUserAddComment(userID, albumID))
+                if (secureService.CanUserAddComment(userId, albumId))
                 {
                     unitOfWork.PhotoComments.Add(newPhotoCommentModel);
                     unitOfWork.SaveChanges();
-                    _eventsAggregator.PushCommentAddedEvent(newPhotoCommentModel);
+                    eventsAggregator.PushCommentAddedEvent(newPhotoCommentModel);
                 }
                 else
                 {
-                    throw new NoEnoughPrivileges("User can't get access to comments", null);
+                    throw new NoEnoughPrivilegesException("User can't get access to comments");
                 }
-                
             }
         }
     }

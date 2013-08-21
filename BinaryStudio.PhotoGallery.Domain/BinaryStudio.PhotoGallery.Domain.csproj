@@ -43,18 +43,8 @@
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration">
-      <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
@@ -76,7 +66,6 @@
     <Compile Include="Services\ISecureService.cs" />
     <Compile Include="Services\Search\AlbumSearchService.cs" />
     <Compile Include="Services\Search\IAlbumSearchService.cs" />
-    <Compile Include="Services\Search\ItemsExstensions.cs" />
     <Compile Include="Services\Search\IUserSearchService.cs" />
     <Compile Include="Services\Search\Results\AlbumFound.cs" />
     <Compile Include="Services\Search\CommentSearchService.cs" />
@@ -111,7 +100,6 @@
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\Tasks\IUsersMonitorTask.cs" />
     <Compile Include="Services\Tasks\UsersMonitorTask.cs" />
-    <Compile Include="TestServiceClass.cs" />
     <Compile Include="Utils\IStorage.cs" />
     <Compile Include="Utils\Storage.cs" />
   </ItemGroup>

@@ -14,19 +14,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     internal class AlbumServiceTest
     {
-        private readonly IAlbumService _albumService;
-        private readonly IUserService _userService;
+        private readonly IAlbumService albumService;
+        private readonly IUserService userService;
 
         public AlbumServiceTest()
         {
             IUnityContainer container = Bootstrapper.Initialise();
 
             var cryptoProvidrer = container.Resolve<ICryptoProvider>();
-            var albumService = container.Resolve<IAlbumService>();
+            albumService = container.Resolve<IAlbumService>();
             var workFactory = new TestUnitOfWorkFactory();
 
 //            _albumService = new AlbumService(workFactory);
-            _userService = new UserService(workFactory, cryptoProvidrer, albumService);
+            userService = new UserService(workFactory, cryptoProvidrer, albumService);
         }
 
         [Test]
@@ -50,8 +50,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 };
 
             // body
-            _userService.CreateUser(userModel);
-            _albumService.CreateAlbum(userModel.Id, albumModel);
+            userService.CreateUser(userModel);
+            albumService.CreateAlbum(userModel.Id, albumModel);
 
             // tear down
             userModel.Albums.Count.Should().Be(1);
@@ -77,12 +77,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
                 };
 
             // body
-            _userService.CreateUser(userModel);
-            _albumService.CreateAlbum(userModel.Id, albumModel);
+            userService.CreateUser(userModel);
+            albumService.CreateAlbum(userModel.Id, albumModel);
             int deletedAlbumsAfterCreation =
                 userModel.Albums.Select(model => model).Count(model => model.IsDeleted);
 
-            _albumService.DeleteAlbum(userModel.Email, albumModel.Id);
+            albumService.DeleteAlbum(userModel.Email, albumModel.Id);
             int deletedAlbumsAfterDeleting = userModel.Albums.Select(model => model).Count(model => model.IsDeleted);
 
             // tear down

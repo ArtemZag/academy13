@@ -2,8 +2,8 @@
 {
     public class NewCommentViewModel
     {
-        public string NewComment { get; set; }
-        public int PhotoID { get; set; }
+        public string CommentText { get; set; }
+        public int PhotoId { get; set; }
         public int Reply { get; set; }
     }
 }

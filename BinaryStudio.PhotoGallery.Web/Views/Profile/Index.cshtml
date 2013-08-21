@@ -1,1 +1,32 @@
-﻿
+﻿@using System.Web.Optimization
+@model BinaryStudio.PhotoGallery.Web.ViewModels.UserViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+@Styles.Render("~/Content/profile-page.css")
+
+<div class="span8">
+    <h2>Your profile</h2>
+    @using(Html.BeginForm("Edit", "Profile", FormMethod.Get))
+    {
+        <div class="span2">
+            <img src="~/Content/images/no_avatar.png" class="img-polaroid" id="user-photo">
+        </div>
+        <div class="span3">
+            @Html.LabelFor(x => x.FirstName, "First Name")
+            @Html.TextBoxFor(x => x.FirstName, new { disabled="disabled" })
+            
+            @Html.LabelFor(x => x.LastName, "Last Name")
+            @Html.TextBoxFor(x => x.LastName, new { disabled="disabled" })
+            
+            @Html.LabelFor(x => x.Email, "Email")
+            @Html.TextBoxFor(x => x.Email, new { disabled="disabled" })
+            <div class="btn-group" id="button-group">
+                @Html.ActionLink("Edit", "Edit", "Profile", new {@class="btn btn-inverse"})
+            </div>
+        </div>
+    }
+</div>

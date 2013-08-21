@@ -1,20 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
+using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-	[RoutePrefix("Albums")]
+    [Authorize]
+    [RoutePrefix("album")]
     public class AlbumController : Controller
-    {
-		[GET("PhotoView/{albumId}/{photoId}")]
-        public ActionResult PhotoView(int albumId, int photoId){
-            return View(new PhotoViewModel());
+	{
+	    private readonly IAlbumService _albumService;
+
+        public AlbumController(IAlbumService albumService)
+        {
+            _albumService = albumService;
+        }
+
+		[GET("{albumId}")]
+        public ActionResult Index(int albumId)
+		{
+		    var mAlbum = _albumService.GetAlbum(albumId);
+            return View("Index", AlbumViewModel.FromModel(mAlbum));
         }
     }
 }

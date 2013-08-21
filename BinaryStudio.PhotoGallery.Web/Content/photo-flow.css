@@ -1,0 +1,55 @@
+﻿#photoWrapper {
+	display:inline-block;
+    margin: auto;
+	min-width : 750px;
+	margin: 5px auto auto 9px;
+}
+
+body {
+	min-height: 100%;
+}
+
+.photoContainer {
+	height:200px;
+	float:left;
+	margin-right:10px;
+	margin-bottom:10px;
+	box-shadow: 2px 1px 3px gray;
+	overflow: hidden;
+	border: 5px solid #fff;
+	border-radius: 5px;
+}
+
+.photoContainer img {
+	height:200px;
+	max-width: none;
+	-moz-opacity: 0.70;
+	opacity: 0.70;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	-webkit-transition: width 1s ease, height 1s ease;
+	-moz-transition:All 1s ease;
+	-o-transition:All 1s ease;
+	transition: All 1s ease;
+	overflow: hidden;
+}
+
+.photoContainer img:hover {
+	-moz-opacity: 1;
+	 opacity: 1;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=1)";
+	height:250px;
+	margin-left: -20px;
+	margin-top: -20px;
+}
+.photoContainer:hover{
+	cursor: pointer;
+	   /*свечение*/
+	-webkit-box-shadow: 0px 0px 20px rgba(55,55,55,0.8);
+	-moz-box-shadow: 0px 0px 20px rgba(55,55,55,0.8);
+	box-shadow: 0px 0px 20px rgba(55,55,55,0.8);
+}
+
+#invisible {
+	display: none;
+}
+

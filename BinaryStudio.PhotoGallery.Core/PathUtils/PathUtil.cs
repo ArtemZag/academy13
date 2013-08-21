@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
+﻿using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
@@ -24,13 +21,15 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private readonly string avatarFileName;
         private readonly string thumbnailsFolderName;
         private readonly string collagesFolderName;
+
         private readonly string noAvatarPath;
         private readonly string thumbExtension;
         public PathUtil()
         {
             dataVirtualRoot = ConfigurationManager.AppSettings["DataDirectory"];
 
-            appPath = HttpRuntime.AppDomainAppPath;
+        #region TODO! Change this, please
+            appPath = ConfigurationManager.AppSettings["DataDirectory"];
             dataFolderName = ConfigurationManager.AppSettings["dataFolderName"];
             photosFolderName = ConfigurationManager.AppSettings["photosFolderName"];
             avatarFileName = ConfigurationManager.AppSettings["AvatarFileName"];
@@ -40,6 +39,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             thumbExtension = ConfigurationManager.AppSettings["ThumbnailExtension"];
             usersFolder = BuildPathToUsersFolderOnServer();
         }
+        #endregion
 
         public string BuildPhotoDirectoryPath()
         {
@@ -70,7 +70,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        public string BuildAbsoluteAlbumPath(int userId, int albumId)
+        public string BuildAbsoluteTemporaryAlbumPath(int userId, int albumId)
         {
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
             builder.Append(DELIMITER)
@@ -224,6 +224,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
                                 .Append(MakeFileNameWithExtension(Randomizer.GetString(lenght)))
                                 .ToString();
         }
+        #endregion
 
         private string GetDataDirectory()
         {

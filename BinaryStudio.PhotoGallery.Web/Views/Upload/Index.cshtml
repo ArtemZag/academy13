@@ -1,0 +1,42 @@
+﻿@using System.Web.Optimization
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "Upload | Bingally";
+}
+
+@Styles.Render("~/bundles/styles/dropzone")
+@Styles.Render("~/bundles/styles/chosen")
+
+@Styles.Render("~/Content/upload-page.css")
+
+<div id="photo-select">
+    <div id="album-select">
+        <select data-placeholder="Choose an Album to move in..." class="chosen-select" tabindex="-1" 
+                data-bind="options: albums,
+                           optionsText: $data,
+                           optionsValue: $data,
+                           value: selectedAlbum">
+            <option value=""></option>
+        </select>
+    </div>
+    &nbsp;&nbsp;
+    <button class="btn btn-danger" data-bind="click: startMoving, enable: canMovePhotos">Move photos</button>
+    &nbsp;
+    <button class="btn btn-inverse" data-bind="click: cleanErrors">Clean errors</button>
+    <div id="select-all-photos">
+        <input type="checkbox" data-bind="enable: canSelectAllPhotos, checked: chekedAllPhotos"> Select all photos&nbsp;
+    </div>
+</div>
+
+<div id="dropzone-container">
+    <form  action="~/api/upload" class="dropzone dz-clickable" enctype="multipart/form-data" method="POST"></form>
+</div>
+
+@Scripts.Render("~/bundles/scripts/dropzone")
+@Scripts.Render("~/bundles/scripts/mediator")
+@Scripts.Render("~/bundles/scripts/chosen")
+@Scripts.Render("~/bundles/scripts/md5")
+
+@Scripts.Render("~/Scripts/UploadPage/PhotoPreviewViewModel.js")
+@Scripts.Render("~/Scripts/UploadPage/UploadViewModel.js")
+@Scripts.Render("~/Scripts/UploadPage/main.js")
