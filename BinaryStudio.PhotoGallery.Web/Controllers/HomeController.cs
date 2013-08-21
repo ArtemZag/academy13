@@ -12,12 +12,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("", RouteName = "PublicFlow")]
         public ActionResult Index()
         {
-            var infoViewModel = new InfoViewModel
-            {
-                UserEmail = User.Identity.Name,
-            };
-
-            return View(infoViewModel);
+            return View(new InfoViewModel {UserId = User.Id});
         }
     }
 }

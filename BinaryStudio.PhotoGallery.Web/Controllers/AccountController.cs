@@ -31,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     // recheck user (maybe it was deleted, while cookie is truth)
-                    var userExist = _userService.IsUserExist(User.Identity.Name);
+                    var userExist = _userService.IsUserExist(User.Id);
 
                     if (userExist)
                     {
@@ -59,7 +59,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     // recheck user (maybe it was deleted, while cookie is truth)
-                    var userExist = _userService.IsUserExist(User.Identity.Name);
+                    var userExist = _userService.IsUserExist(User.Id);
 
                     if (userExist)
                     {

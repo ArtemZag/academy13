@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace BinaryStudio.PhotoGallery.Web
+namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     public class BaseController : Controller
     {

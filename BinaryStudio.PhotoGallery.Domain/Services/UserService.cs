@@ -218,7 +218,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 IUserRepository userRepository = unitOfWork.Users;
 
-                return userRepository.Contains(model => string.Equals(model.Email, userEmail));
+                return userRepository.Contains(model => model.Email == userEmail && model.IsActivated);
+            }
+        }
+
+        public bool IsUserExist(int userId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                IUserRepository userRepository = unitOfWork.Users;
+
+                return userRepository.Contains(model => model.Id == userId && model.IsActivated);
             }
         }
 

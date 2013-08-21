@@ -100,7 +100,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
                 // body
                 deletedPhotosAfterCreation = unitOfWork.Photos.Filter(model => model.IsDeleted).Count();
-                photoService.DeletePhoto("ololo@gmail.com", photo);
+                photoService.DeletePhoto(6, photo);
 
                 deletedPhotosBeforeCreation = unitOfWork.Photos.Filter(model => model.IsDeleted).Count();
             }

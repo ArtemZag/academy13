@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Gets all albums for specified user.
         /// </summary>
-        IEnumerable<AlbumModel> GetAllAlbums(string userEmail);
+        IEnumerable<AlbumModel> GetAllAlbums(int userId);
 
         /// <summary>
         ///     Creates album for specified user by his email.
@@ -54,7 +54,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     
         /// </summary>
-        bool IsExist(string userEmail, string albumName);
+        bool IsExist(int userId, string albumName);
 
         /// <summary>
         ///     Get all available albums for specified user

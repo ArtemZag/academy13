@@ -3,6 +3,8 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Script.Serialization;
+using System.Web.Security;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.App_Start;
@@ -13,13 +15,6 @@ namespace BinaryStudio.PhotoGallery.Web
 {
     public class MvcApplication : HttpApplication
     {
-        private readonly IUserService _userService;
-
-        public MvcApplication(IUserService userService)
-        {
-            _userService = userService;
-        }
-
         protected void Application_Start()
         {
             ModelBinders.Binders.DefaultBinder = new KnockoutModelBinder();
@@ -44,7 +39,31 @@ namespace BinaryStudio.PhotoGallery.Web
 
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
+            var authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+
+            var principal = HttpContext.Current.User = new CustomPrincipal(-1, "", false);
+
+            if (authCookie == null)
+            {
+                HttpContext.Current.User = principal;
+                return;
+            }
             
+            FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
+            if (authTicket == null)
+            {
+                HttpContext.Current.User = principal;
+                return;
+            }
+
+            var serializer = new JavaScriptSerializer();
+
+            var model = serializer.Deserialize<UserInfoSerializeModel>(authTicket.UserData);
+
+            principal = new CustomPrincipal(model.Id, model.Email, model.IsAdmin);
+                    
+            HttpContext.Current.User = principal;
         }
     }
 }

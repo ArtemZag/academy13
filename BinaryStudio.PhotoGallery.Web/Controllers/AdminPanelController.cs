@@ -71,7 +71,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             string toEmail = invitedUser.Email;
 
-            string activationLink = "http://localhost:57367/Authorization/Signup/" +
+            string activationLink = "http://localhost:57367/registration/" +
                                     _userService.CreateUser(invitedUser.Email, invitedUser.FirstName,
                                         invitedUser.LastName);
 

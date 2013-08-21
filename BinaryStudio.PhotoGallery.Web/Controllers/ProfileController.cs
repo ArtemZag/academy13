@@ -49,6 +49,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             user.LastName = userViewModel.LastName;
 
             UserService.Update(user);
+
             return View("Index", userViewModel);
         }
     }

@@ -1,4 +1,6 @@
 ﻿@using System.Web.Optimization
+@inherits BinaryStudio.PhotoGallery.Web.BaseViewPage
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,7 +18,36 @@
         <title>@ViewBag.Title</title>
     </head>
     <body>
-        @{ Html.RenderAction("Menu", "Menu"); }
+        <nav class="navbar navbar-fixed-top">
+            <a href="~/" class="brand"><img src="~/Content/images/logo_small.png"/></a>
+            <ul class="nav">
+                <li><a href="~/gallery">Gallery</a></li>
+                <li><a href="~/albums">Albums</a></li>
+                <li><a href="~/search">Search</a></li>
+            </ul>
+
+            <ul class="nav pull-right">
+                <li><a href="~/upload" class="btn btn-success">Upload</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        <strong>@User.Email</strong>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        @{
+                            if (@User.IsAdmin)
+                            {
+                                <li><a href="~/admin">Administration</a></li>
+                            }
+                        }
+                        <li><a href="~/news">Notifications</a></li>
+                        <li><a href="~/profile">Profile</a></li>
+                        <li class="divider"></li>
+                        <li><a href="~/signout">Sign out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
         <div id="main-render-place">
             @RenderBody()
         </div>

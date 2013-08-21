@@ -1,18 +1,21 @@
 ﻿using System;
-using System.Web.Http;
-using System.Net.Http;
 using System.Net;
+using System.Net.Http;
+using System.Web;
+using System.Web.Http;
+using System.Web.Script.Serialization;
 using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Http;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
+using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [RoutePrefix("api")]
-    public class AccountController : ApiController
+    public class AccountController : BaseApiController
     {
         private readonly IUserService _userService;
 
@@ -31,21 +34,47 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                var userNotValid = !_userService.IsUserValid(viewModel.Email, viewModel.Password);
+                bool userNotValid = !_userService.IsUserValid(viewModel.Email, viewModel.Password);
 
                 if (userNotValid)
                 {
                     return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Incorrect email or password");
                 }
 
-                FormsAuthentication.SetAuthCookie(viewModel.Email.ToLower(), viewModel.RememberMe);
+                UserModel userModel = _userService.GetUser(viewModel.Email);
+
+                var serializer = new JavaScriptSerializer();
+
+                var serializeModel = new UserInfoSerializeModel
+                {
+                    Id = userModel.Id,
+                    Email = userModel.Email,
+                    IsAdmin = userModel.IsAdmin
+                };
+
+                string serializedUserData = serializer.Serialize(serializeModel);
+
+                var authTicket = new FormsAuthenticationTicket(
+                    1,
+                    userModel.Id.ToString(),
+                    DateTime.Now,
+                    DateTime.Now.AddDays(30),
+                    viewModel.RememberMe,
+                    serializedUserData
+                    );
+
+                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+
+                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+
+                HttpContext.Current.Response.Cookies.Add(cookie);
             }
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [POST("registration")]
@@ -60,9 +89,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 _userService.ActivateUser(viewModel.Email, viewModel.Password, viewModel.Invite);
 
-                FormsAuthentication.SetAuthCookie(viewModel.Email.ToLower(), false);
-
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (UserAlreadyExistException ex)
             {

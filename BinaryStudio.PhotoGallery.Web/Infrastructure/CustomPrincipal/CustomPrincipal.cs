@@ -1,13 +1,9 @@
-﻿using System;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 using System.Web.Security;
 
 namespace BinaryStudio.PhotoGallery.Web
 {
-    [Serializable]
-    public class CustomPrincipal : ICustomPrincipal, ISerializable
+    public class CustomPrincipal : ICustomPrincipal
     {
         public CustomPrincipal(int userId, string userEmail, bool isAdmin)
         {
@@ -15,7 +11,7 @@ namespace BinaryStudio.PhotoGallery.Web
             Email = userEmail;
             IsAdmin = isAdmin;
 
-            Identity = new GenericIdentity(userId.ToString());
+            Identity = new GenericIdentity(userEmail);
         }
 
         public bool IsInRole(string role)
@@ -30,25 +26,5 @@ namespace BinaryStudio.PhotoGallery.Web
         public int Id { get; private set; }
         public string Email { get; private set; }
         public bool IsAdmin { get; private set; }
-
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (context.State == StreamingContextStates.CrossAppDomain)
-            {
-                info.SetType(GetType());
-
-                MemberInfo[] serializableMembers = FormatterServices.GetSerializableMembers(GetType());
-                object[] serializableValues = FormatterServices.GetObjectData(this, serializableMembers);
-
-                for (int i = 0; i < serializableMembers.Length; i++)
-                {
-                    info.AddValue(serializableMembers[i].Name, serializableValues[i]);
-                }
-            }
-            else
-            {
-                throw new InvalidOperationException("Serialization in CustomPrincipal not supported");
-            }
-        }
     }
 }

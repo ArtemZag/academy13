@@ -4,7 +4,7 @@ namespace BinaryStudio.PhotoGallery.Web
 {
     public abstract class BaseViewPage : WebViewPage
     {
-        public new virtual CustomPrincipal User
+        public virtual CustomPrincipal User
         {
             get { return base.User as CustomPrincipal; }
         }
@@ -12,7 +12,7 @@ namespace BinaryStudio.PhotoGallery.Web
 
     public abstract class BaseViewPage<TModel> : WebViewPage<TModel>
     {
-        public new virtual CustomPrincipal User
+        public virtual CustomPrincipal User
         {
             get { return base.User as CustomPrincipal; }
         }
