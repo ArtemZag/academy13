@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Http;
+using BinaryStudio.PhotoGallery.Core.EnumerableExtensions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
@@ -17,30 +18,30 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     [RoutePrefix("api/search")]
     public class SearchController : ApiController
     {
-        private readonly ISearchModelConverter _searchModelConverter;
-        private readonly ISearchService _searchService;
-        private readonly IUserService _userService;
+        private readonly ISearchModelConverter searchModelConverter;
+        private readonly ISearchService searchService;
+        private readonly IUserService userService;
 
         public SearchController(ISearchService searchService, ISearchModelConverter searchModelConverter, IUserService userService)
         {
-            _searchService = searchService;
-            _searchModelConverter = searchModelConverter;
-            _userService = userService;
+            this.searchService = searchService;
+            this.searchModelConverter = searchModelConverter;
+            this.userService = userService;
         }
 
         [GET("")]
         public HttpResponseMessage GetSearch([FromUri] SearchViewModel searchViewModel)
         {
             string usersEmail = User.Identity.Name;
-            UserModel user = _userService.GetUser(usersEmail);
+            UserModel user = userService.GetUser(usersEmail);
 
-            SearchArguments searchArguments = _searchModelConverter.GetModel(searchViewModel, user.Id);
+            SearchArguments searchArguments = searchModelConverter.GetModel(searchViewModel, user.Id);
 
-            SearchResult result = _searchService.Search(searchArguments);
+            SearchResult result = searchService.Search(searchArguments);
 
             var resultViewModel = new SearchResultViewModel
             {
-                Items = result.Value.Select(found => _searchModelConverter.GetViewModel(found)),
+                Items = result.Value.Select(found => searchModelConverter.GetViewModel(found)),
                 SearchCacheToken = result.SearchCacheToken
             };
 
