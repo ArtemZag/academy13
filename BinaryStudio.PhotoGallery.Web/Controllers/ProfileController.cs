@@ -1,16 +1,15 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.Infrastructure.Extensions;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
+    [Authorize]
     [RoutePrefix("profile")]
-    public class ProfileController : Controller
+    public class ProfileController : BaseController
     {
         private IUserService UserService { get; set; }
 

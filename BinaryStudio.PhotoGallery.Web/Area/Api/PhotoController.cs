@@ -55,7 +55,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-        [GET("{albumId:int}/{skip:int}/{take:int}")]
+        [GET("?{albumId:int}&{skip:int}&{take:int}")]
         public HttpResponseMessage GetPhotos(int albumId, int skip, int take)
         {
             try
@@ -158,7 +158,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-//        [GET("allusers?{skip:int}&{take:int}")] // TODO Activate this in new generation of Web API
+//        [GET("all-users?{skip:int}&{take:int}")] // TODO Activate this in new generation of Web API
         [GET("all-users/{skip:int}/{take:int}")]
         public HttpResponseMessage GetAllPublicPhotos(int skip, int take)
         {

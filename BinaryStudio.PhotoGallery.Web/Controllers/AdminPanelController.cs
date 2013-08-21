@@ -17,7 +17,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     [AdminAuthorize]
     [RoutePrefix("admin")]
-    public class AdminPanelController : Controller
+    public class AdminPanelController : BaseController
     {
         private readonly IEmailSender _emailSender;
         private readonly IUserService _userService;

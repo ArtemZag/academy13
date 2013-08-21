@@ -239,6 +239,10 @@
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\PhotoController.cs" />
+    <Compile Include="Infrastructure\CustomPrincipal\BaseController.cs" />
+    <Compile Include="Infrastructure\CustomPrincipal\BaseViewPage.cs" />
+    <Compile Include="Infrastructure\CustomPrincipal\CustomPrincipal.cs" />
+    <Compile Include="Infrastructure\CustomPrincipal\ICustomPrincipal.cs" />
     <Compile Include="Events\GlobalEventManager.cs" />
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />

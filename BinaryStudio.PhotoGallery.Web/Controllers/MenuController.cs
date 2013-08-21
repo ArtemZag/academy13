@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 using AttributeRouting;
-using AttributeRouting.Web.Http;
+using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
@@ -8,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     [Authorize]
     [RoutePrefix("Menu")]
-    public class MenuController : Controller
+    public class MenuController : BaseController
     {
         private readonly IUserService _userService;
 

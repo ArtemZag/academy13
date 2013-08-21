@@ -8,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     [Authorize]
     [RoutePrefix("album")]
-    public class AlbumController : Controller
+    public class AlbumController : BaseController
 	{
 	    private readonly IAlbumService _albumService;
 
