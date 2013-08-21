@@ -6,9 +6,8 @@
     var table = $("#content");
     var windowObject = $(window);
     var documentObject = $(document);
-    var numberOfAlbums = 10;
-    var startIndex = 0;
-    var endIndex = numberOfAlbums;
+    var takeAlbumsCount = 10;
+    var skipCount = 0;
     /*var canvas = document.getElementById("canv");
     var ctx = canvas.getContext('2d');
     var colors = ["yellow", "orange", "red", "blue", "indigo"];
@@ -37,7 +36,7 @@
     downloadNextPartionOfAlbums();
 
     function downloadUserInfo() {
-        $.post("/Albums/GetUserInfo", getInfo);
+        $.get("/albums/user", getInfo);
     }
 
     function resizeTable() {
@@ -50,9 +49,8 @@
     }
 
     function downloadNextPartionOfAlbums() {
-        $.post("/Albums/GetAlbums", { start: startIndex, end: endIndex }, getAlbums);
-        startIndex += numberOfAlbums;
-        endIndex += numberOfAlbums;
+        $.get("/albums/" + skipCount + "/" + takeAlbumsCount, getAlbums);
+        skipCount += takeAlbumsCount;
     }
     function getAlbums(albums) {
         var length = albums.length;
@@ -60,8 +58,8 @@
             container.html(
                 $("#collageTmpl").render(albums));
         } else {
-            alert(startIndex + ' ' + numberOfAlbums);
-            if (startIndex - numberOfAlbums == 0) {
+            alert(skipCount + ' ' + takeAlbumsCount);
+            if (skipCount - takeAlbumsCount == 0) {
                 alert('no anought albums here');
                 container.html(
                 $("#uploadTmpl").render());

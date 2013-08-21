@@ -140,13 +140,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         public DateTime LastPhotoAdded(int userId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-                return unitOfWork.Photos.Filter(model => model.OwnerId == userId)
-                                 .OrderByDescending(model => model.DateOfCreation)
-                                 .Skip(0)
-                                 .Take(1)
-                                 .ToList()
-                                 .FirstOrDefault()
-                                 .DateOfCreation;
+            {
+                var firstOrDefault = unitOfWork.Photos.Filter(model => model.OwnerId == userId)
+                    .OrderByDescending(model => model.DateOfCreation)
+                    .ThenBy(model => model.Id)
+                    .Skip(0)
+                    .Take(1).ToList().FirstOrDefault();
+
+                return firstOrDefault != null ? firstOrDefault.DateOfCreation : DateTime.Now;
+            }
         }
 
         public IEnumerable<PhotoModel> GetLastPhotos(int userId, int skipCount, int takeCount)

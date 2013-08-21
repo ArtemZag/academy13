@@ -188,7 +188,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string GetEndUserReference(string absolutePath)
         {
-            int index = absolutePath.LastIndexOf(dataFolderName);
+            int index = absolutePath.LastIndexOf(dataFolderName); // TODO EXECAPTION HERE
             return absolutePath.Remove(0, index - 1).Replace(@"\", "/");
         }
 
@@ -224,7 +224,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
                                 .Append(MakeFileNameWithExtension(Randomizer.GetString(lenght)))
                                 .ToString();
         }
-        #endregion
 
         private string GetDataDirectory()
         {
