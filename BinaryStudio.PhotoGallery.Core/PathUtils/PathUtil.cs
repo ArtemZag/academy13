@@ -25,6 +25,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         private readonly string noAvatarPath;
         private readonly string thumbExtension;
+
         public PathUtil()
         {
             dataVirtualRoot = ConfigurationManager.AppSettings["DataFolderName"];

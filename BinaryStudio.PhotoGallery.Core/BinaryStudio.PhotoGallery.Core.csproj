@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BinaryStudio.PhotoGallery.Domain">
-      <HintPath>..\BinaryStudio.PhotoGallery.Domain\bin\Debug\BinaryStudio.PhotoGallery.Domain.dll</HintPath>
-    </Reference>
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.6.4.2\lib\net45\Facebook.dll</HintPath>
     </Reference>
@@ -94,7 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.PhotoGallery.Models\BinaryStudio.PhotoGallery.Models.csproj">
-      <Project>{489D5695-2C0E-4D21-B8BB-2814F9E49FF0}</Project>
+      <Project>{489d5695-2c0e-4d21-b8bb-2814f9e49ff0}</Project>
       <Name>BinaryStudio.PhotoGallery.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\MimeDetect\MimeDetect.csproj">
