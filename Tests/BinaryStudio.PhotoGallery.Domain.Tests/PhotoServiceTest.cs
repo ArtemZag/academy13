@@ -33,9 +33,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
 
             _workFactory = new TestUnitOfWorkFactory();
 
-            photoService = new PhotoService(workFactory, secureService, eventsAggregator);
-            userService = new UserService(workFactory, cryptoProvider,albumService);
-            this.albumService = new AlbumService(workFactory, secureService);
+            _photoService = new PhotoService(_workFactory, secureService, eventsAggregator);
+            _userService = new UserService(_workFactory, cryptoProvider,albumService);
+            _albumService = new AlbumService(_workFactory, secureService);
         }
 
         private IEnumerable<PhotoModel> GetListOfPhotos()
