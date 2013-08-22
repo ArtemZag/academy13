@@ -5,7 +5,7 @@ using AttributeRouting.Web.Mvc;
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
 	[RoutePrefix("")]
-    public class ErrorController : Controller
+    public class ErrorController : BaseController
     {
 		[GET("notfound")]
         public ActionResult NotFound()

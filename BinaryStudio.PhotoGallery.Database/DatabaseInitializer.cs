@@ -260,7 +260,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 #endregion
 
-                #region adding photos and grup to album with name "First album"
+                #region adding photos and group to album with name "First album"
 
                 AlbumModel albumModel = unitOfWork.Albums.Find(album => album.Name == "First album");
 
@@ -297,9 +297,9 @@ namespace BinaryStudio.PhotoGallery.Database
                     Photos = new Collection<PhotoModel>()
                 };
 
-                var currentGrup = unitOfWork.Groups.Find(x => x.OwnerId == 1);
+                var currentGroup = unitOfWork.Groups.Find(x => x.OwnerId == 1);
 
-                currentUser.Groups.Add(currentGrup);
+                currentUser.Groups.Add(currentGroup);
                 currentUser.Albums.Add(albumForGolovin);
 
                 unitOfWork.SaveChanges();

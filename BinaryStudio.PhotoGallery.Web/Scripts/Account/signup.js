@@ -53,7 +53,7 @@
                         },
                         function() {
                             shadow.fadeOut(500, function() {
-                                window.location = baseURL + '/';
+                                window.location = baseURL + '/login';
                             });
                         });
                 })

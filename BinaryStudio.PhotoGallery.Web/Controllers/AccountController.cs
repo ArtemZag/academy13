@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Security;
 using AttributeRouting;
-using AttributeRouting.Web.Http;
+using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -14,7 +14,7 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     [RoutePrefix("")]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly IUserService _userService;
 
@@ -31,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     // recheck user (maybe it was deleted, while cookie is truth)
-                    var userExist = _userService.IsUserExist(User.Identity.Name);
+                    var userExist = _userService.IsUserExist(User.Id);
 
                     if (userExist)
                     {
@@ -59,7 +59,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     // recheck user (maybe it was deleted, while cookie is truth)
-                    var userExist = _userService.IsUserExist(User.Identity.Name);
+                    var userExist = _userService.IsUserExist(User.Id);
 
                     if (userExist)
                     {

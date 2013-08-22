@@ -82,7 +82,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             int deletedAlbumsAfterCreation =
                 userModel.Albums.Select(model => model).Count(model => model.IsDeleted);
 
-            albumService.DeleteAlbum(userModel.Email, albumModel.Id);
+            albumService.DeleteAlbum(userModel.Id, albumModel.Id);
             int deletedAlbumsAfterDeleting = userModel.Albums.Select(model => model).Count(model => model.IsDeleted);
 
             // tear down

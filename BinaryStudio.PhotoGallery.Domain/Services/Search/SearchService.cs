@@ -37,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             if (searchCacheTask.ContainsToken(resultToken))
             {
-                SearchCache searchCache = searchCacheTask.GetCache(resultToken, searchArguments.Skip, searchArguments.Take);
+                SearchCache searchCache = searchCacheTask.GetCache(resultToken);
 
                 result.AddRange(searchCache.Value);
             }
@@ -62,11 +62,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 {
                     result.AddRange(commentSearchService.Search(searchArguments));
                 }
+
+                result = result.OrderByDescending(found => found.Relevance).ToList();
+
+                resultToken = searchCacheTask.AddCache(result);
             }
 
             return new SearchResult
             {
-                Value = result.OrderByDescending(found => found.Relevance),
+                Value = result.Skip(searchArguments.Skip).Take(searchArguments.Take),
                 SearchCacheToken = resultToken
             };
         }

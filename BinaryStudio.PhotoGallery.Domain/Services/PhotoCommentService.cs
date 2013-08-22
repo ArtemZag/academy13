@@ -31,10 +31,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         .Skip(begin).Take(last - begin)
                         .ToList();
                 }
-                else
-                {
-                    throw new NoEnoughPrivilegesException("User can't get access to comments");
-                }
+                throw new NoEnoughPrivilegesException("User can't get access to comments");
             }
         }
 

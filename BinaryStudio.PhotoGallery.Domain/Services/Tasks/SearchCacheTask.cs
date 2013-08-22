@@ -45,13 +45,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
             }
         }
 
-        public SearchCache GetCache(string token, int skip, int take)
+        public SearchCache GetCache(string token)
         {
             SearchCache cache = caches[token];
 
             var result = new SearchCache
             {
-                Value = cache.Value.Skip(skip).Take(take),
+                Value = cache.Value,
                 LifeTime = cache.LifeTime
             };
 

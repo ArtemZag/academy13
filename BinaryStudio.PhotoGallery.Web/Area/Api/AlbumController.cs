@@ -4,14 +4,14 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AttributeRouting;
-using AttributeRouting.Web.Http;
+using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [Authorize]
     [RoutePrefix("api/album")]
-    public class AlbumController : ApiController
+    public class AlbumController : BaseApiController
     {
         private readonly IAlbumService _albumService;
 
@@ -28,7 +28,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unknown error");
             }
 
-            bool albumAlreadyExist = _albumService.IsExist(User.Identity.Name, albumName);
+            bool albumAlreadyExist = _albumService.IsExist(User.Id, albumName);
 
             if (albumAlreadyExist)
             {
@@ -36,18 +36,17 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     string.Format("Album '{0}' already exist", albumName));
             }
 
-            _albumService.CreateAlbum(User.Identity.Name, albumName);
+            _albumService.CreateAlbum(User.Id, albumName);
 
-            return new HttpResponseMessage(HttpStatusCode.Created);
+            return Request.CreateResponse(HttpStatusCode.Created);
         }
 
         [GET("all/name")]
         public IEnumerable<string> GetAllNames()
         {
-            return
-                _albumService.GetAllAlbums(User.Identity.Name)
-                    .Where(album => album.Name != "Temporary")
-                    .Select(album => album.Name);
+            return _albumService.GetAllAlbums(User.Id)
+                .Where(album => album.Name != "Temporary")
+                .Select(album => album.Name);
         }
     }
 }

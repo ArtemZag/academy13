@@ -91,7 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.PhotoGallery.Models\BinaryStudio.PhotoGallery.Models.csproj">
-      <Project>{489D5695-2C0E-4D21-B8BB-2814F9E49FF0}</Project>
+      <Project>{489d5695-2c0e-4d21-b8bb-2814f9e49ff0}</Project>
       <Name>BinaryStudio.PhotoGallery.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\MimeDetect\MimeDetect.csproj">

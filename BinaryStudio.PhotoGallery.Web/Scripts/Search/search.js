@@ -1,5 +1,5 @@
-﻿$(document).ready(function () {
-    
+﻿$(document).ready(function() {
+
     $("#loader").hide();
 
     function searchViewModel() {
@@ -7,13 +7,11 @@
         var self = this;
 
         var isModelChanged = false;
-        
-        var interval = 10;
 
         self.searchCacheToken = "no token";
 
         self.skip = 0;
-        self.take = self.skip + interval;
+        self.take = 10;
 
         self.foundItems = ko.observableArray();
 
@@ -31,7 +29,7 @@
 
         self.isSearchByComments = ko.observable(true);
 
-        searchViewModel.prototype.toJSON = function () {
+        searchViewModel.prototype.toJSON = function() {
 
             var copy = ko.toJS(self);
 
@@ -40,57 +38,57 @@
             return copy;
         };
 
-        self.searchQuery.subscribe(function () {
+        self.searchQuery.subscribe(function() {
 
             isModelChanged = true;
         });
 
-        self.isSearchPhotosByTags.subscribe(function () {
+        self.isSearchPhotosByTags.subscribe(function() {
 
             isModelChanged = true;
         });
 
-        self.isSearchPhotosByDescription.subscribe(function () {
+        self.isSearchPhotosByDescription.subscribe(function() {
 
             isModelChanged = true;
         });
 
-        self.isSearchAlbumsByName.subscribe(function () {
+        self.isSearchAlbumsByName.subscribe(function() {
 
             isModelChanged = true;
         });
 
-        self.isSearchAlbumsByTags.subscribe(function () {
+        self.isSearchAlbumsByTags.subscribe(function() {
 
             isModelChanged = true;
         });
 
-        self.isSearchAlbumsByDescription.subscribe(function () {
+        self.isSearchAlbumsByDescription.subscribe(function() {
 
             isModelChanged = true;
         });
 
-        self.isSearchUsersByName.subscribe(function () {
+        self.isSearchUsersByName.subscribe(function() {
 
             isModelChanged = true;
         });
 
-        self.isSearchUserByDepartment.subscribe(function () {
+        self.isSearchUserByDepartment.subscribe(function() {
 
             isModelChanged = true;
         });
 
-        self.isSearchByComments.subscribe(function () {
+        self.isSearchByComments.subscribe(function() {
 
             isModelChanged = true;
         });
 
-        self.searchQuery.subscribe(function () {
+        self.searchQuery.subscribe(function() {
 
             isModelChanged = true;
         });
 
-        self.checkModelChange = function () {
+        self.checkModelChange = function() {
 
             if (isModelChanged) {
 
@@ -100,13 +98,14 @@
             isModelChanged = false;
         };
 
-        self.resetSearchResult = function () {
+        self.resetSearchResult = function() {
 
             self.foundItems.removeAll();
             self.searchCacheToken = "no token";
+            self.skip = 0;
         };
 
-        self.search = function () {
+        self.search = function() {
 
             self.checkModelChange();
 
@@ -120,34 +119,43 @@
 
         self.incrementInterval = function() {
 
-            self.begin += interval;
-            self.end += interval;
+            self.skip += self.take;
         };
     }
 
     var viewModel = new searchViewModel();
     ko.applyBindings(viewModel);
 
+    // is request
+    var busy = false;
+
     function sendSearchRequest() {
 
         $("#loader").show();
-        
-        $.get("api/search", JSON.parse(ko.toJSON(viewModel)), function (searchResult) {
 
-            viewModel.searchCacheToken = searchResult.SearchCacheToken;
+        $.get("api/search", JSON.parse(ko.toJSON(viewModel)))
+            .done(function(searchResult) {
 
-            addResultItems(searchResult.Items);
-            resizeImages();
+                viewModel.searchCacheToken = searchResult.SearchCacheToken;
 
-            $("#loader").hide();
+                addResultItems(searchResult.Items);
+                resizeImages();
 
-            viewModel.incrementInterval();
-        });
+                $("#loader").hide();
+                busy = false;
+
+                viewModel.incrementInterval();
+            })
+            .fail(function() {
+
+                $("#loader").hide();
+                busy = false;
+            });
     }
 
     function addResultItems(items) {
 
-        $.each(items, function (index, value) {
+        $.each(items, function(index, value) {
 
             formatFields(value);
 
@@ -156,10 +164,10 @@
     }
 
     // todo: delete
-    
+
     function resizeImages() {
 
-        setTimeout(function () {
+        setTimeout(function() {
             setImageSize();
         }, 900);
     }
@@ -196,7 +204,7 @@
 
     function setImageSize() {
 
-        $(".result-image").each(function () {
+        $(".result-image").each(function() {
 
             var maxWidth = 180;
             var maxHeight = 180;
@@ -223,19 +231,21 @@
         });
     }
 
-    $(window).scroll(function () {
+    $(window).scroll(function() {
 
-        var totalHeight, currentScroll, visibleHeight;
+        if (!busy) {
+            busy = true;
+            var scrHeight = $(window).height();
+            var underScroll = $(this).scrollTop();
+            var divHeight = $("#items").height();
+            
+            var scrollPosition = scrHeight + underScroll;
 
-        currentScroll = $(document).scrollTop();
-
-        totalHeight = document.body.offsetHeight;
-
-        visibleHeight = document.documentElement.clientHeight;
-
-        // scroll to bottom event
-        if (visibleHeight + currentScroll >= totalHeight) {
-            sendSearchRequest();
+            if (divHeight - scrollPosition < 200 && viewModel.searchQuery()) {
+                sendSearchRequest();
+            } else {
+                busy = false;
+            }
         }
     });
 });

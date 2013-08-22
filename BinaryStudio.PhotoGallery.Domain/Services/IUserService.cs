@@ -52,6 +52,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         bool IsUserExist(string userEmail);
 
+        bool IsUserExist(int userId);
+
         bool IsUserExist(string authProvider, string token);
 
         bool IsUserAdmin(string userEmail);

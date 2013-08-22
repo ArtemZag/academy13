@@ -1,16 +1,15 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.Infrastructure.Extensions;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
+    [Authorize]
     [RoutePrefix("profile")]
-    public class ProfileController : Controller
+    public class ProfileController : BaseController
     {
         private IUserService UserService { get; set; }
 
@@ -22,23 +21,21 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("")]
         public ActionResult Index()
         {
-            var user = UserService.GetUser(User.Identity.Name);
-
+            var user = UserService.GetUser(User.Id);
             return View(UserViewModel.ToViewModel(user));
         }
         
         [GET("edit")]
         public ActionResult Edit()
         {
-            var user = UserService.GetUser(User.Identity.Name);
-
+            var user = UserService.GetUser(User.Id);
             return View(UserViewModel.ToViewModel(user));
         }
 
         [POST("edit")]
         public ActionResult Edit(UserViewModel userViewModel)
         {
-            var user = UserService.GetUser(User.Identity.Name);
+            var user = UserService.GetUser(User.Id);
 
             if(user == null)
             {
@@ -50,6 +47,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             user.LastName = userViewModel.LastName;
 
             UserService.Update(user);
+
             return View("Index", userViewModel);
         }
     }

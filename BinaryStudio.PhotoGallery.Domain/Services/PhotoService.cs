@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
@@ -8,12 +9,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class PhotoService : DbService, IPhotoService
     {
-        private readonly ISecureService secureService;
+        private readonly ISecureService _secureService;
         private readonly IGlobalEventsAggregator _eventsAggregator;
 
         public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator) : base(workFactory)
         {
-            this.secureService = secureService;
+            _secureService = secureService;
             _eventsAggregator = eventsAggregator;
         }
 
@@ -38,7 +39,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName);
 
-                if (secureService.CanUserAddPhoto(user.Id, album.Id))
+                if (_secureService.CanUserAddPhoto(user.Id, album.Id))
                 {
                     photoModel.OwnerId = user.Id;
                     album.Photos.Add(photoModel);
@@ -59,7 +60,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName);
 
-                if (secureService.CanUserAddPhoto(user.Id, album.Id))
+                if (_secureService.CanUserAddPhoto(user.Id, album.Id))
                 {
                     IEnumerable<PhotoModel> photoModels = photos as IList<PhotoModel> ?? photos.ToList();
                     foreach (PhotoModel photo in photoModels)
@@ -87,18 +88,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void DeletePhoto(string userEmail, PhotoModel photo)
+        public void DeletePhoto(int userId, PhotoModel photo)
         {
-            DeletePhoto(userEmail, photo.Id);
+            DeletePhoto(userId, photo.Id);
         }
 
-        public void DeletePhoto(string userEmail, int photoId)
+        public void DeletePhoto(int userId, int photoId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userEmail, unitOfWork);
-
-                if (secureService.CanUserDeletePhoto(user.Id, photoId))
+                if (_secureService.CanUserDeletePhoto(userId, photoId))
                 {
                     PhotoModel photoToDelete = unitOfWork.Photos.Find(model => model.Id == photoId);
 
@@ -120,7 +119,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userEmail, unitOfWork);
                 AlbumModel album = GetAlbum(user, albumName);
 
-                if (secureService.CanUserViewPhotos(user.Id, album.Id))
+                if (_secureService.CanUserViewPhotos(user.Id, album.Id))
                 {
                     return album.Photos.OrderBy(model => model.DateOfCreation)
                         .ThenBy(model => model.Id)
@@ -133,13 +132,45 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int albumId, int skipCount, int takeCount)
+        public int PhotoCount(int userId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                return unitOfWork.Photos.Filter(model => model.OwnerId == userId).Count();
+        }
+
+        public DateTime LastPhotoAdded(int userId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userEmail, unitOfWork);
+                PhotoModel firstOrDefault = unitOfWork.Photos.Filter(model => model.OwnerId == userId)
+                    .OrderByDescending(model => model.DateOfCreation)
+                    .ThenBy(model => model.Id)
+                    .Skip(0)
+                    .Take(1).ToList().FirstOrDefault();
 
-                if (secureService.CanUserViewPhotos(user.Id, albumId))
+                return firstOrDefault != null ? firstOrDefault.DateOfCreation : DateTime.Now;
+            }
+        }
+
+        public IEnumerable<PhotoModel> GetLastPhotos(int userId, int skipCount, int takeCount)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Photos.Filter(model => model.OwnerId == userId)
+                    .OrderByDescending(model => model.DateOfCreation)
+                    .Skip(skipCount)
+                    .Take(takeCount)
+                    .ToList();
+            }
+        }
+
+        public IEnumerable<PhotoModel> GetPhotos(int userId, int albumId, int skipCount, int takeCount)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userId, unitOfWork);
+
+                if (_secureService.CanUserViewPhotos(user.Id, albumId))
                 {
                     return unitOfWork.Photos.Filter(model => model.AlbumId == albumId)
                         .Where(model => !model.IsDeleted)
@@ -154,15 +185,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<PhotoModel> GetPhotos(string userEmail, int skipCount, int takeCount)
+        public IEnumerable<PhotoModel> GetPhotos(int userId, int skipCount, int takeCount)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userEmail, unitOfWork);
-
                 // todo: create a criterions for grabing all user albums' IDs and check every for access permissions
-
-                return unitOfWork.Photos.Filter(model => model.OwnerId == user.Id)
+                return unitOfWork.Photos.Filter(model => model.OwnerId == userId)
                     .Where(model => !model.IsDeleted)
                     .OrderByDescending(model => model.DateOfCreation)
                     .ThenBy(model => model.Id)
@@ -190,7 +218,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 PhotoModel photoModel = unitOfWork.Photos.Find(photoId);
 
-                if (secureService.CanUserViewPhotos(userId, photoModel.AlbumId))
+                if (_secureService.CanUserViewPhotos(userId, photoModel.AlbumId))
                 {
                     return photoModel;
                 }
@@ -209,14 +237,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
 
-        public IEnumerable<UserModel> GetLikes(string userEmail, int photoId)
+        public IEnumerable<UserModel> GetLikes(int userId, int photoId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userEmail, unitOfWork);
                 PhotoModel photo = unitOfWork.Photos.Find(photoId);
 
-                if (secureService.CanUserViewLikes(user.Id, photo.AlbumId))
+                if (_secureService.CanUserViewLikes(userId, photo.AlbumId))
                 {
                     return photo.Likes.ToList();
                 }
@@ -225,11 +252,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void AddLike(string userEmail, int photoId)
+        public void AddLike(int userId, int photoId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userEmail, unitOfWork);
+                UserModel user = GetUser(userId, unitOfWork);
 
                 unitOfWork.Photos.Find(photoId).Likes.Add(user);
                 unitOfWork.SaveChanges();
@@ -238,13 +265,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<PhotoModel> GetPublicPhotos(string userEmail, int skipCount, int takeCount)
+        public IEnumerable<PhotoModel> GetPublicPhotos(int userId, int skipCount, int takeCount)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userEmail, unitOfWork);
-
-                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(user.Id, unitOfWork);
+                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetAvailableAlbums(userId, unitOfWork);
 
                 return
                     avialableAlbums.SelectMany(model => model.Photos)

@@ -21,6 +21,7 @@ namespace BinaryStudio.PhotoGallery.Models
             DateOfCreation = DateTime.Now;
             Permissions = 111; // in moment, it is just for future
         }
+        
 
         /// <summary>
         ///     Gets or sets the album id.
