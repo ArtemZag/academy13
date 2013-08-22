@@ -90,6 +90,10 @@
                     $LastRow = calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
                     $newPhotoContainers.removeClass("invisible");
                 }
+            })
+            .error(function() {
+                lenght--;
+                $(this).closest("div").remove();
             });
             startIndex += photoPortion;
             busy = false;
