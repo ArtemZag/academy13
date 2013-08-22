@@ -70,21 +70,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        protected AlbumModel GetAlbum(UserModel user, string albumName)
-        {
-            try
-            {
-                return
-                    user.Albums.Select(model => model)
-                        .First(model => string.Equals(model.Name, albumName) && !model.IsDeleted);
-            }
-            catch
-            {
-                //todo: normal return message exception
-                throw new AlbumNotFoundException(string.Format("Album with id {0} not found", albumName));
-            }
-        }
-
         protected AlbumModel GetAlbum(UserModel user, int albumId)
         {
             try
@@ -97,6 +82,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 //todo: normal return message exception
                 throw new AlbumNotFoundException(string.Format("Album with id {0} not found", albumId));
+            }
+        }
+
+        protected AlbumModel GetAlbum(int userId, int albumId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return this.GetAlbum(userId, albumId, unitOfWork);
             }
         }
 

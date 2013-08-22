@@ -74,7 +74,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             // body
             int photosCountBeforeAdd = album.Photos.Count;
 
-            _photoService.AddPhoto("some@gmail.com", "albumName", photo);
+            photo.OwnerId = 5;
+            photo.AlbumId = 6;
+
+            _photoService.AddPhoto(photo);
 
             int photosCountAfterAdd = album.Photos.Count;
 
@@ -136,10 +139,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             _userService.CreateUser(user);
             _albumService.CreateAlbum(user.Id, album);
 
-            _photoService.AddPhotos("some1@gmail.com", "albumName", photosToFill);
+            _photoService.AddPhotos(6, 6, photosToFill);
 
             // body
-            IEnumerable<PhotoModel> photos = _photoService.GetPhotos("some1@gmail.com", "albumName", 0, 5);
+            IEnumerable<PhotoModel> photos = _photoService.GetPhotos(6, 6, 0, 5);
             int count = photos.Count();
 
             // tear down

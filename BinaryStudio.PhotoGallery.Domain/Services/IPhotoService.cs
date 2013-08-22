@@ -9,14 +9,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Adds photoModel by specidied user to his album.
         /// </summary>
-        PhotoModel AddPhoto(string userEmail, string albumName, PhotoModel photoModel);
 
         PhotoModel AddPhoto(PhotoModel photoModel);
 
         /// <summary>
         ///     Adds photos by specidied user to his album.
         /// </summary>
-        IEnumerable<int> AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos);
+        IEnumerable<int> AddPhotos(int userId, int albumId, IEnumerable<PhotoModel> photos);
 
         /// <summary>
         ///     Updates photo by photoModel
@@ -36,12 +35,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Returns specified interval of photos (sorted by date) from specified album.
         /// </summary>
-        /// <param name="userEmail">Users email.</param>
-        /// <param name="albumName">Album name.</param>
-        /// <param name="skipCount">Beginning of the interval.</param>
-        /// <param name="takeCount">Ending of the interval.</param>
-        IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int skipCount, int takeCount);
-
         IEnumerable<PhotoModel> GetPhotos(int userId, int albumId, int skipCount, int takeCount);
 
         /// <summary>
@@ -51,8 +44,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="skipCount">Beginning of the interval.</param>
         /// <param name="takeCount">Ending of the interval.</param>
         IEnumerable<PhotoModel> GetPhotos(int userId, int skipCount, int takeCount);
-
-        PhotoModel GetPhoto(string userEmail, int photoId);
 
         PhotoModel GetPhoto(int userId, int photoId);
 

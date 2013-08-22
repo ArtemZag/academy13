@@ -42,8 +42,9 @@ namespace BinaryStudio.PhotoGallery.Web.Events
 
         public void PhotoCommentAddedNotify(PhotoCommentModel mComment)
         {
-            var mUser = _userService.GetUser(mComment.UserId);
-            var mPhoto = _photoService.GetPhoto(mUser.Email, mComment.PhotoId);
+            // TODO by Mikhail: mComment.UserId and mUser.Id are the same always 
+            var mUser = _userService.GetUser(mComment.UserId); // TODO this is a redundant line
+            var mPhoto = _photoService.GetPhoto(mUser.Id, mComment.PhotoId);
 
             if (mPhoto.OwnerId != mComment.UserId)
             {
