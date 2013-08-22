@@ -16,9 +16,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
     {
         private static readonly int MinHeight;
         private static readonly int MaxHeight;
-        private static readonly Random rnd;
-        private static readonly int avatarMaxSize;
-        private static readonly int MaxAvatarBound;
 
         private readonly IPathUtil util;
         private readonly object syncRoot;
@@ -30,10 +27,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         {
             MinHeight = 1;
             MaxHeight = 1024;
-            MaxAvatarBound = 96;
-            //KB
-            avatarMaxSize = 1024*8;
-            rnd = new Random((int)DateTime.Now.Ticks);
         }
 
         public AsyncPhotoProcessor(int userId, int albumId, int maxHeight, IPathUtil util)
@@ -59,12 +52,11 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public void SyncOriginalAndThumbnailImages()
         {
-            bool modified,deleted,created;
-            modified = deleted = created = false;
+            bool modified = false;
 
-            var pathToThumb = util.BuildPathToUserAlbumThumbnailsFolderOnServer(userId, albumId, maxHeight);
             var userAlbumPath = util.BuildPathToUserAlbumFolderOnServer(userId, albumId);
-
+            var pathToThumb = util.BuildPathToUserAlbumThumbnailsFolderOnServer(userId, albumId, maxHeight);
+            
             CreateDirectoriesIfNotExists(pathToThumb);
             var files = ImageFormatHelper.GetImages(userAlbumPath);
 
@@ -73,15 +65,12 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                                  {
                                      var pathToThumbnailOfImage =
                                          util.BuildPathToThumbnailFileOnServer(userId, albumId, maxHeight, path);
-                                     
-                                     deleted = DeleteThumbnailIfOriginalNotExists(path, pathToThumbnailOfImage);
-                                     if (!deleted)
-                                         created = CreateThumbnailIfNotExists(path, pathToThumbnailOfImage, maxHeight);
+
+                                     var changes = SyncCoupleFiles(path, pathToThumbnailOfImage, maxHeight);   
 
                                      lock (syncRoot)
-                                         modified |= deleted | created;
+                                         modified |= changes;
                                  });
-
 
             if (modified)
                 DeleteCollages();
@@ -95,17 +84,28 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
-        private bool CreateThumbnailIfNotExists(string pathToOriginal, string pathToThumbnail,int maxSize)
+        private bool SyncCoupleFiles(string pathToOriginal, string pathToThumbnail, int maxSize,
+                                     bool isCompressedByTwoBounds=false)
         {
-            if (!File.Exists(pathToThumbnail))
+            if (!File.Exists(pathToOriginal))
             {
-                ThumbnailCreationAction(pathToOriginal, pathToThumbnail, maxSize, false);
-                return true;
+                if (File.Exists(pathToThumbnail))
+                {
+                    File.Delete(pathToThumbnail);
+                    return true;
+                }
+            }
+            else
+            {
+                if (!File.Exists(pathToThumbnail))
+                {
+                    ThumbnailCreationAction(pathToOriginal, pathToThumbnail, maxHeight, isCompressedByTwoBounds);
+                    return true;
+                }
             }
             return false;
         }
-
-        private void ThumbnailCreationAction(string pathToOriginal, string pathToThumbnail,int maxSize,bool twoBounds=true)
+        private void ThumbnailCreationAction(string pathToOriginal, string pathToThumbnail,int maxSize,bool twoBounds)
         {
             using (var image = Image.FromFile(pathToOriginal))
             {
@@ -118,39 +118,24 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
-        private bool DeleteThumbnailIfOriginalNotExists(string pathToOriginal, string pathToThumbnail)
+        public string GetUserAvatar(AvatarSize size)
         {
-            if (!File.Exists(pathToOriginal))
-            {
-                File.Delete(pathToThumbnail);
-                return true;
-            }
-            return false;
-        }
-
-        public string GetUserAvatar()
-        {
-            var path = util.BuildPathToUserAvatarOnServer(userId);
-            var info = new FileInfo(path);
+            var info = new FileInfo(util.BuildPathToUserAvatarOnServer(userId, size));
             if (info.Exists)
+                return util.GetEndUserReference(info.FullName);
+
+            var originalInfo = new FileInfo(util.BuildPathToUserAvatarOnServer(userId, AvatarSize.Original));
+            if (originalInfo.Exists)
             {
-                if (info.Length < avatarMaxSize)
-                {
-                    return util.GetEndUserReference(info.FullName);
-                }
-                else
-                {
-                    var s = util.BuildPathToUserFolderOnServer(userId);
-                    s = Path.Combine(s,util.MakeFileNameWithExtension(Randomizer.GetString(15)));
-                    ThumbnailCreationAction(info.FullName, s, MaxAvatarBound);
-                    var newThumb = new FileInfo(s);
-                    newThumb.Replace(info.FullName, Path.GetDirectoryName(newThumb.FullName) + @"\avatar_big.jpg");
-                    return util.BuildPathToUserAvatarOnServer(userId);
-                }
+                var tmpFile = Path.Combine(originalInfo.DirectoryName, util.MakeRandomFileName());
+                ThumbnailCreationAction(originalInfo.FullName, tmpFile, (int) size, true);
+                File.Move(tmpFile, info.FullName);
+                return util.GetEndUserReference(info.FullName);
             }
+
             return util.NoAvatar();
         }
-        
+
         private void DeleteCollages()
         {
             string path = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
@@ -164,9 +149,13 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             string path = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
 
             if (Directory.Exists(path))
-                return util.GetEndUserReference(ImageFormatHelper.GetImages(path).ToList().First());
+            {
+                string s = ImageFormatHelper.GetImages(path).ToList().First();
+                if (s != null)
+                    return util.GetEndUserReference(s);
+            }
 
-            return util.GetEndUserReference(MakeCollage(width, rows));
+            return MakeCollage(width, rows);
         }
 
         private IEnumerable<string> GetThumbnails()
@@ -210,15 +199,15 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         public string MakeCollage(int width, int rows)
         {
             int height = rows * maxHeight;
-            string pathToCollage = util.MakePathToCollage(userId, albumId, rnd.Next(5, 15));
+            string pathToCollage = util.MakePathToCollage(userId, albumId);
             string pathToCollages = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
-            
+
             using (Image img = new Bitmap(width, height))
             {
                 Graphics grfx = Graphics.FromImage(img);
                 SetUpGraphics(grfx);
 
-                TileTheImage(grfx, GetEnumerator(GetThumbnails()), width, height);
+                TileTheImage(grfx, Randomizer.GetEnumerator(GetThumbnails()), width, height);
 
                 CreateDirectoriesIfNotExists(pathToCollages);
                 img.Save(pathToCollage, ImageFormat.Jpeg);
@@ -235,23 +224,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
 
             return new Size((int) (((double) size.Width/size.Height)*maxSize), maxSize);
-        }
-
-
-        public IEnumerable<string> GetEnumerator(IEnumerable<string> enumerable)
-        {
-            string[] arr = enumerable.ToArray();
-            int length = arr.Length;
-
-            List<int> indexes =
-                Enumerable.Range(0, length).ToList();
-
-            for (int iter = 0; iter < length; iter++)
-            {
-                int index = rnd.Next(0, length - iter);
-                yield return arr[indexes[index]];
-                indexes.RemoveAt(index);
-            }
         }
     }
 }

@@ -80,7 +80,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 fullname,
                 lastAdded, user.IsAdmin ? "admin" : "simple user",
                 user.Department,
-                (new AsyncPhotoProcessor(User.Id, 0, 64, _pathUtil)).GetUserAvatar()), JsonRequestBehavior.AllowGet);
+                (new AsyncPhotoProcessor(User.Id, 0, 64, _pathUtil)).GetUserAvatar(AvatarSize.Medium)), JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Web;
@@ -16,32 +17,22 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private readonly string dataVirtualRoot;
 
         private readonly string appPath;
-        private readonly string dataFolderName;
-        private readonly string photosFolderName;
+        private readonly string relativePathToUsersFolder;
         private readonly string usersFolder;
-        private readonly string avatarFileName;
         private readonly string thumbnailsFolderName;
         private readonly string collagesFolderName;
-
         private readonly string noAvatarPath;
-        private readonly string thumbExtension;
-
         public PathUtil()
         {
             dataVirtualRoot = ConfigurationManager.AppSettings["DataFolderName"];
 
-        #region TODO! Change this, please
-            appPath = ConfigurationManager.AppSettings["DataDirectory"];
-            dataFolderName = ConfigurationManager.AppSettings["dataFolderName"];
-            photosFolderName = ConfigurationManager.AppSettings["photosFolderName"];
-            avatarFileName = ConfigurationManager.AppSettings["AvatarFileName"];
+            appPath = HttpRuntime.AppDomainAppPath;
+            relativePathToUsersFolder = ConfigurationManager.AppSettings["RelativePathToUsersFolder"];
             thumbnailsFolderName = ConfigurationManager.AppSettings["ThumbnailsFolderName"];
             collagesFolderName = ConfigurationManager.AppSettings["CollagesFolderName"];
             noAvatarPath = ConfigurationManager.AppSettings["customAvatarPath"];
-            thumbExtension = ConfigurationManager.AppSettings["ThumbnailExtension"];
-            usersFolder = BuildPathToUsersFolderOnServer();
+            usersFolder = Path.Combine(appPath, relativePathToUsersFolder);
         }
-        #endregion
 
         public string BuildPhotoDirectoryPath()
         {
@@ -141,75 +132,73 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return HostingEnvironment.MapPath(userTempPath);
         }
 
-        public string BuildPathToUsersFolderOnServer()
-        {
-            var stringBuilder = new StringBuilder(appPath);
-            return stringBuilder.Append(dataFolderName)
-                                .Append(DELIMITER)
-                                .Append(photosFolderName).ToString();
-        }
-
         public string BuildPathToUserFolderOnServer(int userId)
         {
-            var stringBuilder = new StringBuilder(usersFolder);
-            return stringBuilder.Append(DELIMITER).
-                                 Append(userId).ToString();
+            return Path.Combine(usersFolder, userId.ToString());
         }
 
-        public string BuildPathToUserAvatarOnServer(int userId)
+        public string BuildPathToUserAvatarOnServer(int userId,AvatarSize size = AvatarSize.Original)
         {
-            var stringBuilder = new StringBuilder(BuildPathToUserFolderOnServer(userId));
-            return stringBuilder.Append(DELIMITER).
-                                 Append(avatarFileName).ToString();
+            var pathToUserFolder = Path.Combine(usersFolder, userId.ToString());
+            switch (size)
+            {
+                case AvatarSize.Original:
+                    return Path.Combine(pathToUserFolder, "avatar.jpg");
+                case AvatarSize.Small:
+                    return Path.Combine(pathToUserFolder, "smallAvatar.jpg");
+                case AvatarSize.Medium:
+                    return Path.Combine(pathToUserFolder, "mediumAvatar.jpg");
+                case AvatarSize.Big:
+                    return Path.Combine(pathToUserFolder, "bigAvatar.jpg");
+                default:
+                    throw new ArgumentOutOfRangeException("size");
+            }
         }
 
         public string BuildPathToUserAlbumFolderOnServer(int userId, int albumId)
         {
-            var stringBuilder = new StringBuilder(BuildPathToUserFolderOnServer(userId));
-            return stringBuilder.Append(DELIMITER).
-                                 Append(albumId).ToString();
+            return Path.Combine(usersFolder, userId.ToString(), albumId.ToString());
         }
 
         public string BuildPathToUserAlbumThumbnailsFolderOnServer(int userId, int albumId, int thumbnailsSize)
         {
-            var stringBuilder = new StringBuilder(BuildPathToUserAlbumFolderOnServer(userId, albumId));
-            return stringBuilder.Append(DELIMITER).
-                                 Append(thumbnailsFolderName)
-                                .Append(DELIMITER)
-                                .Append(thumbnailsSize).ToString();
+            return Path.Combine(usersFolder,
+                                userId.ToString(),
+                                albumId.ToString(),
+                                thumbnailsFolderName,
+                                thumbnailsSize.ToString());
         }
 
         public string BuildPathToUserAlbumCollagesFolderOnServer(int userId, int albumId)
         {
-            var stringBuilder = new StringBuilder(BuildPathToUserAlbumFolderOnServer(userId, albumId));
-            return stringBuilder.Append(DELIMITER).
-                                 Append(collagesFolderName).ToString();
+            return Path.Combine(usersFolder, userId.ToString(), albumId.ToString(), collagesFolderName);
         }
 
         public string GetEndUserReference(string absolutePath)
         {
-            int index = absolutePath.LastIndexOf(dataFolderName); // TODO EXECAPTION HERE
+            int index = absolutePath.LastIndexOf(relativePathToUsersFolder);
             return absolutePath.Remove(0, index - 1).Replace(@"\", "/");
         }
 
         public string MakeFileNameWithExtension(string name)
         {
-            return string.Format(@"{0}{1}", name, thumbExtension);
+            return name + ".jpg";
+        }
+
+        public string MakeRandomFileName()
+        {
+            return Randomizer.GetString(10) + ".jpg";
         }
 
         public string BuildPathToOriginalFileOnServer(int userId, int albumId, string originalName)
         {
-            var stringBuilder = new StringBuilder(BuildPathToUserAlbumFolderOnServer(userId, albumId));
-            return stringBuilder.Append(DELIMITER).
-                                 Append(originalName).ToString();
+            return Path.Combine(usersFolder, userId.ToString(), albumId.ToString(), originalName);
         }
 
         public string BuildPathToThumbnailFileOnServer(int userId, int albumId, int thumbnailsSize, string originalPath)
         {
-            var stringBuilder = new StringBuilder(BuildPathToUserAlbumThumbnailsFolderOnServer(userId,albumId,thumbnailsSize));
-            return stringBuilder.Append(DELIMITER).
-                                 Append(MakeFileNameWithExtension(Path.GetFileNameWithoutExtension(originalPath)))
-                                .ToString();
+            return Path.Combine(usersFolder, userId.ToString(), albumId.ToString(), thumbnailsFolderName, thumbnailsSize.ToString(),
+                                MakeFileNameWithExtension(Path.GetFileNameWithoutExtension(originalPath)));
         }
 
         public string NoAvatar()
@@ -217,12 +206,10 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return noAvatarPath;
         }
 
-        public string MakePathToCollage(int userId, int albumId, int lenght)
+        public string MakePathToCollage(int userId, int albumId)
         {
-            var stringBuilder = new StringBuilder(BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId));
-            return stringBuilder.Append(DELIMITER)
-                                .Append(MakeFileNameWithExtension(Randomizer.GetString(lenght)))
-                                .ToString();
+            return Path.Combine(usersFolder, userId.ToString(), albumId.ToString(), collagesFolderName,
+                                MakeFileNameWithExtension(Randomizer.GetString(10)));
         }
 
         private string GetDataDirectory()
