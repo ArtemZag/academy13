@@ -29,10 +29,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var cryptoProvider = container.Resolve<ICryptoProvider>();
             var secureService = container.Resolve<ISecureService>();
             var albumService = container.Resolve<IAlbumService>();
+            var eventsAggregator = container.Resolve<IGlobalEventsAggregator>();
 
             workFactory = new TestUnitOfWorkFactory();
 
-            photoService = new PhotoService(workFactory, secureService);
+            photoService = new PhotoService(workFactory, secureService, eventsAggregator);
             userService = new UserService(workFactory, cryptoProvider,albumService);
             this.albumService = new AlbumService(workFactory, secureService);
         }

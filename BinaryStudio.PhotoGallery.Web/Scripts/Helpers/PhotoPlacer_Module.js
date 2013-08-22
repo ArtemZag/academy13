@@ -70,7 +70,7 @@
 
     function ajaxPhotoLoad() {
         $("#loader").show();
-        $.get(controllerURl + '/' + startIndex + '/' + (startIndex+photoPortion), getPhotos)
+        $.get(controllerURl, { skip: startIndex, take: startIndex + photoPortion, albumId: albumId }, getPhotos)
             .fail(function() {
                 $("#loader").hide();
             });
