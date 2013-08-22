@@ -50,9 +50,16 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             syncRoot = new object();
         }
 
+        public AsyncPhotoProcessor(int userId, IPathUtil util)
+        {
+            this.userId = userId;
+            if (userId < 0)
+                throw new ArgumentException("Invalid userId and albumId");
+        }
+
         public void SyncOriginalAndThumbnailImages()
         {
-            bool modified = false;
+            var modified = false;
 
             var userAlbumPath = util.BuildPathToUserAlbumFolderOnServer(userId, albumId);
             var pathToThumb = util.BuildPathToUserAlbumThumbnailsFolderOnServer(userId, albumId, maxHeight);
@@ -150,7 +157,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             if (Directory.Exists(path))
             {
-                string s = ImageFormatHelper.GetImages(path).ToList().First();
+                var s = ImageFormatHelper.GetImages(path).ToList().First();
                 if (s != null)
                     return util.GetEndUserReference(s);
             }
@@ -158,9 +165,9 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             return MakeCollage(width, rows);
         }
 
-        private IEnumerable<string> GetThumbnails()
+        public IEnumerable<string> GetThumbnails()
         {
-            string fullPath = util.BuildPathToUserAlbumThumbnailsFolderOnServer(userId, albumId, maxHeight);
+            var fullPath = util.BuildPathToUserAlbumThumbnailsFolderOnServer(userId, albumId, maxHeight);
             
             if (Directory.Exists(fullPath))
                 return ImageFormatHelper.GetImages(fullPath);
@@ -170,8 +177,8 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         private void TileTheImage(Graphics grfx, IEnumerable<string> enumerable, int width, int heigth)
         {
-            int iter = 0;
-            int sumWidth = 0;
+            var iter = 0;
+            var sumWidth = 0;
             foreach (var file in enumerable)
             {
                 using (var thumbImage = Image.FromFile(file))
@@ -198,13 +205,13 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public string MakeCollage(int width, int rows)
         {
-            int height = rows * maxHeight;
-            string pathToCollage = util.MakePathToCollage(userId, albumId);
-            string pathToCollages = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
+            var height = rows * maxHeight;
+            var pathToCollage = util.MakePathToCollage(userId, albumId);
+            var pathToCollages = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
 
             using (Image img = new Bitmap(width, height))
             {
-                Graphics grfx = Graphics.FromImage(img);
+                var grfx = Graphics.FromImage(img);
                 SetUpGraphics(grfx);
 
                 TileTheImage(grfx, Randomizer.GetEnumerator(GetThumbnails()), width, height);
