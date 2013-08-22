@@ -13,21 +13,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
 
         private readonly List<AlbumModel> _systemAlbumsList = new List<AlbumModel>
-        {
-            #region "Temporary" album
-            new AlbumModel
             {
-                Name = "Temporary",
-                Description = "System album. Not for use",
-                OwnerId = -1,
-                IsDeleted = false,
-                Permissions = 11111,
-                Photos = new Collection<PhotoModel>(),
-                AvailableGroups = new Collection<AvailableGroupModel>(),
-                AlbumTags = new Collection<AlbumTagModel>()
-            }
-            #endregion
-        };
+                #region "Temporary" album
+                new AlbumModel
+                    {
+                        Name = "Temporary",
+                        Description = "System album. Not for use",
+                        OwnerId = -1,
+                        IsDeleted = false,
+                        Permissions = 11111,
+                        Photos = new Collection<PhotoModel>(),
+                        AvailableGroups = new Collection<AvailableGroupModel>(),
+                        AlbumTags = new Collection<AlbumTagModel>()
+                    }
+                #endregion
+            };
 
         public AlbumService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
         {
@@ -54,25 +54,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public AlbumModel CreateAlbum(string userEmail, string albumName)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(userEmail, unitOfWork);
-
-                AlbumModel albumModel = CreateAlbum(user.Id, albumName);
-
-                return albumModel;
-            }
-        }
-
         public AlbumModel CreateAlbum(int userId, string albumName)
         {
             var albumModel = new AlbumModel
-            {
-                Name = albumName,
-                OwnerId = userId
-            };
+                {
+                    Name = albumName,
+                    OwnerId = userId
+                };
 
             albumModel = CreateAlbum(userId, albumModel);
 
@@ -88,17 +76,22 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void DeleteAlbum(string userEmail, int albumId)
+        public void DeleteAlbum(int userId, int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userEmail, unitOfWork);
-                AlbumModel album = GetAlbum(user, albumId);
-
+                UserModel user = GetUser(userId, unitOfWork);
+                AlbumModel album = GetAlbum(userId, albumId, unitOfWork);
 
                 if (IsAlbumSystem(album))
                 {
                     throw new AlbumNotFoundException(string.Format("Can't delete system album with id={0}", albumId));
+                }
+
+                if (album.OwnerId != userId && !user.IsAdmin)
+                {
+                    throw new AlbumNotFoundException(
+                        string.Format("You have no permissions for deleting album with id={0}", albumId));
                 }
 
                 album.IsDeleted = true;
@@ -118,7 +111,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         public int AlbumsCount(int userId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
                 return unitOfWork.Albums.Filter(model => model.OwnerId == userId && !model.IsDeleted).Sum(model => 1);
+            }
         }
 
         public IEnumerable<AlbumModel> GetAlbumsRange(int userId, int skipCount, int takeCount)
@@ -126,18 +121,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 return unitOfWork.Albums
-                    .Filter(model => model.OwnerId == userId && !model.IsDeleted)
-                    .OrderByDescending(model => model.DateOfCreation)
-                    .Skip(skipCount)
-                    .Take(takeCount)
-                    .ToList();
+                                 .Filter(model => model.OwnerId == userId && !model.IsDeleted)
+                                 .OrderByDescending(model => model.DateOfCreation)
+                                 .Skip(skipCount)
+                                 .Take(takeCount)
+                                 .ToList();
             }
         }
 
         public IEnumerable<AlbumTagModel> GetTags(int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
                 return unitOfWork.AlbumTags.Filter(tag => tag.Id == albumId).ToList();
+            }
         }
 
         public IEnumerable<AlbumModel> GetAllAlbums(int userId)
@@ -150,22 +147,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public AlbumModel GetAlbum(string userEmail, int albumId)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(userEmail, unitOfWork);
-
-                AlbumModel album = GetAlbum(albumId, unitOfWork);
-
-                if (album.OwnerId == user.Id)
-                {
-                    return album;
-                }
-
-                throw new AlbumNotFoundException(albumId.ToString());
-            }
-        }
 
         public int GetAlbumId(int userId, string albumName)
         {
@@ -176,20 +157,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 if (foundAlbum == null)
                 {
-                    throw new AlbumNotFoundException(albumName);
+                    throw new AlbumNotFoundException(string.Format("Can't find album with name={0}", albumName));
                 }
 
                 return foundAlbum.Id;
-            }
-        }
-
-        public int GetAlbumId(string userEmail, string albumName)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
-
-                return GetAlbumId(foundUser.Id, albumName);
             }
         }
 
@@ -197,12 +168,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel foundUser = unitOfWork.Users.Find(user => user.Id == userId);
+                UserModel userModel = GetUser(userId, unitOfWork);
 
-                AlbumModel foundAlbum =
-                    unitOfWork.Albums.Find(album => album.Name == albumName && album.OwnerId == foundUser.Id);
+                if (userModel == null)
+                {
+                    throw new UserNotFoundException(string.Format("Can't find user with id={0}", userId));
+                }
 
-                return foundAlbum != null;
+                AlbumModel albumModel =
+                    unitOfWork.Albums.Find(album => album.Name == albumName && album.OwnerId == userModel.Id);
+
+                return albumModel != null;
+
             }
         }
 
@@ -211,15 +188,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 return GetAvailableAlbums(userId, unitOfWork);
-            }
-        }
-
-        public IEnumerable<AlbumModel> GetAvailableAlbums(string userEmail)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
-                return GetAvailableAlbums(foundUser.Id, unitOfWork);
             }
         }
 
