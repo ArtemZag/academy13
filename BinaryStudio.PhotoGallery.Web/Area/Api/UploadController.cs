@@ -189,14 +189,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                // Get user ID from DB
-                int userId = _userService.GetUserId(User.Identity.Name);
-
                 // Get temporary album Id
-                int tempAlbumId = _albumService.GetAlbumId(userId, "Temporary");
+                int tempAlbumId = _albumService.GetAlbumId(User.Id, "Temporary");
 
                 // Get path to the temporary album folder
-                string pathToTempAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(userId, tempAlbumId);
+                string pathToTempAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(User.Id, tempAlbumId);
 
                 // Create directory, if it isn't exist
                 if (!_directoryWrapper.Exists(pathToTempAlbum))
@@ -248,9 +245,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                     string format = _fileHelper.GetRealFileFormat(fileData.LocalFileName);
 
-                    int albumId = _albumService.GetAlbumId(User.Identity.Name, "Temporary");
+                    int albumId = _albumService.GetAlbumId(User.Id, "Temporary");
 
-                    int photoId = _photoService.AddPhoto(PhotoViewModel.ToModel(userId, albumId, format)).Id;
+                    int photoId = _photoService.AddPhoto(PhotoViewModel.ToModel(User.Id, albumId, format)).Id;
 
                     string destFileName = string.Format("{0}\\{1}.{2}", pathToTempAlbum, photoId, format);
 

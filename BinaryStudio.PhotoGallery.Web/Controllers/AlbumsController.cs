@@ -42,13 +42,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("{skip:int}/{take:int}")]
         public ActionResult GetAlbums(int skip, int take)
         {
-            /*string email = User.Identity.Name;
-            UserModel user = _userService.GetUser(email);
-            List<AlbumViewModel> albums = _albumService.GetAlbumsRange(user.Id, skip, take)
-                .Select(AlbumViewModel.FromModel)
-                .ToList();
-
-            return Json(albums, JsonRequestBehavior.AllowGet);*/
+//            List<AlbumViewModel> albums = _albumService.GetAlbumsRange(User.Id, skip, take)
+//                .Select(AlbumViewModel.FromModel)
+//                .ToList();
+//
+//            return Json(albums, JsonRequestBehavior.AllowGet);
             return Json(null, JsonRequestBehavior.AllowGet);
         }
 

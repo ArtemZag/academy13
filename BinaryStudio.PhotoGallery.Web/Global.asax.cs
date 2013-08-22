@@ -6,7 +6,6 @@ using System.Web.Routing;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.App_Start;
 using Microsoft.Practices.Unity;
 using PerpetuumSoft.Knockout;
