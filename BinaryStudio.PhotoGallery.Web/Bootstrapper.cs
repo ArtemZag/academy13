@@ -4,6 +4,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Web.Events;
 using BinaryStudio.PhotoGallery.Web.Hubs;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using Microsoft.AspNet.SignalR;
