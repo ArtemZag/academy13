@@ -52,9 +52,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-                var photoModels = _photoService.GetPhotos(User.Id, albumId, skip, take);
+                IEnumerable<PhotoModel> photoModels = _photoService.GetPhotos(User.Id, albumId, skip, take);
 
-                var photoViewModels = photoModels.Select(PhotoViewModel.FromModel).ToList();
+                List<PhotoViewModel> photoViewModels = photoModels.Select(PhotoViewModel.FromModel).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, photoViewModels, new JsonMediaTypeFormatter());
             }

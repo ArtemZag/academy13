@@ -21,23 +21,21 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("")]
         public ActionResult Index()
         {
-            var user = UserService.GetUser(User.Identity.Name);
-
+            var user = UserService.GetUser(User.Id);
             return View(UserViewModel.ToViewModel(user));
         }
         
         [GET("edit")]
         public ActionResult Edit()
         {
-            var user = UserService.GetUser(User.Identity.Name);
-
+            var user = UserService.GetUser(User.Id);
             return View(UserViewModel.ToViewModel(user));
         }
 
         [POST("edit")]
         public ActionResult Edit(UserViewModel userViewModel)
         {
-            var user = UserService.GetUser(User.Identity.Name);
+            var user = UserService.GetUser(User.Id);
 
             if(user == null)
             {
