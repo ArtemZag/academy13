@@ -10,11 +10,10 @@
         ajaxPhotoLoad();
     });
     $(window).on('resize', function() {
-        $LastRow = calcPhotoSizes($('#photoWrapper'), $("div.photoContainer > img"), marginsOfPhotoCont);
+        calcPhotoSizes($('#photoWrapper'), $("div.photoContainer > img"), marginsOfPhotoCont);
     });
     $(window).scroll(scrolled);
 
-    var $LastRow = new Array();
     var busy = false;
     var scrHeight = $(window).height();
 
@@ -34,6 +33,8 @@
         }
     }
 
+    var allLoaded = false;
+
     function calcPhotoSizes($container, $photos, marginPhotoCont) {
         var width = 0;
         var firstElemInRow = 0;
@@ -41,13 +42,13 @@
         var wrapperWidth = $container.width();
         var $lastRow = $();
 
-        jQuery.each($photos, function(indPh) {
+        jQuery.each($photos, function (indPh) {
             width += this.width;
             margins += marginPhotoCont;
             if (width > wrapperWidth - margins) {
-                var coef = (wrapperWidth - margins) / width;
+                var koef = (wrapperWidth - margins) / width;
                 for (var indSub = firstElemInRow; indSub <= indPh; indSub++) {
-                    $($photos[indSub]).closest("div").css('width', ($photos[indSub].width * coef) - 0.2);
+                    $($photos[indSub]).closest("div").css('width', ($photos[indSub].width * koef) - 0.2);
                     $($photos[indSub]).closest("div").addClass("resized");
                 }
                 firstElemInRow = indPh + 1;
@@ -55,9 +56,12 @@
                 margins = 0;
             } else if (indPh == $photos.length - 1) {
                 for (indSub = firstElemInRow; indSub <= indPh; indSub++) {
-                    $($photos[indSub]).closest("div")
-                        .css('width', $photos[indSub].width);
-                    $lastRow.push($photos[indSub]);
+                    if (allLoaded) {
+                        $($photos[indSub]).closest("div").css('width', $photos[indSub].width);
+                    } else {
+                        $($photos[indSub]).closest("div").remove();
+                        startIndex--;
+                    } 
                 }
             }
 
@@ -77,6 +81,10 @@
     }
 
     function getPhotos(photos) {
+        if (photos.length < photoPortion) {
+            allLoaded = true;
+            $(window).unbind("scroll");
+        }
         if (photos.length > 0) {
             ko.utils.arrayPushAll(window.viewModel.Photos, photos);
             var $newPhotoContainers = $('#photoWrapper > div.invisible');
@@ -86,8 +94,7 @@
             $photos.load(function () {
                 numLoad++;
                 if (numLoad == lenght) { //todo How to check by another way that all of photos have been loaded? 
-                    $photos = $.merge($LastRow, $photos);
-                    $LastRow = calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
+                    calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
                     $newPhotoContainers.removeClass("invisible");
                 }
             })
@@ -98,9 +105,6 @@
             startIndex += photoPortion;
             busy = false;
         } 
-        if (photos.length < photoPortion) {
-            $(window).unbind("scroll");
-        }
         $("#loader").hide();
     }
     

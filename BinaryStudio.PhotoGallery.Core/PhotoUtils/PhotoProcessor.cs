@@ -20,8 +20,8 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public static Image ImageResize(Image image, int nHeight)
         {
-            double coef = nHeight/(double) image.Height;
-            var nWidth = (int) (image.Width*coef);
+            double koef = nHeight/(double) image.Height;
+            var nWidth = (int) (image.Width*koef);
             Image result = ImageResize(image, nHeight, nWidth);
             return result;
         }
