@@ -54,7 +54,6 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
         public ActionResult GetFlowPhotos()
         {
-            string email = User.Identity.Name;
             UserModel user = _userService.GetUser(User.Id);
             IEnumerable<PhotoViewModel> lastTenPhotos =
                 _photoService.GetLastPhotos(user.Id, 0, 10).Select(PhotoViewModel.FromModel);
