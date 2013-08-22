@@ -10,10 +10,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     internal class PhotoService : DbService, IPhotoService
     {
         private readonly ISecureService _secureService;
+        private readonly IGlobalEventsAggregator _eventsAggregator;
 
-        public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
+        public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator) : base(workFactory)
         {
             _secureService = secureService;
+            _eventsAggregator = eventsAggregator;
         }
 
         public PhotoModel AddPhoto(PhotoModel photoModel)
@@ -30,47 +32,27 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public PhotoModel AddPhoto(string userEmail, string albumName, PhotoModel photoModel)
+        public IEnumerable<int> AddPhotos(int userId, int albumId, IEnumerable<PhotoModel> photos)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userEmail, unitOfWork);
-                AlbumModel album = GetAlbum(user, albumName);
+                AlbumModel album = GetAlbum(userId, albumId);
 
-                if (_secureService.CanUserAddPhoto(user.Id, album.Id))
+                var notAllowed = !_secureService.CanUserAddPhoto(userId, album.Id);
+
+                if (notAllowed)
                 {
-                    photoModel.OwnerId = user.Id;
-                    album.Photos.Add(photoModel);
-
-                    unitOfWork.SaveChanges();
-
-                    return photoModel;
+                    throw new NoEnoughPrivilegesException("User can't get access to photos");
                 }
 
-                throw new NoEnoughPrivilegesException("User can't get access to photos");
-            }
-        }
-
-        public IEnumerable<int> AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(userEmail, unitOfWork);
-                AlbumModel album = GetAlbum(user, albumName);
-
-                if (_secureService.CanUserAddPhoto(user.Id, album.Id))
+                IEnumerable<PhotoModel> photoModels = photos as IList<PhotoModel> ?? photos.ToList();
+                foreach (PhotoModel photo in photoModels)
                 {
-                    IEnumerable<PhotoModel> photoModels = photos as IList<PhotoModel> ?? photos.ToList();
-                    foreach (PhotoModel photo in photoModels)
-                    {
-                        album.Photos.Add(photo);
-                    }
-                    unitOfWork.SaveChanges();
-
-                    return photoModels.Select(photo => photo.Id).ToList();
+                    album.Photos.Add(photo);
                 }
+                unitOfWork.SaveChanges();
 
-                throw new NoEnoughPrivilegesException("User can't get access to photos");
+                return photoModels.Select(photo => photo.Id).ToList();
             }
         }
 
@@ -107,26 +89,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     throw new NoEnoughPrivilegesException("User can't get access to photos");
                 }
-            }
-        }
-
-        public IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int skipCount, int takeCount)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(userEmail, unitOfWork);
-                AlbumModel album = GetAlbum(user, albumName);
-
-                if (_secureService.CanUserViewPhotos(user.Id, album.Id))
-                {
-                    return album.Photos.OrderBy(model => model.DateOfCreation)
-                        .ThenBy(model => model.Id)
-                        .Skip(skipCount)
-                        .Take(takeCount)
-                        .ToList();
-                }
-
-                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -198,18 +160,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public PhotoModel GetPhoto(string userEmail, int photoId)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(userEmail, unitOfWork);
-
-                PhotoModel photoModel = GetPhoto(user.Id, photoId);
-
-                return photoModel;
-            }
-        }
-
         public PhotoModel GetPhoto(int userId, int photoId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -224,6 +174,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
+
+        public PhotoModel GetPhotoWithoutRightsCheck(int photoId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                PhotoModel photoModel = unitOfWork.Photos.Find(photoId);
+                return photoModel;
+            }
+        }
+
 
         public IEnumerable<UserModel> GetLikes(int userId, int photoId)
         {
@@ -248,6 +208,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 unitOfWork.Photos.Find(photoId).Likes.Add(user);
                 unitOfWork.SaveChanges();
+
+                _eventsAggregator.PushLikeToPhotoAddedEvent(user, photoId);
             }
         }
 
@@ -260,6 +222,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return
                     avialableAlbums.SelectMany(model => model.Photos)
                         .OrderByDescending(model => model.DateOfCreation)
+                        .ThenBy(photo => photo.Id)
                         .Skip(skipCount)
                         .Take(takeCount)
                         .ToList();

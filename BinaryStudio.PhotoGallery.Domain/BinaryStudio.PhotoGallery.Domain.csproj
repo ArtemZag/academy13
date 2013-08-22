@@ -63,7 +63,9 @@
     <Compile Include="Services\AlbumService.cs" />
     <Compile Include="Services\GroupService.cs" />
     <Compile Include="Services\IGroupService.cs" />
+    <Compile Include="Services\IResizePhotoService.cs" />
     <Compile Include="Services\ISecureService.cs" />
+    <Compile Include="Services\ResizePhotoService.cs" />
     <Compile Include="Services\Search\AlbumSearchService.cs" />
     <Compile Include="Services\Search\IAlbumSearchService.cs" />
     <Compile Include="Services\Search\IUserSearchService.cs" />

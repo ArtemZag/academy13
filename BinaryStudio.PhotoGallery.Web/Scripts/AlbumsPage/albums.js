@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-
     var container = $(".albums");
     var info = $("#userInformation");
     var tool = $("#toolbar");

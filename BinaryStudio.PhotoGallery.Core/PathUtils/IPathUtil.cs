@@ -29,28 +29,28 @@
         /// <returns>Path in format "C:\\ololo\\ololo"</returns>
         string BuildAbsoluteTemporaryAlbumPath(int userId, int albumId);
 
-        string BuildPathToUsersFolderOnServer();
-
         string BuildPathToUserFolderOnServer(int userId);
 
-        string BuildPathToUserAvatarOnServer(int userId);
+        string BuildPathToUserAvatarOnServer(int userId, AvatarSize size);
 
         string BuildPathToUserAlbumFolderOnServer(int userId, int albumId);
 
         string BuildPathToUserAlbumThumbnailsFolderOnServer(int userId, int albumId, int thumbnailsSize);
 
-        string BuildPathToThumbnailFileOnServer(int userId, int albumId, int thumbnailsSize, string originalPath);
-
-        string BuildPathToOriginalFileOnServer(int userId, int albumId,string originalName);
-
         string BuildPathToUserAlbumCollagesFolderOnServer(int userId, int albumId);
-
+        
         string GetEndUserReference(string absolutePath);
-
-        string NoAvatar();
 
         string MakeFileNameWithExtension(string name);
 
-        string MakePathToCollage(int userId,int albumId,int lenght);
+        string MakeRandomFileName();
+
+        string BuildPathToOriginalFileOnServer(int userId, int albumId, string originalName);
+
+        string BuildPathToThumbnailFileOnServer(int userId, int albumId, int thumbnailsSize, string originalPath);
+
+        string NoAvatar();
+
+        string MakePathToCollage(int userId, int albumId);
     }
 }

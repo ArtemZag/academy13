@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BinaryStudio.PhotoGallery.Core
@@ -7,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Core
     // that's why it was renamed to Randomizer
     public static class Randomizer
     {
-        private static readonly Random Random = new Random();
+        private static readonly Random Random = new Random((int) DateTime.Now.Ticks);
         private const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 
         public static string GetString(int size)
@@ -19,6 +21,22 @@ namespace BinaryStudio.PhotoGallery.Core
                 stringBuilder.Append(CHARS[Random.Next(CHARS.Length)]);
             }
             return stringBuilder.ToString();
+        }
+
+        public static IEnumerable<string> GetEnumerator(IEnumerable<string> enumerable)
+        {
+            var arr = enumerable.ToArray();
+            var length = arr.Length;
+
+            var indexes =
+                Enumerable.Range(0, length).ToList();
+
+            for (int iter = 0; iter < length; iter++)
+            {
+                int index = Random.Next(0, length - iter);
+                yield return arr[indexes[index]];
+                indexes.RemoveAt(index);
+            }
         }
 
         public static int GetNumber(int maxNumber)

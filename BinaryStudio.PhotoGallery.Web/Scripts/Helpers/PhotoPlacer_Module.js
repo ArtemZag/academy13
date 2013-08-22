@@ -70,8 +70,7 @@
 
     function ajaxPhotoLoad() {
         $("#loader").show();
-        console.log("send");
-        $.get(controllerURl + '/' + startIndex + '/' + photoPortion, getPhotos)
+        $.get(controllerURl, { albumId: albumId , skip: startIndex, take: photoPortion }, getPhotos)
             .fail(function() {
                 $("#loader").hide();
             });
@@ -79,7 +78,6 @@
 
     function getPhotos(photos) {
         if (photos.length > 0) {
-            console.log("req");
             ko.utils.arrayPushAll(window.viewModel.Photos, photos);
             var $newPhotoContainers = $('#photoWrapper > div.invisible');
             var $photos = $newPhotoContainers.find("img:first");
@@ -95,7 +93,8 @@
             });
             startIndex += photoPortion;
             busy = false;
-        } else {
+        } 
+        if (photos.length < photoPortion) {
             $(window).unbind("scroll");
         }
         $("#loader").hide();
