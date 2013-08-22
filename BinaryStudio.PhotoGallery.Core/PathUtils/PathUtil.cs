@@ -22,6 +22,8 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private readonly string thumbnailsFolderName;
         private readonly string collagesFolderName;
         private readonly string noAvatarPath;
+
+
         public PathUtil()
         {
             dataVirtualRoot = ConfigurationManager.AppSettings["DataFolderName"];

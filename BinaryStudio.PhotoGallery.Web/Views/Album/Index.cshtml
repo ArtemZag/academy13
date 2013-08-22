@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Models
 @using BinaryStudio.PhotoGallery.Web.ViewModels
 @using PerpetuumSoft.Knockout
 @model AlbumViewModel
@@ -8,6 +9,7 @@
 
 @Styles.Render("~/Content/photo-flow.css")
 @Styles.Render("~/Content/spinner.css")
+@Styles.Render("~/Content/album-page.css")
 
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -23,20 +25,33 @@
         <li></li>
     </ul>
 </div>
-<div id="photoWrapper">
-    @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it.Photos))
-    {
-        <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
-            <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
+
+<div class="cont">
+    
+    <div class="sidebar">
+        <div class="title">@Html.DisplayFor(model => model.AlbumName)</div>
+        <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>
+        <div class="title">Tags</div>
+    </div>
+
+    <div class="grid">
+        <div id="photoWrapper">
+            @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it.Photos))
+            {
+                <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
+                    <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
+                </div>
+            }
         </div>
-    }
+    </div>
 </div>
+
 
 
 @ko.Initialize(Model)
 <script type="text/javascript">
     $(document).ready(function() {
-        PhotoPlacer_Module("/api/photo/","@Model.id");
+        PhotoPlacer_Module("/api/photo/", "@Model.Id");
     });
 
     viewModel.gotoPhotoPage = function(data) {

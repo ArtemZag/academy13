@@ -1,42 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
-using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Models;
-using Microsoft.Practices.Unity;
 
 namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
     public class AlbumViewModel
     {
-        public int ownerId { get; set; }
-        public int id { get; set; }
-        public string collageSource { get; set; }
-        public string albumName { get; set; }
-        public string description { get; set; }
-        public DateTime dateOfCreation { get; set; }
-        public IEnumerable<AlbumTagModel> albumTags { get; set; }
-        public IList<PhotoViewModel> Photos { get; set; }
+        public int OwnerId { get; set; }
 
-        public static AlbumViewModel FromModel(AlbumModel model)
+        public int Id { get; set; }
+
+        public string CollageSource { get; set; }
+
+        public string AlbumName { get; set; }
+
+        public string Description { get; set; }
+
+        public DateTime DateOfCreation { get; set; }
+
+        public IEnumerable<AlbumTagModel> Tags { get; set; }
+
+        public List<PhotoViewModel> Photos { get; set; }
+
+        public static AlbumViewModel FromModel(AlbumModel model, IPathUtil pathUtil)
         {
-            IUnityContainer container = Bootstrapper.Initialise();
-            var pathUtil = container.Resolve<IPathUtil>();
+            // todo: use pathUtil
+
             //todo shall fix this. Exception throwns when i try to open oan album page /album/{id}
             //var processor = new AsyncPhotoProcessor(model.OwnerId, model.Id, 64, pathUtil);
             //processor.SyncOriginalAndThumbnailImages();
-            return new AlbumViewModel()
-                {
-                    //collageSource = processor.CreateCollageIfNotExist(256,3),
-                    albumName = model.Name,
-                    description = model.Description,
-                    dateOfCreation = model.DateOfCreation,
-                    ownerId = model.OwnerId,
-                    id = model.Id,
-                    Photos = new List<PhotoViewModel>()
-                };
+
+            return new AlbumViewModel
+            {
+                //collageSource = processor.CreateCollageIfNotExist(256,3),
+                AlbumName = model.Name,
+                Description = model.Description,
+                DateOfCreation = model.DateOfCreation,
+                OwnerId = model.OwnerId,
+                Id = model.Id,
+                Photos = new List<PhotoViewModel>()
+            };
         }
     }
 }

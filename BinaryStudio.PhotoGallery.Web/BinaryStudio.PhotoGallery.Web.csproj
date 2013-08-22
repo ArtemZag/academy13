@@ -244,7 +244,6 @@
     <Compile Include="Infrastructure\CustomPrincipal\BaseViewPage.cs" />
     <Compile Include="Infrastructure\CustomPrincipal\CustomPrincipal.cs" />
     <Compile Include="Infrastructure\CustomPrincipal\ICustomPrincipal.cs" />
-
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -273,6 +272,7 @@
     <Compile Include="ViewModels\Authorization\SignupViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\Photo\UserInfoViewModel.cs" />
+    <Content Include="Content\album-page.css" />
     <Content Include="Content\profile-page.css" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\panel.css" />

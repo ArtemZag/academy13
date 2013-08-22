@@ -1,0 +1,33 @@
+﻿.sidebar {
+    background-color: rgb(235, 235, 235);
+    height: 100%;
+    position: fixed;
+    right: 0;
+    width: 290px;
+    z-index: 20;
+}
+
+.grid { padding-right: 110px }
+
+.cont {
+    margin-right: auto;
+    max-width: 98%;
+    min-height: 100%;
+    position: relative;
+    width: 1140px;
+}
+
+.title {
+    margin-top: 30px;
+    color: #343434;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 40px;
+    font-family: 'Orienta', sans-serif;
+    margin-left: 30px;
+}
+
+.photos-count {
+    text-align: right;
+    margin-right: 30px;
+}
