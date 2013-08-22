@@ -32,47 +32,27 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public PhotoModel AddPhoto(string userEmail, string albumName, PhotoModel photoModel)
+        public IEnumerable<int> AddPhotos(int userId, int albumId, IEnumerable<PhotoModel> photos)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userEmail, unitOfWork);
-                AlbumModel album = GetAlbum(user, albumName);
+                AlbumModel album = GetAlbum(userId, albumId);
 
-                if (_secureService.CanUserAddPhoto(user.Id, album.Id))
+                var notAllowed = !_secureService.CanUserAddPhoto(userId, album.Id);
+
+                if (notAllowed)
                 {
-                    photoModel.OwnerId = user.Id;
-                    album.Photos.Add(photoModel);
-
-                    unitOfWork.SaveChanges();
-
-                    return photoModel;
+                    throw new NoEnoughPrivilegesException("User can't get access to photos");
                 }
 
-                throw new NoEnoughPrivilegesException("User can't get access to photos");
-            }
-        }
-
-        public IEnumerable<int> AddPhotos(string userEmail, string albumName, IEnumerable<PhotoModel> photos)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(userEmail, unitOfWork);
-                AlbumModel album = GetAlbum(user, albumName);
-
-                if (_secureService.CanUserAddPhoto(user.Id, album.Id))
+                IEnumerable<PhotoModel> photoModels = photos as IList<PhotoModel> ?? photos.ToList();
+                foreach (PhotoModel photo in photoModels)
                 {
-                    IEnumerable<PhotoModel> photoModels = photos as IList<PhotoModel> ?? photos.ToList();
-                    foreach (PhotoModel photo in photoModels)
-                    {
-                        album.Photos.Add(photo);
-                    }
-                    unitOfWork.SaveChanges();
-
-                    return photoModels.Select(photo => photo.Id).ToList();
+                    album.Photos.Add(photo);
                 }
+                unitOfWork.SaveChanges();
 
-                throw new NoEnoughPrivilegesException("User can't get access to photos");
+                return photoModels.Select(photo => photo.Id).ToList();
             }
         }
 
@@ -109,26 +89,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     throw new NoEnoughPrivilegesException("User can't get access to photos");
                 }
-            }
-        }
-
-        public IEnumerable<PhotoModel> GetPhotos(string userEmail, string albumName, int skipCount, int takeCount)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(userEmail, unitOfWork);
-                AlbumModel album = GetAlbum(user, albumName);
-
-                if (_secureService.CanUserViewPhotos(user.Id, album.Id))
-                {
-                    return album.Photos.OrderBy(model => model.DateOfCreation)
-                        .ThenBy(model => model.Id)
-                        .Skip(skipCount)
-                        .Take(takeCount)
-                        .ToList();
-                }
-
-                throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
 
@@ -197,18 +157,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     .Skip(skipCount)
                     .Take(takeCount)
                     .ToList();
-            }
-        }
-
-        public PhotoModel GetPhoto(string userEmail, int photoId)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(userEmail, unitOfWork);
-
-                PhotoModel photoModel = GetPhoto(user.Id, photoId);
-
-                return photoModel;
             }
         }
 
