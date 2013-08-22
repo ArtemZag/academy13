@@ -125,6 +125,8 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
+      
+
         public string GetUserAvatar(AvatarSize size)
         {
             var info = new FileInfo(util.BuildPathToUserAvatarOnServer(userId, size));

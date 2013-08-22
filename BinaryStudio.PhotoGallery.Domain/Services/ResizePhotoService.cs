@@ -40,8 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (var unit = WorkFactory.GetUnitOfWork())
             {
-                if (_secureService.GetAvailableAlbums(userId, unit)
-                                  .Select(model => model).Any(model => model.OwnerId == userId))
+                if (_secureService.CanUserViewPhotos(userId, albumId))
                 {
                     var processor = new AsyncPhotoProcessor(userId, albumId, 64, _util);
                     return processor.GetThumbnails();
@@ -52,14 +51,42 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public string GetCollage(int userId, int albumId)
+        //Высота колажа = heightOfOneLineInTheCollage*numberOfLines
+        public string GetCollage(int userId, int albumId, int collageWidth, int heightOfOneLineInTheCollage, int numberOfLines)
         {
-            throw new NotImplementedException();
+            using (var unit = WorkFactory.GetUnitOfWork())
+            {
+                if (_secureService.CanUserViewPhotos(userId, albumId))
+                {
+                    var processor = new AsyncPhotoProcessor(userId, albumId, heightOfOneLineInTheCollage, _util);
+                    processor.SyncOriginalAndThumbnailImages();
+                    return processor.CreateCollageIfNotExist(collageWidth, numberOfLines);
+                }
+
+                throw new AccessViolationException(
+                    string.Format("User with ID {0} dont have rights to access thumbnails", userId));
+            }
         }
 
-        public string GetThumbnail(int userId, int albumId, int photoId)
+        public string GetThumbnail(int userId, int albumId, string photoName, int maxHeight)
         {
-            throw new NotImplementedException();
+            using (var unit = WorkFactory.GetUnitOfWork())
+            {
+                if (_secureService.CanUserViewPhotos(userId, albumId))
+                {
+                    if (unit.Photos.Contains(model => model.Name == photoName))
+                    {
+                        var processor = new AsyncPhotoProcessor(userId, albumId, maxHeight, _util);
+                        processor.SyncOriginalAndThumbnailImages();
+                        return _util.BuildPathToThumbnailFileOnServer(userId, albumId, maxHeight, photoName);
+                    }
+
+                    throw new Exception(string.Format("Photo with {0} in album {1} of user {2} not found",
+                                                      photoName, albumId, userId));
+                }
+                throw new NoEnoughPrivilegesException(
+                    string.Format("User with ID {0} dont have rights to access thumbnail", userId));
+            }
         }
     }
 }
