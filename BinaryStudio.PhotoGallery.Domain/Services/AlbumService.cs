@@ -140,11 +140,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return unitOfWork.AlbumTags.Filter(tag => tag.Id == albumId).ToList();
         }
 
-        public IEnumerable<AlbumModel> GetAllAlbums(string userEmail)
+        public IEnumerable<AlbumModel> GetAllAlbums(int userId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userEmail, unitOfWork);
+                UserModel user = GetUser(userId, unitOfWork);
 
                 return user.Albums.Where(model => !model.IsDeleted).ToList();
             }
@@ -193,11 +193,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public bool IsExist(string userEmail, string albumName)
+        public bool IsExist(int userId, string albumName)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel foundUser = unitOfWork.Users.Find(user => user.Email == userEmail);
+                UserModel foundUser = unitOfWork.Users.Find(user => user.Id == userId);
 
                 AlbumModel foundAlbum =
                     unitOfWork.Albums.Find(album => album.Name == albumName && album.OwnerId == foundUser.Id);

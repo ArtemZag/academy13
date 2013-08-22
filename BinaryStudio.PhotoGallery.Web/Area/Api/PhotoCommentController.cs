@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using AttributeRouting;
-using AttributeRouting.Web.Http;
+using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
@@ -15,7 +15,7 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [RoutePrefix("api/photo")]
-    public class PhotoCommentController : ApiController
+    public class PhotoCommentController : BaseApiController
     {
         private readonly IPhotoCommentService _photoCommentService;
         private readonly IUserService _userService;
@@ -31,27 +31,15 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-                int userId = _userService.GetUserId(User.Identity.Name);
-
                 var viewModels = new List<PhotoCommentViewModel>();
 
-                IEnumerable<PhotoCommentModel> models = _photoCommentService.GetPhotoComments(userId, photoId, skip,
-                    take);
+                var models = _photoCommentService.GetPhotoComments(User.Id, photoId, skip, take);
 
                 viewModels.AddRange(from model in models
                                     let userModel = _userService.GetUser(model.UserId)
                                     select PhotoCommentViewModel.FromModel(model, userModel));
 
-                var responseData = new ObjectContent<IEnumerable<PhotoCommentViewModel>>
-                    (viewModels, new JsonMediaTypeFormatter());
-
-                var response = new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = responseData
-                };
-
-                return response;
+                return Request.CreateResponse(HttpStatusCode.OK, viewModels, new JsonMediaTypeFormatter());
             }
             catch (NoEnoughPrivilegesException ex)
             {
@@ -66,14 +54,15 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [POST("comment")]
         public HttpResponseMessage AddPhotoComment(NewCommentViewModel viewModel)
         {
-            int userId = _userService.GetUserId(User.Identity.Name);
-
-            var photoCommentModel = new PhotoCommentModel(userId, viewModel.PhotoId, viewModel.CommentText,
+            var photoCommentModel = new PhotoCommentModel(
+                User.Id,
+                viewModel.PhotoId,
+                viewModel.CommentText,
                 viewModel.Reply);
 
             try
             {
-                _photoCommentService.AddPhotoComment(userId, photoCommentModel);
+                _photoCommentService.AddPhotoComment(User.Id, photoCommentModel);
             }
             catch (NoEnoughPrivilegesException ex)
             {
@@ -84,7 +73,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            return new HttpResponseMessage(HttpStatusCode.Created);
+            return Request.CreateResponse(HttpStatusCode.Created);
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System.Web.Http;
+﻿using System.Web.Mvc;
 using AttributeRouting;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
 	[RoutePrefix("api/user")]
-    public class UserController : ApiController
+    public class UserController : BaseApiController
     {
     }
 }

@@ -6,7 +6,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     [Authorize]
     [RoutePrefix("upload")]
-    public class UploadController : Controller
+    public class UploadController : BaseController
     {
 		[GET("")]
         public ActionResult Index()

@@ -14,7 +14,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     [Authorize]
     [RoutePrefix("albums")]
-    public class AlbumsController : Controller
+    public class AlbumsController : BaseController
     {
         private readonly IAlbumService _albumService;
         private readonly IPathUtil _pathUtil;
@@ -55,7 +55,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult GetFlowPhotos()
         {
             string email = User.Identity.Name;
-            UserModel user = _userService.GetUser(email);
+            UserModel user = _userService.GetUser(User.Id);
             IEnumerable<PhotoViewModel> lastTenPhotos =
                 _photoService.GetLastPhotos(user.Id, 0, 10).Select(PhotoViewModel.FromModel);
             return Json(lastTenPhotos);

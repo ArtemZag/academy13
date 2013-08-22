@@ -19,7 +19,7 @@
 
 <div class="to_top">
     <div class="to_top_opacity"></div>
-    <div class="to_top_panel" title="Up">
+    <div class="to_top_panel">
         <div class="to_top_button">
             <span class="arrow">↑ up</span>
         </div>  
@@ -38,7 +38,7 @@
         </form>
     </div>
         
-    <div class="row">
+    <div class="row" id="items">
         
         <div class="span7" data-bind="foreach: foundItems">
             
@@ -122,11 +122,11 @@
             
                 <div class="search-options-offset">
                     <label class="checkbox">
-                        <input type="checkbox" data-bind="checked: isSearchPhotosByTags"> <small>tags</small>
-                    </label>
-                
-                    <label class="checkbox">
                         <input type="checkbox" data-bind="checked: isSearchPhotosByDescription"> <small>description</small>
+                    </label>
+
+                    <label class="checkbox">
+                        <input type="checkbox" data-bind="checked: isSearchPhotosByTags"> <small>tags</small>
                     </label>
                 </div>
             
@@ -141,11 +141,11 @@
                     </label>
             
                     <label class="checkbox">
-                        <input type="checkbox" data-bind="checked: isSearchAlbumsByTags"> <small>tags</small>
-                    </label>
-                
-                    <label class="checkbox">
                         <input type="checkbox" data-bind="checked: isSearchAlbumsByDescription"> <small>description</small>
+                    </label>
+
+                    <label class="checkbox">
+                        <input type="checkbox" data-bind="checked: isSearchAlbumsByTags"> <small>tags</small>
                     </label>
                 </div>
             

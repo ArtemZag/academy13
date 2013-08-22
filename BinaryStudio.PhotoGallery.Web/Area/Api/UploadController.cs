@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [Authorize]
     [RoutePrefix("api/upload")]
-    public class UploadController : ApiController
+    public class UploadController : BaseApiController
     {
         private readonly IAlbumService _albumService;
         private readonly ICryptoProvider _cryptoProvider;
@@ -65,7 +65,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                _photoService.DeletePhoto(User.Identity.Name, photoId);
+                _photoService.DeletePhoto(User.Id, photoId);
             }
             catch (NoEnoughPrivilegesException ex)
             {
@@ -76,7 +76,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            return new HttpResponseMessage(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [POST("move")]
@@ -91,27 +91,25 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                int userId = _userService.GetUserId(User.Identity.Name);
-
                 int albumId = 0;
 
                 try
                 {
-                    albumId = _albumService.GetAlbumId(userId, viewModel.AlbumName);
+                    albumId = _albumService.GetAlbumId(User.Id, viewModel.AlbumName);
                 }
                 catch (AlbumNotFoundException)
                 {
-                    albumId = _albumService.CreateAlbum(userId, viewModel.AlbumName).Id;
+                    albumId = _albumService.CreateAlbum(User.Id, viewModel.AlbumName).Id;
                 }
 
                 // Get temporary album Id
-                int tempAlbumId = _albumService.GetAlbumId(userId, "Temporary");
+                int tempAlbumId = _albumService.GetAlbumId(User.Id, "Temporary");
 
                 // Get path to the temporary album folder
-                string pathToTempAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(userId, tempAlbumId);
+                string pathToTempAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(User.Id, tempAlbumId);
 
                 // Get path to the destination album folder
-                string pathToDestAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(userId, albumId);
+                string pathToDestAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(User.Id, albumId);
 
                 if (!_directoryWrapper.Exists(pathToDestAlbum))
                 {
@@ -120,7 +118,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 foreach (int photoId in viewModel.PhotosId)
                 {
-                    PhotoModel photoModel = _photoService.GetPhoto(userId, photoId);
+                    PhotoModel photoModel = _photoService.GetPhoto(User.Id, photoId);
 
                     string fileInTempAlbum = string.Format("{0}\\{1}.{2}", pathToTempAlbum, photoModel.Id,
                         photoModel.Format);
@@ -174,16 +172,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            var responseData = new ObjectContent<IEnumerable<UploadResultViewModel>>
-                (uploadFileInfos, new JsonMediaTypeFormatter());
-
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = responseData
-            };
-
-            return response;
+            return Request.CreateResponse(HttpStatusCode.OK, uploadFileInfos, new JsonMediaTypeFormatter());
         }
 
         [POST("")]
@@ -296,16 +285,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            var responseData = new ObjectContent<IList<UploadResultViewModel>>
-                (uploadFileInfos, new JsonMediaTypeFormatter());
-
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = responseData
-            };
-
-            return response;
+            return Request.CreateResponse(HttpStatusCode.OK, uploadFileInfos, new JsonMediaTypeFormatter());
         }
     }
 }

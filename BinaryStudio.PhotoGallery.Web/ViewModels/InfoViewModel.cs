@@ -5,7 +5,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
     public class InfoViewModel
     {
-        public string UserEmail { get; set; }
+        public int UserId { get; set; }
         public List<PhotoViewModel> Photos { get; set; }
     }
 }

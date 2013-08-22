@@ -126,34 +126,41 @@
     var viewModel = new searchViewModel();
     ko.applyBindings(viewModel);
 
+    // is request
+    var busy = false;
+
     function sendSearchRequest() {
 
         $("#loader").show();
 
-        $.get("api/search", JSON.parse(ko.toJSON(viewModel)), function(searchResult) {
+        $.get("api/search", JSON.parse(ko.toJSON(viewModel)))
+            .done(function(searchResult) {
 
-            viewModel.searchCacheToken = searchResult.SearchCacheToken;
+                viewModel.searchCacheToken = searchResult.SearchCacheToken;
 
-            addResultItems(searchResult.Items);
-            resizeImages();
+                addResultItems(searchResult.Items);
+                resizeImages();
 
-            $("#loader").hide();
+                $("#loader").hide();
+                busy = false;
 
-            viewModel.incrementInterval();
-        });
+                viewModel.incrementInterval();
+            })
+            .fail(function() {
+
+                $("#loader").hide();
+                busy = false;
+            });
     }
 
     function addResultItems(items) {
 
-        // todo 
-        if (items.length != 0) {
-            $.each(items, function(index, value) {
+        $.each(items, function(index, value) {
 
-                formatFields(value);
+            formatFields(value);
 
-                viewModel.foundItems.push(value);
-            });
-        }
+            viewModel.foundItems.push(value);
+        });
     }
 
     // todo: delete
@@ -226,19 +233,18 @@
 
     $(window).scroll(function() {
 
-        var totalHeight, currentScroll, visibleHeight;
-
-        currentScroll = $(document).scrollTop();
-
-        totalHeight = document.body.offsetHeight;
-
-        visibleHeight = document.documentElement.clientHeight;
-
-        // scroll to bottom event
-        if (visibleHeight + currentScroll >= totalHeight) {
+        if (!busy) {
+            busy = true;
+            var scrHeight = $(window).height();
+            var underScroll = $(this).scrollTop();
+            var divHeight = $("#items").height();
             
-            if (viewModel.searchQuery()) {
+            var scrollPosition = scrHeight + underScroll;
+
+            if (divHeight - scrollPosition < 200 && viewModel.searchQuery()) {
                 sendSearchRequest();
+            } else {
+                busy = false;
             }
         }
     });

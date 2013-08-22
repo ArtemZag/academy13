@@ -8,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     [Authorize]
     [RoutePrefix("photo")]
-    public class PhotoController : Controller
+    public class PhotoController : BaseController
     {
         [POST("facebook/{photoId:int}")]
         public ActionResult FbSync(int photoId)
