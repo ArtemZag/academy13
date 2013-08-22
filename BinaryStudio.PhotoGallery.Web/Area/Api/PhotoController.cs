@@ -26,8 +26,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _photoService = photoService;
         }
 
-        [GET("album?{skip:int}&{take:int}&{albumId:int}")]
-        public HttpResponseMessage GetPhotos(int skip, int take, int albumId)
+        [GET("?{albumId:int}&{skip:int}&{take:int}")]
+        public HttpResponseMessage GetPhotos(int albumId, int skip, int take)
         {
             try
             {
