@@ -63,12 +63,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("user")]
         public ActionResult GetUserInfo()
         {
-            string email = User.Identity.Name;
-            UserModel user = _userService.GetUser(email);
-            int userId = user.Id;
+            UserModel user = _userService.GetUser(User.Id);
+
             string fullname = string.Format("{0} {1}", user.FirstName, user.LastName);
 
-            DateTime lastDate = _photoService.LastPhotoAdded(userId);
+            DateTime lastDate = _photoService.LastPhotoAdded(User.Id);
 
             string lastAdded = string.Format("{0}:{1}:{2} {3}.{4}.{5}",
                 lastDate.Hour,
@@ -78,12 +77,12 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 lastDate.Month,
                 lastDate.Year);
 
-            return Json(new UserInfoViewModel(_albumService.AlbumsCount(user.Id).ToString(),
-                _photoService.PhotoCount(user.Id).ToString(),
+            return Json(new UserInfoViewModel(_albumService.AlbumsCount(User.Id).ToString(),
+                _photoService.PhotoCount(User.Id).ToString(),
                 fullname,
                 lastAdded, user.IsAdmin ? "admin" : "simple user",
                 user.Department,
-                (new AsyncPhotoProcessor(userId, 0, 64, _pathUtil)).GetUserAvatar()), JsonRequestBehavior.AllowGet);
+                (new AsyncPhotoProcessor(User.Id, 0, 64, _pathUtil)).GetUserAvatar()), JsonRequestBehavior.AllowGet);
         }
     }
 }
