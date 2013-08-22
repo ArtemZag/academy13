@@ -239,11 +239,12 @@
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="Area\Api\BaseApiController.cs" />
+    <Compile Include="Events\NotificationsEventManager.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Infrastructure\CustomPrincipal\BaseViewPage.cs" />
     <Compile Include="Infrastructure\CustomPrincipal\CustomPrincipal.cs" />
     <Compile Include="Infrastructure\CustomPrincipal\ICustomPrincipal.cs" />
-    <Compile Include="Events\GlobalEventManager.cs" />
+
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -441,6 +442,7 @@
     <Content Include="Views\Albums\Index.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
+    <Content Include="Views\Shared\AccessDenied.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -13,5 +13,12 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 		    Response.StatusCode = 404;
             return View();
         }
+
+	    [GET("accessdenied")]
+	    public ActionResult AccessDenied()
+	    {
+	        Response.StatusCode = 403;
+	        return View();
+	    }
     }
 }

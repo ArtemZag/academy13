@@ -56,6 +56,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         PhotoModel GetPhoto(int userId, int photoId);
 
+        // For server side use, not for user access
+        PhotoModel GetPhotoWithoutRightsCheck(int photoId);
+
 
         /// <summary>
         ///     Gets all likes for photoModel

@@ -18,21 +18,24 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         public string description { get; set; }
         public DateTime dateOfCreation { get; set; }
         public IEnumerable<AlbumTagModel> albumTags { get; set; }
+        public IList<PhotoViewModel> Photos { get; set; }
 
         public static AlbumViewModel FromModel(AlbumModel model)
         {
             IUnityContainer container = Bootstrapper.Initialise();
             var pathUtil = container.Resolve<IPathUtil>();
-            var processor = new AsyncPhotoProcessor(model.OwnerId, model.Id, 64, pathUtil);
-            processor.SyncOriginalAndThumbnailImages();
+            //todo shall fix this. Exception throwns when i try to open oan album page /album/{id}
+            //var processor = new AsyncPhotoProcessor(model.OwnerId, model.Id, 64, pathUtil);
+            //processor.SyncOriginalAndThumbnailImages();
             return new AlbumViewModel()
                 {
-                    collageSource = processor.CreateCollageIfNotExist(256,3),
+                    //collageSource = processor.CreateCollageIfNotExist(256,3),
                     albumName = model.Name,
                     description = model.Description,
                     dateOfCreation = model.DateOfCreation,
                     ownerId = model.OwnerId,
-                    id = model.Id
+                    id = model.Id,
+                    Photos = new List<PhotoViewModel>()
                 };
         }
     }

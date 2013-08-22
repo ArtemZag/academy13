@@ -18,43 +18,12 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
         public HashSet<string> ConnectionIds { get; set; }
     }
 
-
-    public interface INotificationsHub
-    {
-        void CreateNotification(string title, string text, string url);
-    }
-
     [Authorize]
     [HubName("NotificationsHub")]
-    public class NotificationsHub : Hub, INotificationsHub
+    public class NotificationsHub : Hub
     {
         private static readonly ConcurrentDictionary<string, User> Users
         = new ConcurrentDictionary<string, User>();
-
-        private readonly IPhotoService _photoService;
-        private readonly IUserService _userService;
-
-        public NotificationsHub(){}
-
-        public NotificationsHub(IUserService userService, IPhotoService photoService)
-        {
-            _photoService = photoService;
-            _userService = userService;
-        }
-
-        public void PhotoAdded(string photoName)
-        {
-            User user;
-            Users.TryGetValue(Context.User.Identity.Name, out user);
-            var uModel = _userService.GetUser(Context.User.Identity.Name);
-
-            var message = "Пользователь " + uModel.FirstName+ " "+ uModel.LastName + " добавил фотографию " + photoName;
-            if (user != null)
-            {
-                Clients.All.broadcastNotification(NotificationTitles.PhotoAdded, message);
-            }
-
-        }
 
         public void CreateNotification(string title, string text, string url)
         {
