@@ -2,7 +2,6 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using BinaryStudio.PhotoGallery.Domain.Services;
 
 namespace BinaryStudio.PhotoGallery.Web.Filters
 {
@@ -24,9 +23,9 @@ namespace BinaryStudio.PhotoGallery.Web.Filters
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            var userService = httpContext.GetService(typeof (IUserService)) as IUserService;
+            var user = httpContext.User as CustomPrincipal;
 
-            return base.AuthorizeCore(httpContext);
+            return user != null && user.IsAdmin && user.Identity.IsAuthenticated;
         }
     }
 }
