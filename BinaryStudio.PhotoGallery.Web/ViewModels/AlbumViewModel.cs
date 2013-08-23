@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
+using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Web.ViewModels
@@ -20,11 +22,11 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 
         public DateTime DateOfCreation { get; set; }
 
-        public IEnumerable<AlbumTagModel> Tags { get; set; }
+        public List<AlbumTagModel> Tags { get; set; }
 
         public List<PhotoViewModel> Photos { get; set; }
 
-        public static AlbumViewModel FromModel(AlbumModel model, IPathUtil pathUtil)
+        public static AlbumViewModel FromModel(AlbumModel model, IPathUtil pathUtil, IAlbumTagService albumTagService)
         {
             // todo: use pathUtil
 
@@ -40,7 +42,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
                 DateOfCreation = model.DateOfCreation,
                 OwnerId = model.OwnerId,
                 Id = model.Id,
-                Tags = model.Tags,
+                Tags = new List<AlbumTagModel>(),
                 Photos = new List<PhotoViewModel>(),
             };
         }

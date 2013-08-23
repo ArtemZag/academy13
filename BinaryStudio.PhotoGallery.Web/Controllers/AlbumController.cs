@@ -13,18 +13,20 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 	{
 	    private readonly IAlbumService albumService;
         private readonly IPathUtil pathUtil;
+        private readonly IAlbumTagService albumTagService;
 
-        public AlbumController(IAlbumService albumService, IPathUtil pathUtil)
+        public AlbumController(IAlbumService albumService, IPathUtil pathUtil, IAlbumTagService albumTagService)
         {
             this.albumService = albumService;
             this.pathUtil = pathUtil;
+            this.albumTagService = albumTagService;
         }
 
 		[GET("{albumId}")]
         public ActionResult Index(int albumId)
 		{
 		    var mAlbum = albumService.GetAlbum(albumId);
-            return View("Index", AlbumViewModel.FromModel(mAlbum, pathUtil));
+            return View("Index", AlbumViewModel.FromModel(mAlbum, pathUtil, albumTagService));
         }
     }
 }

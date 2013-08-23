@@ -29,16 +29,15 @@
 <div class="cont">
     
     <div class="sidebar">
-        <div class="title">@Html.DisplayFor(model => model.AlbumName)</div>
+        <div class="title editable" contenteditable="true">@Html.DisplayFor(model => model.AlbumName)</div>
         <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>
+        <div class="title">Description</div>
+        <div class="prop editable" contenteditable="true">@Html.DisplayFor(model => model.Description)</div>
         <div class="title" contenteditable="true">Tags</div>
-        <div class="photos-count">
-            @foreach (AlbumTagModel tag in Model.Tags)
-            {
-            }
-                @Html.Display("tag, tag1, tag2, tag3")
-
+        <div class="prop editable" contenteditable="true">
+            tag, tag 2, other tag, looong  tag, some tag, your tag, my tag, tag-tag
         </div>
+        <div class="title">Rights</div>
     </div>
 
     <div class="grid">

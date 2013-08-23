@@ -285,6 +285,22 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 currentUser = unitOfWork.Users.Find(x => x.LastName == "Golovin");
 
+                var tags = new Collection<AlbumTagModel>
+                {
+                    new AlbumTagModel
+                    {
+                        TagName = "tag"
+                    },
+                    new AlbumTagModel
+                    {
+                        TagName = "tag1"
+                    },
+                    new AlbumTagModel
+                    {
+                        TagName = "looooooooooooooooooong tag"
+                    }
+                };
+
                 var albumForGolovin = new AlbumModel
                 {
                     Name = "Anton album",
@@ -292,7 +308,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     IsDeleted = false,
                     Permissions = 11111,
                     OwnerId = currentUser.Id,
-                    Tags = new Collection<AlbumTagModel>(),
+                    Tags = tags,
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 };
