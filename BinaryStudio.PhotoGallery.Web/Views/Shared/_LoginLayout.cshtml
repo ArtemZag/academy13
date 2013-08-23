@@ -15,6 +15,7 @@
         @Styles.Render("~/bundles/styles/bootstrap")
         @Styles.Render("~/bundles/styles/opentip")
         @Styles.Render("~/Content/auth-page.css")
+        @Styles.Render("~/Content/verticalResizer.css")
         
         
         @Scripts.Render("~/bundles/scripts/jquery")
@@ -44,15 +45,106 @@
                     <div class="photoContainer">
                         <img src='/data/photos/3/10/thumbnails/32.jpg'/>
                     </div>
-
-                    @RenderBody()     
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/33.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/34.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/35.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/36.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/37.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/38.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/39.jpg'/>
+                    </div>
+                     <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/40.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/41.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/42.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/43.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/44.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/45.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/46.jpg'/>
+                    </div>
+    
                 </div>
             </div>
         </div>
+        @RenderBody() 
     </body>
 </html>
 <script type="text/javascript">
-    $(document).ready(function () {
-        verticalResizer_Module();
+    $("#wrapper").css("height", $(window).height() - 15);
+
+    $(window).on('resize', function () {
+        $("#wrapper").css("height", $(window).height() - 15);
     });
+
+    $('#myGallery').rtg({
+        imageWidth: 315,
+        spacing: 10,
+        categories: false,
+        lightbox: false,
+        center: false,
+    });
+    var didit = false;
+    var done = false;
+    setTimeout(function () {
+        var bWidth = $('.rtg-images').width();
+        var resizeStep = function () {
+
+            if (bWidth != $('.rtg-images').width()) {
+                didit = true;
+                $('#steps > p').html('<span class="step">Step 2:</span> Awesome. Now click a category and watch it sort!');
+                $('.rtg-categories > li > a').on('click', function (e) {
+                    if (!done) {
+                        $('#steps > p').html('<span class="step">Step 3:</span> This is an easy one. Click an image!');
+                    }
+
+                    $('#myGallery img').on('click', function (e) {
+                        $('#steps > p').html('<span class="step">Great Job. <a href="http://codecanyon.net/item/responsive-tile-gallery/3290154">Check out Responsive Tile Gallery on CodeCanyon!</a></span>');
+                        done = true;
+                    });
+                });
+            } else {
+                if (didit !== true) {
+                    $('#steps > p').html('<span class="step">Still Step 1:</span> Resize the width a little more. Trust me...');
+                }
+            }
+            bWidth = $('.rtg-images').width();
+        };
+        var stepTimer;
+        $(window).resize(function () {
+            if (didit === false) {
+                clearTimeout(stepTimer);
+                stepTimer = setTimeout(resizeStep, 200);
+            }
+        });
+    }, 1000);
+
+
+    //$(document).ready(function () {
+    //    verticalResizer_Module();
+    //});
 </script>

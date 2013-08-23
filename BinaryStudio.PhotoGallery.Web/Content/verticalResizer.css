@@ -1,0 +1,86 @@
+﻿
+		body{
+			overflow-y:hidden;
+			overflow-x:hidden;
+			/*margin: 8px !important;*/
+		}
+		
+		#wrapper {
+			overflow-y:hidden;
+			overflow-x:hidden;
+		}
+
+/*Start theme customizatoin*/
+.photoContainer {
+	box-shadow: 2px 1px 3px gray;
+	overflow: hidden;
+	/*border: 5px solid #fff;*/
+	border-radius: 5px;
+}
+.rtg-current-category {
+    /*Color for the current category*/
+    background-color:#777 !important;
+    /*Fort for the current category*/
+    color:red;
+}
+
+.rtg-categories > li > a {
+    /*Color for the categories*/
+    background-color:#1c9bd7;
+    /*Font color for the categories*/
+    color:white;
+}
+
+/*End of theme customization*/
+
+/*Category style*/
+.rtg-categories {
+    padding: 10px 0 0 0;
+    list-style-type:none;
+}
+.rtg-categories > li {
+    display:inline-block;
+    height:30px;
+    margin-right:10px;
+}
+.rtg-categories > li > a {
+    padding:3px 7px;
+    text-decoration:none;
+    font-family:arial, sans-serif;
+    font-weight:300;
+    font-size:13px;
+    letter-spacing:1px;
+}
+
+/*Image style*/
+.rtg-images {
+    position:relative;
+}
+.rtg-images > div {
+    width:100%;
+    height:565px;
+    position:absolute;
+    /*top:0px;
+    left:0px;*/
+    visibility:hidden;
+}
+.rtg-images > div > span {
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:565px;
+	background-color:black;
+	z-index:2;
+	opacity:1;
+	background-image:url('../images/plus.png');
+	background-repeat:no-repeat;
+	background-position:center; 
+
+}
+.rtg-images > div > a > img {
+    border:none;
+    opacity:1;
+    position:absolute;
+    z-index:3;
+}

@@ -1,4 +1,4 @@
-﻿var verticalResizer_Module = (function () {
+﻿(function ($) {
     $.fn.rtg = function (userOptions) {
         rtg.options = $.extend(true, {}, rtg.defaults, userOptions);
         rtg.el = $(this);
@@ -30,7 +30,7 @@
         }
     };
     rtg.loading = {
-        image: $("<img src='images/loading.gif'/>"), start: function () {
+        image: $("<img src='/Content/images/loading_green.gif'/>"), start: function () {
             this.image.css({ 'position': 'absolute', 'top': 150, 'left': (rtg.el.width() - this.image.width()) / 2 });
             rtg.el.prepend(this.image);
         }, stop: function () {
@@ -138,4 +138,4 @@
         }
         return min;
     };
-});
+}(jQuery));
