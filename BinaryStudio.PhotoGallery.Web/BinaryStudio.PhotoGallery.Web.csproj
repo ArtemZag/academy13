@@ -304,6 +304,8 @@
     <Content Include="Content\notfound-page.css" />
     <Content Include="Content\search.css" />
     <Content Include="Content\style-libs\chosen.css" />
+    <Content Include="Content\verticalResizer.css" />
+    <Content Include="Scripts\Account\initVertResizer.js" />
     <Content Include="Scripts\AdminPanel\AdminPage.js" />
     <Content Include="Scripts\Account\signup.validate.js" />
     <Content Include="Scripts\Account\signup.js" />

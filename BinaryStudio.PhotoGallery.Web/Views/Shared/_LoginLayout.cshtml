@@ -21,9 +21,15 @@
         @Scripts.Render("~/bundles/scripts/jquery")
         @Scripts.Render("~/bundles/scripts/jquery.validate")
         @Scripts.Render("~/bundles/scripts/opentip")
+        @Scripts.Render("~/bundles/scripts/knockout")
+        @Scripts.Render("/Scripts/knockout.mapping-latest.js")
+        
         
         @Scripts.Render("~/Scripts/Helpers/animation.js")
         @Scripts.Render("~/Scripts/Helpers/verticalResizer_Module.js")
+        @Scripts.Render("~/Scripts/Account/initVertResizer.js")
+
+        
     </head>
     <body>
         <div id="full-screen-shadow"></div>
@@ -94,57 +100,3 @@
         @RenderBody() 
     </body>
 </html>
-<script type="text/javascript">
-    $("#wrapper").css("height", $(window).height() - 15);
-
-    $(window).on('resize', function () {
-        $("#wrapper").css("height", $(window).height() - 15);
-    });
-
-    $('#myGallery').rtg({
-        imageWidth: 315,
-        spacing: 10,
-        categories: false,
-        lightbox: false,
-        center: false,
-    });
-    var didit = false;
-    var done = false;
-    setTimeout(function () {
-        var bWidth = $('.rtg-images').width();
-        var resizeStep = function () {
-
-            if (bWidth != $('.rtg-images').width()) {
-                didit = true;
-                $('#steps > p').html('<span class="step">Step 2:</span> Awesome. Now click a category and watch it sort!');
-                $('.rtg-categories > li > a').on('click', function (e) {
-                    if (!done) {
-                        $('#steps > p').html('<span class="step">Step 3:</span> This is an easy one. Click an image!');
-                    }
-
-                    $('#myGallery img').on('click', function (e) {
-                        $('#steps > p').html('<span class="step">Great Job. <a href="http://codecanyon.net/item/responsive-tile-gallery/3290154">Check out Responsive Tile Gallery on CodeCanyon!</a></span>');
-                        done = true;
-                    });
-                });
-            } else {
-                if (didit !== true) {
-                    $('#steps > p').html('<span class="step">Still Step 1:</span> Resize the width a little more. Trust me...');
-                }
-            }
-            bWidth = $('.rtg-images').width();
-        };
-        var stepTimer;
-        $(window).resize(function () {
-            if (didit === false) {
-                clearTimeout(stepTimer);
-                stepTimer = setTimeout(resizeStep, 200);
-            }
-        });
-    }, 1000);
-
-
-    //$(document).ready(function () {
-    //    verticalResizer_Module();
-    //});
-</script>
