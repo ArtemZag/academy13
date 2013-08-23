@@ -87,7 +87,7 @@
 
     <div id="activityBlock">
         
-       <span>Fresh photos from friends</span>
+        @*       <span>Fresh photos from friends</span>
         <div id="friendPhotos">
 
             <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/0.jpg"/>
@@ -102,26 +102,16 @@
             <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/9.jpg"/>
 
 
-        </div>
+        </div>*@
 
         <span>Photos by tags</span>
-        <div id="tagPhotos">
+        <div id="tagPhotos" data-bind="foreach: PhotosByTags">
+            <div class="tagPhoto">
+                <a href="" data-bind="attr: { href: linkAway }">
+                    <img src="" data-bind="attr: { src: src }"/>
+                </a>
+            </div>
 
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/10.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/11.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/12.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/13.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/14.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/15.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/16.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/17.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/18.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/19.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/20.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/21.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/22.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/23.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/24.jpg"/>
 
 
         </div>

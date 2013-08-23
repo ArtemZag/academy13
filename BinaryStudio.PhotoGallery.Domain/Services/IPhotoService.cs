@@ -45,6 +45,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="takeCount">Ending of the interval.</param>
         IEnumerable<PhotoModel> GetPhotos(int userId, int skipCount, int takeCount);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="photoId"></param>
+        /// <param name="skipCount"></param>
+        /// <param name="takeCount"></param>
+        /// <returns></returns>
+        IEnumerable<PhotoModel> GetPhotosByTags(int userId, int photoId, int skipCount, int takeCount);
+
         PhotoModel GetPhoto(int userId, int photoId);
 
         // For server side use, not for user access

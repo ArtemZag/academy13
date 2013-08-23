@@ -146,5 +146,25 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [GET("{photoId}/photoByTags")]
+        public HttpResponseMessage GetPhotosByTags(int photoId)
+        {
+            try
+            {
+                List<PhotoViewModel> photosByTags = _photoService.GetPhotosByTags(User.Id, photoId, 0, 10).Select(PhotoViewModel.FromModel).ToList();
+
+                return Request.CreateResponse(HttpStatusCode.OK, photosByTags, new JsonMediaTypeFormatter());
+            }
+            catch (NoEnoughPrivilegesException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+        
     }
 }

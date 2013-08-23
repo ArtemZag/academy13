@@ -145,6 +145,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+
         public IEnumerable<PhotoModel> GetPhotos(int userId, int skipCount, int takeCount)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -157,6 +158,34 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     .Skip(skipCount)
                     .Take(takeCount)
                     .ToList();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="photoId"></param>
+        /// <param name="skipCount"></param>
+        /// <param name="takeCount"></param>
+        /// <returns></returns>
+        /// todo: Needs realization
+        public IEnumerable<PhotoModel> GetPhotosByTags(int userId, int photoId, int skipCount, int takeCount)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userId, unitOfWork);
+                var photo = GetPhoto(userId, photoId);
+
+                foreach(var photoTag in photo.PhotoTags)
+                { 
+                    
+                }
+
+
+
+
+                return null;
             }
         }
 
