@@ -375,7 +375,7 @@ namespace BinaryStudio.PhotoGallery.Database
                         Description = "test photo",
                         OwnerId = albumModel.OwnerId,
                         AlbumId = albumModel.Id,
-                        Likes = new Collection<UserModel>(),
+                        Likes = new Collection<int>(),
                         Rating = 0,
                         PhotoTags = tags,
                         PhotoComments = comm,
