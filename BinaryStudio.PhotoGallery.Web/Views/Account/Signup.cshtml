@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.Extensions
 @model BinaryStudio.PhotoGallery.Web.ViewModels.Authorization.SignupViewModel
 
 @{
@@ -12,7 +13,7 @@
 </div>
 
 <div class="login-panel">
-    <img src="~/Content/images/logo_big.png"/>
+    @Html.Image(Url.Content("~/Content/images/logo_big.png"))
     <div class="well">          
         <form class="control-group form-horizontal pagination-centered" autocomplete="off">
             <input type="email" id="Email" name="Email" class="input-block-level" maxlength="255" placeholder="E-mail address" value="@Model.Email" readonly=""/>
