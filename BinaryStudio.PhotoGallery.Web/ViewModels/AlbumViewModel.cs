@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using BinaryStudio.PhotoGallery.Core.PathUtils;
-using BinaryStudio.PhotoGallery.Core.PhotoUtils;
-using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 
 namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
@@ -15,7 +12,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 
         public int Id { get; set; }
 
-        public string collageSource { get; set; }
+        public string CollageSource { get; set; }
 
         public string AlbumName { get; set; }
 
@@ -44,7 +41,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         public static AlbumViewModel FromModel(AlbumModel model, IResizePhotoService service)
         {
             var result = FromModel(model);
-            result.collageSource = service.GetCollage(model.OwnerId, model.Id, 256, 64, 3);
+            result.CollageSource = service.GetCollage(model.OwnerId, model.Id, 256, 64, 3);
             return result;
         }
     }

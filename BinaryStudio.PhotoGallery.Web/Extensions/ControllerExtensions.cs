@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using BinaryStudio.PhotoGallery.Web.Controllers;
 
-namespace BinaryStudio.PhotoGallery.Web.Infrastructure.Extensions
+namespace BinaryStudio.PhotoGallery.Web.Extensions
 {
     public static class ControllerExtensions
     {

@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 
-namespace BinaryStudio.PhotoGallery.Web
+namespace BinaryStudio.PhotoGallery.Web.CustomStructure
 {
     internal interface ICustomPrincipal : IPrincipal
     {

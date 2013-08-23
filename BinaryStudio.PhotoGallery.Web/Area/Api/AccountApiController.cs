@@ -10,16 +10,17 @@ using AttributeRouting.Web.Http;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.CustomStructure;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [RoutePrefix("api")]
-    public class AccountController : BaseApiController
+    public class AccountApiController : BaseApiController
     {
         private readonly IUserService _userService;
 
-        public AccountController(IUserService userService)
+        public AccountApiController(IUserService userService)
         {
             _userService = userService;
         }

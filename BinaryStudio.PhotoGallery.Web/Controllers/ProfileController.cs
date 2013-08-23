@@ -3,7 +3,7 @@ using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
-using BinaryStudio.PhotoGallery.Web.Infrastructure.Extensions;
+using BinaryStudio.PhotoGallery.Web.Extensions;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {

@@ -2,7 +2,7 @@
 using BinaryStudio.PhotoGallery.Models;
 using Microsoft.Practices.Unity;
 
-namespace BinaryStudio.PhotoGallery.Web.ViewModels
+namespace BinaryStudio.PhotoGallery.Web.ViewModels.Photo
 {
     public class PhotoViewModel
     {

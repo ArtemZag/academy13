@@ -11,11 +11,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [Authorize]
     [RoutePrefix("api/album")]
-    public class AlbumController : BaseApiController
+    public class AlbumApiController : BaseApiController
     {
         private readonly IAlbumService _albumService;
 
-        public AlbumController(IAlbumService albumService)
+        public AlbumApiController(IAlbumService albumService)
         {
             _albumService = albumService;
         }
@@ -44,9 +44,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [GET("all/name")]
         public IEnumerable<string> GetAllNames()
         {
-            return _albumService.GetAllAlbums(User.Id)
+            return _albumService
+                .GetAllAlbums(User.Id)
                 .Where(album => album.Name != "Temporary")
-                .Select(album => album.Name);
+                .Select(album => album.Name)
+                .ToList();
         }
     }
 }

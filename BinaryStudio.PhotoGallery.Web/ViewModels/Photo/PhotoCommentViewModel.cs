@@ -1,7 +1,7 @@
 ﻿using System;
 using BinaryStudio.PhotoGallery.Models;
 
-namespace BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage
+namespace BinaryStudio.PhotoGallery.Web.ViewModels.Photo
 {
     public class PhotoCommentViewModel
     {

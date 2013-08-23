@@ -13,27 +13,27 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [Authorize]
     [RoutePrefix("api/search")]
-    public class SearchController : BaseApiController
+    public class SearchApiController : BaseApiController
     {
-        private readonly ISearchModelConverter searchModelConverter;
-        private readonly ISearchService searchService;
+        private readonly ISearchModelConverter _searchModelConverter;
+        private readonly ISearchService _searchService;
 
-        public SearchController(ISearchService searchService, ISearchModelConverter searchModelConverter)
+        public SearchApiController(ISearchService searchService, ISearchModelConverter searchModelConverter)
         {
-            this.searchService = searchService;
-            this.searchModelConverter = searchModelConverter;
+            _searchService = searchService;
+            _searchModelConverter = searchModelConverter;
         }
 
         [GET("")]
         public HttpResponseMessage GetSearch([FromUri] SearchViewModel searchViewModel)
         {
-            SearchArguments searchArguments = searchModelConverter.GetModel(searchViewModel, User.Id);
+            SearchArguments searchArguments = _searchModelConverter.GetModel(searchViewModel, User.Id);
 
-            SearchResult result = searchService.Search(searchArguments);
+            SearchResult result = _searchService.Search(searchArguments);
 
             var resultViewModel = new SearchResultViewModel
             {
-                Items = result.Value.Select(found => searchModelConverter.GetViewModel(found)),
+                Items = result.Value.Select(found => _searchModelConverter.GetViewModel(found)),
                 SearchCacheToken = result.SearchCacheToken
             };
 
