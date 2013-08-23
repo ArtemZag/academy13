@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 
         public DateTime DateOfCreation { get; set; }
 
-        public List<AlbumTagModel> Tags { get; set; }
+        public IEnumerable<AlbumTagModel> Tags { get; set; }
 
         public List<PhotoViewModel> Photos { get; set; }
 
@@ -42,7 +42,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
                 DateOfCreation = model.DateOfCreation,
                 OwnerId = model.OwnerId,
                 Id = model.Id,
-                Tags = new List<AlbumTagModel>(),
                 Photos = new List<PhotoViewModel>(),
             };
         }
