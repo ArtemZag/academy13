@@ -29,20 +29,16 @@
         @Scripts.Render("~/Scripts/Helpers/verticalResizer_Module.js")
         @Scripts.Render("~/Scripts/Account/initVertResizer.js")
 
-        
     </head>
     <body>
         <div id="full-screen-shadow"></div>
         <div id="wrapper">
             <div id='myGallery' class='rtg-gallery'>
-                <div class='rtg-images'>
-                    @*	                @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it))
-                    {
-                        <div class="photoContainer invisible">
-                            <img @photos.Bind.Attr("src", photo => photo.PhotoSource)/>
-                        </div>
-                    }*@
-                    <div class="photoContainer">
+                <div class='rtg-images' data-bind="foreach: RandomPhotos">
+                    <div class="photoContainer invisible" >
+                        <img data-bind="attr: { src: PhotoThumbSource }"/>
+                    </div>
+                    @*<div class="photoContainer">
                         <img src='/data/photos/3/10/thumbnails/31.jpg'/>
                     </div>
                     <div class="photoContainer">
@@ -92,7 +88,7 @@
                     </div>
                     <div class="photoContainer">
                         <img src='/data/photos/3/10/thumbnails/46.jpg'/>
-                    </div>
+                    </div>*@
     
                 </div>
             </div>

@@ -1,4 +1,4 @@
-﻿(function ($) {
+﻿var verticalResizer_Module = function ($) {
     $.fn.rtg = function (userOptions) {
         rtg.options = $.extend(true, {}, rtg.defaults, userOptions);
         rtg.el = $(this);
@@ -138,4 +138,4 @@
         }
         return min;
     };
-}(jQuery));
+};
