@@ -244,7 +244,6 @@
     <Compile Include="Infrastructure\CustomPrincipal\BaseViewPage.cs" />
     <Compile Include="Infrastructure\CustomPrincipal\CustomPrincipal.cs" />
     <Compile Include="Infrastructure\CustomPrincipal\ICustomPrincipal.cs" />
-
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -310,6 +309,7 @@
     <Content Include="Scripts\Account\signup.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
+    <Content Include="Scripts\Helpers\verticalResizer_Module.js" />
     <Content Include="Scripts\jquery.pnotify.js" />
     <Content Include="Scripts\jquery.pnotify.min.js" />
     <Content Include="Scripts\jquery.signalR-1.1.3.js" />

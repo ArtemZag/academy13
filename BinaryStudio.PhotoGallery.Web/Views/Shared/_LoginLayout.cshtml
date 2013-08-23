@@ -1,4 +1,11 @@
 ﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.ViewModels
+@using PerpetuumSoft.Knockout
+@*@model List<PhotoViewModel>*@
+
+@*@{
+    KnockoutContext<List<PhotoViewModel>> ko = Html.CreateKnockoutContext();    
+}*@
 
 <!DOCTYPE html>
 <html>
@@ -15,9 +22,37 @@
         @Scripts.Render("~/bundles/scripts/opentip")
         
         @Scripts.Render("~/Scripts/Helpers/animation.js")
+        @Scripts.Render("~/Scripts/Helpers/verticalResizer_Module.js")
     </head>
     <body>
         <div id="full-screen-shadow"></div>
-        @RenderBody()
+        <div id="wrapper">
+            <div id='myGallery' class='rtg-gallery'>
+                <div class='rtg-images'>
+                    @*	                @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it))
+                    {
+                        <div class="photoContainer invisible">
+                            <img @photos.Bind.Attr("src", photo => photo.PhotoSource)/>
+                        </div>
+                    }*@
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/31.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/30.jpg'/>
+                    </div>
+                    <div class="photoContainer">
+                        <img src='/data/photos/3/10/thumbnails/32.jpg'/>
+                    </div>
+
+                    @RenderBody()     
+                </div>
+            </div>
+        </div>
     </body>
 </html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        verticalResizer_Module();
+    });
+</script>
