@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
@@ -12,7 +13,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         // TODO Please, immediately refactor this service!
     {
         //todo Warning: dont use AvatarSize.Original
-        string GetUserAvatar(int userId, AvatarSize size);
+        string GetUserAvatar(int userId, ImageSize size);
 
         IEnumerable<string> GetUserAlbumThumbnails(int userId, int albumId);
 

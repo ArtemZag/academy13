@@ -21,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             _util = util;
         }
 
-        public string GetUserAvatar(int userId, AvatarSize size)
+        public string GetUserAvatar(int userId, ImageSize size)
         {
             using (var unit = WorkFactory.GetUnitOfWork())
             {

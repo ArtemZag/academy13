@@ -21,6 +21,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         private readonly IPathUtil util;
         private readonly object syncRoot;
         private readonly int maxHeight;
+
         private readonly int userId;
         private readonly int albumId;
         
@@ -62,7 +63,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         public void SyncOriginalAndThumbnailImages(IEnumerable<PhotoModel> models)
         {
             var modified = false;
-            var pathToThumb = util.BuildPathToUserAlbumThumbnailsFolderOnServer(userId, albumId, maxHeight);
+            var pathToThumb = util.BuildAbsoluteThumbnailsDirPath(userId, albumId, maxHeight);
             
             CreateDirectoriesIfNotExists(pathToThumb);
 
@@ -138,27 +139,32 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
-        public string GetUserAvatar(AvatarSize size)
+        public string GetUserAvatar(ImageSize size)
         {
-            var info = new FileInfo(util.BuildPathToUserAvatarOnServer(userId, size));
+            var info = new FileInfo(util.BuildAbsoluteAvatarPath(userId, size));
             if (info.Exists)
                 return util.GetEndUserReference(info.FullName);
 
-            var originalInfo = new FileInfo(util.BuildPathToUserAvatarOnServer(userId, AvatarSize.Original));
+            var originalInfo = new FileInfo(util.BuildAbsoluteAvatarPath(userId, ImageSize.Original));
             if (originalInfo.Exists)
             {
-                var tmpFile = Path.Combine(originalInfo.DirectoryName, util.MakeRandomFileName("jpg"));
+                var tmpFile = Path.Combine(originalInfo.DirectoryName, MakeRandomFileName("jpg"));
                 ThumbnailCreationAction(originalInfo.FullName, tmpFile, (int) size, true);
                 File.Move(tmpFile, info.FullName);
                 File.Delete(tmpFile);
                 return util.GetEndUserReference(info.FullName);
             }
-            return util.NoAvatar();
+            return util.CustomAvatarPath;
+        }
+
+        private string MakeRandomFileName(string ext)
+        {
+            return string.Format("{0}.{1}", Randomizer.GetString(10), ext);
         }
 
         private void DeleteCollages()
         {
-            string path = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
+            string path = util.BuildAbsoluteAlbumCollagesDirPath(userId, albumId);
 
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
@@ -166,7 +172,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public string CreateCollageIfNotExist(int width, int rows)
         {
-            string path = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
+            string path = util.BuildAbsoluteAlbumCollagesDirPath(userId, albumId);
 
             if (Directory.Exists(path))
             {
@@ -180,7 +186,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public IEnumerable<string> GetThumbnails()
         {
-            var fullPath = util.BuildPathToUserAlbumThumbnailsFolderOnServer(userId, albumId, maxHeight);
+            var fullPath = util.BuildAbsoluteThumbnailsDirPath(userId, albumId, maxHeight);
             
             if (Directory.Exists(fullPath))
                 return ImageFormatHelper.GetImages(fullPath);
@@ -220,7 +226,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         {
             var height = rows * maxHeight;
             var pathToCollage = util.CreatePathToCollage(userId, albumId);
-            var pathToCollages = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
+            var pathToCollages = util.BuildAbsoluteAlbumCollagesDirPath(userId, albumId);
 
             using (Image img = new Bitmap(width, height))
             {

@@ -64,7 +64,6 @@
     <Compile Include="DirectoryWrapperTests.cs" />
     <Compile Include="FileHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PhotoProcessorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
