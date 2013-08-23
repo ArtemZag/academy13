@@ -219,7 +219,7 @@ namespace BinaryStudio.PhotoGallery.Database
                         Permissions = 11111,
                         OwnerId = userModel.Id,
                         Photos = new Collection<PhotoModel>(),
-                        AlbumTags = new Collection<AlbumTagModel>(),
+                        Tags = new Collection<AlbumTagModel>(),
                         AvailableGroups = new Collection<AvailableGroupModel>()
                     });
                     unitOfWork.Users.Update(userModel);
@@ -251,7 +251,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     IsDeleted = false,
                     Permissions = 11111,
                     OwnerId = currentUser.Id,
-                    AlbumTags = new Collection<AlbumTagModel>(),
+                    Tags = new Collection<AlbumTagModel>(),
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 });
@@ -285,6 +285,22 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 currentUser = unitOfWork.Users.Find(x => x.LastName == "Golovin");
 
+                var tags = new Collection<AlbumTagModel>
+                {
+                    new AlbumTagModel
+                    {
+                        TagName = "tag"
+                    },
+                    new AlbumTagModel
+                    {
+                        TagName = "tag1"
+                    },
+                    new AlbumTagModel
+                    {
+                        TagName = "looooooooooooooooooong tag"
+                    }
+                };
+
                 var albumForGolovin = new AlbumModel
                 {
                     Name = "Anton album",
@@ -292,7 +308,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     IsDeleted = false,
                     Permissions = 11111,
                     OwnerId = currentUser.Id,
-                    AlbumTags = new Collection<AlbumTagModel>(),
+                    Tags = tags,
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 };

@@ -274,6 +274,7 @@
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\Photo\UserInfoViewModel.cs" />
     <Compile Include="ViewModels\ViewModelExtensions.cs" />
+    <Content Include="Content\album-page.css" />
     <Content Include="Content\profile-page.css" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\panel.css" />

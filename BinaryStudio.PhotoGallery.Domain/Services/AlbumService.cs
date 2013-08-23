@@ -24,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         Permissions = 11111,
                         Photos = new Collection<PhotoModel>(),
                         AvailableGroups = new Collection<AvailableGroupModel>(),
-                        AlbumTags = new Collection<AlbumTagModel>()
+                        Tags = new Collection<AlbumTagModel>()
                     }
                 #endregion
             };

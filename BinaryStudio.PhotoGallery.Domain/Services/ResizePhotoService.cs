@@ -7,10 +7,11 @@ using BinaryStudio.PhotoGallery.Domain.Exceptions;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    class ResizePhotoService : DbService, IResizePhotoService
+    internal class ResizePhotoService : DbService, IResizePhotoService
     {
         private readonly ISecureService _secureService;
         private readonly IPathUtil _util;
+
         public ResizePhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IPathUtil util)
             : base(workFactory)
         {
