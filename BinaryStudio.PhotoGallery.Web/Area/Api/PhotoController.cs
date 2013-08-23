@@ -75,13 +75,21 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 _photoService.AddLike(User.Id, photoId);
+
+                // COSTIL
+                List<PhotoLikeViewModel> photoLikeViewModels = _photoService
+                    .GetLikes(User.Id, photoId)
+                    .Select(PhotoLikeViewModel.FromModel)
+                    .ToList();
+                
+                return Request.CreateResponse(HttpStatusCode.OK, photoLikeViewModels, new JsonMediaTypeFormatter());
             }
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            return new HttpResponseMessage(HttpStatusCode.Created);
+            
         }
 
         [GET("all?{skip:int}&{take:int}")]
