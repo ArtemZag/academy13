@@ -13,7 +13,7 @@
     @using(Html.BeginForm("Edit", "Profile", FormMethod.Get))
     {
         <div class="span2">
-            <img src="~/Content/images/no_avatar.png" class="img-polaroid" id="user-photo">
+            <img src="@Model.PhotoUrl" class="img-polaroid" id="user-photo">
         </div>
         <div class="span3">
             @Html.LabelFor(x => x.FirstName, "First Name")

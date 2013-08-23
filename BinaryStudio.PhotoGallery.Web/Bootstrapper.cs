@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.Events;
-using BinaryStudio.PhotoGallery.Web.Hubs;
 using BinaryStudio.PhotoGallery.Web.Utils;
-using Microsoft.AspNet.SignalR;
 using Microsoft.Practices.Unity;
 using Unity.Mvc4;
 
@@ -15,6 +10,8 @@ namespace BinaryStudio.PhotoGallery.Web
 {
     public static class Bootstrapper
     {
+        private static IUnityContainer _container;
+
         public static IUnityContainer Initialise()
         {
             IUnityContainer container = BuildUnityContainer();
@@ -51,6 +48,15 @@ namespace BinaryStudio.PhotoGallery.Web
             
         }
 
+        public static T Resolve<T>()
+        {
+            return getContainer().Resolve<T>();
+        }
+
+        private static IUnityContainer getContainer()
+        {
+            return _container ?? (_container = Initialise());
+        }
     }
 
 }

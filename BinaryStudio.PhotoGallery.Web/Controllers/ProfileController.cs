@@ -18,18 +18,18 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             UserService = userService;
         }
 
-        [GET("")]
-        public ActionResult Index()
+        [GET("details")]
+        public ActionResult Index(int userId)
         {
-            var user = UserService.GetUser(User.Id);
-            return View(UserViewModel.ToViewModel(user));
+            var user = UserService.GetUser(userId);
+            return View(user.ToUserViewModel());
         }
         
         [GET("edit")]
         public ActionResult Edit()
         {
             var user = UserService.GetUser(User.Id);
-            return View(UserViewModel.ToViewModel(user));
+            return View(user.ToUserViewModel());
         }
 
         [POST("edit")]
@@ -39,12 +39,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             if(user == null)
             {
-                this.AddCriticalError(string.Format("User with email {0} was not found", User.Identity.Name));
+                this.AddCriticalError(string.Format("User with email {0} was not found", User.Email));
                 return View(userViewModel);
             }
 
             user.FirstName = userViewModel.FirstName;
             user.LastName = userViewModel.LastName;
+            user.Email = userViewModel.Email;
 
             UserService.Update(user);
 

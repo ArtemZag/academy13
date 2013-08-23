@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
-using BinaryStudio.PhotoGallery.Models;
-using Microsoft.Practices.Unity;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -22,13 +17,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             _secureService = secureService;
             _util = util;
         }
-        public string GetUserAvatar(int userId,AvatarSize size)
+        public string GetUserAvatar(int userId, AvatarSize size)
         {
             using (var unit = WorkFactory.GetUnitOfWork())
             {
                 if (unit.Users.Contains(user => user.Id == userId))
                 {
-                    var processor = new AsyncPhotoProcessor(userId,_util);
+                    var processor = new AsyncPhotoProcessor(userId);
                     return processor.GetUserAvatar(size);
                 }
                 throw new UserNotFoundException(

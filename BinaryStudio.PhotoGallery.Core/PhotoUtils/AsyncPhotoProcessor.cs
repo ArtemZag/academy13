@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 
@@ -50,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             syncRoot = new object();
         }
 
-        public AsyncPhotoProcessor(int userId, IPathUtil util)
+        public AsyncPhotoProcessor(int userId)
         {
             this.userId = userId;
             if (userId < 0)
@@ -73,7 +71,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                                      var pathToThumbnailOfImage =
                                          util.BuildPathToThumbnailFileOnServer(userId, albumId, maxHeight, path);
 
-                                     var changes = SyncCoupleFiles(path, pathToThumbnailOfImage, maxHeight);   
+                                     var changes = SyncCoupleFiles(path, pathToThumbnailOfImage);   
 
                                      lock (syncRoot)
                                          modified |= changes;
@@ -91,7 +89,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
-        private bool SyncCoupleFiles(string pathToOriginal, string pathToThumbnail, int maxSize,
+        private bool SyncCoupleFiles(string pathToOriginal, string pathToThumbnail,
                                      bool isCompressedByTwoBounds=false)
         {
             if (!File.Exists(pathToOriginal))
@@ -124,8 +122,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                 }
             }
         }
-
-      
 
         public string GetUserAvatar(AvatarSize size)
         {
