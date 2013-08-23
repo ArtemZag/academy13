@@ -12,7 +12,7 @@ using Microsoft.Practices.Unity;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    class ResizePhotoService : DbService, IResizePhotoService
+    internal class ResizePhotoService : DbService, IResizePhotoService
     {
         private readonly ISecureService _secureService;
         private readonly IPathUtil _util;
@@ -22,6 +22,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             _secureService = secureService;
             _util = util;
         }
+
+        private static bool GetPhotos(int userId,int albumId,PhotoModel model)
+        { return model.OwnerId == userId && model.AlbumId == albumId && !model.IsDeleted; }
+
         public string GetUserAvatar(int userId,AvatarSize size)
         {
             using (var unit = WorkFactory.GetUnitOfWork())
@@ -43,6 +47,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 if (_secureService.CanUserViewPhotos(userId, albumId))
                 {
                     var processor = new AsyncPhotoProcessor(userId, albumId, 64, _util);
+                    var photos = unit.Photos.Filter(photo => GetPhotos(userId, albumId, photo)).ToList();
+                    processor.SyncOriginalAndThumbnailImages(photos);
                     return processor.GetThumbnails();
                 }
              
@@ -59,7 +65,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 if (_secureService.CanUserViewPhotos(userId, albumId))
                 {
                     var processor = new AsyncPhotoProcessor(userId, albumId, heightOfOneLineInTheCollage, _util);
-                    processor.SyncOriginalAndThumbnailImages();
+                    var photos = unit.Photos.Filter(photo => GetPhotos(userId, albumId, photo)).ToList();
+                    processor.SyncOriginalAndThumbnailImages(photos);
                     return processor.CreateCollageIfNotExist(collageWidth, numberOfLines);
                 }
 
@@ -68,25 +75,27 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public string GetThumbnail(int userId, int albumId, string photoName, int maxHeight)
+        public IEnumerable<PhotoModel> GetAvailablePhotos(int userId, int albumId)
         {
             using (var unit = WorkFactory.GetUnitOfWork())
             {
                 if (_secureService.CanUserViewPhotos(userId, albumId))
-                {
-                    if (unit.Photos.Contains(model => model.Name == photoName))
-                    {
-                        var processor = new AsyncPhotoProcessor(userId, albumId, maxHeight, _util);
-                        processor.SyncOriginalAndThumbnailImages();
-                        return _util.BuildPathToThumbnailFileOnServer(userId, albumId, maxHeight, photoName);
-                    }
+                    return unit.Photos.Filter(photo => GetPhotos(userId, albumId, photo)).ToList();
 
-                    throw new Exception(string.Format("Photo with {0} in album {1} of user {2} not found",
-                                                      photoName, albumId, userId));
-                }
-                throw new NoEnoughPrivilegesException(
-                    string.Format("User with ID {0} dont have rights to access thumbnail", userId));
+                throw new AccessViolationException(
+                    string.Format("User with ID {0} dont have rights to access thumbnails", userId));
             }
+        }
+
+        public string GetThumbnail(int userId, int albumId, PhotoModel model, int maxHeight)
+        {
+            if (_secureService.CanUserViewPhotos(userId, albumId))
+            {
+                var processor = new AsyncPhotoProcessor(userId, albumId, maxHeight, _util);
+                return processor.CreateThumbnail(userId, albumId, model, maxHeight);
+            }
+            throw new AccessViolationException(
+                string.Format("User with ID {0} dont have rights to access thumbnail", userId));
         }
     }
 }

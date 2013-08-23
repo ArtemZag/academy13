@@ -43,6 +43,7 @@
     }
 
     function getInfo(inf) {
+        
         info.html(
             $("#userTmpl").render(inf));
     }

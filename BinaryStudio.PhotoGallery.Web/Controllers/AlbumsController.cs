@@ -20,17 +20,19 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         private readonly IPathUtil _pathUtil;
         private readonly IPhotoService _photoService;
         private readonly IUserService _userService;
-
+        private readonly IResizePhotoService _resizePhoto;
         public AlbumsController(
             IAlbumService albumService,
             IUserService userService,
             IPhotoService photoService,
-            IPathUtil pathUtil)
+            IPathUtil pathUtil,
+            IResizePhotoService resizePhoto)
         {
             _albumService = albumService;
             _userService = userService;
             _pathUtil = pathUtil;
             _photoService = photoService;
+            _resizePhoto = resizePhoto;
         }
 
         [GET("")]
@@ -75,12 +77,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 lastDate.Month,
                 lastDate.Year);
 
-            return Json(new UserInfoViewModel(_albumService.AlbumsCount(User.Id).ToString(),
-                _photoService.PhotoCount(User.Id).ToString(),
-                fullname,
-                lastAdded, user.IsAdmin ? "admin" : "simple user",
-                user.Department,
-                (new AsyncPhotoProcessor(User.Id, 0, 64, _pathUtil)).GetUserAvatar(AvatarSize.Medium)), JsonRequestBehavior.AllowGet);
+            var model = new UserInfoViewModel(_albumService.AlbumsCount(User.Id).ToString(),
+                                              _photoService.PhotoCount(User.Id).ToString(),
+                                              fullname,
+                                              lastAdded, user.IsAdmin ? "admin" : "simple user",
+                                              user.Department,
+                                              _resizePhoto.GetUserAvatar(user.Id, AvatarSize.Medium));
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
     }
 }

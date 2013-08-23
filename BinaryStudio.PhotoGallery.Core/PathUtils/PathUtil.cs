@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
@@ -180,25 +181,24 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return absolutePath.Remove(0, index - 1).Replace(@"\", "/");
         }
 
-        public string MakeFileNameWithExtension(string name)
+        public string MakeFileName(string name,string ext)
         {
-            return name + ".jpg";
+            return string.Format("{0}.{1}", name, ext);
         }
 
-        public string MakeRandomFileName()
+        public string MakeRandomFileName(string ext)
         {
-            return Randomizer.GetString(10) + ".jpg";
+            return string.Format("{0}.{1}", Randomizer.GetString(10), ext);
         }
 
-        public string BuildPathToOriginalFileOnServer(int userId, int albumId, string originalName)
+        public string BuildPathToOriginalFileOnServer(int userId, int albumId, PhotoModel model)
         {
-            return Path.Combine(usersFolder, userId.ToString(), albumId.ToString(), originalName);
+            return Path.Combine(usersFolder, userId.ToString(), albumId.ToString(), MakeFileName(model.Id.ToString(), model.Format));
         }
 
-        public string BuildPathToThumbnailFileOnServer(int userId, int albumId, int thumbnailsSize, string originalPath)
+        public string BuildPathToThumbnailFileOnServer(int userId, int albumId, int thumbnailsSize, PhotoModel model)
         {
-            return Path.Combine(usersFolder, userId.ToString(), albumId.ToString(), thumbnailsFolderName, thumbnailsSize.ToString(),
-                                MakeFileNameWithExtension(Path.GetFileNameWithoutExtension(originalPath)));
+            return Path.Combine(usersFolder, userId.ToString(), albumId.ToString(), thumbnailsFolderName, thumbnailsSize.ToString(), model.Id.ToString());
         }
 
         public string NoAvatar()
@@ -206,10 +206,10 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return noAvatarPath;
         }
 
-        public string MakePathToCollage(int userId, int albumId)
+        public string CreatePathToCollage(int userId, int albumId)
         {
             return Path.Combine(usersFolder, userId.ToString(), albumId.ToString(), collagesFolderName,
-                                MakeFileNameWithExtension(Randomizer.GetString(10)));
+                                MakeFileName(Randomizer.GetString(10),"jpg"));
         }
 
         private string GetDataDirectory()
