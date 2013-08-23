@@ -1,8 +1,7 @@
 ﻿@using System.Web.Optimization
-@using BinaryStudio.PhotoGallery.Models
 @using BinaryStudio.PhotoGallery.Web.ViewModels
 @using PerpetuumSoft.Knockout
-@model AlbumViewModel
+@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumViewModel
 
 <script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"> </script>
 <script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"> </script>
@@ -26,35 +25,35 @@
     </ul>
 </div>
 
-<div class="cont">
-    
-    <div class="sidebar">
-        <div class="title editable" contenteditable="true">@Html.DisplayFor(model => model.AlbumName)</div>
-        <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>
-        <div class="title">Description</div>
-        <div class="prop editable" contenteditable="true">@Html.DisplayFor(model => model.Description)</div>
-        <div class="title" contenteditable="true">Tags</div>
-        <div class="prop editable" contenteditable="true">
-            tag, tag 2, other tag, looong  tag, some tag, your tag, my tag, tag-tag
+<div class="container-fluid no-padding">
+    <div class="row-fluid">
+        <div class="span9">
+            <div id="photoWrapper">
+                @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it.Photos))
+                {
+                    <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
+                        <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
+                    </div>
+                }
+            </div>
         </div>
-        <div class="title">Rights</div>
-    </div>
-
-    <div class="grid">
-        <div id="photoWrapper">
-            @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it.Photos))
-            {
-                <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
-                    <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
+        <div class="span3 sidebar">
+                <div class="title editable" contenteditable="true">@Html.DisplayFor(model => model.AlbumName)</div>
+                <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>
+                <div class="title">Description</div>
+                <div class="prop editable" contenteditable="true">@Html.DisplayFor(model => model.Description)</div>
+                <div class="title" contenteditable="true">Tags</div>
+                <div class="prop editable" contenteditable="true">
+                    tag, tag 2, other tag, looong  tag, some tag, your tag, my tag, tag-tag
                 </div>
-            }
+                <div class="title">Rights</div>
         </div>
     </div>
 </div>
 
 
-
 @ko.Initialize(Model)
+
 <script type="text/javascript">
     $(document).ready(function() {
         PhotoPlacer_Module("/api/photo/", "@Model.Id");
