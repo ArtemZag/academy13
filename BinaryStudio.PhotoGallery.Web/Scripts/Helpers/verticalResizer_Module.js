@@ -4,9 +4,7 @@
         rtg.el = $(this);
         rtg.el.find('.rtg-images').css({ 'height': rtg.options.initialHeight });
         rtg.loading.start();
-        $(window).load(function () {
-            rtg.init();
-        });
+        rtg.init();
     };
     var rtg = {};
     rtg.defaults = {imageWidth: 300, spacing: 10, center: true, initialHeight: 0 };
