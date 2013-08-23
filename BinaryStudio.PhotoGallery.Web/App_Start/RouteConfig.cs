@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
-using AttributeRouting.Web.Mvc;
 
-namespace BinaryStudio.PhotoGallery.Web
+
+namespace BinaryStudio.PhotoGallery.Web.App_Start
 {
     public class RouteConfig
     {

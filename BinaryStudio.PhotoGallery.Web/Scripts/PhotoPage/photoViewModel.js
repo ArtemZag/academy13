@@ -1,6 +1,19 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
+    
+    $(window).resize(setPhotoSize);
+    
+
+
     var photoArray = new Array();
     var photoIndex = 0;
+
+
+    var navbarClass = $(".navbar");
+    var photoSegmentId = $("#photoSegment");
+    var actionSegmentId = $("#actionSegment");
+    var leftSideMenuId = $("#leftSideMenu");
+    var leftSideMenuButtonId = $("#leftSideMenuButton");
+    var photoId = $("#photo");
 
     function User(data) {
         var u = this;
@@ -39,6 +52,13 @@
         /*lik.avaSRC = ko.observable(data.src);*/
     }
 
+    function PhotoByTag(data) {
+        var pbt = this;
+
+        pbt.src = ko.observable(data.PhotoThumbSource);
+        pbt.linkAway = ko.observable(data.PhotoViewPageUrl);
+    }
+
     function PhotoVieModel() {
         var self = this;
 
@@ -50,9 +70,12 @@
         self.IsVisible = ko.observable();
         self.PhotoLikes = ko.observableArray();
         self.PhotoLikeIcon = ko.observable();
+        self.tags = ko.observableArray();
 
         self.comms = ko.observableArray();
         self.newComment = ko.observable();
+
+        self.PhotosByTags = ko.observableArray();
 
         self.ShowNextPhoto = function() {
             photoIndex < (photoArray.length - 1) ? photoIndex++ : photoIndex = 0;
@@ -75,29 +98,29 @@
         };
 
         self.ShowLeftSideMenu = function() {
-            $(".navbar").css({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" })
+            navbarClass.css({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" })
                 .animate({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" }, 450);
 
-            $("#photoSegment").css({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" })
+            photoSegmentId.css({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" })
                 .animate({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" }, 450);
 
-            $("#actionSegment").css({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" })
+            actionSegmentId.css({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" })
                 .animate({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" }, 450);
-            $("#leftSideMenu").css("-webkit-transform", "translateX(300px)").animate("-webkit-transform", "translateX(0px)", 500);
-            $("#leftSideMenuButton").css("background-color", "transparent");
+            leftSideMenuId.css("-webkit-transform", "translateX(300px)").animate("-webkit-transform", "translateX(0px)", 500);
+            leftSideMenuButtonId.css("background-color", "transparent");
         };
 
         self.HideLeftSideMenu = function() {
-            $(".navbar").css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
+            navbarClass.css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
                 .animate({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
 
-            $("#photoSegment").css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
+            photoSegmentId.css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
                 .animate({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
 
-            $("#actionSegment").css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
+            actionSegmentId.css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
                 .animate({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
-            $("#leftSideMenu").css("-webkit-transform", "translateX(-300px)").animate("-webkit-transform", "translateX(0px)", 500);
-            $("#leftSideMenuButton").css("background-color", "#e7e7e7");
+            leftSideMenuId.css("-webkit-transform", "translateX(-300px)").animate("-webkit-transform", "translateX(0px)", 500);
+            leftSideMenuButtonId.css("background-color", "#e7e7e7");
         };
 
         self.IncrementPhotoLike = function() {
@@ -141,10 +164,19 @@
         model.src(img.src);
 
         // todo: needs fixing
-        window.history.pushState("", "", "/Photo/" + model.PhotoId());
+        window.history.pushState("", "", "/photo/" + model.PhotoId());
 
         $.get("/api/photo/" + photo.PhotoId + "/comments", { skip: 0, take: 50 }, setComments);
         $.get("/api/photo/" + model.PhotoId() + "/likes", setLikes);
+        $.get("/api/photo/" + model.PhotoId() + "/photosByTags", setPhotosByTags);
+
+    }
+
+    function setPhotosByTags(photos) {
+        model.PhotosByTags.removeAll();
+        $.each(photos, function(k, item) {
+            model.PhotosByTags.push(new PhotoByTag(item));
+        });
     }
 
     function setComments(comm) {
@@ -163,25 +195,34 @@
 
     function addLike(photoId) {
         // TODO Must be replaced with PUT method
-        $.post('/api/photo/like', { '' : photoId() }, setLikes);
+        $.post('/api/photo/like', { '': photoId() }, setLikes);
     }
 
     function setPhotoSize(w, h) {
-        var width = $(window).width();
-        var height = $(window).height() - 50;
+        var viewPortWidth = $(window).width();
+        var viewPortHeight = $(window).height() - 50;
+
+        var height = viewPortHeight * 0.81;
 
         if (w > h) {
-            width = width * 0.81;
-            var kw = width / w;
-            height = h * kw;
+            viewPortWidth = viewPortWidth * 0.81;
+            var kw = viewPortWidth / w;
+            viewPortHeight = h * kw;
+            
+            if (viewPortHeight > height) {
+                viewPortHeight = height / viewPortHeight;
+                viewPortWidth = viewPortWidth * viewPortHeight;
+                viewPortHeight = height;
+            }
+            
         } else {
-            height = height * 0.81;
-            var kh = height / h;
-            width = w * kh;
+            viewPortHeight = viewPortHeight * 0.81;
+            var kh = viewPortHeight / h;
+            viewPortWidth = w * kh;
         }
 
-        $("#photo").css("width", width);
-        $("#photo").css("height", height);
+        photoId.css("width", viewPortWidth);
+        photoId.css("height", viewPortHeight);
     }
 
     $('#prevPhotoButton').hover(function() {

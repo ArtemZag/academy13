@@ -75,13 +75,21 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 _photoService.AddLike(User.Id, photoId);
+
+                // COSTIL
+                List<PhotoLikeViewModel> photoLikeViewModels = _photoService
+                    .GetLikes(User.Id, photoId)
+                    .Select(PhotoLikeViewModel.FromModel)
+                    .ToList();
+                
+                return Request.CreateResponse(HttpStatusCode.OK, photoLikeViewModels, new JsonMediaTypeFormatter());
             }
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            return new HttpResponseMessage(HttpStatusCode.Created);
+            
         }
 
         [GET("all?{skip:int}&{take:int}")]
@@ -138,5 +146,25 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [GET("{photoId}/photoByTags")]
+        public HttpResponseMessage GetPhotosByTags(int photoId)
+        {
+            try
+            {
+                List<PhotoViewModel> photosByTags = _photoService.GetPhotosByTags(User.Id, photoId, 0, 10).Select(PhotoViewModel.FromModel).ToList();
+
+                return Request.CreateResponse(HttpStatusCode.OK, photosByTags, new JsonMediaTypeFormatter());
+            }
+            catch (NoEnoughPrivilegesException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+        
     }
 }
