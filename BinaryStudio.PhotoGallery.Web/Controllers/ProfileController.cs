@@ -18,13 +18,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             UserService = userService;
         }
 
-        [GET("details")]
-        public ActionResult Index(int userId)
+        [GET("")]
+        public ActionResult Index()
         {
-            var user = UserService.GetUser(userId);
+            var user = UserService.GetUser(User.Id);
             return View(user.ToUserViewModel());
         }
-        
+
         [GET("edit")]
         public ActionResult Edit()
         {
@@ -49,7 +49,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             UserService.Update(user);
 
-            return View("Index", userViewModel);
+            return View("Index", user.ToUserViewModel());
         }
     }
 }
