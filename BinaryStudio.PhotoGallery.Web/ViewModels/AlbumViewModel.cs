@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
+using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using Microsoft.Practices.Unity;
 
@@ -37,6 +38,13 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
                     id = model.Id,
                     Photos = new List<PhotoViewModel>()
                 };
+        }
+
+        public static AlbumViewModel FromModel(AlbumModel model, IResizePhotoService service)
+        {
+            var result = FromModel(model);
+            result.collageSource = service.GetCollage(model.OwnerId, model.Id, 256, 64, 3);
+            return result;
         }
     }
 }

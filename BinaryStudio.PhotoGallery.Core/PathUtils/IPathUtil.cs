@@ -26,6 +26,8 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         /// </summary>
         string BuildThumbnailPath(int userId, int albumId, int photoId, string format);
 
+        string BuildThumbnailPathSized(int userId, int albumId, int photoId, string format,int size);
+
         /// <returns>Path in format "C:\\ololo\\ololo"</returns>
         string BuildAbsoluteTemporaryDirectoryPath(int userId);
 

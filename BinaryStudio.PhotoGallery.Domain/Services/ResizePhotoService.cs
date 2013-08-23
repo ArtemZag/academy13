@@ -23,9 +23,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             _util = util;
         }
 
-        private static bool GetPhotos(int userId,int albumId,PhotoModel model)
-        { return model.OwnerId == userId && model.AlbumId == albumId && !model.IsDeleted; }
-
         public string GetUserAvatar(int userId,AvatarSize size)
         {
             using (var unit = WorkFactory.GetUnitOfWork())
@@ -47,7 +44,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 if (_secureService.CanUserViewPhotos(userId, albumId))
                 {
                     var processor = new AsyncPhotoProcessor(userId, albumId, 64, _util);
-                    var photos = unit.Photos.Filter(photo => GetPhotos(userId, albumId, photo)).ToList();
+                    var photos = unit.Photos.Filter(photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
                     processor.SyncOriginalAndThumbnailImages(photos);
                     return processor.GetThumbnails();
                 }
@@ -65,7 +62,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 if (_secureService.CanUserViewPhotos(userId, albumId))
                 {
                     var processor = new AsyncPhotoProcessor(userId, albumId, heightOfOneLineInTheCollage, _util);
-                    var photos = unit.Photos.Filter(photo => GetPhotos(userId, albumId, photo)).ToList();
+                    var photos = unit.Photos.Filter(photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
                     processor.SyncOriginalAndThumbnailImages(photos);
                     return processor.CreateCollageIfNotExist(collageWidth, numberOfLines);
                 }
@@ -80,7 +77,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (var unit = WorkFactory.GetUnitOfWork())
             {
                 if (_secureService.CanUserViewPhotos(userId, albumId))
-                    return unit.Photos.Filter(photo => GetPhotos(userId, albumId, photo)).ToList();
+                    return unit.Photos.Filter(photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
 
                 throw new AccessViolationException(
                     string.Format("User with ID {0} dont have rights to access thumbnails", userId));

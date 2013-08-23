@@ -12,12 +12,16 @@
 
 <script id="collageTmpl" type="text/x-jquery-tmpl">
     <div class="album">
-        <img class="collage" src="{{:collageSource}}"/>
-    </div> 
+        <a href="/album/{{:id}}"><img class="collage" src="{{:collageSource}}"/></a>
+    </div>
 </script>
 
 <script id="uploadTmpl" type="text/x-jquery-tmpl">
-    <a href="/Upload" class="btn btn-success">Upload</a>
+    <div align="center">
+        <p>There are no albums available for viewing</p>
+        <a href="/Upload" class="btn btn-success">Upload</a>
+    </div>
+    
 </script>
 
 <script id="flowPhotoTmpl" type="text/x-jquery-tmpl">

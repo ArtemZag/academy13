@@ -44,12 +44,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("{skip:int}/{take:int}")]
         public ActionResult GetAlbums(int skip, int take)
         {
-//            List<AlbumViewModel> albums = _albumService.GetAlbumsRange(User.Id, skip, take)
-//                .Select(AlbumViewModel.FromModel)
-//                .ToList();
-//
-//            return Json(albums, JsonRequestBehavior.AllowGet);
-            return Json(null, JsonRequestBehavior.AllowGet);
+            var albums = _albumService.GetAlbumsRange(User.Id, skip, take)
+                                      .Select(album => AlbumViewModel.FromModel(album, _resizePhoto)).ToList();
+
+            return Json(albums, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetFlowPhotos()

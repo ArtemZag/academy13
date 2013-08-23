@@ -119,6 +119,18 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
+        public string BuildThumbnailPathSized(int userId, int albumId, int photoId, string format,int size)
+        {
+            var builder = new StringBuilder(BuildThumbnailsPath(userId, albumId));
+
+            builder.Append(DELIMITER).
+                Append(size).Append(DELIMITER)
+                .Append(photoId)
+                .Append(MakeExtension(format));
+
+            return builder.ToString();
+        }
+
         private string MakeExtension(string format)
         {
             return "." + format;
@@ -198,7 +210,8 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string BuildPathToThumbnailFileOnServer(int userId, int albumId, int thumbnailsSize, PhotoModel model)
         {
-            return Path.Combine(usersFolder, userId.ToString(), albumId.ToString(), thumbnailsFolderName, thumbnailsSize.ToString(), model.Id.ToString());
+            return Path.Combine(usersFolder, userId.ToString(), albumId.ToString(), thumbnailsFolderName,
+                                thumbnailsSize.ToString(), MakeFileName(model.Id.ToString(), "jpg"));
         }
 
         public string NoAvatar()

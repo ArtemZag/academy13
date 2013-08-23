@@ -66,7 +66,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             
             CreateDirectoriesIfNotExists(pathToThumb);
 
-            Parallel.ForEach(models, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount},
+            Parallel.ForEach(models, new ParallelOptions {MaxDegreeOfParallelism = 1},
                              model =>
                                  {
                                      var changes = SyncCoupleFiles(userId, albumId, model, maxHeight);   
@@ -150,6 +150,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                 var tmpFile = Path.Combine(originalInfo.DirectoryName, util.MakeRandomFileName("jpg"));
                 ThumbnailCreationAction(originalInfo.FullName, tmpFile, (int) size, true);
                 File.Move(tmpFile, info.FullName);
+                File.Delete(tmpFile);
                 return util.GetEndUserReference(info.FullName);
             }
             return util.NoAvatar();

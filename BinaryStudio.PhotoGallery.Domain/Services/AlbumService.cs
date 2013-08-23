@@ -120,12 +120,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Albums
-                                 .Filter(model => model.OwnerId == userId && !model.IsDeleted)
-                                 .OrderByDescending(model => model.DateOfCreation)
-                                 .Skip(skipCount)
-                                 .Take(takeCount)
-                                 .ToList();
+                return
+                    unitOfWork.Albums.Filter(model => model.OwnerId == userId && !model.IsDeleted && ((model.Description != "Default album by DBinit" && model.Description != "System album not for use") || model.Description == null))
+                              .OrderByDescending(model => model.DateOfCreation)
+                              .Skip(skipCount)
+                              .Take(takeCount)
+                              .ToList();
             }
         }
 
