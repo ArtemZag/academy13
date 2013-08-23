@@ -12,7 +12,8 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions
                  FirstName = model.FirstName,
                  LastName = model.LastName,
                  Email = model.Email,
-                 IsAdmin = model.IsAdmin
+                 IsAdmin = model.IsAdmin,
+                 Birthday = model.Birthday
              };
 
              viewModel.PhotoUrl = viewModel.PathUtil.BuildUserAvatarPath(model.Id);
