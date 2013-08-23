@@ -31,7 +31,14 @@
     <div class="sidebar">
         <div class="title">@Html.DisplayFor(model => model.AlbumName)</div>
         <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>
-        <div class="title">Tags</div>
+        <div class="title" contenteditable="true">Tags</div>
+        <div class="photos-count">
+            @foreach (AlbumTagModel tag in Model.Tags)
+            {
+            }
+                @Html.Display("tag, tag1, tag2, tag3")
+
+        </div>
     </div>
 
     <div class="grid">

@@ -219,7 +219,7 @@ namespace BinaryStudio.PhotoGallery.Database
                         Permissions = 11111,
                         OwnerId = userModel.Id,
                         Photos = new Collection<PhotoModel>(),
-                        AlbumTags = new Collection<AlbumTagModel>(),
+                        Tags = new Collection<AlbumTagModel>(),
                         AvailableGroups = new Collection<AvailableGroupModel>()
                     });
                     unitOfWork.Users.Update(userModel);
@@ -251,7 +251,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     IsDeleted = false,
                     Permissions = 11111,
                     OwnerId = currentUser.Id,
-                    AlbumTags = new Collection<AlbumTagModel>(),
+                    Tags = new Collection<AlbumTagModel>(),
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 });
@@ -292,7 +292,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     IsDeleted = false,
                     Permissions = 11111,
                     OwnerId = currentUser.Id,
-                    AlbumTags = new Collection<AlbumTagModel>(),
+                    Tags = new Collection<AlbumTagModel>(),
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 };

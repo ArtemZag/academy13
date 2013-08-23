@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
-using BinaryStudio.PhotoGallery.Models;
-using Microsoft.Practices.Unity;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    class ResizePhotoService : DbService, IResizePhotoService
+    internal class ResizePhotoService : DbService, IResizePhotoService
     {
         private readonly ISecureService _secureService;
         private readonly IPathUtil _util;
+
         public ResizePhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IPathUtil util)
             : base(workFactory)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -39,7 +40,8 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
                 DateOfCreation = model.DateOfCreation,
                 OwnerId = model.OwnerId,
                 Id = model.Id,
-                Photos = new List<PhotoViewModel>()
+                Tags = model.Tags,
+                Photos = new List<PhotoViewModel>(),
             };
         }
     }
