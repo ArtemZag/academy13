@@ -245,6 +245,7 @@
     <Compile Include="CustomStructure\BaseViewPage.cs" />
     <Compile Include="CustomStructure\CustomPrincipal.cs" />
     <Compile Include="CustomStructure\ICustomPrincipal.cs" />
+    <Compile Include="Extensions\HtmlHelperExtentions.cs" />
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
