@@ -31,9 +31,10 @@
 
     var photoPortion = 20;
     
-    $.get("/api/photo/allusers", { albumId: 0, skip: 0, take: photoPortion })
+    $.get("api/publicphoto/"+ photoPortion )
           .done(function (photos) {
-              viewModel.addPhotos(photos);
+              ko.utils.arrayPushAll(viewModel.RandomPhotos, photos);
+              ko.applyBindings(viewModel);
           })
           .fail(function () {
 
@@ -44,11 +45,6 @@
 
 function LoginPhotoFlowViewModel() {
     this.RandomPhotos = ko.observableArray();
-
-    this.addPhotos = function (photos) {
-        RandomPhotos.arrayPushAll(photos);
-    }.bind(this);
 }
 
 var viewModel = new LoginPhotoFlowViewModel();
-ko.applyBindings(viewModel);

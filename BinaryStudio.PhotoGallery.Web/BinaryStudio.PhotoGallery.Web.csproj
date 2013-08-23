@@ -222,6 +222,7 @@
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
     <Compile Include="Area\Api\AccountController.cs" />
     <Compile Include="Area\Api\AlbumController.cs" />
+    <Compile Include="Area\Api\PublicPhotoController.cs" />
     <Compile Include="Area\Api\UserController.cs" />
     <Compile Include="Area\Api\UploadController.cs" />
     <Compile Include="Area\Api\PhotoCommentController.cs" />

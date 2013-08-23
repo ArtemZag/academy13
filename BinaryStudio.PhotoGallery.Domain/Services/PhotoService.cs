@@ -227,6 +227,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+
+        //todo Shall refactor and delete. Soon ..)
         public PhotoModel GetPhotoWithoutRightsCheck(int photoId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -276,6 +278,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         .OrderByDescending(model => model.DateOfCreation)
                         .ThenBy(photo => photo.Id)
                         .Skip(skipCount)
+                        .Take(takeCount)
+                        .ToList();
+            }
+        }
+
+        public IEnumerable<PhotoModel> GetRandomPublicPhotos(int userId, int takeCount)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetAvailableAlbums(userId, unitOfWork);
+
+                return
+                    avialableAlbums.SelectMany(model => model.Photos)
+                        .OrderBy(x => Guid.NewGuid())
                         .Take(takeCount)
                         .ToList();
             }
