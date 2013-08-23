@@ -1,4 +1,7 @@
-﻿@{
+﻿@using BinaryStudio.PhotoGallery.Web.Extensions
+@using System.Web.Optimization
+
+@{
     ViewBag.Title = "Page Not Found | Bingally";
 }
 
@@ -6,18 +9,17 @@
 <html>
     <head>
         <title>Page Not Found | Bingally</title>
-        @System.Web.Optimization.Styles.Render("~/Content/notfound-page.css")
+        @Styles.Render("~/Content/notfound-page.css")
     </head>
 
     <body>
         <div id="container">
-            @if (ViewBag.ReferrerUrl != null)
-            {
-                <a href="@ViewBag.ReferrerUrl"><img src="~/Content/images/notfound.png"/></a>
-            }
-            @if (ViewBag.ReferrerUrl == null)
-            {
-                <a href="~/"><img src="~/Content/images/notfound.png"/></a>
+            @{
+                var referrerUrl = ViewBag.ReferrerUrl as string;
+                
+                var actionUrl = referrerUrl == null ? (Request.Url.Host + Url.Action("Index", "Home")) : referrerUrl;
+                
+                @Html.ImageLink(Url.Content("~/Content/images/notfound.png"), referrerUrl);
             }
         </div>
     </body>

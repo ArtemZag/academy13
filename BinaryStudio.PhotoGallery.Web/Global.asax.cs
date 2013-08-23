@@ -7,6 +7,7 @@ using System.Web.Script.Serialization;
 using System.Web.Security;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Web.App_Start;
+using BinaryStudio.PhotoGallery.Web.CustomStructure;
 using Microsoft.Practices.Unity;
 using PerpetuumSoft.Knockout;
 

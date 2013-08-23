@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using BinaryStudio.PhotoGallery.Web.CustomStructure;
 
 namespace BinaryStudio.PhotoGallery.Web.Filters
 {

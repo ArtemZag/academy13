@@ -9,17 +9,17 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [RoutePrefix("api/photo")]
-    public class PhotoCommentController : BaseApiController
+    public class PhotoCommentApiController : BaseApiController
     {
         private readonly IPhotoCommentService _photoCommentService;
         private readonly IUserService _userService;
 
-        public PhotoCommentController(IUserService userService, IPhotoCommentService photoCommentService)
+        public PhotoCommentApiController(IUserService userService, IPhotoCommentService photoCommentService)
         {
             _userService = userService;
             _photoCommentService = photoCommentService;

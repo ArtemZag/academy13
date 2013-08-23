@@ -10,18 +10,17 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [Authorize]
     [RoutePrefix("api/photo")]
-    public class PhotoController : BaseApiController
+    public class PhotoApiController : BaseApiController
     {
         private readonly IPhotoService _photoService;
 
-        public PhotoController(IPhotoService photoService)
+        public PhotoApiController(IPhotoService photoService)
         {
             _photoService = photoService;
         }
@@ -76,20 +75,18 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 _photoService.AddLike(User.Id, photoId);
 
-                // COSTIL
+                // TODO COSTIL
                 List<PhotoLikeViewModel> photoLikeViewModels = _photoService
                     .GetLikes(User.Id, photoId)
                     .Select(PhotoLikeViewModel.FromModel)
                     .ToList();
-                
-                return Request.CreateResponse(HttpStatusCode.OK, photoLikeViewModels, new JsonMediaTypeFormatter());
+
+                return Request.CreateResponse(HttpStatusCode.Created, photoLikeViewModels, new JsonMediaTypeFormatter());
             }
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            
         }
 
         [GET("all?{skip:int}&{take:int}")]
@@ -147,12 +144,15 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-        [GET("{photoId}/photoByTags")]
+        [GET("{photoId}/photobytags")]
         public HttpResponseMessage GetPhotosByTags(int photoId)
         {
             try
             {
-                List<PhotoViewModel> photosByTags = _photoService.GetPhotosByTags(User.Id, photoId, 0, 10).Select(PhotoViewModel.FromModel).ToList();
+                List<PhotoViewModel> photosByTags = _photoService
+                    .GetPhotosByTags(User.Id, photoId, 0, 10)
+                    .Select(PhotoViewModel.FromModel)
+                    .ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, photosByTags, new JsonMediaTypeFormatter());
             }
@@ -165,6 +165,5 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-        
     }
 }

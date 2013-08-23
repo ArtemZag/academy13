@@ -15,14 +15,14 @@ using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Upload;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
     [Authorize]
     [RoutePrefix("api/upload")]
-    public class UploadController : BaseApiController
+    public class UploadApiController : BaseApiController
     {
         private readonly IAlbumService _albumService;
         private readonly ICryptoProvider _cryptoProvider;
@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
         private int MAX_PHOTO_SIZE_IN_BYTES = 30*1024*1024; // 30 MB
 
-        public UploadController(
+        public UploadApiController(
             IUserService userService,
             IPathUtil pathUtil,
             IDirectoryWrapper directoryWrapper,

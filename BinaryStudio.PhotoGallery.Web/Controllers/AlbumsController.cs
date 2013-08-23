@@ -5,10 +5,11 @@ using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
-using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
+using UserInfoViewModel = BinaryStudio.PhotoGallery.Web.ViewModels.Albums.UserInfoViewModel;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -17,7 +18,6 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class AlbumsController : BaseController
     {
         private readonly IAlbumService _albumService;
-        private readonly IPathUtil _pathUtil;
         private readonly IPhotoService _photoService;
         private readonly IUserService _userService;
         private readonly IResizePhotoService _resizePhoto;
@@ -25,12 +25,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             IAlbumService albumService,
             IUserService userService,
             IPhotoService photoService,
-            IPathUtil pathUtil,
             IResizePhotoService resizePhoto)
         {
             _albumService = albumService;
             _userService = userService;
-            _pathUtil = pathUtil;
             _photoService = photoService;
             _resizePhoto = resizePhoto;
         }

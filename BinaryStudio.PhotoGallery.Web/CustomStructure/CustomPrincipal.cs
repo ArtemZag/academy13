@@ -1,7 +1,7 @@
 ﻿using System.Security.Principal;
 using System.Web.Security;
 
-namespace BinaryStudio.PhotoGallery.Web
+namespace BinaryStudio.PhotoGallery.Web.CustomStructure
 {
     public class CustomPrincipal : ICustomPrincipal
     {

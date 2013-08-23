@@ -1,6 +1,7 @@
 ﻿using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 
-namespace BinaryStudio.PhotoGallery.Web.ViewModels
+namespace BinaryStudio.PhotoGallery.Web.Extensions
 {
     public static class ViewModelExtensions
     {

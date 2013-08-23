@@ -1,4 +1,4 @@
-﻿namespace BinaryStudio.PhotoGallery.Web
+﻿namespace BinaryStudio.PhotoGallery.Web.CustomStructure
 {
     public class UserInfoSerializeModel
     {

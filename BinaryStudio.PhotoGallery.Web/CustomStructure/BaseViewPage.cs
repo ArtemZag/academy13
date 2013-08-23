@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace BinaryStudio.PhotoGallery.Web
+namespace BinaryStudio.PhotoGallery.Web.CustomStructure
 {
     public abstract class BaseViewPage : WebViewPage
     {
