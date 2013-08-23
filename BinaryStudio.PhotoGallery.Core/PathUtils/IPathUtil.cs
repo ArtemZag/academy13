@@ -1,4 +1,7 @@
-﻿namespace BinaryStudio.PhotoGallery.Core.PathUtils
+﻿using System.IO;
+using BinaryStudio.PhotoGallery.Models;
+
+namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
     public interface IPathUtil
     {
@@ -23,6 +26,8 @@
         /// </summary>
         string BuildThumbnailPath(int userId, int albumId, int photoId, string format);
 
+        string BuildThumbnailPathSized(int userId, int albumId, int photoId, string format,int size);
+
         /// <returns>Path in format "C:\\ololo\\ololo"</returns>
         string BuildAbsoluteTemporaryDirectoryPath(int userId);
 
@@ -31,26 +36,26 @@
 
         string BuildPathToUserFolderOnServer(int userId);
 
-        string BuildPathToUserAvatarOnServer(int userId, AvatarSize size);
+        string BuildPathToUserAvatarOnServer(int userId, AvatarSize size = AvatarSize.Original);
 
         string BuildPathToUserAlbumFolderOnServer(int userId, int albumId);
 
         string BuildPathToUserAlbumThumbnailsFolderOnServer(int userId, int albumId, int thumbnailsSize);
 
         string BuildPathToUserAlbumCollagesFolderOnServer(int userId, int albumId);
-        
+
         string GetEndUserReference(string absolutePath);
 
-        string MakeFileNameWithExtension(string name);
+        string MakeFileName(string name, string ext);
 
-        string MakeRandomFileName();
+        string MakeRandomFileName(string ext);
 
-        string BuildPathToOriginalFileOnServer(int userId, int albumId, string originalName);
+        string BuildPathToOriginalFileOnServer(int userId, int albumId, PhotoModel model);
 
-        string BuildPathToThumbnailFileOnServer(int userId, int albumId, int thumbnailsSize, string originalPath);
+        string BuildPathToThumbnailFileOnServer(int userId, int albumId, int thumbnailsSize, PhotoModel model);
 
         string NoAvatar();
 
-        string MakePathToCollage(int userId, int albumId);
+        string CreatePathToCollage(int userId, int albumId);
     }
 }

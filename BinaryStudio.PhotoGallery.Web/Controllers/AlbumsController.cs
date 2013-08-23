@@ -20,17 +20,19 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         private readonly IPathUtil _pathUtil;
         private readonly IPhotoService _photoService;
         private readonly IUserService _userService;
-
+        private readonly IResizePhotoService _resizePhoto;
         public AlbumsController(
             IAlbumService albumService,
             IUserService userService,
             IPhotoService photoService,
-            IPathUtil pathUtil)
+            IPathUtil pathUtil,
+            IResizePhotoService resizePhoto)
         {
             _albumService = albumService;
             _userService = userService;
             _pathUtil = pathUtil;
             _photoService = photoService;
+            _resizePhoto = resizePhoto;
         }
 
         [GET("")]
@@ -42,12 +44,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("{skip:int}/{take:int}")]
         public ActionResult GetAlbums(int skip, int take)
         {
-//            List<AlbumViewModel> albums = _albumService.GetAlbumsRange(User.Id, skip, take)
-//                .Select(AlbumViewModel.FromModel)
-//                .ToList();
-//
-//            return Json(albums, JsonRequestBehavior.AllowGet);
-            return Json(null, JsonRequestBehavior.AllowGet);
+            var albums = _albumService.GetAlbumsRange(User.Id, skip, take)
+                                      .Select(album => AlbumViewModel.FromModel(album, _resizePhoto)).ToList();
+
+            return Json(albums, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetFlowPhotos()
@@ -75,12 +75,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 lastDate.Month,
                 lastDate.Year);
 
-            return Json(new UserInfoViewModel(_albumService.AlbumsCount(User.Id).ToString(),
-                _photoService.PhotoCount(User.Id).ToString(),
-                fullname,
-                lastAdded, user.IsAdmin ? "admin" : "simple user",
-                user.Department,
-                (new AsyncPhotoProcessor(User.Id, 0, 64, _pathUtil)).GetUserAvatar(AvatarSize.Medium)), JsonRequestBehavior.AllowGet);
+            var model = new UserInfoViewModel(_albumService.AlbumsCount(User.Id).ToString(),
+                                              _photoService.PhotoCount(User.Id).ToString(),
+                                              fullname,
+                                              lastAdded, user.IsAdmin ? "admin" : "simple user",
+                                              user.Department,
+                                              _resizePhoto.GetUserAvatar(user.Id, AvatarSize.Medium));
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
     }
 }

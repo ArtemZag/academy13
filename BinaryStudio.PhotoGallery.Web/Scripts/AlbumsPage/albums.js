@@ -57,9 +57,7 @@
             container.html(
                 $("#collageTmpl").render(albums));
         } else {
-            alert(skipCount + ' ' + takeAlbumsCount);
             if (skipCount - takeAlbumsCount == 0) {
-                alert('no anought albums here');
                 container.html(
                 $("#uploadTmpl").render());
             }

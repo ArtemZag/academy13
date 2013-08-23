@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
@@ -52,28 +53,23 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public AsyncPhotoProcessor(int userId, IPathUtil util)
         {
+            this.util = util;
             this.userId = userId;
             if (userId < 0)
                 throw new ArgumentException("Invalid userId and albumId");
         }
 
-        public void SyncOriginalAndThumbnailImages()
+        public void SyncOriginalAndThumbnailImages(IEnumerable<PhotoModel> models)
         {
             var modified = false;
-
-            var userAlbumPath = util.BuildPathToUserAlbumFolderOnServer(userId, albumId);
             var pathToThumb = util.BuildPathToUserAlbumThumbnailsFolderOnServer(userId, albumId, maxHeight);
             
             CreateDirectoriesIfNotExists(pathToThumb);
-            var files = ImageFormatHelper.GetImages(userAlbumPath);
 
-            Parallel.ForEach(files, new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount},
-                             path =>
+            Parallel.ForEach(models, new ParallelOptions {MaxDegreeOfParallelism = 1},
+                             model =>
                                  {
-                                     var pathToThumbnailOfImage =
-                                         util.BuildPathToThumbnailFileOnServer(userId, albumId, maxHeight, path);
-
-                                     var changes = SyncCoupleFiles(path, pathToThumbnailOfImage, maxHeight);   
+                                     var changes = SyncCoupleFiles(userId, albumId, model, maxHeight);   
 
                                      lock (syncRoot)
                                          modified |= changes;
@@ -91,28 +87,45 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
-        private bool SyncCoupleFiles(string pathToOriginal, string pathToThumbnail, int maxSize,
+        public string CreateThumbnail(int userId, int albumId, PhotoModel model, int maxSize)
+        {
+            var origin = util.BuildPathToOriginalFileOnServer(userId, albumId, model);
+            
+            if (File.Exists(origin))
+            {
+                var thumbnail = util.BuildPathToThumbnailFileOnServer(userId, albumId, maxSize, model);
+                if (!File.Exists(thumbnail))
+                    ThumbnailCreationAction(origin, thumbnail, maxSize, false);
+                
+                return util.GetEndUserReference(thumbnail);
+            }
+            throw new FileNotFoundException(string.Format("File: {0} not found", origin));
+        }
+
+        private bool SyncCoupleFiles(int userId,int albumId, PhotoModel model, int maxSize,
                                      bool isCompressedByTwoBounds=false)
         {
-            if (!File.Exists(pathToOriginal))
+            string origin = util.BuildPathToOriginalFileOnServer(userId, albumId, model);
+            string thumbnail = util.BuildPathToThumbnailFileOnServer(userId, albumId, maxSize, model);
+            if (!File.Exists(origin))
             {
-                if (File.Exists(pathToThumbnail))
+                if (File.Exists(thumbnail))
                 {
-                    File.Delete(pathToThumbnail);
+                    File.Delete(thumbnail);
                     return true;
                 }
             }
             else
             {
-                if (!File.Exists(pathToThumbnail))
+                if (!File.Exists(thumbnail))
                 {
-                    ThumbnailCreationAction(pathToOriginal, pathToThumbnail, maxHeight, isCompressedByTwoBounds);
+                    ThumbnailCreationAction(origin, thumbnail, maxHeight, isCompressedByTwoBounds);
                     return true;
                 }
             }
             return false;
         }
-        private void ThumbnailCreationAction(string pathToOriginal, string pathToThumbnail,int maxSize,bool twoBounds)
+        private void ThumbnailCreationAction(string pathToOriginal, string pathToThumbnail, int maxSize, bool twoBounds)
         {
             using (var image = Image.FromFile(pathToOriginal))
             {
@@ -125,8 +138,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
-      
-
         public string GetUserAvatar(AvatarSize size)
         {
             var info = new FileInfo(util.BuildPathToUserAvatarOnServer(userId, size));
@@ -136,12 +147,12 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             var originalInfo = new FileInfo(util.BuildPathToUserAvatarOnServer(userId, AvatarSize.Original));
             if (originalInfo.Exists)
             {
-                var tmpFile = Path.Combine(originalInfo.DirectoryName, util.MakeRandomFileName());
+                var tmpFile = Path.Combine(originalInfo.DirectoryName, util.MakeRandomFileName("jpg"));
                 ThumbnailCreationAction(originalInfo.FullName, tmpFile, (int) size, true);
                 File.Move(tmpFile, info.FullName);
+                File.Delete(tmpFile);
                 return util.GetEndUserReference(info.FullName);
             }
-
             return util.NoAvatar();
         }
 
@@ -208,7 +219,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         public string MakeCollage(int width, int rows)
         {
             var height = rows * maxHeight;
-            var pathToCollage = util.MakePathToCollage(userId, albumId);
+            var pathToCollage = util.CreatePathToCollage(userId, albumId);
             var pathToCollages = util.BuildPathToUserAlbumCollagesFolderOnServer(userId, albumId);
 
             using (Image img = new Bitmap(width, height))

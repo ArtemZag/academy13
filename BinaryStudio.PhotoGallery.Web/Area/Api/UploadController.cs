@@ -109,7 +109,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 string pathToTempAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(User.Id, tempAlbumId);
 
                 // Get path to the destination album folder
-                string pathToDestAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(User.Id, albumId);
+                string pathToDestAlbum = _pathUtil.BuildPathToUserAlbumFolderOnServer(User.Id, albumId);
 
                 if (!_directoryWrapper.Exists(pathToDestAlbum))
                 {

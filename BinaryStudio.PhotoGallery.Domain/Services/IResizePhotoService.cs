@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -14,8 +11,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         IEnumerable<string> GetUserAlbumThumbnails(int userId, int albumId);
 
+        //Высота колажа = heightOfOneLineInTheCollage*numberOfLines
         string GetCollage(int userId, int albumId, int collageWidth, int heightOfOneLineInTheCollage, int numberOfLines);
 
-        string GetThumbnail(int userId, int albumId, string photoName, int maxHeight);
+        IEnumerable<PhotoModel> GetAvailablePhotos(int userId, int albumId);
+
+        string GetThumbnail(int userId, int albumId, PhotoModel model, int maxHeight);
     }
 }

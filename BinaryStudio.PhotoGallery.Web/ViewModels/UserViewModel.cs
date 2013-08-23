@@ -1,10 +1,8 @@
-﻿using BinaryStudio.PhotoGallery.Models;
-
-namespace BinaryStudio.PhotoGallery.Web.ViewModels
+﻿namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
-	public class UserViewModel
+    public class UserViewModel : BaseViewModel
 	{
-		public string FirstName { get; set; }
+        public string FirstName { get; set; }
 
 		public string LastName { get; set; }
 
@@ -16,15 +14,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
 
 		public bool IsOnline { get; set; }
 
-        public static UserViewModel ToViewModel(UserModel model)
-        {
-            return new UserViewModel
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                IsAdmin = model.IsAdmin
-            };
-        }
+	    public string PhotoUrl { get; set; }
 	}
 }

@@ -37,7 +37,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Creates system albums
         /// </summary>
-        /// <param name="userId"></param>
         void CreateSystemAlbums(int userId);
 
         /// <summary>
