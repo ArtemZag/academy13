@@ -66,6 +66,6 @@ namespace BinaryStudio.PhotoGallery.Models
         /// <summary>
         /// Gets or sets how much people like photo ( contains users' ids)
         /// </summary>
-        public ICollection<int> Likes { get; set; }
+        public virtual ICollection<UserModel> Likes { get; set; }
     }
 }

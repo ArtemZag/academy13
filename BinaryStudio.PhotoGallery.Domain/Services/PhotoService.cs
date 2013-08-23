@@ -222,8 +222,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 if (_secureService.CanUserViewLikes(userId, photo.AlbumId))
                 {
-                    var userIds = photo.Likes.ToList();
-                    return userIds.Select(id => GetUser(id, unitOfWork)).ToList();
+                    return photo.Likes.ToList();
                 }
 
                 throw new NoEnoughPrivilegesException("User can't get access to photoModel's likes");
@@ -236,7 +235,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userId, unitOfWork);
 
-                unitOfWork.Photos.Find(photoId).Likes.Add(userId);
+                unitOfWork.Photos.Find(photoId).Likes.Add(user);
                 unitOfWork.SaveChanges();
 
                 _eventsAggregator.PushLikeToPhotoAddedEvent(user, photoId);

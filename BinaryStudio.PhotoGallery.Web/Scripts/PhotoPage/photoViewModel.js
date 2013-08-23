@@ -164,7 +164,7 @@
         model.src(img.src);
 
         // todo: needs fixing
-        window.history.pushState("", "", "/Photo/" + model.PhotoId());
+        window.history.pushState("", "", "/photo/" + model.PhotoId());
 
         $.get("/api/photo/" + photo.PhotoId + "/comments", { skip: 0, take: 50 }, setComments);
         $.get("/api/photo/" + model.PhotoId() + "/likes", setLikes);
