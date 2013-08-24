@@ -29,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         int PhotoCount(int userId);
 
-        DateTime LastPhotoAdded(int userId);
+//        DateTime LastPhotoAdded(int userId);
 
         IEnumerable<PhotoModel> GetLastPhotos(int userId, int skipCount, int takeCount);
         /// <summary>

@@ -2,7 +2,7 @@
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -21,8 +21,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 		[GET("{albumId}")]
         public ActionResult Index(int albumId)
 		{
-		    var mAlbum = _albumService.GetAlbum(albumId);
-            return View("Index", AlbumViewModel.FromModel(mAlbum,_resizePhoto));
+		    var model = _albumService.GetAlbum(albumId);
+
+            // TODO use pathUtil here to get path to album collage
+		    var collageSource = _resizePhoto.GetCollage(User.Id, model.Id, 256, 64, 3);
+
+		    var viewModel = model.ToAlbumViewModel(collageSource);
+
+            return View("Index", viewModel);
         }
     }
 }
