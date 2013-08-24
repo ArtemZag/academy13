@@ -16,19 +16,28 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             this.pathUtil = pathUtil;
         }
 
-        public void CreateThumbnail(int userId, int albumId, int photoId, string format, ImageSize imageSize)
+        public void CreateThumbnails(int userId, int albumId, int photoId, string format)
         {
             string originalPhotoPath = pathUtil.BuildAbsoluteOriginalPhotoPath(userId, albumId, photoId, format);
 
             if (File.Exists(originalPhotoPath))
             {
-                string absoluteThumbnailPath = pathUtil.BuildAbsoluteThumbailPath(userId, albumId, photoId, format,
+                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Big);
+                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Medium);
+                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Small);
+            }
+        }
+
+        private void CreateThumbnail(int userId, int albumId, int photoId, string format, ImageSize imageSize)
+        {
+            string originalPhotoPath = pathUtil.BuildAbsoluteOriginalPhotoPath(userId, albumId, photoId, format);
+
+            string absoluteThumbnailPath = pathUtil.BuildAbsoluteThumbailPath(userId, albumId, photoId, format,
                     imageSize);
 
-                if (!File.Exists(absoluteThumbnailPath))
-                {
-                    ThumbnailCreationAction(originalPhotoPath, absoluteThumbnailPath, (int) imageSize, false);
-                }
+            if (!File.Exists(absoluteThumbnailPath))
+            {
+                ThumbnailCreationAction(originalPhotoPath, absoluteThumbnailPath, (int)imageSize, false);
             }
         }
 
