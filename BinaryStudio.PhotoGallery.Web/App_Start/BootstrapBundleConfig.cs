@@ -50,6 +50,11 @@ namespace BinaryStudio.PhotoGallery.Web.App_Start
                 "~/Scripts/mediator.js"
                 ));
 
+            BundleTable.Bundles.Add(new ScriptBundle("~/bundles/scripts/md5").Include(
+                "~/Scripts/md5.js"
+                ));
+
+
             BundleTable.Bundles.Add(new StyleBundle("~/bundles/styles/bootstrap").Include(
                 "~/Content/style-libs/bootstrap.css",
                 "~/Content/style-libs/bootstrap-responsive.css"

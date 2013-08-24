@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using BinaryStudio.PhotoGallery.Core.Extensions;

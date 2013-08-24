@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -255,7 +256,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     {
                         _fileWrapper.Move(fileData.LocalFileName, destFileName);
                     }
-                    catch (Exception)
+                    catch (IOException)
                     {
                         _fileWrapper.Delete(fileData.LocalFileName);
 
