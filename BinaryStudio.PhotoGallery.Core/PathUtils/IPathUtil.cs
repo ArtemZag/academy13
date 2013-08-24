@@ -7,7 +7,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         string CustomAvatarPath { get; }
 
         /// <summary>
-        ///     Pattern: ~data\photos\userId\[Small|Medium|Big]avatar.jpg
+        ///     Pattern: ~data\photos\userId\[Small|Medium|Big|Original]avatar.jpg
         /// </summary>
         string BuildAvatarPath(int userId, ImageSize imageSize);
 
@@ -20,11 +20,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         ///     Pattern: ~data\photos\userId\albumId\photoId.format
         /// </summary>
         string BuildOriginalPhotoPath(int userId, int albumId, int photoId, string format);
-
-        /// <summary>
-        ///     Pattern: ~data\photos\userId\avatar.jpg
-        /// </summary>
-        string BuildOriginalAvatarPath(int userId);
 
         /// <summary>
         ///     Pattern: ~data\photos\userId\albumId\imageSize\photoId.format

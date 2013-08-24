@@ -7,6 +7,7 @@
     {
         Small = 64,
         Medium = 150,
-        Big = 1200
+        Big = 1200,
+        Original
     };
 }

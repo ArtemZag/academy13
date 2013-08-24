@@ -16,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         private const string CUSTOM_AVATAR_PATH = @"~\Content\images\no_avatar.png";
 
-        private const string ORIGINAL_AVATAR_FILENAME = "avatar";
+        private const string SUFFIX_AVATAR_FILENAME = "avatar";
         private const string AVATAR_FILE_FORMAT = "jpg";
 
         // todo: check 
@@ -72,20 +72,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             var builder = new StringBuilder(BuildUserPath(userId));
 
             builder.Append(imageSize)
-                .Append(ORIGINAL_AVATAR_FILENAME)
-                .Append(MakeExtension(AVATAR_FILE_FORMAT));
-
-            return builder.ToString();
-        }
-
-        /// <summary>
-        ///     Pattern: ~data\photos\userId\avatar.jpg
-        /// </summary>
-        public string BuildOriginalAvatarPath(int userId)
-        {
-            var builder = new StringBuilder(BuildUserPath(userId));
-
-            builder.Append(ORIGINAL_AVATAR_FILENAME)
+                .Append(SUFFIX_AVATAR_FILENAME)
                 .Append(MakeExtension(AVATAR_FILE_FORMAT));
 
             return builder.ToString();
