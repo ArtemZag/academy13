@@ -65,10 +65,11 @@
     <Compile Include="PathUtils\IUrlUtil.cs" />
     <Compile Include="PathUtils\PathUtil.cs" />
     <Compile Include="PathUtils\UrlUtil.cs" />
+    <Compile Include="PhotoUtils\CollageProcessor.cs" />
+    <Compile Include="PhotoUtils\ICollageProcessor.cs" />
     <Compile Include="PhotoUtils\ImageSize.cs" />
-    <Compile Include="PhotoUtils\ImageFormatHelper.cs" />
-    <Compile Include="Randomizer.cs" />
     <Compile Include="PhotoUtils\IPhotoProcessor.cs" />
+    <Compile Include="Randomizer.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\FB.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFacebook.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFB.cs" />

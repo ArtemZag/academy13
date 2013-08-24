@@ -1,31 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 
 namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
-    public class PhotoProcessor
+    public class PhotoProcessor : IPhotoProcessor
     {
-        private readonly int maxHeight;
-
         private readonly IPathUtil pathUtil;
 
         public PhotoProcessor(IPathUtil pathUtil)
         {
             this.pathUtil = pathUtil;
-        }
-
-        private void CreateDirectoriesIfNotExists(params string[] paths)
-        {
-            foreach (string path in paths.Where(path => !Directory.Exists(path)))
-            {
-                Directory.CreateDirectory(path);
-            }
         }
 
         public void CreateThumbnail(int userId, int albumId, int photoId, string format, ImageSize imageSize)
@@ -43,16 +31,17 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
-        private void ThumbnailCreationAction(string pathToOriginal, string pathToThumbnail, int maxSize, bool twoBounds)
+        private void ThumbnailCreationAction(string imagePath, string thumbnailPath, int maxSize, bool twoBounds)
         {
-            using (Image image = Image.FromFile(pathToOriginal))
+            using (Image image = Image.FromFile(imagePath))
             {
                 Size size = CalculateThumbSize(image.Size, maxSize, twoBounds);
 
                 using (Image thumb = image.GetThumbnailImage(size.Width, size.Height,
                     () => false, IntPtr.Zero))
                 {
-                    thumb.Save(pathToThumbnail, ImageFormat.Jpeg);
+                    // todo: there are many formats
+                    thumb.Save(thumbnailPath, ImageFormat.Jpeg);
                 }
             }
         }
@@ -81,95 +70,21 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             return pathUtil.CustomAvatarPath;
         }
 
+        public void CreateAvatarThumbnails(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
         private string MakeRandomFileName()
         {
             return Randomizer.GetString(10);
         }
 
-        public string CreateCollageIfNotExist(int width, int rows)
+        public IEnumerable<string> GetThumbnails(int userId, int albumId, ImageSize imageSize)
         {
-            string path = pathUtil.BuildAbsoluteCollagesDirPath(userId, albumId);
+            string thumbnailsDirectoryPath = pathUtil.BuildAbsoluteThumbnailsDirPath(userId, albumId, imageSize);
 
-            if (Directory.Exists(path))
-            {
-                string s = ImageFormatHelper.GetImages(path).ToList().First();
-                if (s != null)
-                    return pathUtil.GetEndUserReference(s);
-            }
-
-            return MakeCollage(width, rows);
-        }
-
-        public IEnumerable<string> GetThumbnails()
-        {
-            string fullPath = pathUtil.BuildAbsoluteThumbnailsDirPath(userId, albumId, maxHeight);
-
-            if (Directory.Exists(fullPath))
-                return ImageFormatHelper.GetImages(fullPath);
-
-            return null;
-        }
-
-        private void TileTheImage(Graphics grfx, IEnumerable<string> enumerable, int width, int heigth)
-        {
-            int iter = 0;
-            int sumWidth = 0;
-            foreach (string file in enumerable)
-            {
-                using (Image thumbImage = Image.FromFile(file))
-                {
-                    grfx.DrawImageUnscaled(thumbImage, sumWidth, iter);
-                    sumWidth += thumbImage.Width;
-                    if (sumWidth >= width)
-                    {
-                        sumWidth = 0;
-                        iter += maxHeight;
-                        if (iter >= heigth)
-                            break;
-                    }
-                }
-            }
-        }
-
-        private void SetUpGraphics(Graphics grfx)
-        {
-            grfx.CompositingQuality = CompositingQuality.HighQuality;
-            grfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            grfx.SmoothingMode = SmoothingMode.HighQuality;
-        }
-
-        public string MakeCollage(int width, int rows)
-        {
-            int height = rows*maxHeight;
-            string pathToCollage = CreatePathToCollage(userId, albumId);
-            string pathToCollages = pathUtil.BuildAbsoluteCollagesDirPath(userId, albumId);
-
-            using (Image img = new Bitmap(width, height))
-            {
-                Graphics grfx = Graphics.FromImage(img);
-                SetUpGraphics(grfx);
-
-                TileTheImage(grfx, Randomizer.GetEnumerator(GetThumbnails()), width, height);
-
-                CreateDirectoriesIfNotExists(pathToCollages);
-                img.Save(pathToCollage, ImageFormat.Jpeg);
-            }
-            return pathUtil.GetEndUserReference(pathToCollage);
-        }
-
-        private string CreatePathToCollage(int userId, int albumId)
-        {
-            string absolutePhotoDirectoryPath = pathUtil.BuildAbsolutePhotoDirectoryPath();
-
-            return Path.Combine(absolutePhotoDirectoryPath, userId.ToString(), albumId.ToString(),
-                COLLAGES_DIRECTORY_NAME,
-                MakeFileName(Randomizer.GetString(10), "jpg"));
-        }
-
-        // todo! deprecated
-        public string MakeFileName(string name, string ext)
-        {
-            return string.Format("{0}.{1}", name, ext);
+            return Directory.EnumerateFiles(thumbnailsDirectoryPath);
         }
 
         private static Size CalculateThumbSize(Size size, int maxSize, bool twoBounds)

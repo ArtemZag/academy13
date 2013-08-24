@@ -65,6 +65,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 if (secureService.CanUserViewPhotos(userId, albumId))
                 {
                     var processor = new PhotoProcessor(userId, albumId, heightOfOneLineInTheCollage, pathUtil);
+
                     List<PhotoModel> photos =
                         unit.Photos.Filter(
                             photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();

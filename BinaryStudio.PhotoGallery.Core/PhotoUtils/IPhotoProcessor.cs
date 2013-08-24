@@ -4,20 +4,12 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
     public interface IPhotoProcessor
     {
-        bool CreateThumbnailsIfNotExist();
-
-        bool DeleteThumbnailsIfOriginalNotExist();
-
         void CreateThumbnail(int userId, int albumId, int photoId, string format, ImageSize imageSize);
 
-        string CreateCollageIfNotExist(int width, int rows);
+        string GetUserAvatar(ImageSize size);
 
-        IEnumerable<string> GetThumbnails();
+        void CreateAvatarThumbnails(int userId);
 
-        void SetUpForRandomEnumerable(IEnumerable<string> arr);
-
-        string MakeCollage(int width, int rows);
-
-        IEnumerable<string> GetEnumerator();
+        IEnumerable<string> GetThumbnails(int userId, int albumId, ImageSize imageSize);
     }
 }
