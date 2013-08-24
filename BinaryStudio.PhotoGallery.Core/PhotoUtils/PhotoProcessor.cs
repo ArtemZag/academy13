@@ -22,13 +22,33 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             if (File.Exists(originalPhotoPath))
             {
-                string absoluteThumbnailPath = pathUtil.BuildAbsoluteThumbailPath(userId, albumId, photoId, format, imageSize);
+                string absoluteThumbnailPath = pathUtil.BuildAbsoluteThumbailPath(userId, albumId, photoId, format,
+                    imageSize);
 
                 if (!File.Exists(absoluteThumbnailPath))
                 {
-                    ThumbnailCreationAction(originalPhotoPath, absoluteThumbnailPath, (int)imageSize, false);
+                    ThumbnailCreationAction(originalPhotoPath, absoluteThumbnailPath, (int) imageSize, false);
                 }
             }
+        }
+
+        public void CreateAvatarThumbnails(int userId)
+        {
+            string originalAvatarPath = pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Original);
+
+            if (File.Exists(originalAvatarPath))
+            {
+                CreateSmallAvatar(userId, originalAvatarPath);
+                CreateMediumAvatar(userId, originalAvatarPath);
+                CreateBigAvatar(userId, originalAvatarPath);
+            }
+        }
+
+        public IEnumerable<string> GetThumbnails(int userId, int albumId, ImageSize imageSize)
+        {
+            string thumbnailsDirectoryPath = pathUtil.BuildAbsoluteThumbnailsDirPath(userId, albumId, imageSize);
+
+            return Directory.EnumerateFiles(thumbnailsDirectoryPath);
         }
 
         private void ThumbnailCreationAction(string imagePath, string thumbnailPath, int maxSize, bool twoBounds)
@@ -46,52 +66,33 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
-        public void CreateAvatarThumbnails(int userId)
-        {
-            string originalAvatarPath = pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Original);
-
-            if (File.Exists(originalAvatarPath))
-            {
-                CreateSmallAvatar(userId, originalAvatarPath);
-                CreateMediumAvatar(userId, originalAvatarPath);
-                CreateBigAvatar(userId, originalAvatarPath);
-            }
-        }
-
         private void CreateBigAvatar(int userId, string originalAvatarPath)
         {
             string path = pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Big);
 
-            ThumbnailCreationAction(originalAvatarPath, path, (int)ImageSize.Big, true);
+            ThumbnailCreationAction(originalAvatarPath, path, (int) ImageSize.Big, true);
         }
 
         private void CreateMediumAvatar(int userId, string originalAvatarPath)
         {
             string path = pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Medium);
 
-            ThumbnailCreationAction(originalAvatarPath, path, (int)ImageSize.Medium, true);
+            ThumbnailCreationAction(originalAvatarPath, path, (int) ImageSize.Medium, true);
         }
 
         private void CreateSmallAvatar(int userId, string originalAvatarPath)
         {
             string path = pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Medium);
 
-            ThumbnailCreationAction(originalAvatarPath, path, (int)ImageSize.Medium, true);
+            ThumbnailCreationAction(originalAvatarPath, path, (int) ImageSize.Medium, true);
         }
 
-        public IEnumerable<string> GetThumbnails(int userId, int albumId, ImageSize imageSize)
-        {
-            string thumbnailsDirectoryPath = pathUtil.BuildAbsoluteThumbnailsDirPath(userId, albumId, imageSize);
-
-            return Directory.EnumerateFiles(thumbnailsDirectoryPath);
-        }
-
-        private static Size CalculateThumbSize(Size size, int maxSize, bool twoBounds)
+        private Size CalculateThumbSize(Size size, int maxSize, bool twoBounds)
         {
             if (twoBounds)
             {
                 if (size.Width > size.Height)
-                    return new Size(maxSize, (int) (((double) size.Height/size.Width)*maxSize));
+                    return new Size(maxSize, (int) (((double) size.Height/size.Width) * maxSize));
             }
 
             return new Size((int) (((double) size.Width/size.Height)*maxSize), maxSize);

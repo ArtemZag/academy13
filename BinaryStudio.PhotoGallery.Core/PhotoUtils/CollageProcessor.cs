@@ -45,6 +45,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             if (Directory.Exists(path))
             {
                 string s = ImageFormatHelper.GetImages(path).ToList().First();
+
                 if (s != null)
                     return pathUtil.GetEndUserReference(s);
             }
