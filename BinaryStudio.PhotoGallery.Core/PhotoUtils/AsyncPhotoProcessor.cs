@@ -90,11 +90,11 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public string CreateThumbnail(int userId, int albumId, PhotoModel model, int maxSize)
         {
-            var origin = util.BuildPathToOriginalFileOnServer(userId, albumId, model);
+            var origin = util.BuildAbsoluteOriginalPhotoPath(userId, albumId, model);
             
             if (File.Exists(origin))
             {
-                var thumbnail = util.BuildPathToThumbnailFileOnServer(userId, albumId, maxSize, model);
+                var thumbnail = util.BuildAbsoluteThumbnailPath(userId, albumId, maxSize, model);
                 if (!File.Exists(thumbnail))
                     ThumbnailCreationAction(origin, thumbnail, maxSize, false);
                 
@@ -106,8 +106,8 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         private bool SyncCoupleFiles(int userId,int albumId, PhotoModel model, int maxSize,
                                      bool isCompressedByTwoBounds=false)
         {
-            string origin = util.BuildPathToOriginalFileOnServer(userId, albumId, model);
-            string thumbnail = util.BuildPathToThumbnailFileOnServer(userId, albumId, maxSize, model);
+            string origin = util.BuildAbsoluteOriginalPhotoPath(userId, albumId, model);
+            string thumbnail = util.BuildAbsoluteThumbnailPath(userId, albumId, maxSize, model);
             if (!File.Exists(origin))
             {
                 if (File.Exists(thumbnail))
@@ -164,7 +164,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         private void DeleteCollages()
         {
-            string path = util.BuildAbsoluteAlbumCollagesDirPath(userId, albumId);
+            string path = util.BuildAbsoluteCollagesDirPath(userId, albumId);
 
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
@@ -172,7 +172,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public string CreateCollageIfNotExist(int width, int rows)
         {
-            string path = util.BuildAbsoluteAlbumCollagesDirPath(userId, albumId);
+            string path = util.BuildAbsoluteCollagesDirPath(userId, albumId);
 
             if (Directory.Exists(path))
             {
@@ -226,7 +226,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         {
             var height = rows * maxHeight;
             var pathToCollage = util.CreatePathToCollage(userId, albumId);
-            var pathToCollages = util.BuildAbsoluteAlbumCollagesDirPath(userId, albumId);
+            var pathToCollages = util.BuildAbsoluteCollagesDirPath(userId, albumId);
 
             using (Image img = new Bitmap(width, height))
             {
@@ -239,6 +239,28 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                 img.Save(pathToCollage, ImageFormat.Jpeg);
             }
             return util.GetEndUserReference(pathToCollage);
+        }
+
+        private string CreatePathToCollage(int userId, int albumId)
+        {
+            string absolutePhotoDirectoryPath = util.BuildAbsolutePhotoDirectoryPath();
+
+            return Path.Combine(absolutePhotoDirectoryPath, userId.ToString(), albumId.ToString(),
+                COLLAGES_DIRECTORY_NAME,
+                MakeFileName(Randomizer.GetString(10), "jpg"));
+        }
+
+        // todo! do something!
+        public string GetEndUserReference(string absolutePath)
+        {
+            int index = absolutePath.LastIndexOf(@"data\photos");
+            return absolutePath.Remove(0, index - 1).Replace(@"\", "/");
+        }
+
+        // todo! deprecated
+        public string MakeFileName(string name, string ext)
+        {
+            return string.Format("{0}.{1}", name, ext);
         }
 
         private static Size CalculateThumbSize(Size size, int maxSize, bool twoBounds)

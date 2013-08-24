@@ -1,4 +1,5 @@
 ﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
@@ -139,8 +140,8 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             UserModel user = userService.GetUser(photoModel.OwnerId);
             string userName = user.FirstName + " " + user.LastName;
 
-            string thumbnailPath = pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
-                photoModel.Format);
+            string thumbnailPath = pathUtil.BuildPhotoThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
+                photoModel.Format, ImageSize.Medium);
 
             return new PhotoFoundViewModel
             {

@@ -4,6 +4,8 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
     public interface IPathUtil
     {
+        string CustomAvatarPath { get; }
+
         /// <returns>Pattern: ~data\photos</returns>
         string BuildPhotoDirectoryPath();
 
@@ -13,46 +15,23 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         /// <returns>Pattern: ~data\photos\userId\albumId\photoId.format</returns>
         string BuildOriginalPhotoPath(int userId, int albumId, int photoId, string format);
 
-        /// <returns>Pattern: ~data\photos\userId\albumId\thumbnails</returns>
-        string BuildThumbnailsPath(int userId, int albumId);
-
         /// <returns>Pattern: ~data\photos\userId\avatar.jpg</returns>
-        string BuildAvatarPath(int userId);
+        string BuildAvatarPath(int userId, ImageSize imageSize);
 
-        // todo: change signature
-        /// <summary>
-        ///     Deprecated
-        /// </summary>
-        string BuildThumbnailPath(int userId, int albumId, int photoId, string format);
-
-        string BuildThumbnailPathSized(int userId, int albumId, int photoId, string format, int size);
-
-        /// <returns>Path in format "C:\\ololo\\ololo"</returns>
-        string BuildAbsoluteTemporaryDirectoryPath(int userId);
-
-        /// <returns>Path in format "C:\\ololo\\ololo"</returns>
-        string BuildAbsoluteTemporaryAlbumPath(int userId, int albumId);
+        string BuildPhotoThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize);
 
         string BuildAbsoluteUserDirPath(int userId);
 
-        string BuildAbsoluteAvatarPath(int userId, ImageSize size = ImageSize.Original);
+        string BuildAbsoluteAvatarPath(int userId, ImageSize imageSize);
 
         string BuildAbsoluteAlbumPath(int userId, int albumId);
 
-        string BuildAbsoluteThumbnailsDirPath(int userId, int albumId, int thumbnailsSize);
+        string BuildAbsoluteThumbnailsDirPath(int userId, int albumId, ImageSize imageSize);
 
-        string BuildAbsoluteAlbumCollagesDirPath(int userId, int albumId);
+        string BuildAbsoluteCollagesDirPath(int userId, int albumId);
 
-        string GetEndUserReference(string absolutePath);
+        string BuildAbsoluteOriginalPhotoPath(int userId, int albumId, int photoId, string format);
 
-        string MakeFileName(string name, string ext);
-
-        string BuildPathToOriginalFileOnServer(int userId, int albumId, int photoId, string format);
-
-        string BuildPathToThumbnailFileOnServer(int userId, int albumId, int photoId, string format, int thumbnailsSize);
-
-        string CustomAvatarPath { get; }
-
-        string CreatePathToCollage(int userId, int albumId);
+        string BuildAbsoluteThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize);
     }
 }
