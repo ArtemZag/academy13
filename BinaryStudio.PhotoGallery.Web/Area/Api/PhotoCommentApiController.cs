@@ -9,6 +9,7 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
@@ -32,11 +33,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 var viewModels = new List<PhotoCommentViewModel>();
 
-                var models = _photoCommentService.GetPhotoComments(User.Id, photoId, skip, take);
+                var photoComments = _photoCommentService.GetPhotoComments(User.Id, photoId, skip, take);
 
-                viewModels.AddRange(from model in models
-                                    let userModel = _userService.GetUser(model.UserId)
-                                    select PhotoCommentViewModel.FromModel(model, userModel));
+                viewModels.AddRange(from commentModel in photoComments
+                                    let userModel = _userService.GetUser(commentModel.UserId)
+                                    select commentModel.ToPhotoCommentViewModel(userModel));
 
                 return Request.CreateResponse(HttpStatusCode.OK, viewModels, new JsonMediaTypeFormatter());
             }

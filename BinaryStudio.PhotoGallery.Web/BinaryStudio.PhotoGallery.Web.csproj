@@ -246,6 +246,8 @@
     <Compile Include="CustomStructure\CustomPrincipal.cs" />
     <Compile Include="CustomStructure\ICustomPrincipal.cs" />
     <Compile Include="Extensions\HtmlHelperExtentions.cs" />
+    <Compile Include="Extensions\ViewModels\PhotoConvertionExtensions.cs" />
+    <Compile Include="Extensions\ViewModels\UserConvertionExtensions.cs" />
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -274,7 +276,7 @@
     <Compile Include="ViewModels\Authorization\SignupViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\Photo\UserInfoViewModel.cs" />
-    <Compile Include="Extensions\ViewModelExtensions.cs" />
+    <Compile Include="Extensions\ViewModels\AlbumConvertionExtensions.cs" />
     <Content Include="Content\album-page.css" />
     <Content Include="Content\profile-page.css" />
     <Content Include="Content\images\camera.png" />
@@ -451,7 +453,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\FlowPage\" />
-    <Folder Include="ViewModels\Album\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

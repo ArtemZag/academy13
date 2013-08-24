@@ -10,6 +10,7 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
@@ -32,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 IEnumerable<PhotoModel> photoModels = _photoService.GetPhotos(User.Id, albumId, skip, take);
 
-                List<PhotoViewModel> photoViewModels = photoModels.Select(PhotoViewModel.FromModel).ToList();
+                List<PhotoViewModel> photoViewModels = photoModels.Select(model => model.ToPhotoViewModel()).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, photoViewModels, new JsonMediaTypeFormatter());
             }
@@ -53,7 +54,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 List<PhotoLikeViewModel> photoLikeViewModels = _photoService
                     .GetLikes(User.Id, photoId)
-                    .Select(PhotoLikeViewModel.FromModel)
+                    .Select(model => model.ToPhotoLikeViewModel())
                     .ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, photoLikeViewModels, new JsonMediaTypeFormatter());
@@ -78,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 // TODO COSTIL
                 List<PhotoLikeViewModel> photoLikeViewModels = _photoService
                     .GetLikes(User.Id, photoId)
-                    .Select(PhotoLikeViewModel.FromModel)
+                    .Select(model => model.ToPhotoLikeViewModel())
                     .ToList();
 
                 return Request.CreateResponse(HttpStatusCode.Created, photoLikeViewModels, new JsonMediaTypeFormatter());
@@ -96,7 +97,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 List<PhotoViewModel> viewModels = _photoService
                     .GetPhotos(User.Id, skip, take)
-                    .Select(PhotoViewModel.FromModel).ToList();
+                    .Select(model => model.ToPhotoViewModel()).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, viewModels, new JsonMediaTypeFormatter());
             }
@@ -113,7 +114,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 List<PhotoViewModel> viewModels = _photoService
                     .GetPublicPhotos(User.Id, skip, take)
-                    .Select(PhotoViewModel.FromModel).ToList();
+                    .Select(model => model.ToPhotoViewModel()).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, viewModels, new JsonMediaTypeFormatter());
             }
@@ -128,9 +129,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-                PhotoModel photoModel = _photoService.GetPhoto(User.Id, photoId);
+                var photoModel = _photoService.GetPhoto(User.Id, photoId);
 
-                PhotoViewModel photoViewModel = PhotoViewModel.FromModel(photoModel);
+                var photoViewModel = photoModel.ToPhotoViewModel();
 
                 return Request.CreateResponse(HttpStatusCode.OK, photoViewModel, new JsonMediaTypeFormatter());
             }
@@ -151,7 +152,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 List<PhotoViewModel> photosByTags = _photoService
                     .GetPhotosByTags(User.Id, photoId, 0, 10)
-                    .Select(PhotoViewModel.FromModel)
+                    .Select(model => model.ToPhotoViewModel())
                     .ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, photosByTags, new JsonMediaTypeFormatter());

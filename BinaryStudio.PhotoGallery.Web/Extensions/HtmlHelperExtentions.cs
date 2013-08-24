@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using BinaryStudio.PhotoGallery.Core.Extensions;
@@ -77,13 +76,9 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions
             {
                 InnerHtml = imageTag.ToString()
             };
-            
-
-//            linkTag.MergeAttributes(htmlAttributes.ToDictionary(), false);
-
             linkTag.Attributes.Add("href", linkHref);
-            Trace.WriteLine(linkTag.ToString());
-            Trace.WriteLine(linkHref);
+            linkTag.MergeAttributes(htmlAttributes.ToDictionary(), false);
+            
 
             return MvcHtmlString.Create(linkTag.ToString(TagRenderMode.Normal));
         }

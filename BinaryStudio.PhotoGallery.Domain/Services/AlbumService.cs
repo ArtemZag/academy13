@@ -164,25 +164,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public bool IsExist(int userId, string albumName)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel userModel = GetUser(userId, unitOfWork);
-
-                if (userModel == null)
-                {
-                    throw new UserNotFoundException(string.Format("Can't find user with id={0}", userId));
-                }
-
-                AlbumModel albumModel =
-                    unitOfWork.Albums.Find(album => album.Name == albumName && album.OwnerId == userModel.Id);
-
-                return albumModel != null;
-
-            }
-        }
-
         public IEnumerable<AlbumModel> GetAvailableAlbums(int userId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

@@ -35,7 +35,7 @@
     downloadNextPartionOfAlbums();
 
     function downloadUserInfo() {
-        $.get("/albums/user", getInfo);
+        $.get("api/user", getInfo);
     }
 
     function resizeTable() {
@@ -43,12 +43,11 @@
     }
 
     function getInfo(inf) {
-        info.html(
-            $("#userTmpl").render(inf));
+        info.html($("#userTmpl").render(inf));
     }
 
     function downloadNextPartionOfAlbums() {
-        $.get("/albums/" + skipCount + "/" + takeAlbumsCount, getAlbums);
+        $.get("api/album", { userId: 5, skip: skipCount, take: takeAlbumsCount }, getAlbums);
         skipCount += takeAlbumsCount;
     }
     function getAlbums(albums) {

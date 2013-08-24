@@ -45,11 +45,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         void DeleteAlbum(int userId, int albumId);
 
         /// <summary>
-        ///     Checks if album exist
-        /// </summary>
-        bool IsExist(int userId, string albumName);
-
-        /// <summary>
         ///     Get all available albums for specified user
         /// </summary>
         IEnumerable<AlbumModel> GetAvailableAlbums(int userId);
