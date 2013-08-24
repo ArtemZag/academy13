@@ -27,7 +27,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 if (unit.Users.Contains(user => user.Id == userId))
                 {
-                    var processor = new AsyncPhotoProcessor(userId, _util);
+                    var processor = new PhotoProcessor(userId, _util);
                     return processor.GetUserAvatar(size);
                 }
                 throw new UserNotFoundException(
@@ -41,11 +41,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 if (_secureService.CanUserViewPhotos(userId, albumId))
                 {
-                    var processor = new AsyncPhotoProcessor(userId, albumId, 64, _util);
+                    var processor = new PhotoProcessor(userId, albumId, 64, _util);
                     List<PhotoModel> photos =
                         unit.Photos.Filter(
                             photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
-                    processor.SyncOriginalAndThumbnailImages(photos);
+
                     return processor.GetThumbnails();
                 }
 
@@ -62,11 +62,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 if (_secureService.CanUserViewPhotos(userId, albumId))
                 {
-                    var processor = new AsyncPhotoProcessor(userId, albumId, heightOfOneLineInTheCollage, _util);
+                    var processor = new PhotoProcessor(userId, albumId, heightOfOneLineInTheCollage, _util);
                     List<PhotoModel> photos =
                         unit.Photos.Filter(
                             photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
-                    processor.SyncOriginalAndThumbnailImages(photos);
+
                     return processor.CreateCollageIfNotExist(collageWidth, numberOfLines);
                 }
 
@@ -93,7 +93,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             if (_secureService.CanUserViewPhotos(userId, albumId))
             {
-                var processor = new AsyncPhotoProcessor(userId, albumId, maxHeight, _util);
+                var processor = new PhotoProcessor(userId, albumId, maxHeight, _util);
                 return processor.CreateThumbnail(userId, albumId, model, maxHeight);
             }
             throw new AccessViolationException(

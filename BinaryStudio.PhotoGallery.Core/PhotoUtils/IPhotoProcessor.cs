@@ -8,8 +8,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         bool DeleteThumbnailsIfOriginalNotExist();
 
-        void SyncOriginalAndThumbnailImages();
-
         string CreateCollageIfNotExist(int width, int rows);
 
         IEnumerable<string> GetThumbnails();
