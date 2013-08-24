@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
@@ -18,18 +16,18 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         private const string CUSTOM_AVATAR_PATH = @"~\Content\images\no_avatar.png";
 
-        /// <returns>Pattern: ~data\photos</returns>
-        public string BuildPhotoDirectoryPath()
-        {
-            var builder = new StringBuilder();
-            builder.Append(GetDataDirectory())
-                .Append(DELIMITER)
-                .Append(PHOTOS_DIRECTORY_NAME);
+        private const string ORIGINAL_AVATAR_FILENAME = "avatar";
+        private const string AVATAR_FILE_EXTENSION = ".jpg";
 
-            return builder.ToString();
+        // todo: check 
+        public string CustomAvatarPath
+        {
+            get { return CUSTOM_AVATAR_PATH; }
         }
 
-        /// <returns>Pattern: ~data\photos\userId\albumId</returns>
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\albumId
+        /// </summary>
         public string BuildAlbumPath(int userId, int albumId)
         {
             var builder = new StringBuilder(BuildUserPath(userId));
@@ -39,7 +37,9 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        /// <returns>Pattern: ~data\photos\userId\albumId\photoId.format</returns>
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\albumId\photoId.format
+        /// </summary>
         public string BuildOriginalPhotoPath(int userId, int albumId, int photoId, string format)
         {
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
@@ -50,79 +50,60 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        /// <returns>Pattern: ~data\photos\userId\albumId\imageSize\photoId.format</returns>
-        public string BuildPhotoThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize)
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\albumId\imageSize\photoId.format
+        /// </summary>
+        public string BuildThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize)
         {
-            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
+            var builder = new StringBuilder(BuildThumbnailsDirPath(userId, albumId, imageSize));
 
             builder.Append(DELIMITER)
-                .Append((int)imageSize)
-                .Append(DELIMITER)
                 .Append(photoId)
                 .Append(MakeExtension(format));
 
             return builder.ToString();
         }
 
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\[Small|Medium|Big]avatar.jpg
+        /// </summary>
         public string BuildAvatarPath(int userId, ImageSize imageSize)
         {
-            const string AVATAR_FILE_NAME = "avatar.jpg";
-
             var builder = new StringBuilder(BuildUserPath(userId));
-            builder.Append(DELIMITER)
-                .Append(AVATAR_FILE_NAME);
 
-            if (!File.Exists(HostingEnvironment.MapPath(builder.ToString())))
-            {
-                builder.Clear();
-
-                builder.Append(GetCustomAvatar());
-            }
+            builder.Append(imageSize)
+                .Append(ORIGINAL_AVATAR_FILENAME)
+                .Append(AVATAR_FILE_EXTENSION);
 
             return builder.ToString();
         }
 
-        public string BuildAbsoluteUserDirPath(int userId)
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\avatar.jpg
+        /// </summary>
+        public string BuildOriginalAvatarPath(int userId)
         {
-            string userVirtualPath = BuildUserPath(userId);
+            var builder = new StringBuilder(BuildUserPath(userId));
 
-            return HostingEnvironment.MapPath(userVirtualPath);
+            builder.Append(ORIGINAL_AVATAR_FILENAME)
+                .Append(AVATAR_FILE_EXTENSION);
+
+            return builder.ToString();
         }
 
-        // todo! it's need refactoring!
-        public string BuildAbsoluteAvatarPath(int userId, ImageSize size)
+        public string BuildAbsoluteAvatarPath(int userId, ImageSize imageSize)
         {
-            string userDirectoryPath = BuildAbsoluteUserDirPath(userId);
-
-            switch (size)
-            {
-                case ImageSize.Original:
-                    return Path.Combine(userDirectoryPath, "avatar.jpg");
-                case ImageSize.Small:
-                    return Path.Combine(userDirectoryPath, "smallAvatar.jpg");
-                case ImageSize.Medium:
-                    return Path.Combine(userDirectoryPath, "mediumAvatar.jpg");
-                case ImageSize.Big:
-                    return Path.Combine(userDirectoryPath, "bigAvatar.jpg");
-            }
+            return HostingEnvironment.MapPath(BuildAvatarPath(userId, imageSize));
         }
 
         public string BuildAbsoluteAlbumPath(int userId, int albumId)
         {
-            string albumVirtualPath = BuildAlbumPath(userId, albumId);
-
-            return HostingEnvironment.MapPath(albumVirtualPath);
+            return HostingEnvironment.MapPath(BuildAlbumPath(userId, albumId));
         }
 
-        // todo! do something!
-        public string BuildAbsoluteThumbnailsDirPath(int userId, int albumId, ImageSize imageSize)
+        public string BuildAbsoluteThumbnailsDirPath(int userId, int albumId, ImageSize size)
         {
-            string absolutePhotoDirectoryPath = BuildAbsolutePhotoDirectoryPath();
-
-            return Path.Combine(absolutePhotoDirectoryPath, userId.ToString(),
-                albumId.ToString(),
-                THUMBNAILS_DIRECTORY_NAME,
-                thumbnailsSize.ToString());
+            return HostingEnvironment.MapPath(BuildThumbnailsDirPath(userId, albumId, size));
         }
 
         public string BuildAbsoluteCollagesDirPath(int userId, int albumId)
@@ -137,26 +118,44 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return HostingEnvironment.MapPath(virtualCollagesDirectoryPath);
         }
 
-        public string CustomAvatarPath
-        {
-            get { return CUSTOM_AVATAR_PATH; }
-        }
-
         public string BuildAbsoluteOriginalPhotoPath(int userId, int albumId, int photoId, string format)
         {
-            string virtualOriginalPhotoPath = BuildOriginalPhotoPath(userId, albumId, photoId, format);
-
-            return HostingEnvironment.MapPath(virtualOriginalPhotoPath);
+            return HostingEnvironment.MapPath(BuildOriginalPhotoPath(userId, albumId, photoId, format));
         }
 
-        public string BuildAbsoluteThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize)
+        /// <summary>
+        ///     Pattern: ~data\photos
+        /// </summary>
+        private string BuildPhotoDirectoryPath()
         {
-            throw new NotImplementedException();
+            var builder = new StringBuilder();
+            builder.Append(GetDataDirectory())
+                .Append(DELIMITER)
+                .Append(PHOTOS_DIRECTORY_NAME);
+
+            return builder.ToString();
         }
 
-        public string BuildUserPath(int userId)
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\albumId\size
+        /// </summary>
+        private string BuildThumbnailsDirPath(int userId, int albumId, ImageSize size)
+        {
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
+
+            builder.Append(DELIMITER)
+                .Append((int) size);
+
+            return builder.ToString();
+        }
+
+        /// <summary>
+        ///     Pattern: ~data\photos\userId
+        /// </summary>
+        private string BuildUserPath(int userId)
         {
             var builder = new StringBuilder(BuildPhotoDirectoryPath());
+
             builder.Append(DELIMITER)
                 .Append(userId);
             return builder.ToString();
@@ -164,9 +163,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string BuildAbsolutePhotoDirectoryPath()
         {
-            string virtualPhotoDirectoryPath = BuildPhotoDirectoryPath();
-
-            return HostingEnvironment.MapPath(virtualPhotoDirectoryPath);
+            return HostingEnvironment.MapPath(BuildPhotoDirectoryPath());
         }
 
         private string MakeExtension(string format)
@@ -177,11 +174,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private string GetDataDirectory()
         {
             return VirtualPathUtility.ToAbsolute(DATA_DIRECTORY_NAME);
-        }
-
-        private string GetCustomAvatar()
-        {
-            return VirtualPathUtility.ToAbsolute(CUSTOM_AVATAR_PATH);
         }
     }
 }

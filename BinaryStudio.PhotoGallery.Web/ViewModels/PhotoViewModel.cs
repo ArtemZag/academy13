@@ -26,11 +26,8 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
                 photoModel.Id,
                 photoModel.Format);
 
-            string photoThumbSource = pathUtil.GetEndUserReference(pathUtil.BuildAbsoluteThumbnailPath(
-                photoModel.OwnerId,
-                photoModel.AlbumId,
-                64,
-                photoModel));
+            // todo
+            string photoThumbSource = string.Empty;
 
             var viewModel = new PhotoViewModel
             {

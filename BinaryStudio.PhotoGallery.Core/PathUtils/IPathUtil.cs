@@ -6,32 +6,39 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
     {
         string CustomAvatarPath { get; }
 
-        /// <returns>Pattern: ~data\photos</returns>
-        string BuildPhotoDirectoryPath();
-
-        /// <returns>Pattern: ~data\photos\userId\albumId</returns>
-        string BuildAlbumPath(int userId, int albumId);
-
-        /// <returns>Pattern: ~data\photos\userId\albumId\photoId.format</returns>
-        string BuildOriginalPhotoPath(int userId, int albumId, int photoId, string format);
-
-        /// <returns>Pattern: ~data\photos\userId\avatar.jpg</returns>
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\[Small|Medium|Big]avatar.jpg
+        /// </summary>
         string BuildAvatarPath(int userId, ImageSize imageSize);
 
-        string BuildPhotoThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize);
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\albumId
+        /// </summary>
+        string BuildAlbumPath(int userId, int albumId);
 
-        string BuildAbsoluteUserDirPath(int userId);
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\albumId\photoId.format
+        /// </summary>
+        string BuildOriginalPhotoPath(int userId, int albumId, int photoId, string format);
+
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\avatar.jpg
+        /// </summary>
+        string BuildOriginalAvatarPath(int userId);
+
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\albumId\imageSize\photoId.format
+        /// </summary>
+        string BuildThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize);
 
         string BuildAbsoluteAvatarPath(int userId, ImageSize imageSize);
 
         string BuildAbsoluteAlbumPath(int userId, int albumId);
 
-        string BuildAbsoluteThumbnailsDirPath(int userId, int albumId, ImageSize imageSize);
+        string BuildAbsoluteThumbnailsDirPath(int userId, int albumId, ImageSize size);
 
         string BuildAbsoluteCollagesDirPath(int userId, int albumId);
 
         string BuildAbsoluteOriginalPhotoPath(int userId, int albumId, int photoId, string format);
-
-        string BuildAbsoluteThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize);
     }
 }

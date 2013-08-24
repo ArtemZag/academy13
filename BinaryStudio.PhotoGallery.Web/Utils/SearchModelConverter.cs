@@ -140,7 +140,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             UserModel user = userService.GetUser(photoModel.OwnerId);
             string userName = user.FirstName + " " + user.LastName;
 
-            string thumbnailPath = pathUtil.BuildPhotoThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
+            string thumbnailPath = pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
                 photoModel.Format, ImageSize.Medium);
 
             return new PhotoFoundViewModel
