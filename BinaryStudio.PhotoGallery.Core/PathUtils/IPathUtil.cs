@@ -35,6 +35,8 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         string BuildAbsoluteAlbumPath(int userId, int albumId);
 
+        string BuildAbsoluteThumbailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize);
+
         string BuildAbsoluteThumbnailsDirPath(int userId, int albumId, ImageSize size);
 
         string BuildAbsoluteCollagesDirPath(int userId, int albumId);

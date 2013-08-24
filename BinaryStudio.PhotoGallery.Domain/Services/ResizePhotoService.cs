@@ -11,14 +11,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class ResizePhotoService : DbService, IResizePhotoService
     {
-        private readonly ISecureService _secureService;
-        private readonly IPathUtil _util;
+        private readonly ISecureService secureService;
+        private readonly IPathUtil pathUtil;
+        private readonly IPhotoProcessor photoProcessor;
 
-        public ResizePhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IPathUtil util)
+        public ResizePhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IPathUtil pathUtil, IPhotoProcessor photoProcessor)
             : base(workFactory)
         {
-            _secureService = secureService;
-            _util = util;
+            this.secureService = secureService;
+            this.pathUtil = pathUtil;
+            this.photoProcessor = photoProcessor;
         }
 
         public string GetUserAvatar(int userId, ImageSize size)
@@ -27,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 if (unit.Users.Contains(user => user.Id == userId))
                 {
-                    var processor = new PhotoProcessor(userId, _util);
+                    var processor = new PhotoProcessor(userId, pathUtil);
                     return processor.GetUserAvatar(size);
                 }
                 throw new UserNotFoundException(
@@ -39,9 +41,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unit = WorkFactory.GetUnitOfWork())
             {
-                if (_secureService.CanUserViewPhotos(userId, albumId))
+                if (secureService.CanUserViewPhotos(userId, albumId))
                 {
-                    var processor = new PhotoProcessor(userId, albumId, 64, _util);
+                    var processor = new PhotoProcessor(userId, albumId, 64, pathUtil);
                     List<PhotoModel> photos =
                         unit.Photos.Filter(
                             photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
@@ -60,9 +62,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unit = WorkFactory.GetUnitOfWork())
             {
-                if (_secureService.CanUserViewPhotos(userId, albumId))
+                if (secureService.CanUserViewPhotos(userId, albumId))
                 {
-                    var processor = new PhotoProcessor(userId, albumId, heightOfOneLineInTheCollage, _util);
+                    var processor = new PhotoProcessor(userId, albumId, heightOfOneLineInTheCollage, pathUtil);
                     List<PhotoModel> photos =
                         unit.Photos.Filter(
                             photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
@@ -79,7 +81,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unit = WorkFactory.GetUnitOfWork())
             {
-                if (_secureService.CanUserViewPhotos(userId, albumId))
+                if (secureService.CanUserViewPhotos(userId, albumId))
                     return
                         unit.Photos.Filter(
                             photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
@@ -91,9 +93,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public string GetThumbnail(int userId, int albumId, PhotoModel model, int maxHeight)
         {
-            if (_secureService.CanUserViewPhotos(userId, albumId))
+            if (secureService.CanUserViewPhotos(userId, albumId))
             {
-                var processor = new PhotoProcessor(userId, albumId, maxHeight, _util);
+                var processor = new PhotoProcessor(userId, albumId, maxHeight, pathUtil);
                 return processor.CreateThumbnail(userId, albumId, model, maxHeight);
             }
             throw new AccessViolationException(

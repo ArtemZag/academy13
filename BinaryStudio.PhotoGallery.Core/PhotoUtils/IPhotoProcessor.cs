@@ -2,11 +2,13 @@
 
 namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
-    internal interface IAsyncPhotoProcessor
+    public interface IPhotoProcessor
     {
         bool CreateThumbnailsIfNotExist();
 
         bool DeleteThumbnailsIfOriginalNotExist();
+
+        void CreateThumbnail(int userId, int albumId, int photoId, string format, ImageSize imageSize);
 
         string CreateCollageIfNotExist(int width, int rows);
 

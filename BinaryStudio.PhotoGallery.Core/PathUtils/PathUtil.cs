@@ -101,6 +101,11 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return HostingEnvironment.MapPath(BuildAlbumPath(userId, albumId));
         }
 
+        public string BuildAbsoluteThumbailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize)
+        {
+            return HostingEnvironment.MapPath(BuildThumbnailPath(userId, albumId, photoId, format, imageSize));
+        }
+
         public string BuildAbsoluteThumbnailsDirPath(int userId, int albumId, ImageSize size)
         {
             return HostingEnvironment.MapPath(BuildThumbnailsDirPath(userId, albumId, size));

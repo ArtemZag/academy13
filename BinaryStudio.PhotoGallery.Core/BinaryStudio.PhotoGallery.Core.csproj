@@ -68,7 +68,7 @@
     <Compile Include="PhotoUtils\ImageSize.cs" />
     <Compile Include="PhotoUtils\ImageFormatHelper.cs" />
     <Compile Include="Randomizer.cs" />
-    <Compile Include="PhotoUtils\IAsyncPhotoProcessor.cs" />
+    <Compile Include="PhotoUtils\IPhotoProcessor.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\FB.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFacebook.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFB.cs" />
@@ -84,7 +84,7 @@
     <Compile Include="UserUtils\CryptoProvider.cs" />
     <Compile Include="UserUtils\ICryptoProvider.cs" />
     <Compile Include="EmailUtils\EmailSender.cs" />
-    <Compile Include="PhotoUtils\AsyncPhotoProcessor.cs" />
+    <Compile Include="PhotoUtils\PhotoProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

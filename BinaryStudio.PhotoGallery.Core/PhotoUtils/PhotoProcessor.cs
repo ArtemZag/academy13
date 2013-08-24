@@ -5,17 +5,12 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
-using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
     public class PhotoProcessor
     {
-        private readonly int MinHeight;
-        private readonly int MaxHeight;
-
         private readonly int maxHeight;
 
         private readonly IPathUtil pathUtil;
@@ -53,6 +48,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             using (Image image = Image.FromFile(pathToOriginal))
             {
                 Size size = CalculateThumbSize(image.Size, maxSize, twoBounds);
+
                 using (Image thumb = image.GetThumbnailImage(size.Width, size.Height,
                     () => false, IntPtr.Zero))
                 {
@@ -64,32 +60,30 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         public string GetUserAvatar(ImageSize size)
         {
             var info = new FileInfo(pathUtil.BuildAbsoluteAvatarPath(userId, size));
+
             if (info.Exists)
                 return pathUtil.GetEndUserReference(info.FullName);
 
             var originalInfo = new FileInfo(pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Original));
+
             if (originalInfo.Exists)
             {
-                string tmpFile = Path.Combine(originalInfo.DirectoryName, MakeRandomFileName("jpg"));
+                string tmpFile = Path.Combine(originalInfo.DirectoryName, MakeRandomFileName());
+
                 ThumbnailCreationAction(originalInfo.FullName, tmpFile, (int) size, true);
+
                 File.Move(tmpFile, info.FullName);
                 File.Delete(tmpFile);
+
                 return pathUtil.GetEndUserReference(info.FullName);
             }
+
             return pathUtil.CustomAvatarPath;
         }
 
-        private string MakeRandomFileName(string ext)
+        private string MakeRandomFileName()
         {
-            return string.Format("{0}.{1}", Randomizer.GetString(10), ext);
-        }
-
-        private void DeleteCollages()
-        {
-            string path = pathUtil.BuildAbsoluteCollagesDirPath(userId, albumId);
-
-            if (Directory.Exists(path))
-                Directory.Delete(path, true);
+            return Randomizer.GetString(10);
         }
 
         public string CreateCollageIfNotExist(int width, int rows)
