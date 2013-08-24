@@ -59,10 +59,10 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public string GetUserAvatar(ImageSize size)
         {
-            var info = new FileInfo(pathUtil.BuildAbsoluteAvatarPath(userId, size));
+            var fileInfo = new FileInfo(pathUtil.BuildAbsoluteAvatarPath(userId, size));
 
-            if (info.Exists)
-                return pathUtil.GetEndUserReference(info.FullName);
+            if (fileInfo.Exists)
+                return pathUtil.GetEndUserReference(fileInfo.FullName);
 
             var originalInfo = new FileInfo(pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Original));
 
@@ -72,10 +72,10 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
                 ThumbnailCreationAction(originalInfo.FullName, tmpFile, (int) size, true);
 
-                File.Move(tmpFile, info.FullName);
+                File.Move(tmpFile, fileInfo.FullName);
                 File.Delete(tmpFile);
 
-                return pathUtil.GetEndUserReference(info.FullName);
+                return pathUtil.GetEndUserReference(fileInfo.FullName);
             }
 
             return pathUtil.CustomAvatarPath;
