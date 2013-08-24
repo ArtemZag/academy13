@@ -60,22 +60,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         public string GetCollage(int userId, int albumId, int collageWidth, int heightOfOneLineInTheCollage,
             int numberOfLines)
         {
-            using (IUnitOfWork unit = WorkFactory.GetUnitOfWork())
+            if (secureService.CanUserViewPhotos(userId, albumId))
             {
-                if (secureService.CanUserViewPhotos(userId, albumId))
-                {
-                    var processor = new PhotoProcessor(userId, albumId, heightOfOneLineInTheCollage, pathUtil);
-
-                    List<PhotoModel> photos =
-                        unit.Photos.Filter(
-                            photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
-
-                    return processor.CreateCollageIfNotExist(collageWidth, numberOfLines);
-                }
-
-                throw new AccessViolationException(
-                    string.Format("User with ID {0} dont have rights to access thumbnails", userId));
+                return photoProcessor.CreateCollageIfNotExist(collageWidth, numberOfLines);
             }
+
+            throw new AccessViolationException(
+                string.Format("User with ID {0} dont have rights to access thumbnails", userId));
         }
 
         public IEnumerable<PhotoModel> GetAvailablePhotos(int userId, int albumId)

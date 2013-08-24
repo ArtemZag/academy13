@@ -6,8 +6,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
     {
         void CreateThumbnail(int userId, int albumId, int photoId, string format, ImageSize imageSize);
 
-        string GetUserAvatar(ImageSize size);
-
         void CreateAvatarThumbnails(int userId);
 
         IEnumerable<string> GetThumbnails(int userId, int albumId, ImageSize imageSize);
