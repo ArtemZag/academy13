@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Models;
@@ -17,14 +15,14 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
     {
         private static readonly int MinHeight;
         private static readonly int MaxHeight;
+        private readonly int albumId;
 
-        private readonly IPathUtil util;
-        private readonly object syncRoot;
         private readonly int maxHeight;
+        private readonly object syncRoot;
 
         private readonly int userId;
-        private readonly int albumId;
-        
+        private readonly IPathUtil util;
+
         static AsyncPhotoProcessor()
         {
             MinHeight = 1;
@@ -37,11 +35,11 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             if (maxHeight < MinHeight)
                 throw new ArgumentException(string.Format("Invalid height. Parameter must be greater then {0}",
-                                                          MinHeight));
+                    MinHeight));
 
             if (maxHeight > MaxHeight)
                 throw new ArgumentException(string.Format("Invalid height. Parameter must be less or equal then {0}",
-                                                          MaxHeight));
+                    MaxHeight));
 
             this.albumId = albumId;
             this.util = util;
@@ -62,19 +60,19 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public void SyncOriginalAndThumbnailImages(IEnumerable<PhotoModel> models)
         {
-            var modified = false;
-            var pathToThumb = util.BuildAbsoluteThumbnailsDirPath(userId, albumId, maxHeight);
-            
+            bool modified = false;
+            string pathToThumb = util.BuildAbsoluteThumbnailsDirPath(userId, albumId, maxHeight);
+
             CreateDirectoriesIfNotExists(pathToThumb);
 
             Parallel.ForEach(models, new ParallelOptions {MaxDegreeOfParallelism = 1},
-                             model =>
-                                 {
-                                     var changes = SyncCoupleFiles(userId, albumId, model, maxHeight);   
+                model =>
+                {
+                    bool changes = SyncCoupleFiles(userId, albumId, model, maxHeight);
 
-                                     lock (syncRoot)
-                                         modified |= changes;
-                                 });
+                    lock (syncRoot)
+                        modified |= changes;
+                });
 
             if (modified)
                 DeleteCollages();
@@ -82,7 +80,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         private void CreateDirectoriesIfNotExists(params string[] paths)
         {
-            foreach (var path in paths.Where(path => !Directory.Exists(path)))
+            foreach (string path in paths.Where(path => !Directory.Exists(path)))
             {
                 Directory.CreateDirectory(path);
             }
@@ -90,21 +88,21 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public string CreateThumbnail(int userId, int albumId, PhotoModel model, int maxSize)
         {
-            var origin = util.BuildAbsoluteOriginalPhotoPath(userId, albumId, model);
-            
+            string origin = util.BuildAbsoluteOriginalPhotoPath(userId, albumId, model);
+
             if (File.Exists(origin))
             {
                 var thumbnail = util.BuildAbsoluteThumbnailPath(userId, albumId, maxSize, model);
                 if (!File.Exists(thumbnail))
                     ThumbnailCreationAction(origin, thumbnail, maxSize, false);
-                
+
                 return util.GetEndUserReference(thumbnail);
             }
             throw new FileNotFoundException(string.Format("File: {0} not found", origin));
         }
 
-        private bool SyncCoupleFiles(int userId,int albumId, PhotoModel model, int maxSize,
-                                     bool isCompressedByTwoBounds=false)
+        private bool SyncCoupleFiles(int userId, int albumId, PhotoModel model, int maxSize,
+            bool isCompressedByTwoBounds = false)
         {
             string origin = util.BuildAbsoluteOriginalPhotoPath(userId, albumId, model);
             string thumbnail = util.BuildAbsoluteThumbnailPath(userId, albumId, maxSize, model);
@@ -126,13 +124,14 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
             return false;
         }
+
         private void ThumbnailCreationAction(string pathToOriginal, string pathToThumbnail, int maxSize, bool twoBounds)
         {
-            using (var image = Image.FromFile(pathToOriginal))
+            using (Image image = Image.FromFile(pathToOriginal))
             {
-                var size = CalculateThumbSize(image.Size, maxSize, twoBounds);
-                using (var thumb = image.GetThumbnailImage(size.Width, size.Height,
-                                                           () => false, IntPtr.Zero))
+                Size size = CalculateThumbSize(image.Size, maxSize, twoBounds);
+                using (Image thumb = image.GetThumbnailImage(size.Width, size.Height,
+                    () => false, IntPtr.Zero))
                 {
                     thumb.Save(pathToThumbnail, ImageFormat.Jpeg);
                 }
@@ -148,7 +147,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             var originalInfo = new FileInfo(util.BuildAbsoluteAvatarPath(userId, ImageSize.Original));
             if (originalInfo.Exists)
             {
-                var tmpFile = Path.Combine(originalInfo.DirectoryName, MakeRandomFileName("jpg"));
+                string tmpFile = Path.Combine(originalInfo.DirectoryName, MakeRandomFileName("jpg"));
                 ThumbnailCreationAction(originalInfo.FullName, tmpFile, (int) size, true);
                 File.Move(tmpFile, info.FullName);
                 File.Delete(tmpFile);
@@ -176,7 +175,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             if (Directory.Exists(path))
             {
-                var s = ImageFormatHelper.GetImages(path).ToList().First();
+                string s = ImageFormatHelper.GetImages(path).ToList().First();
                 if (s != null)
                     return util.GetEndUserReference(s);
             }
@@ -186,8 +185,8 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public IEnumerable<string> GetThumbnails()
         {
-            var fullPath = util.BuildAbsoluteThumbnailsDirPath(userId, albumId, maxHeight);
-            
+            string fullPath = util.BuildAbsoluteThumbnailsDirPath(userId, albumId, maxHeight);
+
             if (Directory.Exists(fullPath))
                 return ImageFormatHelper.GetImages(fullPath);
 
@@ -196,11 +195,11 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         private void TileTheImage(Graphics grfx, IEnumerable<string> enumerable, int width, int heigth)
         {
-            var iter = 0;
-            var sumWidth = 0;
-            foreach (var file in enumerable)
+            int iter = 0;
+            int sumWidth = 0;
+            foreach (string file in enumerable)
             {
-                using (var thumbImage = Image.FromFile(file))
+                using (Image thumbImage = Image.FromFile(file))
                 {
                     grfx.DrawImageUnscaled(thumbImage, sumWidth, iter);
                     sumWidth += thumbImage.Width;
@@ -224,13 +223,13 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         public string MakeCollage(int width, int rows)
         {
-            var height = rows * maxHeight;
+            int height = rows*maxHeight;
             var pathToCollage = util.CreatePathToCollage(userId, albumId);
-            var pathToCollages = util.BuildAbsoluteCollagesDirPath(userId, albumId);
+            string pathToCollages = util.BuildAbsoluteCollagesDirPath(userId, albumId);
 
             using (Image img = new Bitmap(width, height))
             {
-                var grfx = Graphics.FromImage(img);
+                Graphics grfx = Graphics.FromImage(img);
                 SetUpGraphics(grfx);
 
                 TileTheImage(grfx, Randomizer.GetEnumerator(GetThumbnails()), width, height);

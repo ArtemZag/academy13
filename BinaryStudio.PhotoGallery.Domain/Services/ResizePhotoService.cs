@@ -23,11 +23,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public string GetUserAvatar(int userId, ImageSize size)
         {
-            using (var unit = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unit = WorkFactory.GetUnitOfWork())
             {
                 if (unit.Users.Contains(user => user.Id == userId))
                 {
-                    var processor = new AsyncPhotoProcessor(userId,_util);
+                    var processor = new AsyncPhotoProcessor(userId, _util);
                     return processor.GetUserAvatar(size);
                 }
                 throw new UserNotFoundException(
@@ -37,30 +37,35 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<string> GetUserAlbumThumbnails(int userId, int albumId)
         {
-            using (var unit = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unit = WorkFactory.GetUnitOfWork())
             {
                 if (_secureService.CanUserViewPhotos(userId, albumId))
                 {
                     var processor = new AsyncPhotoProcessor(userId, albumId, 64, _util);
-                    var photos = unit.Photos.Filter(photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
+                    List<PhotoModel> photos =
+                        unit.Photos.Filter(
+                            photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
                     processor.SyncOriginalAndThumbnailImages(photos);
                     return processor.GetThumbnails();
                 }
-             
-                    throw new AccessViolationException(
-                        string.Format("User with ID {0} dont have rights to access thumbnails", userId));
+
+                throw new AccessViolationException(
+                    string.Format("User with ID {0} dont have rights to access thumbnails", userId));
             }
         }
 
         //Высота колажа = heightOfOneLineInTheCollage*numberOfLines
-        public string GetCollage(int userId, int albumId, int collageWidth, int heightOfOneLineInTheCollage, int numberOfLines)
+        public string GetCollage(int userId, int albumId, int collageWidth, int heightOfOneLineInTheCollage,
+            int numberOfLines)
         {
-            using (var unit = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unit = WorkFactory.GetUnitOfWork())
             {
                 if (_secureService.CanUserViewPhotos(userId, albumId))
                 {
                     var processor = new AsyncPhotoProcessor(userId, albumId, heightOfOneLineInTheCollage, _util);
-                    var photos = unit.Photos.Filter(photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
+                    List<PhotoModel> photos =
+                        unit.Photos.Filter(
+                            photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
                     processor.SyncOriginalAndThumbnailImages(photos);
                     return processor.CreateCollageIfNotExist(collageWidth, numberOfLines);
                 }
@@ -72,10 +77,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public IEnumerable<PhotoModel> GetAvailablePhotos(int userId, int albumId)
         {
-            using (var unit = WorkFactory.GetUnitOfWork())
+            using (IUnitOfWork unit = WorkFactory.GetUnitOfWork())
             {
                 if (_secureService.CanUserViewPhotos(userId, albumId))
-                    return unit.Photos.Filter(photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
+                    return
+                        unit.Photos.Filter(
+                            photo => photo.OwnerId == userId && photo.AlbumId == albumId && !photo.IsDeleted).ToList();
 
                 throw new AccessViolationException(
                     string.Format("User with ID {0} dont have rights to access thumbnails", userId));

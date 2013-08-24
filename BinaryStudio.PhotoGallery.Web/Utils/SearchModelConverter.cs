@@ -94,7 +94,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 UserName = userName,
                 Text = commentFound.Text,
                 UserViewUrl = urlUtil.BuildUserViewUrl(commentFound.OwnerId),
-                UserAvatarPath = pathUtil.BuildAvatarPath(commentFound.OwnerId)
+                UserAvatarPath = pathUtil.BuildAvatarPath(commentFound.OwnerId, ImageSize.Small)
             };
         }
 
@@ -122,7 +122,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             return new UserFoundViewModel
             {
-                AvatarPath = pathUtil.BuildAvatarPath(userFound.Id),
+                AvatarPath = pathUtil.BuildAvatarPath(userFound.Id, ImageSize.Medium),
                 Department = userFound.Department,
                 IsOnline = userFound.IsOnline,
                 Name = userFound.Name,
