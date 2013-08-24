@@ -9,6 +9,8 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
     internal class CollageProcessor : ICollageProcessor
     {
+        private const int MAX_HEIGHT = 1024; 
+
         private void CreateDirectoriesIfNotExists(params string[] paths)
         {
             foreach (string path in paths.Where(path => !Directory.Exists(path)))
@@ -30,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                     if (sumWidth >= width)
                     {
                         sumWidth = 0;
-                        iter += maxHeight;
+                        iter += MAX_HEIGHT;
                         if (iter >= heigth)
                             break;
                     }
@@ -62,7 +64,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         private string MakeCollage(int width, int rows)
         {
-            int height = rows * maxHeight;
+            int height = rows * MAX_HEIGHT;
             string pathToCollage = CreatePathToCollage(userId, albumId);
             string pathToCollages = pathUtil.BuildAbsoluteCollagesDirPath(userId, albumId);
 
