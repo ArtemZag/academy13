@@ -32,12 +32,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         private readonly IFileWrapper _fileWrapper;
         private readonly IPathUtil _pathUtil;
         private readonly IPhotoService _photoService;
-        private readonly IUserService _userService;
 
-        private int MAX_PHOTO_SIZE_IN_BYTES = 30*1024*1024; // 30 MB
+        private const int MAX_PHOTO_SIZE_IN_BYTES = 30*1024*1024; // 30 MB
 
         public UploadApiController(
-            IUserService userService,
             IPathUtil pathUtil,
             IDirectoryWrapper directoryWrapper,
             IFileHelper fileHelper,
@@ -46,7 +44,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             IAlbumService albumService,
             ICryptoProvider cryptoProvider)
         {
-            _userService = userService;
             _pathUtil = pathUtil;
             _directoryWrapper = directoryWrapper;
             _fileHelper = fileHelper;
@@ -54,30 +51,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _photoService = photoService;
             _albumService = albumService;
             _cryptoProvider = cryptoProvider;
-        }
-
-        [DELETE("{photoId:int}")]
-        public HttpResponseMessage Delete(int photoId)
-        {
-            if (photoId <= 0)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Can't delete photo by invalid id");
-            }
-
-            try
-            {
-                _photoService.DeletePhoto(User.Id, photoId);
-            }
-            catch (NoEnoughPrivilegesException ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [POST("move")]
@@ -92,7 +65,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
             try
             {
-                int albumId = 0;
+                int albumId;
 
                 try
                 {
