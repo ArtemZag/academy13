@@ -5,7 +5,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     public interface IUserService
     {
-        IEnumerable<UserModel> GetAllUsers();
+        IEnumerable<UserModel> GetAllUsers(int skipCount, int takeCount);
 
         UserModel GetUser(int userId);
 
@@ -26,7 +26,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         int GetUserId(string userEmail);
 
-        void CreateUser(UserModel userModel, AuthInfoModel.ProviderType providerType = AuthInfoModel.ProviderType.Local);
         void Update(UserModel user);
 
         /// <summary>
@@ -46,17 +45,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="invite">Hash-code for activation</param>
         void ActivateUser(string userEmail, string userPassword, string invite);
 
-        void DeleteUser(string userEmail);
+        void DeleteUser(int userId);
 
         bool IsUserValid(string userEmail, string userPassword);
 
-        bool IsUserExist(string userEmail);
-
         bool IsUserExist(int userId);
 
-        bool IsUserExist(string authProvider, string token);
+        bool IsUserExist(string userEmail);
 
-        bool IsUserAdmin(string userEmail);
+        bool IsUserExist(string authProvider, string token);
 
         /// <summary>
         ///     Makes user a God
