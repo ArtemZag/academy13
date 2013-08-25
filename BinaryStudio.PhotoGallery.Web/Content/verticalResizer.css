@@ -8,6 +8,7 @@
 		#wrapper {
 			overflow-y:hidden;
 			overflow-x:hidden;
+			z-index: 1;
 		}
 
 /*Start theme customizatoin*/
