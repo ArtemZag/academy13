@@ -33,9 +33,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         private readonly IPathUtil _pathUtil;
         private readonly IPhotoService _photoService;
 
-        private const int MAX_PHOTO_SIZE_IN_BYTES = 30*1024*1024; // 30 MB
+        private const int MAX_PHOTO_SIZE_IN_BYTES = 30 * 1024 * 1024; // 30 MB
 
-        public UploadApiController(
+        public UploadController(
             IPathUtil pathUtil,
             IDirectoryWrapper directoryWrapper,
             IFileHelper fileHelper,
@@ -80,7 +80,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 int tempAlbumId = _albumService.GetAlbumId(User.Id, "Temporary");
 
                 // Get path to the temporary album folder
-                string pathToTempAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(User.Id, tempAlbumId);
+                string pathToTempAlbum = _pathUtil.BuildAbsoluteAlbumPath(User.Id, tempAlbumId);
 
                 // Get path to the destination album folder
                 string pathToDestAlbum = _pathUtil.BuildAbsoluteAlbumPath(User.Id, albumId);
@@ -167,7 +167,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 int tempAlbumId = _albumService.GetAlbumId(User.Id, "Temporary");
 
                 // Get path to the temporary album folder
-                string pathToTempAlbum = _pathUtil.BuildAbsoluteTemporaryAlbumPath(User.Id, tempAlbumId);
+                string pathToTempAlbum = _pathUtil.BuildAbsoluteAlbumPath(User.Id, tempAlbumId);
 
                 // Create directory, if it isn't exist
                 if (!_directoryWrapper.Exists(pathToTempAlbum))

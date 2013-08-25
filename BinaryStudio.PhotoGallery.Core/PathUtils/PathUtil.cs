@@ -14,6 +14,9 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private const string DATA_DIRECTORY_NAME = @"~\data";
 
         private const string PHOTOS_DIRECTORY_NAME = "photos";
+
+        private const string COLLAGE_FILE_NAME = "collage";
+        private const string COLLAGE_FILE_FORMAT = "jpg";
         private const string COLLAGES_DIRECTORY_NAME = "collages";
 
         private const string CUSTOM_AVATAR_PATH = @"~\Content\images\no_avatar.png";
@@ -105,6 +108,17 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             string thumbnailsDirectoryPath = BuildAbsoluteThumbnailsDirPath(userId, albumId, size);
 
             return Directory.EnumerateFiles(thumbnailsDirectoryPath);
+        }
+
+        public string BuildAbsoluteCollagePath(int userId, int albumId)
+        {
+            var builder = new StringBuilder(BuildAbsoluteCollagesDirPath(userId, albumId));
+
+            builder.Append(DELIMITER)
+                .Append(COLLAGE_FILE_NAME)
+                .Append(MakeExtension(COLLAGE_FILE_FORMAT));
+
+            return builder.ToString();
         }
 
         public string BuildAbsoluteCollagesDirPath(int userId, int albumId)

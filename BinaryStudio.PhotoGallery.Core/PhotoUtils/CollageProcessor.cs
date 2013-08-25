@@ -18,21 +18,18 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             this.pathUtil = pathUtil;
         }
 
-        public void CreateCollageIfNotExist(int userId, int albumId, int width, int rows)
+        public void CreateCollage(int userId, int albumId, int width, int rows)
         {
             string collagesDirectoryPath = pathUtil.BuildAbsoluteCollagesDirPath(userId, albumId);
 
-            if (!Directory.Exists(collagesDirectoryPath))
-            {
-                MakeCollage(userId, albumId, width, rows, collagesDirectoryPath);
-            }
+            MakeCollage(userId, albumId, width, rows, collagesDirectoryPath);
         }
 
         private void MakeCollage(int userId, int albumId, int width, int rows, string collagesDirectoryPath)
         {
             int height = rows * MAX_HEIGHT;
 
-            string collagePath = GeneratePathToCollage(userId, albumId);
+            string collagePath = pathUtil.BuildAbsoluteCollagePath(userId, albumId);
 
             using (Image image = new Bitmap(width, height))
             {
@@ -77,15 +74,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             grfx.CompositingQuality = CompositingQuality.HighQuality;
             grfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
             grfx.SmoothingMode = SmoothingMode.HighQuality;
-        }
-
-        private string GeneratePathToCollage(int userId, int albumId)
-        {
-            string absolutePhotoDirectoryPath = pathUtil.BuildAbsolutePhotoDirectoryPath();
-
-            return Path.Combine(absolutePhotoDirectoryPath, userId.ToString(), albumId.ToString(),
-                COLLAGES_DIRECTORY_NAME,
-                MakeFileName(Randomizer.GetString(10), "jpg"));
         }
     }
 }
