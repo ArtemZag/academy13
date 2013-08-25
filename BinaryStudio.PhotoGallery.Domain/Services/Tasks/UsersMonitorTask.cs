@@ -1,5 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
 {
@@ -8,25 +8,25 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
         private const int MAX_INACTIVITY_PERIOD = 15;
 
         /// <summary>
-        ///     Represents key-value pair, where key - userEmail, value - period of inactivity in minutes.
+        ///     Represents key-value pair, where key - userId, value - period of inactivity in minutes.
         /// </summary>
-        private readonly ConcurrentDictionary<string, int> users = new ConcurrentDictionary<string, int>();
+        private readonly ConcurrentDictionary<int, int> _users = new ConcurrentDictionary<int, int>();
 
-        private int period;
+        private int _period;
 
         public UsersMonitorTask()
         {
-            period = 2;
+            _period = 2;
         }
 
         public int Period
         {
-            get { return period; }
+            get { return _period; }
             set
             {
                 if (value > 0)
                 {
-                    period = value;
+                    _period = value;
                 }
             }
         }
@@ -34,59 +34,46 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
         public void Execute()
         {
             AppendPeriod();
-
             UpdateUsers();
         }
 
-        public void SetOnline(string userEmail)
+        public void SetOnline(int userId)
         {
-            if (users.ContainsKey(userEmail))
+            if (_users.ContainsKey(userId))
             {
-                users[userEmail] = 0;
+                _users[userId] = 0;
             }
             else
             {
-                users.AddOrUpdate(userEmail, 0, (s, i) => 0);
+                _users.AddOrUpdate(userId, 0, (s, i) => 0);
             }
         }
 
-        public void SetOffline(string userEmail)
+        public void SetOffline(int userId)
         {
             int value;
-
-            users.TryRemove(userEmail, out value);
+            _users.TryRemove(userId, out value);
         }
 
-        public bool IsOnline(string userEmail)
+        public bool IsOnline(int userId)
         {
-            return users.ContainsKey(userEmail);
+            return _users.ContainsKey(userId);
         }
 
         private void AppendPeriod()
         {
-            foreach (string key in users.Keys)
+            foreach (var key in _users.Keys)
             {
-                users[key] += period;
+                _users[key] += _period;
             }
         }
 
         private void UpdateUsers()
         {
-            var usersToRemove = new Collection<string>();
-
-            foreach (string key in users.Keys)
-            {
-                if (users[key] >= MAX_INACTIVITY_PERIOD)
-                {
-                    usersToRemove.Add(key);
-                }
-            }
-
-            foreach (string user in usersToRemove)
+            foreach (var user in _users.Where(user => user.Value > MAX_INACTIVITY_PERIOD))
             {
                 int value;
-
-                users.TryRemove(user, out value);
+                _users.TryRemove(user.Key, out value);
             }
         }
     }

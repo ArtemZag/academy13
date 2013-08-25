@@ -1,42 +1,33 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.Extensions;
 using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.User;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
-	[RoutePrefix("api/user")]
+    [RoutePrefix("api/user")]
     public class UserApiController : BaseApiController
     {
-	    private readonly IUserService _userService;
-	    private readonly IPhotoService _photoService;
-	    private readonly IAlbumService _albumService;
-	    private readonly IResizePhotoService _resizePhotoService;
+        private readonly IUserService _userService;
 
-	    public UserApiController(
-            IUserService userService,
-            IPhotoService photoService,
-            IAlbumService albumService,
-            IResizePhotoService resizePhotoService)
-	    {
-	        _userService = userService;
-	        _photoService = photoService;
-	        _albumService = albumService;
-	        _resizePhotoService = resizePhotoService;
-	    }
+        public UserApiController(IUserService userService)
+        {
+            _userService = userService;
+        }
 
-	    [GET("")]
+        [GET("")]
         public HttpResponseMessage GetCurrentUserInfo()
-	    {
-	        return this.GetUserInfo(User.Id);
-	    }
+        {
+            return GetUserInfo(User.Id);
+        }
 
         [GET("{userId:int}")]
         public HttpResponseMessage GetUserInfo(int userId)
@@ -45,13 +36,40 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 UserModel userModel = _userService.GetUser(userId);
 
-                var userAlbumCount = _albumService.AlbumsCount(User.Id);
-                var userPhotoCount = _photoService.PhotoCount(User.Id);
-                var userAbatarPath = _resizePhotoService.GetUserAvatar(userModel.Id, AvatarSize.Medium);
-
-                var viewModel = userModel.ToUserInfoViewModel(userAlbumCount, userPhotoCount, userAbatarPath);
+                UserViewModel viewModel = userModel.ToUserViewModel();
 
                 return Request.CreateResponse(HttpStatusCode.OK, viewModel, new JsonMediaTypeFormatter());
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [GET("all?{skip:int}&{take:int}")]
+        public HttpResponseMessage GetAll(int skip, int take)
+        {
+            try
+            {
+                List<UserViewModel> usersViewModels = _userService.GetAllUsers(skip, take)
+                    .Select(userModel => userModel.ToUserViewModel())
+                    .ToList();
+
+                return Request.CreateResponse(HttpStatusCode.OK, usersViewModels, new JsonMediaTypeFormatter());
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [DELETE("")]
+        public HttpResponseMessage Delete(int userId)
+        {
+            try
+            {
+                _userService.DeleteUser(userId);
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

@@ -9,6 +9,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
 {
+    // todo: test! 
     internal class CleanupTask : DbService, ICleanupTask
     {
         private readonly IStorage storage;

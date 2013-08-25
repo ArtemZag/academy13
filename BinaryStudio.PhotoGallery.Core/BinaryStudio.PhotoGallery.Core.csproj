@@ -65,10 +65,11 @@
     <Compile Include="PathUtils\IUrlUtil.cs" />
     <Compile Include="PathUtils\PathUtil.cs" />
     <Compile Include="PathUtils\UrlUtil.cs" />
-    <Compile Include="PathUtils\AvatarSize.cs" />
-    <Compile Include="PhotoUtils\ImageFormatHelper.cs" />
+    <Compile Include="PhotoUtils\CollageProcessor.cs" />
+    <Compile Include="PhotoUtils\ICollageProcessor.cs" />
+    <Compile Include="PhotoUtils\ImageSize.cs" />
+    <Compile Include="PhotoUtils\IPhotoProcessor.cs" />
     <Compile Include="Randomizer.cs" />
-    <Compile Include="PhotoUtils\IAsyncPhotoProcessor.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\FB.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFacebook.cs" />
     <Compile Include="SocialNetworkUtils\Facebook\IFB.cs" />
@@ -84,7 +85,6 @@
     <Compile Include="UserUtils\CryptoProvider.cs" />
     <Compile Include="UserUtils\ICryptoProvider.cs" />
     <Compile Include="EmailUtils\EmailSender.cs" />
-    <Compile Include="PhotoUtils\AsyncPhotoProcessor.cs" />
     <Compile Include="PhotoUtils\PhotoProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

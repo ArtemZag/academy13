@@ -8,21 +8,21 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         {
             const string PHOTO_PART = "photo";
 
-            return BuildBathByPattern(PHOTO_PART, photoId);
+            return BuildPathByPattern(PHOTO_PART, photoId);
         }
 
         public string BuildAlbumViewUrl(int albumId)
         {
             const string ALBUM_PART = "album";
 
-            return BuildBathByPattern(ALBUM_PART, albumId);
+            return BuildPathByPattern(ALBUM_PART, albumId);
         }
 
         public string BuildUserViewUrl(int userId)
         {
             const string USER_PART = "user";
 
-            return BuildBathByPattern(USER_PART, userId);
+            return BuildPathByPattern(USER_PART, userId);
         }
 
         public string BuildCommentUrl(int photoId, int commentId)
@@ -37,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return url.ToString();
         }
 
-        private string BuildBathByPattern(string pathPart, int id)
+        private string BuildPathByPattern(string pathPart, int id)
         {
             const string DELIMITER = "/";
 

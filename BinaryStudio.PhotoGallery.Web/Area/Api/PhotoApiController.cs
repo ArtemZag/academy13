@@ -166,5 +166,29 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+        [DELETE("{photoId:int}")]
+        public HttpResponseMessage Delete(int photoId)
+        {
+            if (photoId <= 0)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Can't delete photo by invalid id");
+            }
+
+            try
+            {
+                _photoService.DeletePhoto(User.Id, photoId);
+            }
+            catch (NoEnoughPrivilegesException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
     }
 }

@@ -9,6 +9,7 @@ using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Account;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
@@ -109,7 +110,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                                     }
                             }
                     };
-                _userService.CreateUser(newUser, AuthInfoModel.ProviderType.Facebook);
+                // TODO
+//                _userService.CreateUser(newUser, AuthInfoModel.ProviderType.Facebook);
 
             }
 

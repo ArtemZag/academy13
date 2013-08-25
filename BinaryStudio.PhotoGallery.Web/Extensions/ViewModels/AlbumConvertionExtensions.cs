@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;

@@ -12,17 +12,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class UserService : DbService, IUserService
     {
-        private readonly IAlbumService albumService;
-        private readonly ICryptoProvider cryptoProvider;
+        private readonly IAlbumService _albumService;
+        private readonly ICryptoProvider _cryptoProvider;
 
         public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider, IAlbumService albumService)
             : base(workFactory)
         {
-            this.cryptoProvider = cryptoProvider;
-            this.albumService = albumService;
+            _cryptoProvider = cryptoProvider;
+            _albumService = albumService;
         }
 
-        public IEnumerable<UserModel> GetAllUsers()
+        public IEnumerable<UserModel> GetAllUsers(int skipCount, int takeCount)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -31,6 +31,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         .Include(g => g.Albums)
                         .Include(g => g.Groups)
                         .Include(g => g.AuthInfos)
+                        .Skip(skipCount)
+                        .Take(takeCount)
                         .ToList();
             }
         }
@@ -82,28 +84,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-
-        //todo: maybe we will remove this method?
-        public void CreateUser(UserModel user, AuthInfoModel.ProviderType provider)
-        {
-            if (IsUserExist(user.Email))
-            {
-                throw new UserAlreadyExistException(user.Email);
-            }
-
-            if (provider == AuthInfoModel.ProviderType.Local)
-            {
-                user.Salt = cryptoProvider.GetNewSalt();
-                user.UserPassword = cryptoProvider.CreateHashForPassword(user.UserPassword, user.Salt);
-            }
-
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                unitOfWork.Users.Add(user);
-                unitOfWork.SaveChanges();
-            }
-        }
-
         public void Update(UserModel userModel)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -131,7 +111,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 Salt = Randomizer.GetString(16),
                 // Empty password field is not good 
                 UserPassword =
-                    cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), cryptoProvider.GetNewSalt())
+                    _cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), _cryptoProvider.GetNewSalt())
             };
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -140,7 +120,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 unitOfWork.SaveChanges();
 
                 int userId = unitOfWork.Users.Find(user => user.Email == userEmail).Id;
-                albumService.CreateSystemAlbums(userId);
+                _albumService.CreateSystemAlbums(userId);
             }
 
             return userModel.Salt;
@@ -163,9 +143,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         userEmail));
                 }
 
-                userModel.Salt = cryptoProvider.GetNewSalt();
+                userModel.Salt = _cryptoProvider.GetNewSalt();
 
-                userModel.UserPassword = cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
+                userModel.UserPassword = _cryptoProvider.CreateHashForPassword(userPassword, userModel.Salt);
                 userModel.IsActivated = true;
 
 
@@ -174,13 +154,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void DeleteUser(string userEmail)
+        public void DeleteUser(int userId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 try
                 {
-                    UserModel user = GetUser(userEmail, unitOfWork);
+                    UserModel user = GetUser(userId, unitOfWork);
                     unitOfWork.Users.Delete(user);
 
                     unitOfWork.SaveChanges();
@@ -201,7 +181,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 {
                     UserModel user = GetUser(userEmail, unitOfWork);
 
-                    result = cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
+                    result = _cryptoProvider.IsPasswordsEqual(userPassword, user.UserPassword, user.Salt);
                 }
             }
             catch (UserNotFoundException)
@@ -249,11 +229,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                             string.Equals(model.AuthProvider, authProvider) &&
                             string.Equals(model.AuthProviderToken, token));
             }
-        }
-
-        public bool IsUserAdmin(string userEmail)
-        {
-            return GetUser(userEmail).IsAdmin;
         }
 
         public void MakeUserGod(int godId, int slaveId)

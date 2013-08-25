@@ -1,4 +1,5 @@
 ﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Search;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
@@ -93,7 +94,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 UserName = userName,
                 Text = commentFound.Text,
                 UserViewUrl = urlUtil.BuildUserViewUrl(commentFound.OwnerId),
-                UserAvatarPath = pathUtil.BuildUserAvatarPath(commentFound.OwnerId)
+                UserAvatarPath = pathUtil.BuildAvatarPath(commentFound.OwnerId, ImageSize.Medium)
             };
         }
 
@@ -121,7 +122,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             return new UserFoundViewModel
             {
-                AvatarPath = pathUtil.BuildUserAvatarPath(userFound.Id),
+                AvatarPath = pathUtil.BuildAvatarPath(userFound.Id, ImageSize.Medium),
                 Department = userFound.Department,
                 IsOnline = userFound.IsOnline,
                 Name = userFound.Name,
@@ -140,7 +141,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             string userName = user.FirstName + " " + user.LastName;
 
             string thumbnailPath = pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
-                photoModel.Format);
+                photoModel.Format, ImageSize.Medium);
 
             return new PhotoFoundViewModel
             {
