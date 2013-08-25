@@ -452,7 +452,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\FlowPage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

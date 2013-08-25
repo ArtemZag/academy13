@@ -1,5 +1,4 @@
 ﻿using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Albums;
 using BinaryStudio.PhotoGallery.Web.ViewModels.User;
 

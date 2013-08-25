@@ -7,7 +7,6 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.Extensions;
 using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api

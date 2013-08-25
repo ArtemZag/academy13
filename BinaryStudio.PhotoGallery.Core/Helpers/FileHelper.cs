@@ -11,58 +11,35 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
 {
     internal class FileHelper : IFileHelper
     {
-        private readonly IFileWrapper fileWrapper;
+        private readonly IFileWrapper _fileWrapper;
 
         public FileHelper(IFileWrapper fileWrapper)
         {
-            this.fileWrapper = fileWrapper;
-        }
-
-        private MimeType GetMimeType(string fileName)
-        {
-            if (!fileWrapper.Exists(fileName))
-            {
-                throw new FileNotFoundException("File '" + fileName + "' not found");
-            }
-
-            var allMimeTypes = new MimeTypes();
-
-            MimeType mimeType;
-
-            try
-            {
-                mimeType = allMimeTypes.GetFileMimeType(fileName);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-
-            return mimeType;
+            _fileWrapper = fileWrapper;
         }
 
         public string GetMimeTypeOfFile(string fileName)
         {
-            var mimeType = GetMimeType(fileName);
+            MimeType mimeType = GetMimeType(fileName);
 
             return mimeType != null ? mimeType.Name : "unknown/unknown";
         }
 
         public string GetRealFileFormat(string fileName)
         {
-            var mimeType = GetMimeType(fileName);
+            MimeType mimeType = GetMimeType(fileName);
 
             return mimeType != null ? mimeType.SubType : "unknown";
         }
 
         public bool IsImageFile(string fileName)
         {
-            var fileMime = GetMimeTypeOfFile(fileName);
+            string fileMime = GetMimeTypeOfFile(fileName);
             return fileMime.StartsWith("image/");
         }
 
         /// <summary>
-        /// Equal two files by content using MD5 Hash
+        ///     Equal two files by content using MD5 Hash
         /// </summary>
         /// <param name="firstFile">First path of the file to be compared</param>
         /// <param name="secondFile">Second path of the file to be compared</param>
@@ -72,10 +49,10 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             byte[] firstFileHash;
             byte[] secondFileHash;
 
-            using (var md5 = MD5.Create())
+            using (MD5 md5 = MD5.Create())
             {
-                using (var sourceStream = File.OpenRead(firstFile))
-                using (var destStream = File.OpenRead(secondFile))
+                using (FileStream sourceStream = File.OpenRead(firstFile))
+                using (FileStream destStream = File.OpenRead(secondFile))
                 {
                     firstFileHash = md5.ComputeHash(sourceStream);
                     secondFileHash = md5.ComputeHash(destStream);
@@ -86,8 +63,8 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
         }
 
         /// <summary>
-        /// Rename file in path. If it's already exist, than to file will be added ' (i)',
-        /// where i - number of file copies (as in a windows explorer)
+        ///     Rename file in path. If it's already exist, than to file will be added ' (i)',
+        ///     where i - number of file copies (as in a windows explorer)
         /// </summary>
         /// <param name="sourceName">path to source file</param>
         /// <param name="destName">path to destination file</param>
@@ -103,12 +80,12 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
                 throw new ArgumentNullException("destName");
             }
 
-            if (!fileWrapper.Exists(sourceName))
+            if (!_fileWrapper.Exists(sourceName))
             {
                 throw new FileNotFoundException(string.Format("Source file '{0}' not found", sourceName));
             }
 
-            var destPath = Path.GetDirectoryName(destName);
+            string destPath = Path.GetDirectoryName(destName);
 
             var fileName = new StringBuilder(Path.GetFileNameWithoutExtension(destName));
             var newFileNameWithPath = new StringBuilder();
@@ -118,12 +95,12 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
             long number = 1;
 
             // Create new file name, while it exist
-            while (fileWrapper.Exists(newFileNameWithPath.ToString()))
+            while (_fileWrapper.Exists(newFileNameWithPath.ToString()))
             {
-                var leftBraketIndex = fileName.ToString().LastIndexOf('(');
-                var rightBraketIndex = fileName.ToString().LastIndexOf(')');
+                int leftBraketIndex = fileName.ToString().LastIndexOf('(');
+                int rightBraketIndex = fileName.ToString().LastIndexOf(')');
 
-                var numberLength = rightBraketIndex - leftBraketIndex - 1;
+                int numberLength = rightBraketIndex - leftBraketIndex - 1;
 
                 if (leftBraketIndex == -1 || rightBraketIndex == -1 || numberLength <= 0)
                 {
@@ -135,7 +112,7 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
 
                     var regEx = new Regex(PATTERN);
 
-                    var fileNumberFound = regEx.IsMatch(fileName.ToString());
+                    bool fileNumberFound = regEx.IsMatch(fileName.ToString());
 
                     if (fileNumberFound)
                     {
@@ -155,13 +132,36 @@ namespace BinaryStudio.PhotoGallery.Core.Helpers
                 number++;
             }
 
-            fileWrapper.Move(sourceName, newFileNameWithPath.ToString());
+            _fileWrapper.Move(sourceName, newFileNameWithPath.ToString());
         }
 
         public long GetFileSize(string path)
         {
             var fileInfo = new FileInfo(path);
             return fileInfo.Length;
+        }
+
+        private MimeType GetMimeType(string fileName)
+        {
+            if (!_fileWrapper.Exists(fileName))
+            {
+                throw new FileNotFoundException("File '" + fileName + "' not found");
+            }
+
+            var allMimeTypes = new MimeTypes();
+
+            MimeType mimeType;
+
+            try
+            {
+                mimeType = allMimeTypes.GetFileMimeType(fileName);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+            return mimeType;
         }
     }
 }

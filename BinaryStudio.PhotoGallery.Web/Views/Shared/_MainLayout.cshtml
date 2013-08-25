@@ -35,11 +35,9 @@
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        @{
-                            if (User.IsAdmin)
-                            {
-                                Html.ActionLink("Administration", "Index", "AdminPanel");
-                            }
+                        @if (User.IsAdmin)
+                        {
+                            <li>@Html.ActionLink("Administration", "Index", "AdminPanel")</li>
                         }
                         <!-- TODO Make this page!!! -->
                         <!--<li><a href="~/news">Notifications</a></li>-->

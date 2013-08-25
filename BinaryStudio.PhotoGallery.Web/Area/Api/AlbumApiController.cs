@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -70,13 +69,22 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         [GET("all/name")]
-        public IEnumerable<string> GetAllNames()
+        public HttpResponseMessage GetAllNames()
         {
-            return _albumService
-                .GetAllAlbums(User.Id)
-                .Where(album => album.Name != "Temporary")
-                .Select(album => album.Name)
-                .ToList();
+            try
+            {
+                var albumNames = _albumService
+                    .GetAllAlbums(User.Id)
+                    .Where(album => album.Name != "Temporary")
+                    .Select(album => album.Name)
+                    .ToList();
+
+                return Request.CreateResponse(HttpStatusCode.OK, albumNames, new JsonMediaTypeFormatter());
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }
