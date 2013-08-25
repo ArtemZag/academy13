@@ -6,9 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.User;
@@ -18,24 +16,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     [RoutePrefix("api/user")]
     public class UserApiController : BaseApiController
     {
-        private readonly IAlbumService _albumService;
-        private readonly IPhotoService _photoService;
-        private readonly IResizePhotoService _resizePhotoService;
         private readonly IUserService _userService;
-        private readonly IUsersMonitorTask _usersMonitorTask;
 
-        public UserApiController(
-            IUserService userService,
-            IPhotoService photoService,
-            IAlbumService albumService,
-            IUsersMonitorTask usersMonitorTask,
-            IResizePhotoService resizePhotoService)
+        public UserApiController(IUserService userService)
         {
             _userService = userService;
-            _photoService = photoService;
-            _albumService = albumService;
-            _usersMonitorTask = usersMonitorTask;
-            _resizePhotoService = resizePhotoService;
         }
 
         [GET("")]
@@ -50,10 +35,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 UserModel userModel = _userService.GetUser(userId);
-
-                int userAlbumCount = _albumService.AlbumsCount(User.Id);
-                int userPhotoCount = _photoService.PhotoCount(User.Id);
-                string userAbatarPath = _resizePhotoService.GetUserAvatar(userModel.Id, AvatarSize.Medium);
 
                 UserViewModel viewModel = userModel.ToUserViewModel();
 
