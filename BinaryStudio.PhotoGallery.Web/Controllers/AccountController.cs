@@ -110,7 +110,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                                     }
                             }
                     };
-                _userService.CreateUser(newUser, AuthInfoModel.ProviderType.Facebook);
+                // TODO
+//                _userService.CreateUser(newUser, AuthInfoModel.ProviderType.Facebook);
 
             }
 

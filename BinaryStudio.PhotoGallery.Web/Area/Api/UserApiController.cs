@@ -11,7 +11,6 @@ using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
-using BinaryStudio.PhotoGallery.Web.ViewModels.Albums;
 using BinaryStudio.PhotoGallery.Web.ViewModels.User;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
@@ -56,8 +55,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 int userPhotoCount = _photoService.PhotoCount(User.Id);
                 string userAbatarPath = _resizePhotoService.GetUserAvatar(userModel.Id, AvatarSize.Medium);
 
-                UserInfoViewModel viewModel = userModel.ToUserInfoViewModel(userAlbumCount, userPhotoCount,
-                    userAbatarPath);
+                UserViewModel viewModel = userModel.ToUserViewModel();
 
                 return Request.CreateResponse(HttpStatusCode.OK, viewModel, new JsonMediaTypeFormatter());
             }
@@ -73,7 +71,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 List<UserViewModel> usersViewModels = _userService.GetAllUsers(skip, take)
-                    .Select(userModel => userModel.ToUserViewModel(_usersMonitorTask.IsOnline(userModel.Id)))
+                    .Select(userModel => userModel.ToUserViewModel())
                     .ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, usersViewModels, new JsonMediaTypeFormatter());

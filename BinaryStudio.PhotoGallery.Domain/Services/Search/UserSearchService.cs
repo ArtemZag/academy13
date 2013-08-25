@@ -75,7 +75,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             {
                 Id = model.Id,
                 Department = model.Department,
-                IsOnline = usersMonitorTask.IsOnline(model.Email),
+                IsOnline = usersMonitorTask.IsOnline(model.Id),
                 Name = model.FirstName + " " + model.LastName,
                 Relevance = getRelevance(searchWords, model)
             });
