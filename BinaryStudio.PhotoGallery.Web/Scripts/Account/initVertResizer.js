@@ -1,17 +1,14 @@
 ﻿$(document).ready(function () {
-    $("#wrapper").css("height", $(window).height() - 15);
+    $("#wrapper").css("height", $(window).height());
     verticalResizer_Module(jQuery);
 
     $(window).on('resize', function () {
         $("#wrapper").css("height", $(window).height() - 15);
     });
-
-
-    var photoPortion = 20;
     
     function initResizer() {
         $('#myGallery').rtg({
-            imageWidth: 315,
+            imageWidth: 215,
             spacing: 10,
             categories: false,
             lightbox: false,
@@ -33,14 +30,28 @@
             });
         }, 1000);
     }
+    
+
+    var photoPortion = 35;
 
     $.get("api/publicphoto/"+ photoPortion )
           .done(function (photos) {
               viewModel.addPhotos(photos);
-              setTimeout(initResizer(), 15000);
+              var $newPhotoContainers = $('div.invisible');
+              var $photos = $newPhotoContainers.find("img");
+              var length = $photos.length;
+              var numLoad = 0;
+              $photos.load(function() {
+                  numLoad++;
+                  if (numLoad == length) { //todo How to check by another way that all of photos have been loaded? 
+                      initResizer();
+                      $newPhotoContainers.removeClass("invisible");
+                  }
+              });
           })
           .fail(function () {
-
+              length--;
+              $(this).closest("div").remove();
           });
     
     ko.applyBindings(viewModel);
