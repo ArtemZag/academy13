@@ -302,6 +302,7 @@
     <Compile Include="ViewModels\Search\UserFoundViewModel.cs" />
     <Compile Include="ViewModels\Upload\MovePhotosViewModel.cs" />
     <Compile Include="ViewModels\Upload\UploadResultViewModel.cs" />
+    <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\albums-page.css" />
     <Content Include="Content\images\1.png" />

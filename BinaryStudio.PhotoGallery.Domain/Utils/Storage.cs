@@ -79,7 +79,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
                 AlbumModel album = GetAlbum(photo.AlbumId, unitOfWork);
                 UserModel user = GetUser(album.OwnerId, unitOfWork);
 
-                return pathUtil.BuildThumbnailsPath(user.Id, album.Id);
+                // todo
+                //return pathUtil.BuildThumbnailsPath(user.Id, album.Id);
+                return string.Empty;
             }
         }
 

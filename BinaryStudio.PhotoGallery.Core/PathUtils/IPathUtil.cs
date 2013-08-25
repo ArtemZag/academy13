@@ -5,8 +5,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
     public interface IPathUtil
     {
-        string CustomAvatarPath { get; }
-
         /// <summary>
         ///     Pattern: ~data\photos\userId\[Small|Medium|Big|Original]avatar.jpg
         /// </summary>

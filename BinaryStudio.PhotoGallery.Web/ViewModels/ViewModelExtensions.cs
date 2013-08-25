@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Models;
+﻿using BinaryStudio.PhotoGallery.Core.PhotoUtils;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
@@ -6,7 +7,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
     {
          public static UserViewModel ToUserViewModel(this UserModel model)
          {
-             var viewModel =  new UserViewModel
+             var viewModel = new UserViewModel
              {
                  FirstName = model.FirstName,
                  LastName = model.LastName,
@@ -15,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
                  Birthday = model.Birthday
              };
 
-             viewModel.PhotoUrl = viewModel.PathUtil.BuildAvatarPath(model.Id);
+             viewModel.PhotoUrl = viewModel.PathUtil.BuildAvatarPath(model.Id, ImageSize.Original);
 
              return viewModel;
          }

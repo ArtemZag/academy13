@@ -26,6 +26,6 @@ namespace BinaryStudio.PhotoGallery.Domain
             container.RegisterType<ISecureService, SecureService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IGroupService, GroupService>(new ContainerControlledLifetimeManager());
 			container.RegisterType<IAlbumTagService, AlbumTagService>(new ContainerControlledLifetimeManager());
-container.RegisterType<IResizePhotoService, ResizePhotoService>(new ContainerControlledLifetimeManager());        }
+        }
     }
 }

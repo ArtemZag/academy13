@@ -1,4 +1,5 @@
 ﻿using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Models;
 using Microsoft.Practices.Unity;
 
@@ -26,14 +27,16 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
                 photoModel.Id,
                 photoModel.Format);
 
-            // todo
-            string photoThumbSource = string.Empty;
+            string photoThumbSource = pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId,
+                photoModel.Id,
+                photoModel.Format,
+                ImageSize.Medium);
 
             var viewModel = new PhotoViewModel
             {
                 PhotoSource = photoSource,
-                PhotoThumbSource = photoThumbSource,
                 AlbumId = photoModel.AlbumId,
+                PhotoThumbSource = photoThumbSource,
                 PhotoId = photoModel.Id,
                 PhotoViewPageUrl = urlUtil.BuildPhotoViewUrl(photoModel.Id)
             };

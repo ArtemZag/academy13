@@ -94,7 +94,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 UserName = userName,
                 Text = commentFound.Text,
                 UserViewUrl = urlUtil.BuildUserViewUrl(commentFound.OwnerId),
-                UserAvatarPath = pathUtil.BuildAvatarPath(commentFound.OwnerId, ImageSize.Small)
+                UserAvatarPath = pathUtil.BuildAvatarPath(commentFound.OwnerId, ImageSize.Medium)
             };
         }
 

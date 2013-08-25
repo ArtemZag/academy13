@@ -10,25 +10,19 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     [RoutePrefix("album")]
     public class AlbumController : BaseController
 	{
-	    private readonly IAlbumService _albumService;
-        private readonly IResizePhotoService _resizePhoto;
-        public AlbumController(IAlbumService albumService, IResizePhotoService resize)
+	    private readonly IAlbumService albumService;
+
+        public AlbumController(IAlbumService albumService, IPathUtil pathUtil, IAlbumTagService albumTagService)
         {
-            _albumService = albumService;
-            _resizePhoto = resize;
+            this.albumService = albumService;
         }
 
 		[GET("{albumId}")]
         public ActionResult Index(int albumId)
 		{
-		    var model = _albumService.GetAlbum(albumId);
+		    var album = albumService.GetAlbum(albumId);
 
-            // TODO use pathUtil here to get path to album collage
-		    var collageSource = _resizePhoto.GetCollage(User.Id, model.Id, 256, 64, 3);
-
-		    var viewModel = model.ToAlbumViewModel(collageSource);
-
-            return View("Index", viewModel);
+            return View("Index", AlbumViewModel.FromModel(album));
         }
     }
 }
