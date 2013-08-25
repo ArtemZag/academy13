@@ -6,6 +6,7 @@ using System.Net.Http.Formatting;
 using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
@@ -17,12 +18,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     public class AlbumApiController : BaseApiController
     {
         private readonly IAlbumService _albumService;
-        private readonly IResizePhotoService _resizePhotoService;
+        private readonly IPathUtil _pathUtil;
 
-        public AlbumApiController(IAlbumService albumService, IResizePhotoService resizePhotoService)
+        public AlbumApiController(IAlbumService albumService, IPathUtil pathUtil)
         {
             _albumService = albumService;
-            _resizePhotoService = resizePhotoService;
+            _pathUtil = pathUtil;
         }
 
         [GET("?{userId:int}&{skip:int}&{take:int}")]
@@ -33,10 +34,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 var albums = _albumService
                     .GetAlbumsRange(userId, skip, take)
                     .Select(album => album.ToAlbumViewModel(
-                        // TODO Replace this crazy method
-                        _resizePhotoService.GetCollage(userId, album.Id, 256, 64, 3)
-                        ))
-                    .ToList();
+                        _pathUtil.BuildCollagePath(userId, album.Id))).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, albums, new JsonMediaTypeFormatter());
             }

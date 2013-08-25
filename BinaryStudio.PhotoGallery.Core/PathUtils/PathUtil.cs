@@ -64,6 +64,20 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         }
 
         /// <summary>
+        ///     Pattern: ~data\photos\userId\albumId\collage.jpg
+        /// </summary>
+        public string BuildCollagePath(int userId, int albumId)
+        {
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
+
+            builder.Append(DELIMITER)
+                .Append(COLLAGE_FILE_NAME)
+                .Append(MakeExtension(COLLAGE_FILE_FORMAT));
+
+            return builder.ToString();
+        }
+
+        /// <summary>
         ///     Pattern: ~data\photos\userId\[Small|Medium|Big]avatar.jpg or custom
         /// </summary>
         public string BuildAvatarPath(int userId, ImageSize imageSize)
@@ -113,13 +127,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string BuildAbsoluteCollagePath(int userId, int albumId)
         {
-            var builder = new StringBuilder(BuildAbsoluteCollagesDirPath(userId, albumId));
-
-            builder.Append(DELIMITER)
-                .Append(COLLAGE_FILE_NAME)
-                .Append(MakeExtension(COLLAGE_FILE_FORMAT));
-
-            return builder.ToString();
+            return HostingEnvironment.MapPath(BuildCollagePath(userId, albumId));
         }
 
         public string BuildAbsoluteCollagesDirPath(int userId, int albumId)

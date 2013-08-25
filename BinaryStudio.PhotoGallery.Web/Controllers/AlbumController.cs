@@ -2,7 +2,7 @@
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
-using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -12,7 +12,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 	{
 	    private readonly IAlbumService albumService;
 
-        public AlbumController(IAlbumService albumService, IPathUtil pathUtil, IAlbumTagService albumTagService)
+        public AlbumController(IAlbumService albumService)
         {
             this.albumService = albumService;
         }

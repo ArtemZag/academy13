@@ -284,6 +284,8 @@
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\Photo\UserInfoViewModel.cs" />
     <Compile Include="Extensions\ViewModels\AlbumConvertionExtensions.cs" />
+    <Compile Include="ViewModels\UsersListViewModel.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\album-page.css" />
     <Content Include="Content\profile-page.css" />
     <Content Include="Content\images\camera.png" />
@@ -302,8 +304,6 @@
     <Compile Include="ViewModels\Search\UserFoundViewModel.cs" />
     <Compile Include="ViewModels\Upload\MovePhotosViewModel.cs" />
     <Compile Include="ViewModels\Upload\UploadResultViewModel.cs" />
-    <Compile Include="ViewModels\UsersListViewModel.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\albums-page.css" />
     <Content Include="Content\images\1.png" />
     <Content Include="Content\images\2.png" />

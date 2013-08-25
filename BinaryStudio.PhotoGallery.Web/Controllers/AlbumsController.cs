@@ -5,7 +5,11 @@ using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
+using BinaryStudio.PhotoGallery.Web.ViewModels.User;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -44,8 +48,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult GetFlowPhotos()
         {
             UserModel user = userService.GetUser(User.Id);
+
             IEnumerable<PhotoViewModel> lastTenPhotos =
-                photoService.GetLastPhotos(user.Id, 0, 10).Select(PhotoViewModel.FromModel);
+                photoService.GetLastPhotos(user.Id, 0, 10).Select(model => model.ToPhotoViewModel());
             return Json(lastTenPhotos);
         }
 

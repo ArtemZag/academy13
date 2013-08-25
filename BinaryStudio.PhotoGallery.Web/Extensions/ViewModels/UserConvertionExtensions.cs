@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Models;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
+using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels.User;
 
 namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
@@ -16,7 +17,7 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
                 Birthday = model.Birthday
             };
 
-            viewModel.PhotoUrl = viewModel.PathUtil.BuildUserAvatarPath(model.Id);
+            viewModel.PhotoUrl = viewModel.PathUtil.BuildAvatarPath(model.Id, ImageSize.Medium);
 
             return viewModel;
         }

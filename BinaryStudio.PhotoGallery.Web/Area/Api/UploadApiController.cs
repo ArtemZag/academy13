@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
         private const int MAX_PHOTO_SIZE_IN_BYTES = 30 * 1024 * 1024; // 30 MB
 
-        public UploadController(
+        public UploadApiController(
             IPathUtil pathUtil,
             IDirectoryWrapper directoryWrapper,
             IFileHelper fileHelper,

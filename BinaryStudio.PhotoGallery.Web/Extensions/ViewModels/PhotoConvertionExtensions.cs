@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Models;
+﻿using BinaryStudio.PhotoGallery.Core.PhotoUtils;
+using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 
 namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
@@ -45,19 +46,11 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
             };
 
             viewModel.PhotoSource = 
-                viewModel.PathUtil.BuildOriginalPhotoPath(
-                photoModel.OwnerId,
-                photoModel.AlbumId,
-                photoModel.Id,
-                photoModel.Format);
+                viewModel.PathUtil.BuildOriginalPhotoPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id, photoModel.Format);
 
-            var pathOnServer = viewModel.PathUtil.BuildPathToThumbnailFileOnServer(
-                photoModel.OwnerId,
-                photoModel.AlbumId,
-                64,
-                photoModel);
-
-            viewModel.PhotoThumbSource = viewModel.PathUtil.GetEndUserReference(pathOnServer);
+            // todo owner
+            viewModel.PhotoThumbSource = viewModel.PathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId,
+                photoModel.Id, photoModel.Format, ImageSize.Medium);
 
             viewModel.PhotoViewPageUrl = viewModel.UrlUtil.BuildPhotoViewUrl(photoModel.Id);
 
