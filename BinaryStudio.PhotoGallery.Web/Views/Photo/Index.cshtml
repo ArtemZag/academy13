@@ -8,11 +8,19 @@
 @Styles.Render("~/Content/photo-page.css")
 
 <div id="leftSideMenu" data-bind="event: { mouseout: HideLeftSideMenu }">
-    <ul> Menu
+    <div>
+        <span data-bind="text: PhotoId"></span>/
+        @*<span data-bind="text: NumberOfPhotos"></span>*@
+    </div>  
+    
+    <ul> 
         <li>item1</li>
         <li>item2</li>
         <li>item3</li>
     </ul>
+    
+    
+    <div>Delete photo</div>
 </div>
 <div id="leftSideMenuButton" data-bind="event: { mouseover: ShowLeftSideMenu }"><div>...</div></div>
 
