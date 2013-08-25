@@ -16,7 +16,7 @@
         @Styles.Render("~/bundles/styles/opentip")
         @Styles.Render("~/Content/auth-page.css")
         @Styles.Render("~/Content/verticalResizer.css")
-        
+        @Styles.Render("~/Content/spinner.css")
         
         @Scripts.Render("~/bundles/scripts/jquery")
         @Scripts.Render("~/bundles/scripts/jquery.validate")
@@ -42,5 +42,13 @@
             </div>
         </div>
         @RenderBody() 
+        <div id="loader">
+        <ul class="spinner">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+</div>
     </body>
 </html>

@@ -28,19 +28,25 @@
         }
     };
     rtg.loading = {
-        image: $("<img src='/Content/images/loading_green.gif'/>"), start: function () {
-            this.image.css({ 'position': 'absolute', 'top': 150, 'left': (rtg.el.width() - this.image.width()) / 2 });
-            rtg.el.prepend(this.image);
+        start: function () {
+            $("#loader").show();
         }, stop: function () {
-            this.image.remove();
+            $("#loader").hide();
         }
     };
     rtg.images = {};
+
+
+    var numberOfColumns;
+    var koef;
     rtg.images.resize = function () {
         var units = rtg.el.find('.rtg-images > div'), opts = rtg.options;
+        numberOfColumns = Math.ceil((rtg.el.width()) / (opts.imageWidth + opts.spacing));
+        numberOfColumns = (numberOfColumns === 0) ? 1 : numberOfColumns;
+        koef = rtg.el.width() / ((opts.imageWidth + opts.spacing) * numberOfColumns + opts.spacing/2);
         units.each(function () {
             var unit = $(this);
-            image = unit.find('img'), oldWidth = image.width(), oldHeight = image.height(), ratio = opts.imageWidth / oldWidth, newWidth = opts.imageWidth, newHeight = oldHeight * ratio;
+            image = unit.find('img'), oldWidth = image.width(), oldHeight = image.height(), ratio = opts.imageWidth / oldWidth, newWidth = opts.imageWidth*koef, newHeight = oldHeight * ratio;
             $.merge(unit, unit.find('*')).css({ 'width': newWidth, 'height': newHeight });
         });
     };
@@ -53,12 +59,11 @@
             });
         });
     };
+    
+
+
     rtg.images.sort = function () {
         var units = rtg.el.find('.rtg-images > div'), opts = rtg.options;
-        var numberOfColumns = Math.ceil((rtg.el.width()) / (opts.imageWidth + opts.spacing));
-        var koef = rtg.el.width() / ((opts.imageWidth + opts.spacing) * numberOfColumns);
-        //		opts.imageWidth*=koef;
-        numberOfColumns = (numberOfColumns === 0) ? 1 : numberOfColumns;
         var columnHeights = [], i = 0;
         for (i; i < numberOfColumns; i = i + 1) {
             columnHeights[i] = 0;
@@ -71,9 +76,9 @@
             actualColumns++;
             column = columnHeights.min();
             if (rtg.utils.transitions) {
-                $(this).css({ 'top': columnHeights[column], 'left': column * (opts.imageWidth + opts.spacing) });
+                $(this).css({ 'top': columnHeights[column], 'left': opts.spacing / 2 + column * (opts.imageWidth * koef + opts.spacing) });
             } else {
-                $(this).animate({ 'top': columnHeights[column], 'left': column * (opts.imageWidth + opts.spacing) }, 500);
+                $(this).animate({ 'top': columnHeights[column], 'left': opts.spacing / 2 + column * (opts.imageWidth * koef + opts.spacing) }, 500);
             }
             columnHeights[column] = columnHeights[column] + $(this).height() + opts.spacing;
             if (columnHeights[column] > tallest) {

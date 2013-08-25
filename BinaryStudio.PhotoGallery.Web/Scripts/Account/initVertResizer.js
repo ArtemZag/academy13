@@ -3,7 +3,7 @@
     verticalResizer_Module(jQuery);
 
     $(window).on('resize', function () {
-        $("#wrapper").css("height", $(window).height() - 15);
+        $("#wrapper").css("height", $(window).height());
     });
     
     function initResizer() {
