@@ -2,6 +2,6 @@
 {
     public interface ICollageProcessor
     {
-        string CreateCollageIfNotExist(int width, int rows);
+        void CreateCollageIfNotExist(int userId, int albumId, int width, int rows);
     }
 }

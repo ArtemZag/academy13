@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -53,11 +52,25 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
-        public IEnumerable<string> GetThumbnails(int userId, int albumId, ImageSize imageSize)
+        private void CreateBigAvatar(int userId, string originalAvatarPath)
         {
-            string thumbnailsDirectoryPath = pathUtil.BuildAbsoluteThumbnailsDirPath(userId, albumId, imageSize);
+            string path = pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Big);
 
-            return Directory.EnumerateFiles(thumbnailsDirectoryPath);
+            ThumbnailCreationAction(originalAvatarPath, path, (int)ImageSize.Big, true);
+        }
+
+        private void CreateMediumAvatar(int userId, string originalAvatarPath)
+        {
+            string path = pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Medium);
+
+            ThumbnailCreationAction(originalAvatarPath, path, (int)ImageSize.Medium, true);
+        }
+
+        private void CreateSmallAvatar(int userId, string originalAvatarPath)
+        {
+            string path = pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Medium);
+
+            ThumbnailCreationAction(originalAvatarPath, path, (int)ImageSize.Medium, true);
         }
 
         private void ThumbnailCreationAction(string imagePath, string thumbnailPath, int maxSize, bool twoBounds)
@@ -73,27 +86,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                     thumb.Save(thumbnailPath, ImageFormat.Jpeg);
                 }
             }
-        }
-
-        private void CreateBigAvatar(int userId, string originalAvatarPath)
-        {
-            string path = pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Big);
-
-            ThumbnailCreationAction(originalAvatarPath, path, (int) ImageSize.Big, true);
-        }
-
-        private void CreateMediumAvatar(int userId, string originalAvatarPath)
-        {
-            string path = pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Medium);
-
-            ThumbnailCreationAction(originalAvatarPath, path, (int) ImageSize.Medium, true);
-        }
-
-        private void CreateSmallAvatar(int userId, string originalAvatarPath)
-        {
-            string path = pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Medium);
-
-            ThumbnailCreationAction(originalAvatarPath, path, (int) ImageSize.Medium, true);
         }
 
         private Size CalculateThumbSize(Size size, int maxSize, bool twoBounds)

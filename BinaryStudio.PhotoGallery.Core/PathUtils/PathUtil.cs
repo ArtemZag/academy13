@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
@@ -53,9 +55,9 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         /// <summary>
         ///     Pattern: ~data\photos\userId\albumId\imageSize\photoId.format
         /// </summary>
-        public string BuildThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize)
+        public string BuildThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize size)
         {
-            var builder = new StringBuilder(BuildThumbnailsDirPath(userId, albumId, imageSize));
+            var builder = new StringBuilder(BuildThumbnailsDirPath(userId, albumId, size));
 
             builder.Append(DELIMITER)
                 .Append(photoId)
@@ -88,14 +90,21 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return HostingEnvironment.MapPath(BuildAlbumPath(userId, albumId));
         }
 
-        public string BuildAbsoluteThumbailPath(int userId, int albumId, int photoId, string format, ImageSize imageSize)
+        public string BuildAbsoluteThumbailPath(int userId, int albumId, int photoId, string format, ImageSize size)
         {
-            return HostingEnvironment.MapPath(BuildThumbnailPath(userId, albumId, photoId, format, imageSize));
+            return HostingEnvironment.MapPath(BuildThumbnailPath(userId, albumId, photoId, format, size));
         }
 
-        public string BuildAbsoluteThumbnailsDirPath(int userId, int albumId, ImageSize size)
+        private string BuildAbsoluteThumbnailsDirPath(int userId, int albumId, ImageSize size)
         {
             return HostingEnvironment.MapPath(BuildThumbnailsDirPath(userId, albumId, size));
+        }
+
+        public IEnumerable<string> BuildAbsoluteThumbnailsPaths(int userId, int albumId, ImageSize size)
+        {
+            string thumbnailsDirectoryPath = BuildAbsoluteThumbnailsDirPath(userId, albumId, size);
+
+            return Directory.EnumerateFiles(thumbnailsDirectoryPath);
         }
 
         public string BuildAbsoluteCollagesDirPath(int userId, int albumId)

@@ -3,31 +3,63 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
 
 namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
     internal class CollageProcessor : ICollageProcessor
     {
-        private const int MAX_HEIGHT = 1024; 
+        private const int MAX_HEIGHT = 1024;
 
-        private void CreateDirectoriesIfNotExists(params string[] paths)
+        private readonly IPathUtil pathUtil;
+
+        public CollageProcessor(IPathUtil pathUtil)
         {
-            foreach (string path in paths.Where(path => !Directory.Exists(path)))
+            this.pathUtil = pathUtil;
+        }
+
+        public void CreateCollageIfNotExist(int userId, int albumId, int width, int rows)
+        {
+            string collagesDirectoryPath = pathUtil.BuildAbsoluteCollagesDirPath(userId, albumId);
+
+            if (!Directory.Exists(collagesDirectoryPath))
             {
-                Directory.CreateDirectory(path);
+                MakeCollage(userId, albumId, width, rows, collagesDirectoryPath);
             }
         }
 
-        private void TileTheImage(Graphics grfx, IEnumerable<string> enumerable, int width, int heigth)
+        private void MakeCollage(int userId, int albumId, int width, int rows, string collagesDirectoryPath)
+        {
+            int height = rows * MAX_HEIGHT;
+
+            string collagePath = GeneratePathToCollage(userId, albumId);
+
+            using (Image image = new Bitmap(width, height))
+            {
+                Graphics graphics = Graphics.FromImage(image);
+
+                SetUpGraphics(graphics);
+
+                IEnumerable<string> thumbnailsPaths = pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId, ImageSize.Small);
+
+                TileImages(graphics, thumbnailsPaths, width, height);
+
+                Directory.CreateDirectory(collagesDirectoryPath);
+
+                image.Save(collagePath, ImageFormat.Jpeg);
+            }
+        }
+
+        private void TileImages(Graphics graphics, IEnumerable<string> thumbnails, int width, int heigth)
         {
             int iter = 0;
             int sumWidth = 0;
-            foreach (string file in enumerable)
+
+            foreach (string file in thumbnails)
             {
                 using (Image thumbImage = Image.FromFile(file))
                 {
-                    grfx.DrawImageUnscaled(thumbImage, sumWidth, iter);
+                    graphics.DrawImageUnscaled(thumbImage, sumWidth, iter);
                     sumWidth += thumbImage.Width;
                     if (sumWidth >= width)
                     {
@@ -40,21 +72,6 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
-        public string CreateCollageIfNotExist(int width, int rows)
-        {
-            string path = pathUtil.BuildAbsoluteCollagesDirPath(userId, albumId);
-
-            if (Directory.Exists(path))
-            {
-                string s = ImageFormatHelper.GetImages(path).ToList().First();
-
-                if (s != null)
-                    return pathUtil.GetEndUserReference(s);
-            }
-
-            return MakeCollage(width, rows);
-        }
-
         private void SetUpGraphics(Graphics grfx)
         {
             grfx.CompositingQuality = CompositingQuality.HighQuality;
@@ -62,26 +79,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             grfx.SmoothingMode = SmoothingMode.HighQuality;
         }
 
-        private string MakeCollage(int width, int rows)
-        {
-            int height = rows * MAX_HEIGHT;
-            string pathToCollage = CreatePathToCollage(userId, albumId);
-            string pathToCollages = pathUtil.BuildAbsoluteCollagesDirPath(userId, albumId);
-
-            using (Image img = new Bitmap(width, height))
-            {
-                Graphics grfx = Graphics.FromImage(img);
-                SetUpGraphics(grfx);
-
-                TileTheImage(grfx, Randomizer.GetEnumerator(GetThumbnails()), width, height);
-
-                CreateDirectoriesIfNotExists(pathToCollages);
-                img.Save(pathToCollage, ImageFormat.Jpeg);
-            }
-            return pathUtil.GetEndUserReference(pathToCollage);
-        }
-
-        private string CreatePathToCollage(int userId, int albumId)
+        private string GeneratePathToCollage(int userId, int albumId)
         {
             string absolutePhotoDirectoryPath = pathUtil.BuildAbsolutePhotoDirectoryPath();
 
