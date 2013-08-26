@@ -83,7 +83,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                     () => false, IntPtr.Zero))
                 {
                     // todo: there are many formats
-                    thumb.Save(thumbnailPath, ImageFormat.Jpeg);
+                    thumb.Save(thumbnailPath);
                 }
             }
         }
