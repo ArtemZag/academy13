@@ -9,7 +9,6 @@ using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
-using BinaryStudio.PhotoGallery.Web.ViewModels.User;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
