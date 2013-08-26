@@ -95,7 +95,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         public int PhotoCount(int userId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-                return unitOfWork.Photos.Filter(model => model.OwnerId == userId).Count();
+                return unitOfWork.Photos.Filter(model => model.OwnerId == userId && !model.IsDeleted).Count();
         }
 
         public IEnumerable<PhotoModel> GetLastPhotos(int userId, int skipCount, int takeCount)

@@ -4,11 +4,11 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "Albums | Bingally";
 }
-@Scripts.Render("~/Scripts/AlbumsPage/albums.js",
+@Scripts.Render("~/Scripts/Albums/albums.js",
                 "~/Scripts/jsrender.js")
 @Styles.Render("~/Content/albums-page.css")
 
-<canvas id='canv'>Обновите браузер</canvas>
+<canvas id='perimeter'>Refresh browser</canvas>
 
 <script id="collageTmpl" type="text/x-jquery-tmpl">
     <div class="album">
@@ -17,8 +17,9 @@
 </script>
 
 <script id="uploadTmpl" type="text/x-jquery-tmpl">
-    <div align="center">
-        <p>There are no albums available for viewing</p>
+    <canvas id="arrow">Refresh browser</canvas>
+    <div class = "noAlbumsTextContainer">
+        <p class ="noAlbumsText">&nbsp;&nbsp;&nbsp;&nbsp;There are no albums available for viewing.<br/>Click upload here.</p>
     </div>
     
 </script>
@@ -30,12 +31,12 @@
 </script>
 
 <script id="userTmpl" type="text/x-jquery-tmpl">
-    <p><img class="avatar" src="{{:AvatarPath}}"/></p>
-    <p class="textStyle">Full name: {{:FullName}}</p>
-    <p class="textStyle">Albums: {{:AlbumCount}}</p>
-    <p class="textStyle">Photos: {{:PhotoCount}}</p> 
-    <p class="textStyle">State: {{:IsAdmin}}</p>                                                                                                                                                                                                                                                                                                                                                          
-    <p class="textStyle">Department: {{:Department}}</p>
+    <p><img class="avatar" src="{{:PhotoUrl}}"/></p>
+    <p class="textStyle">FirstName: {{:FirstName}}</p>
+    <p class="textStyle">LastName: {{:LastName}}</p>
+    <p class="textStyle">User state: {{:IsAdmin===true?'admin':'simple'}}</p>
+    <p class="textStyle">Total albums: {{:AlbumsCount}}</p>
+    <p class="textStyle">Photos: {{:PhotoCount}}</p>                                                                                                                                                                                                                                                                                                                          
 </script>
 
 <table id="content">
