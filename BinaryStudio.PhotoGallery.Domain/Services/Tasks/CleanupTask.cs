@@ -28,6 +28,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
                 {
                     CleanPhotos(unitOfWork);
                     CleanAlbums(unitOfWork);
+
+                    unitOfWork.SaveChanges();
                 }
             }
             catch (Exception e)
@@ -74,33 +76,43 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
 
         private void CleanAlbums(IUnitOfWork unitOfWork)
         {
-            List<AlbumModel> albumsToCleanup = GetAlbumsForCleanup();
+            List<AlbumModel> albumsToCleanup = GetAlbumsForCleanup(unitOfWork);
 
             albumsToCleanup.ForEach(model => CleanAlbum(model, unitOfWork));
 
             CleanDb(albumsToCleanup, unitOfWork);
         }
 
-        private List<AlbumModel> GetAlbumsForCleanup()
+        private List<AlbumModel> GetAlbumsForCleanup(IUnitOfWork unitOfWork)
         {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                return unitOfWork.Albums.Filter(model => model.IsDeleted).ToList();
-            }
+            return unitOfWork.Albums.Filter(model => model.IsDeleted).ToList();
         }
 
         private void CleanAlbum(AlbumModel album, IUnitOfWork unitOfWork)
         {
             string albumPath = storage.GetAlbumPath(album, unitOfWork);
 
-            Directory.Delete(albumPath, true);
+            DeleteDiretory(albumPath);
         }
 
         private void CleanDb(IEnumerable<AlbumModel> albumsToCleanup, IUnitOfWork unitOfWork)
         {
             foreach (AlbumModel albumModel in albumsToCleanup)
             {
+                DeleteTags(albumModel, unitOfWork);
+
                 unitOfWork.Albums.Delete(albumModel);
+            }
+        }
+
+        private void DeleteTags(AlbumModel albumModel, IUnitOfWork unitOfWork)
+        {
+            var tagsToDelete = new List<AlbumTagModel>();
+            tagsToDelete.AddRange(albumModel.Tags);
+
+            foreach (AlbumTagModel tag in tagsToDelete)
+            {
+                unitOfWork.AlbumTags.Delete(tag);
             }
         }
 
@@ -108,13 +120,45 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
         {
             foreach (PhotoModel photoModel in photosToCleanup)
             {
+                DeleteTags(photoModel, unitOfWork);
+
                 unitOfWork.Photos.Delete(photoModel);
+            }
+        }
+
+        private void DeleteTags(PhotoModel photoModel, IUnitOfWork unitOfWork)
+        {
+            var tagsToDelete = new List<PhotoTagModel>();
+            tagsToDelete.AddRange(photoModel.Tags);
+
+            foreach (PhotoTagModel tag in tagsToDelete)
+            {
+                unitOfWork.PhotoTags.Delete(tag);
             }
         }
 
         private void DeleteFile(string path)
         {
-            File.Delete(path);
+            try
+            {
+                File.Delete(path);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // NOP
+            }
+        }
+
+        private void DeleteDiretory(string path)
+        {
+            try
+            {
+                Directory.Delete(path, true);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // NOP 
+            }
         }
     }
 }

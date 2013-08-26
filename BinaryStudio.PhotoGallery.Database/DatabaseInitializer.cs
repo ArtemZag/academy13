@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
@@ -365,7 +364,6 @@ namespace BinaryStudio.PhotoGallery.Database
 
 
                 GeneratePhotos(albumModel, unitOfWork);
-                GenerateDeletedAlbumsAndPhotos(golovinUser, unitOfWork);
 
                 #endregion
             }
@@ -418,7 +416,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     AlbumId = albumModel.Id,
                     Likes = new Collection<UserModel>(),
                     Rating = 0,
-                    PhotoTags = tags,
+                    Tags = tags,
                     PhotoComments = comm,
                     IsDeleted = false
                 };
@@ -428,52 +426,6 @@ namespace BinaryStudio.PhotoGallery.Database
             albumModel.Photos = photosForAlbum;
 
             unitOfWork.Albums.Update(albumModel);
-            unitOfWork.SaveChanges();
-        }
-
-        private void GenerateDeletedAlbumsAndPhotos(UserModel userModel, IUnitOfWork unitOfWork)
-        {
-            var photos = new List<PhotoModel>();
-
-            var tags = new List<AlbumTagModel>
-            {
-                new AlbumTagModel
-                {
-                    TagName = "tag90"
-                },
-                new AlbumTagModel
-                {
-                    TagName = "tag54"
-                }
-            };
-
-            userModel.Albums.Add(new AlbumModel
-            {
-                OwnerId = userModel.Id,
-                IsDeleted = true,
-                Name = "album to delete",
-                Description = "Delete me",
-                Tags = tags
-            });
-
-            unitOfWork.SaveChanges();
-
-            AlbumModel albumModel = unitOfWork.Albums.Find(model => model.Name == "album to delete");
-
-            for (int i = 0; i < 5; i++)
-            {
-                photos.Add(new PhotoModel
-                {
-                    DateOfCreation = DateTime.Now,
-                    OwnerId = userModel.Id,
-                    IsDeleted = true,
-                    AlbumId = albumModel.Id,
-                    Format = "jpg"
-                });
-            }
-
-            albumModel.Photos = photos;
-
             unitOfWork.SaveChanges();
         }
     }

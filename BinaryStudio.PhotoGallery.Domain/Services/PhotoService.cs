@@ -180,7 +180,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userId, unitOfWork);
                 var photo = GetPhoto(userId, photoId);
 
-                foreach(var photoTag in photo.PhotoTags)
+                foreach(var photoTag in photo.Tags)
                 { 
                     
                 }

@@ -79,8 +79,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             {
                 Size size = CalculateThumbSize(image.Size, maxSize, twoBounds);
 
-                using (Image thumb = image.GetThumbnailImage(size.Width, size.Height,
-                    () => false, IntPtr.Zero))
+                using (Image thumb = image.GetThumbnailImage(size.Width, size.Height, () => false, IntPtr.Zero))
                 {
                     // todo: there are many formats
                     thumb.Save(thumbnailPath);
