@@ -1,5 +1,4 @@
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
@@ -11,6 +10,7 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
         {
             var viewModel = new UserViewModel
             {
+                Id = model.Id,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,

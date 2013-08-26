@@ -52,12 +52,12 @@
     </div>
 </div>
 
-
 @ko.Initialize(Model)
 
 <script type="text/javascript">
+    var getPhotosApi = '@Url.RouteUrl(new {httproute = "", controller = "PhotoApi", action = "GetPhotos"})';
     $(document).ready(function() {
-        PhotoPlacer_Module("/api/photo/", "@Model.Id");
+        PhotoPlacer_Module(getPhotosApi, "@Model.Id");
     });
 
     viewModel.gotoPhotoPage = function(data) {
