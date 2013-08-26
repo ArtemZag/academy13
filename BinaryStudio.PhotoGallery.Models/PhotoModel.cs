@@ -8,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Models
     /// </summary>
     public class PhotoModel
     {
-        // Initializes some properties, that must contain some value by default
+        // Initializes some properties, that must contain some value by default.
         public PhotoModel()
         {
             DateOfCreation = DateTime.Now;
@@ -27,7 +27,7 @@ namespace BinaryStudio.PhotoGallery.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets real format of photo
+        /// Gets or sets real format of photo.
         /// </summary>
         public string Format { get; set; }
 
@@ -37,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// Time and date of photo creating
+        /// Time and date of photo creating.
         /// </summary>
         public DateTime DateOfCreation { get; set; }
 
@@ -47,7 +47,7 @@ namespace BinaryStudio.PhotoGallery.Models
         public int Rating { get; set; }
 
         /// <summary>
-        /// Gets or sets a photo state
+        /// Gets or sets a photo state.
         /// </summary>
         public bool IsDeleted { get; set; }
 
@@ -56,10 +56,10 @@ namespace BinaryStudio.PhotoGallery.Models
         public int AlbumId { get; set; }
 
         public virtual ICollection<PhotoCommentModel> PhotoComments { get; set; }
-        public virtual ICollection<PhotoTagModel> PhotoTags { get; set; }
+        public virtual ICollection<PhotoTagModel> Tags { get; set; }
 
         /// <summary>
-        /// Gets or sets how much people like photo ( contains users' ids)
+        /// Gets or sets how much people like photo ( contains users' ids).
         /// </summary>
         public virtual ICollection<UserModel> Likes { get; set; }
     }

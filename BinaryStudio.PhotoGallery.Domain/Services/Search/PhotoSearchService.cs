@@ -79,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             foreach (AlbumModel albumModel in fromAlbums)
             {
                 IEnumerable<PhotoFound> found = albumModel.Photos.Where(
-                    model => model.PhotoTags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
+                    model => model.Tags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
                     .Select(model => new PhotoFound
                     {
                         Id = model.Id,
@@ -100,7 +100,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         private int CalculateRelevanceByTags(IEnumerable<string> searchWords, PhotoModel photoModel)
         {
             return
-                photoModel.PhotoTags.Sum(
+                photoModel.Tags.Sum(
                     photoTagModel =>
                         searchWords.Sum(searchWord => Regex.Matches(photoTagModel.TagName, searchWord).Count));
         }
