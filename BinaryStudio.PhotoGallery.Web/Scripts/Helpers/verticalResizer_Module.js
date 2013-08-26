@@ -1,8 +1,9 @@
-﻿var verticalResizer_Module = function ($) {
+﻿var verticalResizer_Module = function (wrapper) {
+    var $ = jQuery;
     $.fn.vr = function (userOptions) {
         vr.options = $.extend(true, {}, vr.defaults, userOptions);
         vr.el = $(this);
-        vr.el.find('.rtg-images').css({ 'height': vr.options.initialHeight });
+        vr.el.find(wrapper).css({ 'height': vr.options.initialHeight });
         vr.loading.start();
         vr.init();
     };
@@ -11,7 +12,7 @@
     vr.init = function () {
         vr.images.resize(true);
         vr.images.show();
-        vr.utils.addTransition(vr.el.find('.rtg-images > div'));
+        vr.utils.addTransition(vr.el.find(wrapper + '> div'));
         vr.images.sort();
         var resize = function () {
             vr.images.resize(false);
@@ -20,11 +21,8 @@
         var resizeTimer;
         $(window).resize(function () {
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(resize, 200);
+            resizeTimer = setTimeout(resize, 300);
         });
-        if (navigator.appVersion.indexOf("MSIE 7.") != -1) {
-            vr.el.find('.rtg-categories > li').css('display', 'inline').find('a').css({ 'display': 'block', 'padding': '3px 7px' });
-        }
     };
     vr.loading = {
         start: function () {
@@ -40,7 +38,7 @@
     var koef;
 
     vr.images.resize = function (init) {
-        var $units = vr.el.find('.rtg-images > div'), opts = vr.options;
+        var $units = vr.el.find(wrapper + ' > div'), opts = vr.options;
         numberOfColumns = Math.ceil((vr.el.width()) / (opts.imageWidth + opts.spacing));
         numberOfColumns = (numberOfColumns === 0) ? 1 : numberOfColumns;
         koef = vr.el.width() / ((opts.imageWidth + opts.spacing) * numberOfColumns + opts.spacing/2);
@@ -60,7 +58,7 @@
         });
     };
     vr.images.show = function () {
-        vr.el.find('.rtg-images > div').css('opacity', '0').css('visibility', 'visible').each(function () {
+        vr.el.find(wrapper + ' > div').css('opacity', '0').css('visibility', 'visible').each(function () {
             $(this).animate({ 'opacity': '1' }, {
                 duration: 100 + Math.floor(Math.random() * 900), complete: function () {
                     vr.loading.stop();
@@ -69,10 +67,8 @@
         });
     };
     
-
-
     vr.images.sort = function () {
-        var units = vr.el.find('.rtg-images > div'), opts = vr.options;
+        var units = vr.el.find(wrapper + ' > div'), opts = vr.options;
         var columnHeights = [], i = 0;
         for (i; i < numberOfColumns; i = i + 1) {
             columnHeights[i] = 0;
@@ -94,7 +90,7 @@
                 tallest = columnHeights[column];
             }
         });
-        vr.el.find('.rtg-images').css({ 'height': tallest, 'width': (numberOfColumns * (opts.imageWidth + opts.spacing)) - opts.spacing }, 400);
+        vr.el.find(wrapper).css({ 'height': tallest, 'width': (numberOfColumns * (opts.imageWidth + opts.spacing)) - opts.spacing }, 400);
     };
     vr.utils = {};
     vr.utils.addTransition = function (el) {

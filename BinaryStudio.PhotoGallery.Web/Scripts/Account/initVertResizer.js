@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     $("#wrapper").css("height", $(window).height());
-    verticalResizer_Module(jQuery);
+    verticalResizer_Module('#vFlow-images');
 
     $(window).on('resize', function () {
         $("#wrapper").css("height", $(window).height());
@@ -11,25 +11,9 @@
             imageWidth: 215,
             spacing: 10,
         });
-        var didit = false;
-        var done = false;
-        setTimeout(function () {
-            var bWidth = $('.rtg-images').width();
-            var resizeStep = function () {
-                bWidth = $('.rtg-images').width();
-            };
-            var stepTimer;
-            $(window).resize(function () {
-                if (didit === false) {
-                    clearTimeout(stepTimer);
-                    stepTimer = setTimeout(resizeStep, 200);
-                }
-            });
-        }, 1000);
     }
     
-
-    var photoPortion = 35;
+    var photoPortion = 40;
 
     $.get("api/publicphoto/"+ photoPortion )
           .done(function (photos) {

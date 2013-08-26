@@ -23,10 +23,10 @@
 
 
 /*Image style*/
-.rtg-images {
+#vFlow-images {
     position:relative;
 }
-.rtg-images > div {
+#vFlow-images > div {
     width:100%;
     height:565px;
     position:absolute;
@@ -34,7 +34,7 @@
     left:0px;*/
     visibility:hidden;
 }
-.rtg-images > div > span {
+#vFlow-images > div > span {
 	position:absolute;
 	top:0;
 	left:0;
@@ -48,7 +48,7 @@
 	background-position:center; 
 
 }
-.rtg-images > div > img {
+#vFlow-images > div > img {
     border:none;
     opacity:1;
     position:absolute;
