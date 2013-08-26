@@ -1,22 +1,21 @@
 ﻿var verticalResizer_Module = function ($) {
-    $.fn.rtg = function (userOptions) {
-        rtg.options = $.extend(true, {}, rtg.defaults, userOptions);
-        rtg.el = $(this);
-        rtg.el.find('.rtg-images').css({ 'height': rtg.options.initialHeight });
-        rtg.loading.start();
-        rtg.init();
+    $.fn.vr = function (userOptions) {
+        vr.options = $.extend(true, {}, vr.defaults, userOptions);
+        vr.el = $(this);
+        vr.el.find('.rtg-images').css({ 'height': vr.options.initialHeight });
+        vr.loading.start();
+        vr.init();
     };
-    var rtg = {};
-    rtg.defaults = {imageWidth: 300, spacing: 10, center: true, initialHeight: 0 };
-    rtg.init = function () {
-        rtg.images.resize();
-        rtg.images.show();
-        rtg.utils.addTransition(rtg.el.find('.rtg-images > div'));
-        rtg.images.sort();
-        rtg.images.center();
+    var vr = {};
+    vr.defaults = {imageWidth: 300, spacing: 10, initialHeight: 0 };
+    vr.init = function () {
+        vr.images.resize(true);
+        vr.images.show();
+        vr.utils.addTransition(vr.el.find('.rtg-images > div'));
+        vr.images.sort();
         var resize = function () {
-            rtg.images.sort();
-            rtg.images.center();
+            vr.images.resize(false);
+            vr.images.sort();
         };
         var resizeTimer;
         $(window).resize(function () {
@@ -24,37 +23,47 @@
             resizeTimer = setTimeout(resize, 200);
         });
         if (navigator.appVersion.indexOf("MSIE 7.") != -1) {
-            rtg.el.find('.rtg-categories > li').css('display', 'inline').find('a').css({ 'display': 'block', 'padding': '3px 7px' });
+            vr.el.find('.rtg-categories > li').css('display', 'inline').find('a').css({ 'display': 'block', 'padding': '3px 7px' });
         }
     };
-    rtg.loading = {
+    vr.loading = {
         start: function () {
             $("#loader").show();
         }, stop: function () {
             $("#loader").hide();
         }
     };
-    rtg.images = {};
+    vr.images = {};
 
 
     var numberOfColumns;
     var koef;
-    rtg.images.resize = function () {
-        var units = rtg.el.find('.rtg-images > div'), opts = rtg.options;
-        numberOfColumns = Math.ceil((rtg.el.width()) / (opts.imageWidth + opts.spacing));
+
+    vr.images.resize = function (init) {
+        var $units = vr.el.find('.rtg-images > div'), opts = vr.options;
+        numberOfColumns = Math.ceil((vr.el.width()) / (opts.imageWidth + opts.spacing));
         numberOfColumns = (numberOfColumns === 0) ? 1 : numberOfColumns;
-        koef = rtg.el.width() / ((opts.imageWidth + opts.spacing) * numberOfColumns + opts.spacing/2);
-        units.each(function () {
-            var unit = $(this);
-            image = unit.find('img'), oldWidth = image.width(), oldHeight = image.height(), ratio = opts.imageWidth / oldWidth, newWidth = opts.imageWidth*koef, newHeight = oldHeight * ratio;
-            $.merge(unit, unit.find('*')).css({ 'width': newWidth, 'height': newHeight });
+        koef = vr.el.width() / ((opts.imageWidth + opts.spacing) * numberOfColumns + opts.spacing/2);
+        $units.each(function () {
+            var $unit = $(this);
+            var $image = $unit.find('img');
+            var oldWidth = $image.width();
+            var newWidth = opts.imageWidth * koef;
+            var newHeight = $image.height();
+            if (init == true) {
+                var ratio = opts.imageWidth / oldWidth;
+                newHeight *= ratio;
+                $unit.find('*').css({ 'width': opts.imageWidth, 'height': newHeight });
+            }
+            
+            $unit.css({ 'width': newWidth, 'height': newHeight });
         });
     };
-    rtg.images.show = function () {
-        rtg.el.find('.rtg-images > div').css('opacity', '0').css('visibility', 'visible').each(function () {
+    vr.images.show = function () {
+        vr.el.find('.rtg-images > div').css('opacity', '0').css('visibility', 'visible').each(function () {
             $(this).animate({ 'opacity': '1' }, {
                 duration: 100 + Math.floor(Math.random() * 900), complete: function () {
-                    rtg.loading.stop();
+                    vr.loading.stop();
                 }
             });
         });
@@ -62,8 +71,8 @@
     
 
 
-    rtg.images.sort = function () {
-        var units = rtg.el.find('.rtg-images > div'), opts = rtg.options;
+    vr.images.sort = function () {
+        var units = vr.el.find('.rtg-images > div'), opts = vr.options;
         var columnHeights = [], i = 0;
         for (i; i < numberOfColumns; i = i + 1) {
             columnHeights[i] = 0;
@@ -75,7 +84,7 @@
             }
             actualColumns++;
             column = columnHeights.min();
-            if (rtg.utils.transitions) {
+            if (vr.utils.transitions) {
                 $(this).css({ 'top': columnHeights[column], 'left': opts.spacing / 2 + column * (opts.imageWidth * koef + opts.spacing) });
             } else {
                 $(this).animate({ 'top': columnHeights[column], 'left': opts.spacing / 2 + column * (opts.imageWidth * koef + opts.spacing) }, 500);
@@ -85,38 +94,24 @@
                 tallest = columnHeights[column];
             }
         });
-        if (rtg.options.center) {
-            numberOfColumns = (actualColumns < numberOfColumns) ? actualColumns : numberOfColumns;
-        }
-        rtg.el.find('.rtg-images').css({ 'height': tallest, 'width': (numberOfColumns * (opts.imageWidth + opts.spacing)) - opts.spacing }, 400);
+        vr.el.find('.rtg-images').css({ 'height': tallest, 'width': (numberOfColumns * (opts.imageWidth + opts.spacing)) - opts.spacing }, 400);
     };
-    rtg.images.center = function () {
-        if (!rtg.options.center) {
-            return;
-        }
-        ;
-        var images = rtg.el.find('.rtg-images');
-        var left = (rtg.el.width() - images.width()) / 2;
-        left = (left <= 0) ? 0 : left;
-        images.animate({ 'left': left });
-        rtg.el.find('.rtg-categories').animate({ 'margin-left': left });
-    };
-    rtg.utils = {};
-    rtg.utils.addTransition = function (el) {
-        if (rtg.utils.transitions) {
+    vr.utils = {};
+    vr.utils.addTransition = function (el) {
+        if (vr.utils.transitions) {
             el.each(function () {
                 $(this).css({ '-webkit-transition': 'all 0.7s ease', '-moz-transition': 'all 0.7s ease', '-o-transition': 'all 0.7s ease', 'transition': 'all 0.7s ease' });
             });
         }
     };
-    rtg.utils.removeTransition = function (el) {
-        if (rtg.utils.transitions) {
+    vr.utils.removeTransition = function (el) {
+        if (vr.utils.transitions) {
             el.each(function () {
                 $(this).css({ '-webkit-transition': 'none 0.7s ease', '-moz-transition': 'none 0.7s ease', '-o-transition': 'none 0.7s ease', 'transition': 'none 0.7s ease' });
             });
         }
     };
-    rtg.utils.transitions = (function () {
+    vr.utils.transitions = (function () {
         function cssTransitions() {
             var div = document.createElement("div");
             var p, ext, pre = ["ms", "O", "Webkit", "Moz"];

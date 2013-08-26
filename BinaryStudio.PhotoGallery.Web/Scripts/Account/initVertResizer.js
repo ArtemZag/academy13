@@ -7,12 +7,9 @@
     });
     
     function initResizer() {
-        $('#myGallery').rtg({
+        $('#wrapper').vr({
             imageWidth: 215,
             spacing: 10,
-            categories: false,
-            lightbox: false,
-            center: false,
         });
         var didit = false;
         var done = false;

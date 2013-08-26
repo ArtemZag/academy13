@@ -18,40 +18,9 @@
 	/*border: 5px solid #fff;*/
 	border-radius: 5px;
 }
-.rtg-current-category {
-    /*Color for the current category*/
-    background-color:#777 !important;
-    /*Fort for the current category*/
-    color:red;
-}
-
-.rtg-categories > li > a {
-    /*Color for the categories*/
-    background-color:#1c9bd7;
-    /*Font color for the categories*/
-    color:white;
-}
 
 /*End of theme customization*/
 
-/*Category style*/
-.rtg-categories {
-    padding: 10px 0 0 0;
-    list-style-type:none;
-}
-.rtg-categories > li {
-    display:inline-block;
-    height:30px;
-    margin-right:10px;
-}
-.rtg-categories > li > a {
-    padding:3px 7px;
-    text-decoration:none;
-    font-family:arial, sans-serif;
-    font-weight:300;
-    font-size:13px;
-    letter-spacing:1px;
-}
 
 /*Image style*/
 .rtg-images {
@@ -79,9 +48,11 @@
 	background-position:center; 
 
 }
-.rtg-images > div > a > img {
+.rtg-images > div > img {
     border:none;
     opacity:1;
     position:absolute;
-    z-index:3;
+	max-width: none;
 }
+
+

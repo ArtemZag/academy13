@@ -33,11 +33,9 @@
     <body>
         <div id="full-screen-shadow"></div>
         <div id="wrapper">
-            <div id='myGallery' class='rtg-gallery'>
-                <div class='rtg-images' data-bind="foreach: RandomPhotos">
-                    <div class="photoContainer invisible" >
-                        <img data-bind="attr: { src: PhotoThumbSource }"/>
-                    </div>
+            <div class='rtg-images' data-bind="foreach: RandomPhotos">
+                <div class="photoContainer invisible" >
+                    <img data-bind="attr: { src: PhotoThumbSource }"/>
                 </div>
             </div>
         </div>
