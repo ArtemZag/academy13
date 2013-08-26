@@ -12,7 +12,7 @@
     @using(Html.BeginForm("Edit", "Profile", FormMethod.Post))
     {
         <div class="span2">
-            <img src="~/Content/images/no_avatar.png" class="img-polaroid" id="user-photo">
+            <img src="@Model.PhotoUrl" class="img-polaroid" id="user-photo">
         </div>
         <div class="span3">
             @Html.LabelFor(x => x.FirstName, "First Name")
@@ -22,7 +22,7 @@
             @Html.TextBoxFor(x => x.LastName)
             
             @Html.LabelFor(x => x.Email, "Email")
-            @Html.TextBoxFor(x => x.Email, new { disabled = "disabled" })
+            @Html.TextBoxFor(x => x.Email)
             @Html.HiddenFor(x => x.Email)
             <div class="btn-group" id="button-group">
                 <input type="submit" value="Save" class="btn"/>

@@ -1,5 +1,6 @@
 ﻿@using System.Web.Optimization
 @using BinaryStudio.PhotoGallery.Web.ViewModels
+@using BinaryStudio.PhotoGallery.Web.ViewModels.Photo
 @using PerpetuumSoft.Knockout
 @model AlbumViewModel
 
@@ -8,6 +9,7 @@
 
 @Styles.Render("~/Content/photo-flow.css")
 @Styles.Render("~/Content/spinner.css")
+@Styles.Render("~/Content/album-page.css")
 
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
@@ -23,20 +25,39 @@
         <li></li>
     </ul>
 </div>
-<div id="photoWrapper">
-    @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it.Photos))
-    {
-        <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
-            <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
+
+<div class="container-fluid no-padding">
+    <div class="row-fluid">
+        <div class="span9">
+            <div id="photoWrapper">
+                @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it.Photos))
+                {
+                    <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
+                        <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
+                    </div>
+                }
+            </div>
         </div>
-    }
+        <div class="span3 sidebar">
+                <div class="title editable" contenteditable="true">@Html.DisplayFor(model => model.AlbumName)</div>
+                <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>
+                <div class="title">Description</div>
+                <div class="prop editable" contenteditable="true">@Html.DisplayFor(model => model.Description)</div>
+                <div class="title" contenteditable="true">Tags</div>
+                <div class="prop editable" contenteditable="true">
+                    tag, tag 2, other tag, looong  tag, some tag, your tag, my tag, tag-tag
+                </div>
+                <div class="title">Rights</div>
+        </div>
+    </div>
 </div>
 
 
 @ko.Initialize(Model)
+
 <script type="text/javascript">
     $(document).ready(function() {
-        PhotoPlacer_Module("/api/photo/","@Model.id");
+        PhotoPlacer_Module("/api/photo/", "@Model.Id");
     });
 
     viewModel.gotoPhotoPage = function(data) {

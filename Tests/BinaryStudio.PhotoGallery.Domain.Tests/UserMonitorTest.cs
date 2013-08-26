@@ -7,53 +7,53 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     [TestFixture]
     internal class UserMonitorTest
     {
-        private readonly IUsersMonitorTask monitorTask;
+        private readonly IUsersMonitorTask _monitorTask;
 
         public UserMonitorTest()
         {
-            monitorTask = new UsersMonitorTask();
+            _monitorTask = new UsersMonitorTask();
         }
 
         [Test]
         public void UserShouldBeOffline()
         {
             // setup
-            const string EMAIL = "some@gmail.com";
+            const int USER_ID = 1;
 
             // tear down
-            monitorTask.IsOnline(EMAIL).Should().Be(false);
+            _monitorTask.IsOnline(USER_ID).Should().Be(false);
         }
 
         [Test]
         public void UserShouldBeOfflineAfterLongTimeInactivity()
         {
             // setup
-            const string EMAIL = "some@gmail.com";
+            const int USER_ID = 1;
 
             // body 
-            monitorTask.SetOnline(EMAIL);
-            monitorTask.Period = 2;
+            _monitorTask.SetOnline(USER_ID);
+            _monitorTask.Period = 2;
 
             for (int i = 0; i < 16/2; i++)
             {
-                monitorTask.Execute();
+                _monitorTask.Execute();
             }
 
             // tear down
-            monitorTask.IsOnline(EMAIL).Should().Be(false);
+            _monitorTask.IsOnline(USER_ID).Should().Be(false);
         }
 
         [Test]
         public void UserShouldBeOnline()
         {
             // setup
-            const string EMAIL = "some@gmail.com";
+            const int USER_ID = 1;
 
             // body
-            monitorTask.SetOnline(EMAIL);
+            _monitorTask.SetOnline(USER_ID);
 
             // tear down 
-            monitorTask.IsOnline(EMAIL).Should().Be(true);
+            _monitorTask.IsOnline(USER_ID).Should().Be(true);
         }
     }
 }

@@ -2,6 +2,7 @@ using BinaryStudio.PhotoGallery.Core.EmailUtils;
 using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Core.IOUtils;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using Microsoft.Practices.Unity;
 
@@ -20,6 +21,8 @@ namespace BinaryStudio.PhotoGallery.Core
             container.RegisterType<IDirectoryWrapper, DirectoryWrapper>();
             container.RegisterType<IUrlUtil, UrlUtil>();
             container.RegisterType<IMaskHelper, MaskHelper>();
+            container.RegisterType<IPhotoProcessor, PhotoProcessor>();
+            container.RegisterType<ICollageProcessor, CollageProcessor>();
         }
     }
 }

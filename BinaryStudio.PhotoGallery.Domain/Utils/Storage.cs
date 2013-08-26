@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Models;
 
@@ -10,87 +9,40 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
     internal class Storage : IStorage
     {
         private readonly IPathUtil pathUtil;
-        private readonly IUnitOfWorkFactory workFactory;
 
-        public Storage(IUnitOfWorkFactory workFactory, IPathUtil pathUtil)
+        public Storage(IPathUtil pathUtil)
         {
-            this.workFactory = workFactory;
             this.pathUtil = pathUtil;
         }
 
-        public string GetAlbumPath(AlbumModel album)
+        public string GetAlbumPath(AlbumModel album, IUnitOfWork unitOfWork)
         {
-            using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
-            {
-                UserModel user = GetUser(album.OwnerId, unitOfWork);
+            UserModel user = unitOfWork.Users.Find(album.OwnerId);
 
-                return pathUtil.BuildAlbumPath(user.Id, album.Id);
-            }
+            return pathUtil.BuildAbsoluteAlbumPath(user.Id, album.Id);
         }
 
-        public string GetAlbumPath(PhotoModel photo)
+        public string GetOriginalPhotoPath(PhotoModel photo, IUnitOfWork unitOfWork)
         {
-            using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
-            {
-                AlbumModel album = unitOfWork.Albums.Find(model => model.Id == photo.AlbumId);
-                UserModel user = unitOfWork.Users.Find(model => model.Id == album.OwnerId);
+            AlbumModel album = unitOfWork.Albums.Find(photo.AlbumId);
+            UserModel user = unitOfWork.Users.Find(album.OwnerId);
 
-                return pathUtil.BuildAlbumPath(user.Id, album.Id);
-            }
+            return pathUtil.BuildAbsoluteOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
         }
 
-        public string GetOriginalPhotoPath(PhotoModel photo)
+        public IEnumerable<string> GetThumnailsPaths(PhotoModel photo, IUnitOfWork unitOfWork)
         {
-            using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
+            AlbumModel album = unitOfWork.Albums.Find(photo.AlbumId);
+            UserModel user = unitOfWork.Users.Find(album.OwnerId);
+
+            var result = new List<string>
             {
-                AlbumModel album = GetAlbum(photo.AlbumId, unitOfWork);
-                UserModel user = GetUser(album.OwnerId, unitOfWork);
-
-                return pathUtil.BuildOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
-            }
-        }
-
-        public IEnumerable<string> GetThumnailsPaths(PhotoModel photo)
-        {
-            var result = new Collection<string>();
-
-            string thumbnailsDirectoryPath = GetThumbnailsDirectoryPath(photo);
-
-            IEnumerable<string> thumnailFormatsPaths = Directory.EnumerateDirectories(thumbnailsDirectoryPath);
-
-            foreach (string thumbnailFormatPath in thumnailFormatsPaths)
-            {
-                // todo
-                string currentThumbnail = Path.Combine(thumbnailFormatPath, photo.Id.ToString());
-
-                if (File.Exists(currentThumbnail))
-                {
-                    result.Add(currentThumbnail);
-                }
-            }
+                pathUtil.BuildAbsoluteThumbailPath(user.Id, album.Id, photo.Id, photo.Format, ImageSize.Big),
+                pathUtil.BuildAbsoluteThumbailPath(user.Id, album.Id, photo.Id, photo.Format, ImageSize.Medium),
+                pathUtil.BuildAbsoluteThumbailPath(user.Id, album.Id, photo.Id, photo.Format, ImageSize.Small)
+            };
 
             return result;
-        }
-
-        private string GetThumbnailsDirectoryPath(PhotoModel photo)
-        {
-            using (IUnitOfWork unitOfWork = workFactory.GetUnitOfWork())
-            {
-                AlbumModel album = GetAlbum(photo.AlbumId, unitOfWork);
-                UserModel user = GetUser(album.OwnerId, unitOfWork);
-
-                return pathUtil.BuildThumbnailsPath(user.Id, album.Id);
-            }
-        }
-
-        private UserModel GetUser(int userId, IUnitOfWork unitOfWork)
-        {
-            return unitOfWork.Users.Find(model => model.Id == userId);
-        }
-
-        private AlbumModel GetAlbum(int albumId, IUnitOfWork unitOfWork)
-        {
-            return unitOfWork.Albums.Find(model => model.Id == albumId && !model.IsDeleted);
         }
     }
 }

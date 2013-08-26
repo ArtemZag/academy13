@@ -1,5 +1,6 @@
 ﻿@using System.Web.Optimization
-@inherits BinaryStudio.PhotoGallery.Web.BaseViewPage
+@using BinaryStudio.PhotoGallery.Web.Extensions
+@inherits BinaryStudio.PhotoGallery.Web.CustomStructure.BaseViewPage
 
 <!DOCTYPE html>
 <html>
@@ -18,32 +19,31 @@
         <title>@ViewBag.Title</title>
     </head>
     <body>
-        <nav class="navbar navbar-fixed-top">
-            <a href="~/" class="brand"><img src="~/Content/images/logo_small.png"/></a>
+        <nav class="navbar navbar-fixed-top" id="toolbar">
+            @Html.ImageLink(Url.Content("~/Content/images/logo_small.png"), "Index", "Home", new {@class = "brand"})
             <ul class="nav">
-                <li><a href="~/gallery">Gallery</a></li>
-                <li><a href="~/albums">Albums</a></li>
-                <li><a href="~/search">Search</a></li>
+                <li>@Html.ActionLink("Gallery", "Index", "Gallery")</li>
+                <li>@Html.ActionLink("Albums", "Index", "Albums")</li>
+                <li>@Html.ActionLink("Search", "Index", "Search")</li>
             </ul>
 
             <ul class="nav pull-right">
-                <li><a href="~/upload" class="btn btn-success">Upload</a></li>
+                <li>@Html.ActionLink("Upload", "Index", "Upload", new {@class = "btn btn-success"})</li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         <strong>@User.Email</strong>
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        @{
-                            if (@User.IsAdmin)
-                            {
-                                <li><a href="~/admin">Administration</a></li>
-                            }
+                        @if (User.IsAdmin)
+                        {
+                            <li>@Html.ActionLink("Administration", "Index", "AdminPanel")</li>
                         }
-                        <li><a href="~/news">Notifications</a></li>
-                        <li><a href="~/profile">Profile</a></li>
+                        <!-- TODO Make this page!!! -->
+                        <!--<li><a href="~/news">Notifications</a></li>-->
+                        <li>@Html.ActionLink("Profile", "Index", "Profile")</li>
                         <li class="divider"></li>
-                        <li><a href="~/signout">Sign out</a></li>
+                        <li>@Html.ActionLink("Sign out", "SignOut", "Account")</li>
                     </ul>
                 </li>
             </ul>

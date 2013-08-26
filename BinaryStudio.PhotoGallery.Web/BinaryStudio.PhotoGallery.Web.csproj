@@ -16,7 +16,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44301</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -220,17 +221,17 @@
     <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="App_Start\AttributeRoutingHttpConfig.cs" />
     <Compile Include="App_Start\BootstrapBundleConfig.cs" />
-    <Compile Include="Area\Api\AccountController.cs" />
-    <Compile Include="Area\Api\AlbumController.cs" />
-    <Compile Include="Area\Api\PublicPhotoController.cs" />
-    <Compile Include="Area\Api\UserController.cs" />
-    <Compile Include="Area\Api\UploadController.cs" />
-    <Compile Include="Area\Api\PhotoCommentController.cs" />
-    <Compile Include="Area\Api\PhotoController.cs" />
-    <Compile Include="Area\Api\SearchController.cs" />
+    <Compile Include="Area\Api\AccountApiController.cs" />
+    <Compile Include="Area\Api\AdminApiController.cs" />
+    <Compile Include="Area\Api\AlbumApiController.cs" />
+    <Compile Include="Area\Api\UserApiController.cs" />
+    <Compile Include="Area\Api\UploadApiController.cs" />
+    <Compile Include="Area\Api\PhotoCommentApiController.cs" />
+    <Compile Include="Area\Api\PhotoApiController.cs" />
+    <Compile Include="Area\Api\SearchApiController.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AdminPanelController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -243,9 +244,12 @@
     <Compile Include="Area\Api\BaseApiController.cs" />
     <Compile Include="Events\NotificationsEventManager.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Infrastructure\CustomPrincipal\BaseViewPage.cs" />
-    <Compile Include="Infrastructure\CustomPrincipal\CustomPrincipal.cs" />
-    <Compile Include="Infrastructure\CustomPrincipal\ICustomPrincipal.cs" />
+    <Compile Include="CustomStructure\BaseViewPage.cs" />
+    <Compile Include="CustomStructure\CustomPrincipal.cs" />
+    <Compile Include="CustomStructure\ICustomPrincipal.cs" />
+    <Compile Include="Extensions\HtmlHelperExtentions.cs" />
+    <Compile Include="Extensions\ViewModels\PhotoConvertionExtensions.cs" />
+    <Compile Include="Extensions\ViewModels\UserConvertionExtensions.cs" />
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -254,26 +258,36 @@
     <Compile Include="Events\GlobalEventsHandler.cs" />
     <Compile Include="Hubs\NotificationTitles.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
-    <Compile Include="Infrastructure\CustomPrincipal\UserInfoSerializeModel.cs" />
-    <Compile Include="Infrastructure\Extensions\ControllerExtensions.cs" />
+    <Compile Include="CustomStructure\UserInfoSerializeModel.cs" />
+    <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Registers\CleanupServiceRegistry.cs" />
     <Compile Include="Registers\SearchCacheRegistry.cs" />
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
     <Compile Include="Utils\ISearchModelConverter.cs" />
     <Compile Include="Utils\SearchModelConverter.cs" />
+    <Compile Include="ViewModels\Admin\InviteUserViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
-    <Compile Include="ViewModels\Authorization\SigninViewModel.cs" />
-    <Compile Include="ViewModels\InfoViewModel.cs" />
-    <Compile Include="ViewModels\MenuViewModel.cs" />
+    <Compile Include="ViewModels\Account\SigninViewModel.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\PublicPhotosViewModel.cs" />
     <Compile Include="ViewModels\Photo\NewCommentViewModel.cs" />
     <Compile Include="ViewModels\Photo\PhotoCommentViewModel.cs" />
     <Compile Include="ViewModels\Photo\PhotoLikeViewModel.cs" />
     <Compile Include="ViewModels\Photo\PhotoPageViewModel.cs" />
-    <Compile Include="ViewModels\PhotoViewModel.cs" />
-    <Compile Include="ViewModels\Authorization\SignupViewModel.cs" />
+    <Compile Include="ViewModels\Photo\PhotoViewModel.cs" />
+    <Compile Include="ViewModels\Account\SignupViewModel.cs" />
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\Photo\UserInfoViewModel.cs" />
+    <Compile Include="Extensions\ViewModels\AlbumConvertionExtensions.cs" />
+    <Compile Include="ViewModels\UsersListViewModel.cs" />
+    <Compile Include="ViewModels\UserViewModel.cs" />
+    <Content Include="Content\album-page.css" />
     <Content Include="Content\profile-page.css" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\panel.css" />
@@ -291,9 +305,6 @@
     <Compile Include="ViewModels\Search\UserFoundViewModel.cs" />
     <Compile Include="ViewModels\Upload\MovePhotosViewModel.cs" />
     <Compile Include="ViewModels\Upload\UploadResultViewModel.cs" />
-    <Compile Include="ViewModels\UserInfoViewModel.cs" />
-    <Compile Include="ViewModels\UsersListViewModel.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\albums-page.css" />
     <Content Include="Content\images\1.png" />
     <Content Include="Content\images\2.png" />
@@ -307,6 +318,7 @@
     <Content Include="Content\search.css" />
     <Content Include="Content\style-libs\chosen.css" />
     <Content Include="Content\verticalResizer.css" />
+    <Content Include="Scripts\Admin\AdminPage.js" />
     <Content Include="Scripts\Account\initVertResizer.js" />
     <Content Include="Scripts\AdminPanel\AdminPage.js" />
     <Content Include="Scripts\Account\signup.validate.js" />
@@ -326,11 +338,11 @@
     <Content Include="Scripts\mediator.js" />
     <Content Include="Scripts\mediator.min.js" />
     <Content Include="Scripts\Notifications.js" />
-    <Content Include="Scripts\AlbumsPage\albums.js" />
+    <Content Include="Scripts\Albums\albums.js" />
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
     <Content Include="Scripts\panel.js" />
-    <Content Include="Scripts\PhotoPage\photo.js" />
+    <Content Include="Scripts\Photo\photo.js" />
     <Content Include="Content\photo-page.css" />
   </ItemGroup>
   <ItemGroup>
@@ -413,13 +425,13 @@
     <Content Include="Scripts\opentip-jquery.js" />
     <Content Include="Scripts\opentip-jquery.min.js" />
     <Content Include="Scripts\perpetuum.knockout.js" />
-    <Content Include="Scripts\PhotoPage\photoViewModel.js" />
+    <Content Include="Scripts\Photo\photoViewModel.js" />
     <Content Include="Scripts\Helpers\PhotoPlacer_Module.js" />
     <Content Include="Scripts\Search\search.js" />
-    <Content Include="Scripts\UploadPage\main.js" />
-    <Content Include="Scripts\UploadPage\PhotoPreviewViewModel.js" />
-    <Content Include="Scripts\AdminPanel\UserSlider.js" />
-    <Content Include="Scripts\UploadPage\UploadViewModel.js" />
+    <Content Include="Scripts\Upload\main.js" />
+    <Content Include="Scripts\Upload\PhotoPreviewViewModel.js" />
+    <Content Include="Scripts\Admin\UserSlider.js" />
+    <Content Include="Scripts\Upload\UploadViewModel.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -438,7 +450,7 @@
     <Content Include="Views\Shared\_LoginLayout.cshtml" />
     <Content Include="Views\Account\RemindPass.cshtml" />
     <Content Include="Views\Album\Index.cshtml" />
-    <Content Include="Views\AdminPanel\Index.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Upload\Index.cshtml" />
     <Content Include="Views\Photo\Index.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
@@ -448,10 +460,10 @@
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\Shared\AccessDenied.cshtml" />
     <Content Include="Views\Gallery\Index.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\FlowPage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -476,6 +488,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

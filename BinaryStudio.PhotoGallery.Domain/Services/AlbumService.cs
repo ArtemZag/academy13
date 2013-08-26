@@ -24,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         Permissions = 0,
                         Photos = new Collection<PhotoModel>(),
                         AvailableGroups = new Collection<AvailableGroupModel>(),
-                        AlbumTags = new Collection<AlbumTagModel>()
+                        Tags = new Collection<AlbumTagModel>()
                     }
                 #endregion
             };
@@ -120,12 +120,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Albums
-                                 .Filter(model => model.OwnerId == userId && !model.IsDeleted)
-                                 .OrderByDescending(model => model.DateOfCreation)
-                                 .Skip(skipCount)
-                                 .Take(takeCount)
-                                 .ToList();
+                return
+                    unitOfWork.Albums.Filter(model => model.OwnerId == userId && !model.IsDeleted && ((model.Description != "Default album by DBinit" && model.Description != "System album not for use") || model.Description == null))
+                              .OrderByDescending(model => model.DateOfCreation)
+                              .Skip(skipCount)
+                              .Take(takeCount)
+                              .ToList();
             }
         }
 
@@ -161,25 +161,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 }
 
                 return foundAlbum.Id;
-            }
-        }
-
-        public bool IsExist(int userId, string albumName)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                UserModel userModel = GetUser(userId, unitOfWork);
-
-                if (userModel == null)
-                {
-                    throw new UserNotFoundException(string.Format("Can't find user with id={0}", userId));
-                }
-
-                AlbumModel albumModel =
-                    unitOfWork.Albums.Find(album => album.Name == albumName && album.OwnerId == userModel.Id);
-
-                return albumModel != null;
-
             }
         }
 

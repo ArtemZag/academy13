@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BinaryStudio.PhotoGallery.Web.ViewModels.PhotoPage
+namespace BinaryStudio.PhotoGallery.Web.ViewModels.Photo
 {
     public class PhotoPageViewModel
     {

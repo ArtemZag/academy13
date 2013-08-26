@@ -2,38 +2,40 @@
 @using System.Web.Optimization
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    ViewBag.Title = "User albums | Bingally";
+    ViewBag.Title = "Albums | Bingally";
 }
-@Scripts.Render("~/Scripts/AlbumsPage/albums.js",
+@Scripts.Render("~/Scripts/Albums/albums.js",
                 "~/Scripts/jsrender.js")
 @Styles.Render("~/Content/albums-page.css")
 
-<canvas id='canv'>Обновите браузер</canvas>
+<canvas id='perimeter'>Refresh browser</canvas>
 
 <script id="collageTmpl" type="text/x-jquery-tmpl">
     <div class="album">
-        <img class="collage" src="{{:collageSource}}"/>
-    </div> 
+        <a href="/album/{{:Id}}"><img class="collage" src="{{:CollageSource}}"/></a>
+    </div>
 </script>
 
 <script id="uploadTmpl" type="text/x-jquery-tmpl">
-    <a href="/Upload" class="btn btn-success">Upload</a>
+    <canvas id="arrow">Refresh browser</canvas>
+    <div class = "noAlbumsTextContainer">
+        <p class ="noAlbumsText">&nbsp;&nbsp;&nbsp;&nbsp;There are no albums available for viewing.<br/>Click upload here.</p>
+    </div>
 </script>
 
 <script id="flowPhotoTmpl" type="text/x-jquery-tmpl">
     <div class="thumbContaiter">
-        <img class="flowPhoto" src="{{:reference}}"/>
+        <img class="flowPhoto" src="{{:Reference}}"/>
     </div> 
 </script>
 
 <script id="userTmpl" type="text/x-jquery-tmpl">
-    <p><img class="avatar" src="{{:userAvatar}}"/></p>
-    <p class="textStyle">Full name: {{:fullName}}</p>
-    <p class="textStyle">Albums: {{:albumCount}}</p>
-    <p class="textStyle">Photos: {{:photoCount}}</p> 
-    <p class="textStyle">Last photo added: {{:lastPhotoAdded}}</p>
-    <p class="textStyle">State: {{:isAdmin}}</p>                                                                                                                                                                                                                                                                                                                                                          
-    <p class="textStyle">Department: {{:department}}</p>
+    <p><img class="avatar" src="{{:PhotoUrl}}"/></p>
+    <p class="textStyle">FirstName: {{:FirstName}}</p>
+    <p class="textStyle">LastName: {{:LastName}}</p>
+    <p class="textStyle">User state: {{:IsAdmin===true?'admin':'simple'}}</p>
+    <p class="textStyle">Total albums: {{:AlbumsCount}}</p>
+    <p class="textStyle">Photos: {{:PhotoCount}}</p>                                                                                                                                                                                                                                                                                                                          
 </script>
 
 <table id="content">
@@ -47,9 +49,3 @@
         </td>
     </tr>
 </table>
-
-
-
-
-
-

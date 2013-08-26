@@ -9,11 +9,13 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
 {
+    // todo: test! 
     internal class CleanupTask : DbService, ICleanupTask
     {
         private readonly IStorage storage;
 
-        public CleanupTask(IUnitOfWorkFactory workFactory, IStorage storage) : base(workFactory)
+        public CleanupTask(IUnitOfWorkFactory workFactory, IStorage storage)
+            : base(workFactory)
         {
             this.storage = storage;
         }
@@ -22,8 +24,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
         {
             try
             {
-                CleanPhotos();
-                CleanAlbums();
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                {
+                    CleanPhotos(unitOfWork);
+                    CleanAlbums(unitOfWork);
+                }
             }
             catch (Exception e)
             {
@@ -31,38 +36,35 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
             }
         }
 
-        private void CleanPhotos()
+        private void CleanPhotos(IUnitOfWork unitOfWork)
         {
-            List<PhotoModel> photosToCleanup = GetPhotosForCleanup();
+            List<PhotoModel> photosToCleanup = GetPhotosForCleanup(unitOfWork);
 
-            photosToCleanup.ForEach(CleanPhoto);
-            DeleteDbRows(photosToCleanup);
+            photosToCleanup.ForEach(model => CleanPhoto(model, unitOfWork));
+            CleanDb(photosToCleanup, unitOfWork);
         }
 
-        private List<PhotoModel> GetPhotosForCleanup()
+        private List<PhotoModel> GetPhotosForCleanup(IUnitOfWork unitOfWork)
         {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                return unitOfWork.Photos.Filter(model => model.IsDeleted).ToList();
-            }
+            return unitOfWork.Photos.Filter(model => model.IsDeleted).ToList();
         }
 
-        private void CleanPhoto(PhotoModel photo)
+        private void CleanPhoto(PhotoModel photo, IUnitOfWork unitOfWork)
         {
-            CleanOriginal(photo);
-            CleanThumbnails(photo);
+            CleanOriginal(photo, unitOfWork);
+            CleanThumbnails(photo, unitOfWork);
         }
 
-        private void CleanOriginal(PhotoModel photo)
+        private void CleanOriginal(PhotoModel photo, IUnitOfWork unitOfWork)
         {
-            string path = storage.GetOriginalPhotoPath(photo);
+            string path = storage.GetOriginalPhotoPath(photo, unitOfWork);
 
             DeleteFile(path);
         }
 
-        private void CleanThumbnails(PhotoModel photo)
+        private void CleanThumbnails(PhotoModel photo, IUnitOfWork unitOfWork)
         {
-            IEnumerable<string> thumbnailPaths = storage.GetThumnailsPaths(photo);
+            IEnumerable<string> thumbnailPaths = storage.GetThumnailsPaths(photo, unitOfWork);
 
             foreach (string currentThumbnail in thumbnailPaths)
             {
@@ -70,13 +72,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
             }
         }
 
-        private void CleanAlbums()
+        private void CleanAlbums(IUnitOfWork unitOfWork)
         {
             List<AlbumModel> albumsToCleanup = GetAlbumsForCleanup();
 
-            albumsToCleanup.ForEach(CleanAlbum);
+            albumsToCleanup.ForEach(model => CleanAlbum(model, unitOfWork));
 
-            DeleteDbRows(albumsToCleanup);
+            CleanDb(albumsToCleanup, unitOfWork);
         }
 
         private List<AlbumModel> GetAlbumsForCleanup()
@@ -87,32 +89,26 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
             }
         }
 
-        private void CleanAlbum(AlbumModel album)
+        private void CleanAlbum(AlbumModel album, IUnitOfWork unitOfWork)
         {
-            string albumPath = storage.GetAlbumPath(album);
+            string albumPath = storage.GetAlbumPath(album, unitOfWork);
 
             Directory.Delete(albumPath, true);
         }
 
-        private void DeleteDbRows(IEnumerable<AlbumModel> albumsToCleanup)
+        private void CleanDb(IEnumerable<AlbumModel> albumsToCleanup, IUnitOfWork unitOfWork)
         {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            foreach (AlbumModel albumModel in albumsToCleanup)
             {
-                foreach (AlbumModel albumModel in albumsToCleanup)
-                {
-                    unitOfWork.Albums.Delete(albumModel);
-                }
+                unitOfWork.Albums.Delete(albumModel);
             }
         }
 
-        private void DeleteDbRows(IEnumerable<PhotoModel> photosToCleanup)
+        private void CleanDb(IEnumerable<PhotoModel> photosToCleanup, IUnitOfWork unitOfWork)
         {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            foreach (PhotoModel photoModel in photosToCleanup)
             {
-                foreach (PhotoModel photoModel in photosToCleanup)
-                {
-                    unitOfWork.Photos.Delete(photoModel);
-                }
+                unitOfWork.Photos.Delete(photoModel);
             }
         }
 

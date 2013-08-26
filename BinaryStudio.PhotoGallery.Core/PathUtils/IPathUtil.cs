@@ -1,56 +1,47 @@
-﻿namespace BinaryStudio.PhotoGallery.Core.PathUtils
+﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
+
+namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
     public interface IPathUtil
     {
-        /// <returns>Pattern: ~data\photos</returns>
-        string BuildPhotoDirectoryPath();
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\[Small|Medium|Big|Original]avatar.jpg
+        /// </summary>
+        string BuildAvatarPath(int userId, ImageSize imageSize);
 
-        /// <returns>Pattern: ~data\photos\userId\albumId</returns>
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\albumId
+        /// </summary>
         string BuildAlbumPath(int userId, int albumId);
 
-        /// <returns>Pattern: ~data\photos\userId\albumId\photoId.format</returns>
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\albumId\photoId.format
+        /// </summary>
         string BuildOriginalPhotoPath(int userId, int albumId, int photoId, string format);
 
-        /// <returns>Pattern: ~data\photos\userId\albumId\thumbnails</returns>
-        string BuildThumbnailsPath(int userId, int albumId);
-
-        /// <returns>Pattern: ~data\photos\userId\avatar.jpg</returns>
-        string BuildUserAvatarPath(int userId);
-
-        // todo: change signature
         /// <summary>
-        /// Deprecated
+        ///     Pattern: ~data\photos\userId\albumId\imageSize\photoId.format
         /// </summary>
-        string BuildThumbnailPath(int userId, int albumId, int photoId, string format);
+        string BuildThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize size);
 
-        /// <returns>Path in format "C:\\ololo\\ololo"</returns>
-        string BuildAbsoluteTemporaryDirectoryPath(int userId);
+        /// <summary>
+        ///     Pattern: ~data\photos\userId\albumId\collage.jpg
+        /// </summary>
+        string BuildCollagePath(int userId, int albumId);
 
-        /// <returns>Path in format "C:\\ololo\\ololo"</returns>
-        string BuildAbsoluteTemporaryAlbumPath(int userId, int albumId);
+        string BuildAbsoluteAvatarPath(int userId, ImageSize imageSize);
 
-        string BuildPathToUsersFolderOnServer();
+        string BuildAbsoluteAlbumPath(int userId, int albumId);
 
-        string BuildPathToUserFolderOnServer(int userId);
+        string BuildAbsoluteThumbailPath(int userId, int albumId, int photoId, string format, ImageSize size);
 
-        string BuildPathToUserAvatarOnServer(int userId);
+        IEnumerable<string> BuildAbsoluteThumbnailsPaths(int userId, int albumId, ImageSize size);
 
-        string BuildPathToUserAlbumFolderOnServer(int userId, int albumId);
+        string BuildAbsoluteCollagePath(int userId, int albumId);
 
-        string BuildPathToUserAlbumThumbnailsFolderOnServer(int userId, int albumId, int thumbnailsSize);
+        string BuildAbsoluteCollagesDirPath(int userId, int albumId);
 
-        string BuildPathToThumbnailFileOnServer(int userId, int albumId, int thumbnailsSize, string originalPath);
-
-        string BuildPathToOriginalFileOnServer(int userId, int albumId,string originalName);
-
-        string BuildPathToUserAlbumCollagesFolderOnServer(int userId, int albumId);
-
-        string GetEndUserReference(string absolutePath);
-
-        string NoAvatar();
-
-        string MakeFileNameWithExtension(string name);
-
-        string MakePathToCollage(int userId,int albumId,int lenght);
+        string BuildAbsoluteOriginalPhotoPath(int userId, int albumId, int photoId, string format);
     }
 }

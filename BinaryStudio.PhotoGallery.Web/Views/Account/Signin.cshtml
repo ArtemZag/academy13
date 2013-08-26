@@ -1,5 +1,6 @@
 ﻿@using System.Web.Optimization
-@model BinaryStudio.PhotoGallery.Web.ViewModels.Authorization.SigninViewModel
+@using BinaryStudio.PhotoGallery.Web.Extensions
+@model BinaryStudio.PhotoGallery.Web.ViewModels.Account.SigninViewModel
 
 @{
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
@@ -7,8 +8,12 @@
 }
 
 <div class="login-panel">
+<<<<<<< HEAD
+=======
+    @Html.Image(Url.Content("~/Content/images/logo_big.png"))
+>>>>>>> dfb95d8470f1265be79271ac333db1f474a48442
     <div class="well">
-        <form class="control-group form-horizontal pagination-centered" id="SingInForm">
+        <form class="control-group form-horizontal pagination-centered">
             <input id="Email" name="Email" type="email" class="input-block-level" maxlength="255" placeholder="E-mail address" />
             <input id="Password" name="Password" type="password" class="input-block-level" maxlength="20" placeholder="Password" />
             <label class="checkbox">
@@ -18,7 +23,7 @@
                 <span class="effeckt-label">Sign in</span>
                 <span class="effeckt-spinner effeckt-spinner-blue"></span>
             </button>
-            <a href="~/remind" class="btn btn-link">Forgot password?</a>
+            @Html.ActionLink("Forgot password?", "RemindPass", "Account", new {@class = "btn btn-link"})
         </form>
         <div class="error-field"></div>
         <hr />

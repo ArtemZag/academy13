@@ -9,51 +9,51 @@ namespace BinaryStudio.PhotoGallery.Core.IOUtils
 {
     public class MultipartFormDataStreamProviderWrapper : MultipartFormDataStreamProvider, IMultipartFormDataStreamProviderWrapper
     {
-        private readonly MultipartFormDataStreamProvider multipartFormDataStreamProvider;
+        private readonly MultipartFormDataStreamProvider _multipartFormDataStreamProvider;
         
         public MultipartFormDataStreamProviderWrapper(string rootPath) : base(rootPath)
         {
-            multipartFormDataStreamProvider = new MultipartFormDataStreamProvider(rootPath);
+            _multipartFormDataStreamProvider = new MultipartFormDataStreamProvider(rootPath);
         }
 
         public MultipartFormDataStreamProviderWrapper(string rootPath, int bufferSize) : base(rootPath, bufferSize)
         {
-            multipartFormDataStreamProvider = new MultipartFormDataStreamProvider(rootPath, bufferSize);
+            _multipartFormDataStreamProvider = new MultipartFormDataStreamProvider(rootPath, bufferSize);
         }
 
         public override Stream GetStream(HttpContent parent, HttpContentHeaders headers)
         {
-            return multipartFormDataStreamProvider.GetStream(parent, headers);
+            return _multipartFormDataStreamProvider.GetStream(parent, headers);
         }
 
         public override string GetLocalFileName(HttpContentHeaders headers)
         {
-            return multipartFormDataStreamProvider.GetLocalFileName(headers);
+            return _multipartFormDataStreamProvider.GetLocalFileName(headers);
         }
 
         public new Collection<HttpContent> Contents {
             get
             {
-                return multipartFormDataStreamProvider.Contents;
+                return _multipartFormDataStreamProvider.Contents;
             }
         }
 
         public override Task ExecutePostProcessingAsync()
         {
-            return multipartFormDataStreamProvider.ExecutePostProcessingAsync();
+            return _multipartFormDataStreamProvider.ExecutePostProcessingAsync();
         }
 
         public new NameValueCollection FormData {
             get
             {
-                return multipartFormDataStreamProvider.FormData;
+                return _multipartFormDataStreamProvider.FormData;
             }
         }
 
         public new Collection<MultipartFileData> FileData {
             get
             {
-                return multipartFormDataStreamProvider.FileData;
+                return _multipartFormDataStreamProvider.FileData;
             }
         }
     }

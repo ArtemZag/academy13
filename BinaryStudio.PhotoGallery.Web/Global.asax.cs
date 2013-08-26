@@ -7,6 +7,8 @@ using System.Web.Script.Serialization;
 using System.Web.Security;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Web.App_Start;
+using BinaryStudio.PhotoGallery.Web.CustomStructure;
+using BinaryStudio.PhotoGallery.Web.Extensions;
 using Microsoft.Practices.Unity;
 using PerpetuumSoft.Knockout;
 
@@ -27,12 +29,13 @@ namespace BinaryStudio.PhotoGallery.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            IUnityContainer container = Bootstrapper.Initialise();
             System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
+
+            IUnityContainer container = Bootstrapper.Initialise();
 
             // todo
             // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
-            // TaskManager.Initialize(new UsersMonitorRegistry(container.Resolve<IUsersMonitorTask>()));
+//            TaskManager.Initialize(new UsersMonitorRegistry(container.Resolve<IUsersMonitorTask>()));
             // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
         }
 
@@ -63,6 +66,32 @@ namespace BinaryStudio.PhotoGallery.Web
             principal = new CustomPrincipal(model.Id, model.Email, model.IsAdmin);
                     
             HttpContext.Current.User = principal;
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            var exception = Server.GetLastError();
+            var httpException = exception as HttpException;
+            string actionName;
+
+            switch (httpException.GetHttpCode())
+            {
+                case 500:
+                    actionName = "HttpError500";
+                    break;
+                case 404:
+                    actionName = "NotFound";
+                    break;                
+                case 403:
+                    actionName = "AccessDenied";
+                    break;
+                default:
+                    actionName = "Error";
+                    break;
+            }
+
+            Server.ClearError();
+            exception.Render(actionName, Context);
         }
     }
 }

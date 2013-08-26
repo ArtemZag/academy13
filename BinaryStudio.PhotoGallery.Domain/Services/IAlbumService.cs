@@ -37,18 +37,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Creates system albums
         /// </summary>
-        /// <param name="userId"></param>
         void CreateSystemAlbums(int userId);
 
         /// <summary>
         ///     Deletes specified album.
         /// </summary>
         void DeleteAlbum(int userId, int albumId);
-
-        /// <summary>
-        ///     Checks if album exist
-        /// </summary>
-        bool IsExist(int userId, string albumName);
 
         /// <summary>
         ///     Get all available albums for specified user

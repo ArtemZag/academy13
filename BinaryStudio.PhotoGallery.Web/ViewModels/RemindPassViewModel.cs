@@ -7,6 +7,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         [Required]
         [DataType(DataType.Text)]
         [MaxLength(255)]
-        public string EmailOrLogin { get; set; }
+        public string UserEmail { get; set; }
     }
 }

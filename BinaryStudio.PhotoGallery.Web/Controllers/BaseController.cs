@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using BinaryStudio.PhotoGallery.Web.CustomStructure;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {

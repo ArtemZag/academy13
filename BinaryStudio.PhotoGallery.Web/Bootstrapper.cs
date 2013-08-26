@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.Events;
-using BinaryStudio.PhotoGallery.Web.Hubs;
 using BinaryStudio.PhotoGallery.Web.Utils;
-using Microsoft.AspNet.SignalR;
 using Microsoft.Practices.Unity;
 using Unity.Mvc4;
 
@@ -15,6 +10,8 @@ namespace BinaryStudio.PhotoGallery.Web
 {
     public static class Bootstrapper
     {
+        private static IUnityContainer _container;
+
         public static IUnityContainer Initialise()
         {
             IUnityContainer container = BuildUnityContainer();
@@ -38,8 +35,6 @@ namespace BinaryStudio.PhotoGallery.Web
             // it is NOT necessary to register your controllers
             // e.g. container.RegisterType<ITestService, TestService>();   
 
-            container.RegisterType<ISearchModelConverter, SearchModelConverter>();
-
             Domain.Bootstrapper.RegisterTypes(container);
             Database.Bootstrapper.RegisterTypes(container);
             Core.Bootstrapper.RegisterTypes(container);
@@ -48,9 +43,19 @@ namespace BinaryStudio.PhotoGallery.Web
             container.RegisterType<INotificationsEventManager, NotificationsEventManager>(new ContainerControlledLifetimeManager());
             container.RegisterType<IGlobalEventsHandler, GlobalEventsHandler>(new ContainerControlledLifetimeManager());
             container.RegisterInstance(container.Resolve<IGlobalEventsHandler>());
-            
+
+            container.RegisterType<ISearchModelConverter, SearchModelConverter>();
         }
 
+        public static T Resolve<T>()
+        {
+            return getContainer().Resolve<T>();
+        }
+
+        private static IUnityContainer getContainer()
+        {
+            return _container ?? (_container = Initialise());
+        }
     }
 
 }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
-using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Hubs;
@@ -42,8 +38,9 @@ namespace BinaryStudio.PhotoGallery.Web.Events
 
         public void PhotoCommentAddedNotify(PhotoCommentModel mComment)
         {
-            var mUser = _userService.GetUser(mComment.UserId);
-            var mPhoto = _photoService.GetPhoto(mUser.Email, mComment.PhotoId);
+            // TODO by Mikhail: mComment.UserId and mUser.Id are the same always 
+            var mUser = _userService.GetUser(mComment.UserId); // TODO this is a redundant line
+            var mPhoto = _photoService.GetPhoto(mUser.Id, mComment.PhotoId);
 
             if (mPhoto.OwnerId != mComment.UserId)
             {
@@ -70,8 +67,8 @@ namespace BinaryStudio.PhotoGallery.Web.Events
                 mAlbumOwner.Email = mAlbumOwner.Email.ToLower(); // todo: remove and refactor, when id to cookies will be added
 
                 var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
-                                         "добавил фотографию в ваш альбом {2}"
-                                         , mPhotoOwner.FirstName, mPhotoOwner.LastName, mPhoto.Name);
+                                         "добавил фотографию в ваш альбом"
+                                         , mPhotoOwner.FirstName, mPhotoOwner.LastName);
                 _hubNotify.Clients.Group(mAlbumOwner.Email)
                           .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
             }

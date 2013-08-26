@@ -27,11 +27,6 @@ namespace BinaryStudio.PhotoGallery.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the photo file.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         /// Gets or sets real format of photo
         /// </summary>
         public string Format { get; set; }
@@ -55,16 +50,16 @@ namespace BinaryStudio.PhotoGallery.Models
         /// Gets or sets a photo state
         /// </summary>
         public bool IsDeleted { get; set; }
-        
- 
+
+
         public int OwnerId { get; set; }
         public int AlbumId { get; set; }
 
         public virtual ICollection<PhotoCommentModel> PhotoComments { get; set; }
-        public virtual ICollection<PhotoTagModel> PhotoTags { get; set; } 
-        
+        public virtual ICollection<PhotoTagModel> PhotoTags { get; set; }
+
         /// <summary>
-        /// Gets or sets how much people like photo
+        /// Gets or sets how much people like photo ( contains users' ids)
         /// </summary>
         public virtual ICollection<UserModel> Likes { get; set; }
     }
