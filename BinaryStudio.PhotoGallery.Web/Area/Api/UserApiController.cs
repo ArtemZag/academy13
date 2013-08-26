@@ -24,13 +24,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         [GET("")]
-        public HttpResponseMessage GetCurrentUserInfo()
+        public HttpResponseMessage GetCurrent()
         {
-            return GetUserInfo(User.Id);
+            return Get(User.Id);
         }
 
         [GET("{userId:int}")]
-        public HttpResponseMessage GetUserInfo(int userId)
+        public HttpResponseMessage Get(int userId)
         {
             try
             {
@@ -51,7 +51,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-                List<UserViewModel> usersViewModels = _userService.GetAllUsers(skip, take)
+                List<UserViewModel> usersViewModels = _userService
+                    .GetAllUsers(skip, take)
                     .Select(userModel => userModel.ToUserViewModel())
                     .ToList();
 
