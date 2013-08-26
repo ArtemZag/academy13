@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services;
@@ -30,10 +31,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var secureService = container.Resolve<ISecureService>();
             var albumService = container.Resolve<IAlbumService>();
             var eventsAggregator = container.Resolve<IGlobalEventsAggregator>();
+            var maskHelper = container.Resolve<IMaskHelper>();
 
             _workFactory = new TestUnitOfWorkFactory();
 
-            _photoService = new PhotoService(_workFactory, secureService, eventsAggregator);
+            _photoService = new PhotoService(_workFactory, secureService, eventsAggregator, maskHelper);
             _userService = new UserService(_workFactory, cryptoProvider,albumService);
             _albumService = new AlbumService(_workFactory, secureService);
         }

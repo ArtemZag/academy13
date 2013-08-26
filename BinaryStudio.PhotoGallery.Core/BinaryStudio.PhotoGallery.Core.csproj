@@ -52,6 +52,8 @@
     <Compile Include="EnumerableExtensions\Extensions.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\IFileHelper.cs" />
+    <Compile Include="Helpers\IMaskHelper.cs" />
+    <Compile Include="Helpers\MaskHelper.cs" />
     <Compile Include="IOUtils\FileRenameException.cs" />
     <Compile Include="IOUtils\FileWrapper.cs" />
     <Compile Include="IOUtils\IFileWrapper.cs" />

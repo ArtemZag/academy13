@@ -2,9 +2,11 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
+
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
@@ -12,12 +14,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     {
         private readonly ISecureService _secureService;
         private readonly IGlobalEventsAggregator _eventsAggregator;
+        private readonly IMaskHelper _maskHelper;
+
         private Dictionary<int, PhotoModel> _publicPhotos;
 
-        public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator) : base(workFactory)
+        public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator, IMaskHelper maskHelper) : base(workFactory)
         {
             _secureService = secureService;
             _eventsAggregator = eventsAggregator;
+            _maskHelper = maskHelper;
         }
 
         private Dictionary<int, PhotoModel> PublicPhotos 
@@ -26,8 +31,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
                 {
-                    return _publicPhotos ?? (_publicPhotos = 
-                           _secureService.GetAvailableAlbums(3, unitOfWork) // todo should get photos from albums with public permisions
+                    return _publicPhotos ?? (_publicPhotos =
+                        unitOfWork.Albums.Filter(x => ((int)AlbumModel.PermissionsMask.PublicAlbum & x.Permissions)== x.Permissions)
                                          .SelectMany(model => model.Photos)
                                          .ToDictionary(mPhoto => mPhoto.Id, mPhoto => mPhoto));
                 }
