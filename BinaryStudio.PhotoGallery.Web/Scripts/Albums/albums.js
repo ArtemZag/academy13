@@ -82,8 +82,8 @@
                 $("#collageTmpl").render(albums));
         } else {
             if (skipCount - takeAlbumsCount == 0) {
-                container.html(
-                $("#uploadTmpl").render());
+                $(".albums").html(
+                    $("#uploadTmpl").render());
                 windowObject.resize(moveNoAlbumsContainer);
                 moveNoAlbumsContainer();
                 windowObject.resize(resizeArrow);
