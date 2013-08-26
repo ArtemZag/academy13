@@ -37,9 +37,10 @@ namespace BinaryStudio.PhotoGallery.Web
             IUnityContainer container = Bootstrapper.Initialise();
 
             _usersMonitorTask = container.Resolve<IUsersMonitorTask>();
+
             // todo
             // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
-            //            TaskManager.Initialize(new UsersMonitorRegistry(_usersMonitorTask));
+            // TaskManager.Initialize(new UsersMonitorRegistry(_usersMonitorTask));
             // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
         }
 
