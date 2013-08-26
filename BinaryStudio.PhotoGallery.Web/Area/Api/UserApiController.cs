@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
@@ -13,6 +14,7 @@ using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
+    [Authorize]
     [RoutePrefix("api/user")]
     public class UserApiController : BaseApiController
     {

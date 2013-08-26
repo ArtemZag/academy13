@@ -19,16 +19,16 @@ namespace BinaryStudio.PhotoGallery.Web
 {
     public class MvcApplication : HttpApplication
     {
-        private readonly IUsersMonitorTask usersMonitorTask;
+        private readonly IUsersMonitorTask _usersMonitorTask;
 
         public MvcApplication()
         {
             IUnityContainer container = Bootstrapper.Initialise();
 
-            usersMonitorTask = container.Resolve<IUsersMonitorTask>();
+            _usersMonitorTask = container.Resolve<IUsersMonitorTask>();
             // todo
             // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
-            TaskManager.Initialize(new UsersMonitorRegistry(usersMonitorTask));
+//            TaskManager.Initialize(new UsersMonitorRegistry(_usersMonitorTask));
             // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
         }
 
@@ -76,12 +76,12 @@ namespace BinaryStudio.PhotoGallery.Web
                     
             HttpContext.Current.User = principal;
 
-            usersMonitorTask.SetOnline((HttpContext.Current.User as CustomPrincipal).Id);
+            _usersMonitorTask.SetOnline(model.Id);
         }
 
         protected void Session_End()
         {
-            usersMonitorTask.SetOffline((HttpContext.Current.User as CustomPrincipal).Id);
+            _usersMonitorTask.SetOffline((HttpContext.Current.User as CustomPrincipal).Id);
         }
 
         protected void Application_Error(object sender, EventArgs e)
