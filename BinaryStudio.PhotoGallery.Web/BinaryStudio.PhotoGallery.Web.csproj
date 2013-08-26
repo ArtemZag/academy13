@@ -320,7 +320,6 @@
     <Content Include="Content\verticalResizer.css" />
     <Content Include="Scripts\Admin\AdminPage.js" />
     <Content Include="Scripts\Account\initVertResizer.js" />
-    <Content Include="Scripts\AdminPanel\AdminPage.js" />
     <Content Include="Scripts\Account\signup.validate.js" />
     <Content Include="Scripts\Account\signup.js" />
     <Content Include="Scripts\chosen.jquery.js" />

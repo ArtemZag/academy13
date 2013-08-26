@@ -29,7 +29,7 @@
 </div>
 
 <div id="dropzone-container">
-    <form  action="~/api/upload" class="dropzone dz-clickable" enctype="multipart/form-data" method="POST"></form>
+    <form  action="@Url.Action("Upload", "UploadApi")" class="dropzone dz-clickable" enctype="multipart/form-data" method="POST"></form>
 </div>
 
 @Scripts.Render("~/bundles/scripts/dropzone")
