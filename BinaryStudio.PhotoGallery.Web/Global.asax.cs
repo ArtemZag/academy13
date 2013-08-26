@@ -9,6 +9,7 @@ using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Web.App_Start;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
+using BinaryStudio.PhotoGallery.Web.Extensions;
 using BinaryStudio.PhotoGallery.Web.Registers;
 using FluentScheduler;
 using Microsoft.Practices.Unity;
@@ -80,7 +81,33 @@ namespace BinaryStudio.PhotoGallery.Web
 
         protected void Session_End()
         {
-            usersMonitorTask.SetOffline(((CustomPrincipal) HttpContext.Current.User).Id);
+            usersMonitorTask.SetOffline((HttpContext.Current.User as CustomPrincipal).Id);
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            var exception = Server.GetLastError();
+            var httpException = exception as HttpException;
+            string actionName;
+
+            switch (httpException.GetHttpCode())
+            {
+                case 500:
+                    actionName = "HttpError500";
+                    break;
+                case 404:
+                    actionName = "NotFound";
+                    break;                
+                case 403:
+                    actionName = "AccessDenied";
+                    break;
+                default:
+                    actionName = "Error";
+                    break;
+            }
+
+            Server.ClearError();
+            exception.Render(actionName, Context);
         }
     }
 }
