@@ -8,7 +8,9 @@ using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Http;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
@@ -29,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 List<PhotoViewModel> viewModels = _photoService
                     .GetRandomPublicPhotos(take)
-                    .Select(PhotoViewModel.FromModel).ToList();
+                    .Select(mPhoto => mPhoto.ToPhotoViewModel()).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, viewModels, new JsonMediaTypeFormatter());
             }

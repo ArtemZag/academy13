@@ -16,11 +16,10 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressSSLPort>44301</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
@@ -224,6 +223,7 @@
     <Compile Include="Area\Api\AccountApiController.cs" />
     <Compile Include="Area\Api\AdminApiController.cs" />
     <Compile Include="Area\Api\AlbumApiController.cs" />
+    <Compile Include="Area\Api\PublicPhotoController.cs" />
     <Compile Include="Area\Api\UserApiController.cs" />
     <Compile Include="Area\Api\UploadApiController.cs" />
     <Compile Include="Area\Api\PhotoCommentApiController.cs" />

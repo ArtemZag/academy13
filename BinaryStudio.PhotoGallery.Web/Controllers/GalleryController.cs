@@ -13,7 +13,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("")]
         public ActionResult Index()
         {
-            return View(new InfoViewModel {UserId = User.Id});
+            return View(new PublicPhotosViewModel { UserId = User.Id });
         }
     }
 }
