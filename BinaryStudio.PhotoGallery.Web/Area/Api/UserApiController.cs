@@ -4,15 +4,17 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
-using BinaryStudio.PhotoGallery.Web.ViewModels.User;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
+    [Authorize]
     [RoutePrefix("api/user")]
     public class UserApiController : BaseApiController
     {
@@ -24,13 +26,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         [GET("")]
-        public HttpResponseMessage GetCurrentUserInfo()
+        public HttpResponseMessage GetCurrent()
         {
-            return GetUserInfo(User.Id);
+            return Get(User.Id);
         }
 
         [GET("{userId:int}")]
-        public HttpResponseMessage GetUserInfo(int userId)
+        public HttpResponseMessage Get(int userId)
         {
             try
             {
@@ -51,7 +53,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-                List<UserViewModel> usersViewModels = _userService.GetAllUsers(skip, take)
+                List<UserViewModel> usersViewModels = _userService
+                    .GetAllUsers(skip, take)
                     .Select(userModel => userModel.ToUserViewModel())
                     .ToList();
 

@@ -5,7 +5,7 @@ using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Extensions;
 using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
-using BinaryStudio.PhotoGallery.Web.ViewModels.User;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {

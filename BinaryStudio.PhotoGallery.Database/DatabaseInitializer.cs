@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
@@ -9,7 +10,7 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Database
 {
-//    public class DatabaseInitializer : DropCreateDatabaseAlways<DatabaseContext>
+    //    public class DatabaseInitializer : DropCreateDatabaseAlways<DatabaseContext>
     public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
     {
         protected override void Seed(DatabaseContext databaseContext)
@@ -243,19 +244,19 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 #region adding album to user with lastname Towstonog
 
-                UserModel currentUser = unitOfWork.Users.Find(x => x.LastName == "Towstonog");
-                currentUser.Albums.Add(new AlbumModel
+                UserModel golovinUser = unitOfWork.Users.Find(x => x.LastName == "Towstonog");
+                golovinUser.Albums.Add(new AlbumModel
                 {
                     Name = "First album",
                     Description = "Default album by DBinit",
                     IsDeleted = false,
                     Permissions = 11111,
-                    OwnerId = currentUser.Id,
+                    OwnerId = golovinUser.Id,
                     Tags = new Collection<AlbumTagModel>(),
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 });
-                unitOfWork.Users.Update(currentUser);
+                unitOfWork.Users.Update(golovinUser);
                 unitOfWork.SaveChanges();
 
                 #endregion
@@ -283,7 +284,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 #region adding album to user with lastname Golovin
 
-                currentUser = unitOfWork.Users.Find(x => x.LastName == "Golovin");
+                golovinUser = unitOfWork.Users.Find(x => x.LastName == "Golovin");
 
                 var tags = new Collection<AlbumTagModel>
                 {
@@ -307,7 +308,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     Description = "Default album by DBinit",
                     IsDeleted = false,
                     Permissions = 11111,
-                    OwnerId = currentUser.Id,
+                    OwnerId = golovinUser.Id,
                     Tags = tags,
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
@@ -315,8 +316,8 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 var currentGroup = unitOfWork.Groups.Find(x => x.OwnerId == 1);
 
-                currentUser.Groups.Add(currentGroup);
-                currentUser.Albums.Add(albumForGolovin);
+                golovinUser.Groups.Add(currentGroup);
+                golovinUser.Albums.Add(albumForGolovin);
 
                 unitOfWork.SaveChanges();
 
@@ -341,6 +342,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
 
                 GeneratePhotos(albumModel, unitOfWork);
+                GenerateDeletedAlbumsAndPhotos(golovinUser, unitOfWork);
 
                 #endregion
             }
@@ -354,26 +356,26 @@ namespace BinaryStudio.PhotoGallery.Database
 
             var generatedRandomComment = new StringBuilder();
 
-                for (int i = 0; i < 29; i++)
+            for (int i = 0; i < 29; i++)
+            {
+                var comm = new Collection<PhotoCommentModel>();
+
+                int upper = i == 0 ? 100 : Randomizer.GetNumber(10);
+
+
+                for (int j = 0; j < upper; j++)
                 {
-                    var comm = new Collection<PhotoCommentModel>();
-
-                    int upper = i == 0 ? 100 : Randomizer.GetNumber(10);
-
-
-                    for (int j = 0; j < upper; j++)
+                    generatedRandomComment.Clear();
+                    for (int k = 0; k < Randomizer.GetNumber(32); k++)
                     {
-                        generatedRandomComment.Clear();
-                        for (int k = 0; k < Randomizer.GetNumber(32); k++)
-                        {
-                            generatedRandomComment.Append(Randomizer.GetString(Randomizer.GetNumber(64)));
-                            generatedRandomComment.Append(" ");
-                        }
-                        comm.Add(new PhotoCommentModel(7, Randomizer.GetNumber(i), generatedRandomComment.ToString(),
-                            -1) {Rating = Randomizer.GetNumber(64)});
+                        generatedRandomComment.Append(Randomizer.GetString(Randomizer.GetNumber(64)));
+                        generatedRandomComment.Append(" ");
                     }
+                    comm.Add(new PhotoCommentModel(7, Randomizer.GetNumber(i), generatedRandomComment.ToString(),
+                        -1) { Rating = Randomizer.GetNumber(64) });
+                }
 
-                    var tags = new List<PhotoTagModel>
+                var tags = new List<PhotoTagModel>
                     {
                         new PhotoTagModel
                         {
@@ -385,26 +387,71 @@ namespace BinaryStudio.PhotoGallery.Database
                         }
                     };
 
-                    var photoModel = new PhotoModel
-                    {
-                        Format = "jpg",
-                        Description = "test photo",
-                        OwnerId = albumModel.OwnerId,
-                        AlbumId = albumModel.Id,
-                        Likes = new Collection<UserModel>(),
-                        Rating = 0,
-                        PhotoTags = tags,
-                        PhotoComments = comm,
-                        IsDeleted = false
-                    };
-                    photosForAlbum.Add(photoModel);
+                var photoModel = new PhotoModel
+                {
+                    Format = "jpg",
+                    Description = "test photo",
+                    OwnerId = albumModel.OwnerId,
+                    AlbumId = albumModel.Id,
+                    Likes = new Collection<UserModel>(),
+                    Rating = 0,
+                    PhotoTags = tags,
+                    PhotoComments = comm,
+                    IsDeleted = false
+                };
+                photosForAlbum.Add(photoModel);
+            }
+
+            albumModel.Photos = photosForAlbum;
+
+            unitOfWork.Albums.Update(albumModel);
+            unitOfWork.SaveChanges();
+        }
+
+        private void GenerateDeletedAlbumsAndPhotos(UserModel userModel, IUnitOfWork unitOfWork)
+        {
+            var photos = new List<PhotoModel>();
+
+            var tags = new List<AlbumTagModel>
+            {
+                new AlbumTagModel
+                {
+                    TagName = "tag90"
+                },
+                new AlbumTagModel
+                {
+                    TagName = "tag54"
                 }
+            };
 
+            userModel.Albums.Add(new AlbumModel
+            {
+                OwnerId = userModel.Id,
+                IsDeleted = true,
+                Name = "album to delete",
+                Description = "Delete me",
+                Tags = tags
+            });
 
-                albumModel.Photos = photosForAlbum;
+            unitOfWork.SaveChanges();
 
-                unitOfWork.Albums.Update(albumModel);
-                unitOfWork.SaveChanges();
+            AlbumModel albumModel = unitOfWork.Albums.Find(model => model.Name == "album to delete");
+
+            for (int i = 0; i < 5; i++)
+            {
+                photos.Add(new PhotoModel
+                {
+                    DateOfCreation = DateTime.Now,
+                    OwnerId = userModel.Id,
+                    IsDeleted = true,
+                    AlbumId = albumModel.Id,
+                    Format = "jpg"
+                });
+            }
+
+            albumModel.Photos = photos;
+
+            unitOfWork.SaveChanges();
         }
     }
 }

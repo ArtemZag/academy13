@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BinaryStudio.PhotoGallery.Web.ViewModels.Authorization
+namespace BinaryStudio.PhotoGallery.Web.ViewModels.Account
 {
     public class SignupViewModel
     {

@@ -168,7 +168,7 @@
 
         $.get("/api/photo/" + photo.PhotoId + "/comments", { skip: 0, take: 50 }, setComments);
         $.get("/api/photo/" + model.PhotoId() + "/likes", setLikes);
-        $.get("/api/photo/" + model.PhotoId() + "/photosByTags", setPhotosByTags);
+        $.get("/api/photo/" + model.PhotoId() + "/photosbytags", setPhotosByTags);
 
     }
 

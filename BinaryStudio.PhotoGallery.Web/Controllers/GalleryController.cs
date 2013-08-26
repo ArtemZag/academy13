@@ -4,6 +4,7 @@ using AttributeRouting.Web.Http;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
+    [Authorize]
     [RoutePrefix("gallery")]
     public class GalleryController : BaseController
     {

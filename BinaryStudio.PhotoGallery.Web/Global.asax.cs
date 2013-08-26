@@ -6,11 +6,9 @@ using System.Web.Routing;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Web.App_Start;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
-using BinaryStudio.PhotoGallery.Web.Registers;
-using FluentScheduler;
+using BinaryStudio.PhotoGallery.Web.Extensions;
 using Microsoft.Practices.Unity;
 using PerpetuumSoft.Knockout;
 
@@ -18,19 +16,6 @@ namespace BinaryStudio.PhotoGallery.Web
 {
     public class MvcApplication : HttpApplication
     {
-        private readonly IUsersMonitorTask usersMonitorTask;
-
-        public MvcApplication()
-        {
-            IUnityContainer container = Bootstrapper.Initialise();
-
-            usersMonitorTask = container.Resolve<IUsersMonitorTask>();
-            // todo
-            // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
-            TaskManager.Initialize(new UsersMonitorRegistry(usersMonitorTask));
-            // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
-        }
-
         protected void Application_Start()
         {
             ModelBinders.Binders.DefaultBinder = new KnockoutModelBinder();
@@ -45,6 +30,13 @@ namespace BinaryStudio.PhotoGallery.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
+
+            IUnityContainer container = Bootstrapper.Initialise();
+
+            // todo
+            // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
+//            TaskManager.Initialize(new UsersMonitorRegistry(container.Resolve<IUsersMonitorTask>()));
+            // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
         }
 
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
@@ -74,13 +66,32 @@ namespace BinaryStudio.PhotoGallery.Web
             principal = new CustomPrincipal(model.Id, model.Email, model.IsAdmin);
                     
             HttpContext.Current.User = principal;
-
-            usersMonitorTask.SetOnline((HttpContext.Current.User as CustomPrincipal).Id);
         }
 
-        protected void Session_End()
+        protected void Application_Error(object sender, EventArgs e)
         {
-            usersMonitorTask.SetOffline(((CustomPrincipal) HttpContext.Current.User).Id);
+            var exception = Server.GetLastError();
+            var httpException = exception as HttpException;
+            string actionName;
+
+            switch (httpException.GetHttpCode())
+            {
+                case 500:
+                    actionName = "HttpError500";
+                    break;
+                case 404:
+                    actionName = "NotFound";
+                    break;                
+                case 403:
+                    actionName = "AccessDenied";
+                    break;
+                default:
+                    actionName = "Error";
+                    break;
+            }
+
+            Server.ClearError();
+            exception.Render(actionName, Context);
         }
     }
 }
