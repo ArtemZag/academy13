@@ -56,12 +56,13 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions
         /// Renders the specified exception and passes it to Error controller.
         /// </summary>
         /// <param name="exception">The exception</param>
+        /// <param name="actionName">The name of action which will render this error.</param>
         /// <param name="context">The Http context</param>
-        public static void Render(this Exception exception, HttpContext context)
+        public static void Render(this Exception exception, string actionName, HttpContext context)
         {
             var routeData = new RouteData();
             routeData.Values.Add("controller", "Error");
-            routeData.Values.Add("action", "Error");
+            routeData.Values.Add("action", actionName);
             routeData.Values.Add("exception", exception);
 
             IController errorController = new ErrorController();

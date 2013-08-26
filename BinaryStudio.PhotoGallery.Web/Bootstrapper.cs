@@ -35,8 +35,6 @@ namespace BinaryStudio.PhotoGallery.Web
             // it is NOT necessary to register your controllers
             // e.g. container.RegisterType<ITestService, TestService>();   
 
-            container.RegisterType<ISearchModelConverter, SearchModelConverter>();
-
             Domain.Bootstrapper.RegisterTypes(container);
             Database.Bootstrapper.RegisterTypes(container);
             Core.Bootstrapper.RegisterTypes(container);
@@ -45,7 +43,8 @@ namespace BinaryStudio.PhotoGallery.Web
             container.RegisterType<INotificationsEventManager, NotificationsEventManager>(new ContainerControlledLifetimeManager());
             container.RegisterType<IGlobalEventsHandler, GlobalEventsHandler>(new ContainerControlledLifetimeManager());
             container.RegisterInstance(container.Resolve<IGlobalEventsHandler>());
-            
+
+            container.RegisterType<ISearchModelConverter, SearchModelConverter>();
         }
 
         public static T Resolve<T>()
