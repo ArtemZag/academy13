@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
-using BinaryStudio.PhotoGallery.Core.EnumerableExtensions;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Models;
@@ -11,11 +9,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     internal class PhotoSearchService : DbService, IPhotoSearchService
     {
-        private readonly ISecureService secureService;
+        private readonly ISecureService _secureService;
 
         public PhotoSearchService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
         {
-            this.secureService = secureService;
+            _secureService = secureService;
         }
 
         public IEnumerable<IFound> Search(SearchArguments searchArguments)
@@ -26,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId,
+                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetAvailableAlbums(searchArguments.UserId,
                     unitOfWork);
 
                 if (searchArguments.IsSearchPhotosByDescription)

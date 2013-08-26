@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using BinaryStudio.PhotoGallery.Core.Helpers;
-using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Domain.Tests.Mocked;
@@ -18,8 +15,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
     internal class PhotoServiceTest
     {
         private readonly IPhotoService _photoService;
-        private readonly IUserService _userService;
-        private readonly IAlbumService _albumService;
 
         private readonly IUnitOfWorkFactory _workFactory;
 
@@ -27,17 +22,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
         {
             IUnityContainer container = Bootstrapper.Initialise();
 
-            var cryptoProvider = container.Resolve<ICryptoProvider>();
             var secureService = container.Resolve<ISecureService>();
-            var albumService = container.Resolve<IAlbumService>();
             var eventsAggregator = container.Resolve<IGlobalEventsAggregator>();
-            var maskHelper = container.Resolve<IMaskHelper>();
 
             _workFactory = new TestUnitOfWorkFactory();
 
-            _photoService = new PhotoService(_workFactory, secureService, eventsAggregator, maskHelper);
-            _userService = new UserService(_workFactory, cryptoProvider,albumService);
-            _albumService = new AlbumService(_workFactory, secureService);
+            _photoService = new PhotoService(_workFactory, secureService, eventsAggregator);
         }
 
         private IEnumerable<PhotoModel> GetListOfPhotos()
