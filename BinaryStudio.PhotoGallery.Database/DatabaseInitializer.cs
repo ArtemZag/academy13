@@ -112,7 +112,7 @@ namespace BinaryStudio.PhotoGallery.Database
             userSalt = cryptoProvider.GetNewSalt();
             user = new UserModel
             {
-                Email = "San4ez@mail.ru",
+                Email = "San4ez@bingally.com",
                 FirstName = "Александр",
                 LastName = "Носов",
                 Department = "Academy",

@@ -1,15 +1,10 @@
 ﻿$(document).ready(function () {
-    var container = $(".albums");
-    var info = $("#userInformation");
-    var tool = $("#toolbar");
-    var table = $("#content");
     var windowObject = $(window);
     var documentObject = $(document);
     var takeAlbumsCount = 10;
     var skipCount = 0;
-    /*var canvas = document.getElementById("canv");
-    var ctx = canvas.getContext('2d');
-    var colors = ["yellow", "orange", "red", "blue", "indigo"];
+        
+    /*var colors = ["yellow", "orange", "red", "blue", "indigo"];
     var colorLen = colors.length;
     ctx.lineWidth = 1;*/
     var starColorOffset = 0;
@@ -38,12 +33,42 @@
         $.get("api/user", getInfo);
     }
 
+    function resizeArrow() {
+        var tool = $("#toolbar");
+        var noAlbumText = $('.noAlbumsText');
+        var arrow = document.getElementById("arrow");
+        var button = $('.btn.btn-success');
+
+        var lft = noAlbumText.offset().left + noAlbumText.width() / 2;
+        var tp = tool.offset().top + tool.height();
+        var wdth = button.offset().left + button.width()/2 - lft;
+        var hght = noAlbumText.offset().top - tool.offset().top - tool.height();
+        var fg = $('#arrow');
+        fg.offset({ left: lft, top: tp });
+        arrow.width=wdth;
+        arrow.height = hght;
+        
+        var canvas = document.getElementById("arrow");
+        var ctx = canvas.getContext('2d');
+        ctx.lineWidth = 2;
+        ctx.moveTo(0, canvas.height);
+        ctx.lineTo(canvas.width, 0);
+        ctx.strokeStyle = "yellow";
+        ctx.stroke();
+    }
+    
+    function moveNoAlbumsContainer() {
+        var alb = $('.albums');
+        var noAlbContainer = $('.noAlbumsTextContainer');
+        noAlbContainer.offset({ top: (alb.height() - noAlbContainer.height()) / 2, left: (alb.width() - noAlbContainer.width()) / 2 });
+    }
+
     function resizeTable() {
-        table.height(windowObject.height() - tool.height());
+        $("#content").height(windowObject.height() - $("#toolbar").height());
     }
 
     function getInfo(inf) {
-        info.html($("#userTmpl").render(inf));
+        $("#userInformation").html($("#userTmpl").render(inf));
     }
 
     function downloadNextPartionOfAlbums() {
@@ -53,12 +78,16 @@
     function getAlbums(albums) {
         var length = albums.length;
         if (length > 0) {
-            container.html(
+            $(".albums").html(
                 $("#collageTmpl").render(albums));
         } else {
             if (skipCount - takeAlbumsCount == 0) {
-                container.html(
-                $("#uploadTmpl").render());
+                $(".albums").html(
+                    $("#uploadTmpl").render());
+                windowObject.resize(moveNoAlbumsContainer);
+                moveNoAlbumsContainer();
+                windowObject.resize(resizeArrow);
+                resizeArrow();
             }
             windowObject.unbind("scroll");
         }

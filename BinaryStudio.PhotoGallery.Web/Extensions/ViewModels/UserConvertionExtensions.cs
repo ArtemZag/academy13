@@ -1,4 +1,5 @@
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
+using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 
@@ -17,6 +18,8 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
                 Birthday = model.Birthday
             };
 
+            viewModel.AlbumsCount = viewModel.AlbumService.AlbumsCount(model.Id);
+            viewModel.PhotoCount = viewModel.PhotoService.PhotoCount(model.Id);
             viewModel.PhotoUrl = viewModel.PathUtil.BuildAvatarPath(model.Id, ImageSize.Medium);
 
             return viewModel;
