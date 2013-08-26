@@ -16,7 +16,6 @@ using BinaryStudio.PhotoGallery.Web.CustomStructure;
 using BinaryStudio.PhotoGallery.Web.Properties;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Account;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Admin;
-using BinaryStudio.PhotoGallery.Web.ViewModels.Authorization;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
