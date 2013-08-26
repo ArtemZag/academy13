@@ -90,9 +90,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///   Get all photos, visible on the login page by the not registered user
         /// </summary>
-        /// <param name="userId"></param>
         /// <param name="takeCount">Number of photos to be returned</param>
-        IEnumerable<PhotoModel> GetRandomPublicPhotos(int userId, int takeCount);
+        IEnumerable<PhotoModel> GetRandomPublicPhotos(int takeCount);
 
         void DeletePhoto(int userId, int photoId);
     }

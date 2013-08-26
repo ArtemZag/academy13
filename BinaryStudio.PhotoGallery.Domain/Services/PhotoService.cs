@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
@@ -11,11 +12,26 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     {
         private readonly ISecureService _secureService;
         private readonly IGlobalEventsAggregator _eventsAggregator;
+        private Dictionary<int, PhotoModel> _publicPhotos;
 
         public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator) : base(workFactory)
         {
             _secureService = secureService;
             _eventsAggregator = eventsAggregator;
+        }
+
+        private Dictionary<int, PhotoModel> PublicPhotos 
+        { 
+            get
+            {
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                {
+                    return _publicPhotos ?? (_publicPhotos = 
+                           _secureService.GetAvailableAlbums(3, unitOfWork) // todo should get photos from albums with public permisions
+                                         .SelectMany(model => model.Photos)
+                                         .ToDictionary(mPhoto => mPhoto.Id, mPhoto => mPhoto));
+                }
+            } 
         }
 
         public PhotoModel AddPhoto(PhotoModel photoModel)
@@ -283,18 +299,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<PhotoModel> GetRandomPublicPhotos(int userId, int takeCount)
+        public IEnumerable<PhotoModel> GetRandomPublicPhotos(int takeCount)
         {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetAvailableAlbums(userId, unitOfWork);
-
-                return
-                    avialableAlbums.SelectMany(model => model.Photos)
-                        .OrderBy(x => Guid.NewGuid())
-                        .Take(takeCount)
-                        .ToList();
-            }
+            return PublicPhotos.Values.OrderBy(x => Guid.NewGuid())
+                                       .Take(takeCount)
+                                       .ToList();
         }
     }
 }

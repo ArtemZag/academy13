@@ -28,7 +28,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 List<PhotoViewModel> viewModels = _photoService
-                    .GetRandomPublicPhotos(3, take) // todo make right
+                    .GetRandomPublicPhotos(take)
                     .Select(PhotoViewModel.FromModel).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, viewModels, new JsonMediaTypeFormatter());
