@@ -6,7 +6,6 @@ using System.Web.Routing;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 using BinaryStudio.PhotoGallery.Database;
-using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Web.App_Start;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
 using BinaryStudio.PhotoGallery.Web.Extensions;
@@ -17,8 +16,6 @@ namespace BinaryStudio.PhotoGallery.Web
 {
     public class MvcApplication : HttpApplication
     {
-        private static IUsersMonitorTask _usersMonitorTask;
-
         protected void Application_Start()
         {
             ModelBinders.Binders.DefaultBinder = new KnockoutModelBinder();
@@ -36,11 +33,9 @@ namespace BinaryStudio.PhotoGallery.Web
 
             IUnityContainer container = Bootstrapper.Initialise();
 
-            _usersMonitorTask = container.Resolve<IUsersMonitorTask>();
-
             // todo
             // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
-            // TaskManager.Initialize(new UsersMonitorRegistry(_usersMonitorTask));
+//            TaskManager.Initialize(new UsersMonitorRegistry(container.Resolve<IUsersMonitorTask>()));
             // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
         }
 
@@ -71,13 +66,6 @@ namespace BinaryStudio.PhotoGallery.Web
             principal = new CustomPrincipal(model.Id, model.Email, model.IsAdmin);
                     
             HttpContext.Current.User = principal;
-
-            _usersMonitorTask.SetOnline(model.Id);
-        }
-
-        protected void Session_End()
-        {
-            _usersMonitorTask.SetOffline((HttpContext.Current.User as CustomPrincipal).Id);
         }
 
         protected void Application_Error(object sender, EventArgs e)
