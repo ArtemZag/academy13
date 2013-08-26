@@ -1,4 +1,4 @@
-﻿var PhotoPlacer_Module = (function (controllerURl, albumId) {
+﻿var PhotoPlacer_Module = (function (controllerUrl, albumId) {
 
     var marginsOfPhotoCont;
     $(document).ready(function () {
@@ -74,7 +74,7 @@
 
     function ajaxPhotoLoad() {
         $("#loader").show();
-        $.get(controllerURl, { albumId: albumId , skip: startIndex, take: photoPortion }, getPhotos)
+        $.get(controllerUrl, { albumId: albumId , skip: startIndex, take: photoPortion }, getPhotos)
             .fail(function() {
                 $("#loader").hide();
             });

@@ -23,6 +23,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 	        return View();
 	    }
 
+        [GET("error500")]
+        public ActionResult HttpError500()
+        {
+            Response.StatusCode = 500;
+            return View("Error");
+        }
+
         [GET("error")]
         public ActionResult Error(Exception exception)
         {
