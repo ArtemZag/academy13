@@ -10,8 +10,6 @@ using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Web.App_Start;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
 using BinaryStudio.PhotoGallery.Web.Extensions;
-using BinaryStudio.PhotoGallery.Web.Registers;
-using FluentScheduler;
 using Microsoft.Practices.Unity;
 using PerpetuumSoft.Knockout;
 
@@ -19,18 +17,7 @@ namespace BinaryStudio.PhotoGallery.Web
 {
     public class MvcApplication : HttpApplication
     {
-        private readonly IUsersMonitorTask _usersMonitorTask;
-
-        public MvcApplication()
-        {
-            IUnityContainer container = Bootstrapper.Initialise();
-
-            _usersMonitorTask = container.Resolve<IUsersMonitorTask>();
-            // todo
-            // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
-//            TaskManager.Initialize(new UsersMonitorRegistry(_usersMonitorTask));
-            // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
-        }
+        private static IUsersMonitorTask _usersMonitorTask;
 
         protected void Application_Start()
         {
@@ -46,6 +33,14 @@ namespace BinaryStudio.PhotoGallery.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
+
+            IUnityContainer container = Bootstrapper.Initialise();
+
+            _usersMonitorTask = container.Resolve<IUsersMonitorTask>();
+            // todo
+            // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
+            //            TaskManager.Initialize(new UsersMonitorRegistry(_usersMonitorTask));
+            // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
         }
 
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
