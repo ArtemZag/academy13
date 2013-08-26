@@ -17,6 +17,7 @@ namespace BinaryStudio.PhotoGallery.Database
         {
             //var random = new Random();
             var cryptoProvider = new CryptoProvider();
+            var systemGroupList = new List<GroupModel>();
 
             #region adminModel creation
 
@@ -192,6 +193,18 @@ namespace BinaryStudio.PhotoGallery.Database
 
             #endregion
 
+            #region BlockedUsers
+            var groupModel = new GroupModel()
+                {
+                    GroupName = "BlockedUsers",
+                    Description = "System group. Not for use",
+                    OwnerId = -1,
+                    Users = new Collection<UserModel>()
+                };
+            systemGroupList.Add(groupModel);
+            #endregion
+
+
             var unitOfWorkFactory = new UnitOfWorkFactory();
             using (IUnitOfWork unitOfWork = unitOfWorkFactory.GetUnitOfWork())
             {
@@ -227,6 +240,16 @@ namespace BinaryStudio.PhotoGallery.Database
                 }
                 unitOfWork.SaveChanges();
 
+                // Adding all system groups (Owner for all groups is Admin)
+                var adminID = unitOfWork.Users.Find(a => a.Email == "Admin@bingally.com").Id;
+                foreach (var systemGroup in systemGroupList)
+                {
+                    systemGroup.OwnerId = adminID;
+                    unitOfWork.Groups.Add(systemGroup);
+                }
+                unitOfWork.SaveChanges();
+
+
                 #region adding test groups
 
                 var group = new GroupModel
@@ -244,19 +267,19 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 #region adding album to user with lastname Towstonog
 
-                UserModel golovinUser = unitOfWork.Users.Find(x => x.LastName == "Towstonog");
-                golovinUser.Albums.Add(new AlbumModel
+                UserModel maaak = unitOfWork.Users.Find(x => x.LastName == "Towstonog");
+                maaak.Albums.Add(new AlbumModel
                 {
                     Name = "First album",
                     Description = "Default album by DBinit",
                     IsDeleted = false,
                     Permissions = 11111,
-                    OwnerId = golovinUser.Id,
+                    OwnerId = maaak.Id,
                     Tags = new Collection<AlbumTagModel>(),
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 });
-                unitOfWork.Users.Update(golovinUser);
+                unitOfWork.Users.Update(maaak);
                 unitOfWork.SaveChanges();
 
                 #endregion
@@ -284,7 +307,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 #region adding album to user with lastname Golovin
 
-                golovinUser = unitOfWork.Users.Find(x => x.LastName == "Golovin");
+                var golovinUser = unitOfWork.Users.Find(x => x.LastName == "Golovin");
 
                 var tags = new Collection<AlbumTagModel>
                 {
