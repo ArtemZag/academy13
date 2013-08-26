@@ -55,4 +55,7 @@
 	max-width: none;
 }
 
-
+.spinner{
+	top: 50px !important;
+	left: 50px !important;
+}
