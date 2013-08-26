@@ -9,17 +9,16 @@
 
 <div class="change-panel well">
     <strong class="pull-left">Already registered?</strong>
-    <a href="~/signin" class="btn btn-primary pull-right">Sign in</a>
+    @Html.ActionLink("Sign in", "SignIn", "Account", new {@class = "btn btn-primary pull-right"})
 </div>
 
 <div class="login-panel">
-    @Html.Image(Url.Content("~/Content/images/logo_big.png"))
+    @Html.Image("~/Content/images/logo_big.png")
     <div class="well">          
         <form class="control-group form-horizontal pagination-centered" autocomplete="off">
-            <input type="email" id="Email" name="Email" class="input-block-level" maxlength="255" placeholder="E-mail address" value="@Model.Email" readonly=""/>
-            <input type="password" id="Password" name="Password" class="input-block-level" maxlength="20" placeholder="Password" />
-            <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="input-block-level" maxlength="20" placeholder="Repeat password">
-
+            @Html.TextBoxFor(model => model.Email, new {@class = "input-block-level", @placeholder = "E-mail address", @value = Model.Email, @readonly = "true"})
+            @Html.TextBoxFor(model => model.Password, new {@class = "input-block-level", @placeholder = "Password"})
+            @Html.TextBoxFor(model => model.ConfirmPassword, new {@class = "input-block-level", @placeholder = "Repeat Password"})
             <button id="signup-button" type="submit" class="btn btn-success effeckt-button zoom-in">
                 <span class="effeckt-label">Sign up</span>
                 <span class="effeckt-spinner effeckt-spinner-green"></span>

@@ -47,8 +47,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             {
                 return Redirect(FB.CreateAuthUrl(Randomizer.GetString(16)));
             }
-            
-            return View(new SigninViewModel());
+
+            return View(new SigninViewModel {RememberMe = true});
         }
 
         [GET("registration/{invite}", RouteName = "Registration")]
