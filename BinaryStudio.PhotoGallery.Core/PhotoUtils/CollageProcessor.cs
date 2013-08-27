@@ -81,7 +81,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             grfx.CompositingQuality = CompositingQuality.HighQuality;
             grfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
             grfx.SmoothingMode = SmoothingMode.HighQuality;
-            grfx.FillRectangle(Brushes.WhiteSmoke, 0, 0, grfx.ClipBounds.Width, grfx.ClipBounds.Height);
+            grfx.FillRectangle(Brushes.WhiteSmoke, 0, 0, grfx.VisibleClipBounds.Width, grfx.VisibleClipBounds.Height);
         }
     }
 }
