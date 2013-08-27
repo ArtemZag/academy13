@@ -377,7 +377,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
             var generatedRandomComment = new StringBuilder();
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 5; i++)
             {
                 var comm = new Collection<PhotoCommentModel>();
 
@@ -410,7 +410,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 var photoModel = new PhotoModel
                 {
-                    Format = "jpg",
+                    Format = "jpeg",
                     Description = "test photo",
                     OwnerId = albumModel.OwnerId,
                     AlbumId = albumModel.Id,
