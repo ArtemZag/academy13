@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 
@@ -15,6 +14,9 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             _pathUtil = pathUtil;
         }
 
+        /// <summary>
+        ///     Creates thumbnails of all formats for original photo
+        /// </summary>
         public void CreateThumbnails(int userId, int albumId, int photoId, string format)
         {
             string originalPhotoPath = _pathUtil.BuildAbsoluteOriginalPhotoPath(userId, albumId, photoId, format);
@@ -27,72 +29,61 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
         }
 
-        private void CreateThumbnail(int userId, int albumId, int photoId, string format, ImageSize imageSize)
-        {
-            string originalPhotoPath = _pathUtil.BuildAbsoluteOriginalPhotoPath(userId, albumId, photoId, format);
-
-            string absoluteThumbnailPath = _pathUtil.BuildAbsoluteThumbailPath(userId, albumId, photoId, format,
-                    imageSize);
-
-            if (!File.Exists(absoluteThumbnailPath))
-            {
-                ThumbnailCreationAction(originalPhotoPath, absoluteThumbnailPath, (int)imageSize, false);
-            }
-        }
-
+        /// <summary>
+        ///     Creates thumbnail of all formats for original avatar
+        /// </summary>
         public void CreateAvatarThumbnails(int userId)
         {
             string originalAvatarPath = _pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Original);
 
             if (File.Exists(originalAvatarPath))
             {
-                CreateSmallAvatar(userId, originalAvatarPath);
-                CreateMediumAvatar(userId, originalAvatarPath);
-                CreateBigAvatar(userId, originalAvatarPath);
+                CreateAvatarThumbnail(userId, originalAvatarPath, ImageSize.Big);
+                CreateAvatarThumbnail(userId, originalAvatarPath, ImageSize.Medium);
+                CreateAvatarThumbnail(userId, originalAvatarPath, ImageSize.Small);
             }
         }
 
-        private void CreateBigAvatar(int userId, string originalAvatarPath)
+        /// <summary>
+        ///     Creates thumbnail for photo with specified format
+        /// </summary>
+        private void CreateThumbnail(int userId, int albumId, int photoId, string format, ImageSize size)
         {
-            string path = _pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Big);
+            string originalPhotoPath = _pathUtil.BuildAbsoluteOriginalPhotoPath(userId, albumId, photoId, format);
 
-            ThumbnailCreationAction(originalAvatarPath, path, (int)ImageSize.Big, true);
+            string absoluteThumbnailPath = _pathUtil.BuildAbsoluteThumbailPath(userId, albumId, photoId, format, size);
+
+            Directory.CreateDirectory(Path.GetDirectoryName(absoluteThumbnailPath));
+
+            ThumbnailCreationAction(originalPhotoPath, absoluteThumbnailPath, (int) size);
         }
 
-        private void CreateMediumAvatar(int userId, string originalAvatarPath)
+        private void CreateAvatarThumbnail(int userId, string originalAvatarPath, ImageSize size)
         {
-            string path = _pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Medium);
+            string path = _pathUtil.BuildAbsoluteAvatarPath(userId, size);
 
-            ThumbnailCreationAction(originalAvatarPath, path, (int)ImageSize.Medium, true);
+            ThumbnailCreationAction(originalAvatarPath, path, (int) size);
         }
 
-        private void CreateSmallAvatar(int userId, string originalAvatarPath)
-        {
-            string path = _pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Medium);
-
-            ThumbnailCreationAction(originalAvatarPath, path, (int)ImageSize.Medium, true);
-        }
-
-        private void ThumbnailCreationAction(string imagePath, string thumbnailPath, int maxSize, bool twoBounds)
+        private void ThumbnailCreationAction(string imagePath, string thumbnailPath, int maxSize)
         {
             using (Image image = Image.FromFile(imagePath))
             {
-                Size size = CalculateThumbSize(image.Size, maxSize, twoBounds);
+                Size size = CalculateThumbnailSize(image.Size, maxSize, true);
 
                 using (Image thumb = image.GetThumbnailImage(size.Width, size.Height, () => false, IntPtr.Zero))
                 {
-                    // todo: there are many formats
                     thumb.Save(thumbnailPath);
                 }
             }
         }
 
-        private Size CalculateThumbSize(Size size, int maxSize, bool twoBounds)
+        private Size CalculateThumbnailSize(Size size, int maxSize, bool twoBounds)
         {
             if (twoBounds)
             {
                 if (size.Width > size.Height)
-                    return new Size(maxSize, (int) (((double) size.Height/size.Width) * maxSize));
+                    return new Size(maxSize, (int) (((double) size.Height/size.Width)*maxSize));
             }
 
             return new Size((int) (((double) size.Width/size.Height)*maxSize), maxSize);

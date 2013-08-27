@@ -71,6 +71,8 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
 
             builder.Append(DELIMITER)
+                .Append(COLLAGES_DIRECTORY_NAME)
+                .Append(DELIMITER)
                 .Append(COLLAGE_FILE_NAME)
                 .Append(MakeExtension(COLLAGE_FILE_FORMAT));
 
