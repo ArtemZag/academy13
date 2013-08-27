@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
@@ -15,7 +16,7 @@ namespace BinaryStudio.PhotoGallery.Web.Events
         void SomeoneRepliedToComment(PhotoCommentModel mComment);
     }
 
-    public class NotificationsEventManager : INotificationsEventManager
+    public class NotificationsEventManager : BaseEventManager, INotificationsEventManager
     {
         private readonly IUserService _userService;
         private readonly IPhotoService _photoService;

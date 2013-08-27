@@ -18,23 +18,27 @@
     $.get("api/publicphoto/" + photoPortion)
         .done(function(photos) {
             viewModel.addPhotos(photos);
-            var $newPhotoContainers = $('div.invisible');
-            var $photos = $newPhotoContainers.find("img");
+            var $photos = $("div.invisible > img");
             var length = $photos.length;
             var numLoad = 0;
             $photos.load(function() {
                 numLoad++;
                 if (numLoad == length) { //todo How to check by another way that all of photos have been loaded? 
-                    initResizer();
-                    $newPhotoContainers.removeClass("invisible");
+                    loaded();
                 }
             })
             .error(function() {
                 length--;
                 $(this).closest("div").remove();
+                if (numLoad == length) { //todo How to check by another way that all of photos have been loaded? 
+                    loaded();
+                }
             });
         });
-         
+    
+    function loaded() {
+        initResizer();
+    }
     
     ko.applyBindings(viewModel);
 });
