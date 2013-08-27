@@ -1,13 +1,12 @@
 ﻿.sidebar {
     background-color: rgb(235, 235, 235);
-    margin-top: 5px;
-    margin-left: 0 !important;
-    width: 340px !important;
+    float: right;
+    width: 20%;
 }
 
-.no-padding {
-    padding-left: 0;
-    padding-right: 0;
+.grid {
+    float: left;
+    width: 78%;
 }
 
 .title {
