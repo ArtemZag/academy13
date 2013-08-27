@@ -5,6 +5,7 @@ using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
 
+
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class PhotoService : DbService, IPhotoService
@@ -12,10 +13,26 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         private readonly ISecureService _secureService;
         private readonly IGlobalEventsAggregator _eventsAggregator;
 
+        private Dictionary<int, PhotoModel> _publicPhotos;
+
         public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator) : base(workFactory)
         {
             _secureService = secureService;
             _eventsAggregator = eventsAggregator;
+        }
+
+        private Dictionary<int, PhotoModel> PublicPhotos 
+        { 
+            get
+            {
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                {
+                    return _publicPhotos ?? (_publicPhotos =
+                        unitOfWork.Albums.Filter(x => ((int)AlbumModel.PermissionsMask.PublicAlbum & x.Permissions)== x.Permissions)
+                                         .SelectMany(model => model.Photos)
+                                         .ToDictionary(mPhoto => mPhoto.Id, mPhoto => mPhoto));
+                }
+            } 
         }
 
         public PhotoModel AddPhoto(PhotoModel photoModel)
@@ -163,7 +180,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userId, unitOfWork);
                 var photo = GetPhoto(userId, photoId);
 
-                foreach(var photoTag in photo.PhotoTags)
+                foreach(var photoTag in photo.Tags)
                 { 
                     
                 }
@@ -190,6 +207,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+
+        //todo Shall refactor and delete. Soon ..)
         public PhotoModel GetPhotoWithoutRightsCheck(int photoId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
@@ -242,6 +261,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         .Take(takeCount)
                         .ToList();
             }
+        }
+
+        public IEnumerable<PhotoModel> GetRandomPublicPhotos(int takeCount)
+        {
+            return PublicPhotos.Values.OrderBy(x => Guid.NewGuid())
+                                       .Take(takeCount)
+                                       .ToList();
         }
     }
 }

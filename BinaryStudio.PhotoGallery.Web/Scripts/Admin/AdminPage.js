@@ -1,7 +1,4 @@
-﻿var Bingally = Bingally || {};
-
-Bingally.AdminPage = Bingally.AdminPage || {};
-
+﻿var Bingally = Bingally === undefined ? {} : Bingally;
 
 Bingally.AdminPage.initializeViewModel = function (initData) {
 	var instanceViewModel = new adminPageViewModel();
@@ -26,7 +23,7 @@ Bingally.AdminPage.initializeViewModel = function (initData) {
 				var eMail = self.SelectedUser().Email;
 				$.ajax({
 					type: "DELETE",
-					url: "/AdminPanel/DeleteUser",
+					url: "/user/5",
 					data: { eMail: eMail}
 				}).done(function() {
 					alert("User has been deleted!");

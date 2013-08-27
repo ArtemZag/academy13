@@ -1,4 +1,6 @@
 ﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.ViewModels
+@using PerpetuumSoft.Knockout
 
 <!DOCTYPE html>
 <html>
@@ -8,16 +10,38 @@
         @Styles.Render("~/bundles/styles/bootstrap")
         @Styles.Render("~/bundles/styles/opentip")
         @Styles.Render("~/Content/auth-page.css")
-        
+        @Styles.Render("~/Content/verticalResizer.css")
+        @Styles.Render("~/Content/spinner.css")
         
         @Scripts.Render("~/bundles/scripts/jquery")
         @Scripts.Render("~/bundles/scripts/jquery.validate")
         @Scripts.Render("~/bundles/scripts/opentip")
+        @Scripts.Render("~/bundles/scripts/knockout")
+        @Scripts.Render("/Scripts/knockout.mapping-latest.js")
+        
         
         @Scripts.Render("~/Scripts/Helpers/animation.js")
+        @Scripts.Render("~/Scripts/Helpers/verticalResizer_Module.js")
+        @Scripts.Render("~/Scripts/Account/initVertResizer.js")
+
     </head>
     <body>
         <div id="full-screen-shadow"></div>
-        @RenderBody()
+        <div id="wrapper">
+            <div id='vFlow-images' data-bind="foreach: RandomPhotos">
+                <div class="photoContainer invisible" >
+                    <img data-bind="attr: { src: PhotoThumbSource }"/>
+                </div>
+            </div>
+        </div>
+        @RenderBody() 
+        <div id="loader">
+        <ul class="spinner">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+</div>
     </body>
 </html>

@@ -20,6 +20,7 @@ namespace BinaryStudio.PhotoGallery.Core
             container.RegisterType<IFileWrapper, FileWrapper>();
             container.RegisterType<IDirectoryWrapper, DirectoryWrapper>();
             container.RegisterType<IUrlUtil, UrlUtil>();
+            container.RegisterType<IMaskHelper, MaskHelper>();
             container.RegisterType<IPhotoProcessor, PhotoProcessor>();
             container.RegisterType<ICollageProcessor, CollageProcessor>();
         }

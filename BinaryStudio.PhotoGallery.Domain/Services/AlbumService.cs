@@ -21,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         Description = "System album. Not for use",
                         OwnerId = -1,
                         IsDeleted = false,
-                        Permissions = 11111,
+                        Permissions = 0,
                         Photos = new Collection<PhotoModel>(),
                         AvailableGroups = new Collection<AvailableGroupModel>(),
                         Tags = new Collection<AlbumTagModel>()
@@ -121,7 +121,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 return
-                    unitOfWork.Albums.Filter(model => model.OwnerId == userId && !model.IsDeleted && ((model.Description != "Default album by DBinit" && model.Description != "System album not for use") || model.Description == null))
+                    unitOfWork.Albums.Filter(model => model.OwnerId == userId && !model.IsDeleted)
                               .OrderByDescending(model => model.DateOfCreation)
                               .Skip(skipCount)
                               .Take(takeCount)

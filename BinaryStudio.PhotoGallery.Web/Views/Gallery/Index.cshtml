@@ -1,4 +1,50 @@
-﻿@{
-    ViewBag.Title = "User gallery | Bingally";
+﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.ViewModels
+@using BinaryStudio.PhotoGallery.Web.ViewModels.Photo
+@using PerpetuumSoft.Knockout
+@model PublicPhotosViewModel
+
+<script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"> </script>
+<script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"> </script>
+
+@Styles.Render("~/Content/photo-flow.css")
+@Styles.Render("~/Content/spinner.css")
+
+
+@{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "Gallery | Bingally";
+    KnockoutContext<PublicPhotosViewModel> ko = Html.CreateKnockoutContext();
 }
+ 
+<div id="loader">
+    <ul class="spinner">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<div id="photoWrapper">
+    @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it.Photos))
+    {
+        <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
+            <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
+        </div>
+    }
+</div>
+
+
+@ko.Initialize(Model)
+<script type="text/javascript">
+    $(document).ready(function () {
+        PhotoPlacer_Module("/api/photo/all");
+    });
+
+    viewModel.gotoPhotoPage = function(data) {
+        self.location = data.PhotoViewPageUrl;
+    };
+</script>
+
+@ko.Apply(Model)
+@Scripts.Render("~/Scripts/Helpers/PhotoPlacer_Module.js")

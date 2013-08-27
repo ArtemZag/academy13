@@ -1,6 +1,8 @@
 ﻿using System.Web.Mvc;
 using AttributeRouting;
-using AttributeRouting.Web.Http;
+using AttributeRouting.Web.Mvc;
+using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -11,7 +13,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("")]
         public ActionResult Index()
         {
-            return View();
+            return View(new PublicPhotosViewModel { UserId = User.Id });
         }
     }
 }

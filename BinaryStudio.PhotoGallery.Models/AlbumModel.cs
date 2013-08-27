@@ -19,9 +19,16 @@ namespace BinaryStudio.PhotoGallery.Models
             Name = name;
             OwnerId = ownerId;
             DateOfCreation = DateTime.Now;
-            Permissions = 111; // in moment, it is just for future
+            Permissions = (int)PermissionsMask.PublicAlbum; // in moment, it is just for future
         }
-        
+
+        [Flags]
+        public enum PermissionsMask : byte
+        {
+            PublicAlbum = 0x1,
+            //SomePerm1 = 2,
+            //SomePerm2 = 4,
+        }
 
         /// <summary>
         ///     Gets or sets the album id.

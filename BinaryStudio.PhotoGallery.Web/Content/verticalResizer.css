@@ -1,0 +1,61 @@
+﻿
+		body{
+			overflow-y:hidden;
+			overflow-x:hidden;
+			/*margin: 8px !important;*/
+		}
+		
+		#wrapper {
+			overflow-y:hidden;
+			overflow-x:hidden;
+			z-index: 1;
+		}
+
+/*Start theme customizatoin*/
+.photoContainer {
+	box-shadow: 2px 1px 3px gray;
+	overflow: hidden;
+	/*border: 5px solid #fff;*/
+	border-radius: 5px;
+}
+
+/*End of theme customization*/
+
+
+/*Image style*/
+#vFlow-images {
+    position:relative;
+}
+#vFlow-images > div {
+    width:100%;
+    height:565px;
+    position:absolute;
+    /*top:0px;
+    left:0px;*/
+    visibility:hidden;
+}
+#vFlow-images > div > span {
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:565px;
+	background-color:black;
+	z-index:2;
+	opacity:1;
+	background-image:url('../images/plus.png');
+	background-repeat:no-repeat;
+	background-position:center; 
+
+}
+#vFlow-images > div > img {
+    border:none;
+    opacity:1;
+    position:absolute;
+	max-width: none;
+}
+
+.spinner{
+	top: 50px !important;
+	left: 50px !important;
+}

@@ -10,6 +10,7 @@
 	top: 50%; 
 	left: 50%; 
 	margin: -20px auto auto -30px;
+	z-index: 4;
 }
 
 .spinner li {
