@@ -273,6 +273,7 @@
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
     <Compile Include="Utils\ISearchModelConverter.cs" />
     <Compile Include="Utils\SearchModelConverter.cs" />
+    <Compile Include="ViewModels\Account\BaseLoginViewModel.cs" />
     <Compile Include="ViewModels\Admin\InviteUserViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Account\SigninViewModel.cs" />
