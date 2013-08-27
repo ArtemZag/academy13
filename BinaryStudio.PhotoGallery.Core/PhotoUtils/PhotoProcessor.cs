@@ -45,7 +45,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         }
 
         /// <summary>
-        ///     Creates thumbnail with specified format
+        ///     Creates thumbnail for photo with specified format
         /// </summary>
         private void CreateThumbnail(int userId, int albumId, int photoId, string format, ImageSize size)
         {
