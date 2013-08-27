@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
     internal class CollageProcessor : ICollageProcessor
     {
-        private const int MAX_HEIGHT = 1024;
+        private const int MAX_HEIGHT = 64;
 
         private const int COLLAGE_WITH = 256;
 
