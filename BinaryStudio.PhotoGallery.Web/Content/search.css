@@ -17,6 +17,7 @@
 
 .result-image {
     float: left;
+    max-width: 160px;
     margin-right: 8px;
 }
 

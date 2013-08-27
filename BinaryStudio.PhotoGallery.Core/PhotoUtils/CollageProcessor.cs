@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
     internal class CollageProcessor : ICollageProcessor
     {
-        private const int MAX_HEIGHT = 1024;
+        private const int MAX_HEIGHT = 64;
 
         private const int COLLAGE_WITH = 256;
 
@@ -37,18 +37,19 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             using (Image image = new Bitmap(width, height))
             {
-                Graphics graphics = Graphics.FromImage(image);
+                using (Graphics graphics = Graphics.FromImage(image))
+                {
+                    SetUpGraphics(graphics);
 
-                SetUpGraphics(graphics);
+                    IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
+                                                                                                 ImageSize.Small);
 
-                IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
-                    ImageSize.Small);
+                    TileImages(graphics, thumbnailsPaths, width, height);
 
-                TileImages(graphics, thumbnailsPaths, width, height);
+                    Directory.CreateDirectory(collagesDirectoryPath);
 
-                Directory.CreateDirectory(collagesDirectoryPath);
-
-                image.Save(collagePath, ImageFormat.Jpeg);
+                    image.Save(collagePath, ImageFormat.Jpeg);
+                }
             }
         }
 
@@ -72,13 +73,17 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                     }
                 }
             }
+            
         }
 
-        private void SetUpGraphics(Graphics grfx)
+        private void SetUpGraphics(Graphics graphics)
         {
-            grfx.CompositingQuality = CompositingQuality.HighQuality;
-            grfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            grfx.SmoothingMode = SmoothingMode.HighQuality;
+            graphics.CompositingQuality = CompositingQuality.HighQuality;
+            graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            graphics.SmoothingMode = SmoothingMode.HighQuality;
+
+            graphics.FillRectangle(new SolidBrush(Color.WhiteSmoke), 0, 0, graphics.VisibleClipBounds.Width,
+                graphics.VisibleClipBounds.Height);
         }
     }
 }

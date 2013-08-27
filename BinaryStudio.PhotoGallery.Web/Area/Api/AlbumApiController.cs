@@ -34,7 +34,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 var albums = _albumService
                     .GetAlbumsRange(userId, skip, take)
                     .Select(album => album.ToAlbumViewModel(
-                        _pathUtil.BuildCollagePath(userId, album.Id))).ToList();
+                        _pathUtil.BuildCollagePath(userId, album.Id)));
 
                 return Request.CreateResponse(HttpStatusCode.OK, albums, new JsonMediaTypeFormatter());
             }
