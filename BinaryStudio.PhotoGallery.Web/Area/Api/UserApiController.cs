@@ -19,10 +19,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     public class UserApiController : BaseApiController
     {
         private readonly IUserService _userService;
-
-        public UserApiController(IUserService userService)
+        private readonly IPhotoService _photoService;
+        private readonly IAlbumService _albumService;
+        public UserApiController(IUserService userService, IPhotoService photoService, IAlbumService albumService)
         {
             _userService = userService;
+            _albumService = albumService;
+            _photoService = photoService;
         }
 
         [GET("")]
@@ -38,7 +41,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 UserModel userModel = _userService.GetUser(userId);
 
-                UserViewModel viewModel = userModel.ToUserViewModel();
+                int photoCount = _photoService.PhotoCount(userId);
+                int albumCount = _albumService.AlbumsCount(userId);
+                UserViewModel viewModel = userModel.ToUserViewModel(photoCount, albumCount);
 
                 return Request.CreateResponse(HttpStatusCode.OK, viewModel, new JsonMediaTypeFormatter());
             }

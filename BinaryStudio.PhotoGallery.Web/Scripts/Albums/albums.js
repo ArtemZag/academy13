@@ -48,10 +48,41 @@
                     $("#uploadTmpl").render());
                 windowObject.resize(moveNoAlbumsContainer);
                 moveNoAlbumsContainer();
+                windowObject.resize(resizeArrow);
+                resizeArrow();
             }
             windowObject.unbind("scroll");
         }
     }
+    
+    function resizeArrow() {
+        var tool = $("#toolbar");
+        var noAlbumText = $('.noAlbumsText');
+        var arrowJava = document.getElementById("arrow");
+        var arrowJQuery = $('#arrow');
+        var button = $('.btn.btn-success');
+
+        var noOffset = noAlbumText.offset();
+        var toolOffset = tool.offset();
+
+        var lft = noOffset.left + noAlbumText.width() / 2;
+        var tp = toolOffset.top + tool.height();
+        var wdth = button.offset().left + button.width() / 2 - lft;
+        var hght = noOffset.top - toolOffset.top - tool.height();
+        
+        arrowJQuery.offset({ left: lft, top: tp });
+        arrowJava.width = wdth;
+        arrowJava.height = hght;
+
+        var canvas = document.getElementById("arrow");
+        var ctx = canvas.getContext('2d');
+        ctx.lineWidth = 2;
+        ctx.moveTo(0, canvas.height);
+        ctx.lineTo(canvas.width, 0);
+        ctx.strokeStyle = "yellow";
+        ctx.stroke();
+    }
+
     function scrolling() {
         if (windowObject.scrollTop() == (documentObject.height() - windowObject.height())) {
             //Пользователь долистал до низа страницы
