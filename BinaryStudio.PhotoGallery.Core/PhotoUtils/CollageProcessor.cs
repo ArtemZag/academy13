@@ -31,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         private void MakeCollage(int userId, int albumId, int width, int rows, string collagesDirectoryPath)
         {
-            int height = rows*MAX_HEIGHT;
+            int height = rows * MAX_HEIGHT;
 
             string collagePath = _pathUtil.BuildAbsoluteCollagePath(userId, albumId);
 
