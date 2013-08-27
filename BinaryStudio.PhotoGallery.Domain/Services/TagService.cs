@@ -5,13 +5,13 @@ using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    internal class AlbumTagService : DbService, IAlbumTagService
+    internal class TagService : DbService, ITagService
     {
-        public AlbumTagService(IUnitOfWorkFactory workFactory) : base(workFactory)
+        public TagService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
         }
 
-        public IEnumerable<AlbumTagModel> GetTags(int albumId)
+        public IEnumerable<AlbumTagModel> GetAlbumTags(int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -21,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void SetTags(int albumId, ICollection<AlbumTagModel> tags)
+        public void SetAlbumTags(int albumId, ICollection<AlbumTagModel> tags)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
