@@ -240,6 +240,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                     try
                     {
+                        if (File.Exists(destFileName))
+                        {
+                            _fileWrapper.Delete(destFileName);
+                        }
+
                         _fileWrapper.Move(fileData.LocalFileName, destFileName);
                     }
                     catch (IOException)
