@@ -377,7 +377,7 @@ namespace BinaryStudio.PhotoGallery.Database
 
             var generatedRandomComment = new StringBuilder();
 
-            for (int i = 0; i < 29; i++)
+            for (int i = 0; i < 15; i++)
             {
                 var comm = new Collection<PhotoCommentModel>();
 
