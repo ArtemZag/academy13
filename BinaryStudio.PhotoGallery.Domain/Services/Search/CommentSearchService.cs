@@ -59,7 +59,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
         private int CalculateRelevanceByText(IEnumerable<string> searchWords, PhotoCommentModel photoCommentModel)
         {
-            return searchWords.Sum(searchWord => Regex.Matches(photoCommentModel.Text.ToLower(), searchWord).Count);
+            return searchWords.Sum(searchWord => Regex.Matches(photoCommentModel.Text.ToLower(), searchWord.ShieldString()).Count);
         }
 
         private IEnumerable<IFound> Group(IEnumerable<CommentFound> comments)

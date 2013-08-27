@@ -102,12 +102,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return
                 photoModel.Tags.Sum(
                     photoTagModel =>
-                        searchWords.Sum(searchWord => Regex.Matches(photoTagModel.TagName, searchWord).Count));
+                        searchWords.Sum(searchWord => Regex.Matches(photoTagModel.TagName, searchWord.ShieldString()).Count));
         }
 
         private int CalculateRelevanceByDescription(IEnumerable<string> searchWords, PhotoModel photoModel)
         {
-            return searchWords.Sum(searchWord => Regex.Matches(photoModel.Description.ToLower(), searchWord).Count);
+            return searchWords.Sum(searchWord => Regex.Matches(photoModel.Description.ToLower(), searchWord.ShieldString()).Count);
         }
 
         private IEnumerable<IFound> Group(IEnumerable<PhotoFound> photos)
