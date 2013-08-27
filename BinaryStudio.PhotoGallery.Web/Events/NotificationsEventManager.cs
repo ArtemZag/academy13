@@ -39,20 +39,15 @@ namespace BinaryStudio.PhotoGallery.Web.Events
 
         public void PhotoCommentAddedNotify(PhotoCommentModel mComment)
         {
-            // TODO by Mikhail: mComment.UserId and mUser.Id are the same always 
-            var mUser = _userService.GetUser(mComment.UserId); // TODO this is a redundant line
+            var mUser = _userService.GetUser(mComment.UserId);
             var mPhoto = _photoService.GetPhoto(mUser.Id, mComment.PhotoId);
 
             if (mPhoto.OwnerId != mComment.UserId)
             {
-                var mPhotoOwner = _userService.GetUser(mPhoto.OwnerId);
-
-                mPhotoOwner.Email = mPhotoOwner.Email.ToLower(); // todo: remove and refactor, when id to cookies will be added
-
                 var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
                                          "добавил комментарий к вашей фотографии."
                                          , mUser.FirstName, mUser.LastName);
-                _hubNotify.Clients.Group(mPhotoOwner.Email).SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
+                _hubNotify.Clients.Group(mPhoto.OwnerId.ToString("d")).SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
             }
         }
 
@@ -63,14 +58,11 @@ namespace BinaryStudio.PhotoGallery.Web.Events
             if (mPhoto.OwnerId != mAlbum.OwnerId)
             {
                 var mPhotoOwner = _userService.GetUser(mPhoto.OwnerId);
-                var mAlbumOwner = _userService.GetUser(mAlbum.OwnerId);
-
-                mAlbumOwner.Email = mAlbumOwner.Email.ToLower(); // todo: remove and refactor, when id to cookies will be added
-
+             
                 var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
                                          "добавил фотографию в ваш альбом"
                                          , mPhotoOwner.FirstName, mPhotoOwner.LastName);
-                _hubNotify.Clients.Group(mAlbumOwner.Email)
+                _hubNotify.Clients.Group(mAlbum.OwnerId.ToString("d"))
                           .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
             }
         }
@@ -79,29 +71,24 @@ namespace BinaryStudio.PhotoGallery.Web.Events
         {
             var mPhoto = _photoService.GetPhotoWithoutRightsCheck(photoId);
 
-            var mPhotoOwner = _userService.GetUser(mPhoto.OwnerId);
-            mPhotoOwner.Email = mPhotoOwner.Email.ToLower(); // todo: remove and refactor, when id to cookies will be added
-
             var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
                                          "поставил Like вашей фотографии."
                                          , mWhoseLike.FirstName, mWhoseLike.LastName);
-            _hubNotify.Clients.Group(mPhotoOwner.Email)
+
+            _hubNotify.Clients.Group(mPhoto.OwnerId.ToString("d"))
                           .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
         }
 
         public void SomeoneRepliedToComment(PhotoCommentModel mComment)
         {
             var mWhoseComment = _userService.GetUser(mComment.UserId);
-
             var mParentComment = _commentService.GetPhotoComment(mComment.Reply);
-
-            var mParentCommentOwner = _userService.GetUser(mParentComment.UserId);
-            mParentCommentOwner.Email = mParentCommentOwner.Email.ToLower(); // todo: remove and refactor, when id to cookies will be added
 
             var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
                                        "ответил на ваш комментарий к фотографии."
                                        , mWhoseComment.FirstName, mWhoseComment.LastName);
-            _hubNotify.Clients.Group(mParentCommentOwner.Email)
+
+            _hubNotify.Clients.Group(mParentComment.UserId.ToString("d"))
                           .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildCommentUrl(mComment.PhotoId, mComment.Id));
         }
 

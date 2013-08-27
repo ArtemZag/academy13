@@ -69,7 +69,7 @@
         return ($lastRow);
     }
 
-    var photoPortion = 25;
+    var photoPortion = 35;
     var startIndex = 0;
 
     function ajaxPhotoLoad() {
@@ -101,6 +101,12 @@
             .error(function() {
                 lenght--;
                 $(this).closest("div").remove();
+                $(this).remove();
+                $photos = $newPhotoContainers.find("img:first");
+                if (numLoad == lenght) { 
+                    calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
+                    $newPhotoContainers.removeClass("invisible");
+                }
             });
             startIndex += photoPortion;
             busy = false;
