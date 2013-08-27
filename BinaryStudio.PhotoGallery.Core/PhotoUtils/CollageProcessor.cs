@@ -31,7 +31,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         private void MakeCollage(int userId, int albumId, int width, int rows, string collagesDirectoryPath)
         {
-            int height = rows * MAX_HEIGHT;
+            int height = rows*MAX_HEIGHT;
 
             string collagePath = _pathUtil.BuildAbsoluteCollagePath(userId, albumId);
 
@@ -76,12 +76,14 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             
         }
 
-        private void SetUpGraphics(Graphics grfx)
+        private void SetUpGraphics(Graphics graphics)
         {
-            grfx.CompositingQuality = CompositingQuality.HighQuality;
-            grfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            grfx.SmoothingMode = SmoothingMode.HighQuality;
-            grfx.FillRectangle(Brushes.PaleGreen, 0, 0, grfx.VisibleClipBounds.Width, grfx.VisibleClipBounds.Height);
+            graphics.CompositingQuality = CompositingQuality.HighQuality;
+            graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            graphics.SmoothingMode = SmoothingMode.HighQuality;
+
+            graphics.FillRectangle(new SolidBrush(Color.WhiteSmoke), 0, 0, graphics.VisibleClipBounds.Width,
+                graphics.VisibleClipBounds.Height);
         }
     }
 }
