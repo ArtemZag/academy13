@@ -69,7 +69,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         {
             using (Image image = Image.FromFile(imagePath))
             {
-                Size size = CalculateThumbnailSize(image.Size, maxSize, true);
+                Size size = CalculateThumbnailSize(image.Size, maxSize, false);
 
                 using (Image thumb = image.GetThumbnailImage(size.Width, size.Height, () => false, IntPtr.Zero))
                 {

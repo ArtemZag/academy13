@@ -37,18 +37,19 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             using (Image image = new Bitmap(width, height))
             {
-                Graphics graphics = Graphics.FromImage(image);
+                using (Graphics graphics = Graphics.FromImage(image))
+                {
+                    SetUpGraphics(graphics);
 
-                SetUpGraphics(graphics);
+                    IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
+                                                                                                 ImageSize.Small);
 
-                IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
-                    ImageSize.Small);
+                    TileImages(graphics, thumbnailsPaths, width, height);
 
-                TileImages(graphics, thumbnailsPaths, width, height);
+                    Directory.CreateDirectory(collagesDirectoryPath);
 
-                Directory.CreateDirectory(collagesDirectoryPath);
-
-                image.Save(collagePath, ImageFormat.Jpeg);
+                    image.Save(collagePath, ImageFormat.Jpeg);
+                }
             }
         }
 
@@ -72,6 +73,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                     }
                 }
             }
+            
         }
 
         private void SetUpGraphics(Graphics grfx)
@@ -79,6 +81,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             grfx.CompositingQuality = CompositingQuality.HighQuality;
             grfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
             grfx.SmoothingMode = SmoothingMode.HighQuality;
+            grfx.FillRectangle(Brushes.WhiteSmoke, 0, 0, grfx.ClipBounds.Width, grfx.ClipBounds.Height);
         }
     }
 }
