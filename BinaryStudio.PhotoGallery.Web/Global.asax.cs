@@ -77,20 +77,27 @@ namespace BinaryStudio.PhotoGallery.Web
             var httpException = exception as HttpException;
             string actionName;
 
-            switch (httpException.GetHttpCode())
+            if (httpException != null)
             {
-                case 500:
-                    actionName = "HttpError500";
-                    break;
-                case 404:
-                    actionName = "NotFound";
-                    break;                
-                case 403:
-                    actionName = "AccessDenied";
-                    break;
-                default:
-                    actionName = "Error";
-                    break;
+                switch (httpException.GetHttpCode())
+                {
+                    case 500:
+                        actionName = "HttpError500";
+                        break;
+                    case 404:
+                        actionName = "NotFound";
+                        break;
+                    case 403:
+                        actionName = "AccessDenied";
+                        break;
+                    default:
+                        actionName = "Error";
+                        break;
+                }
+            }
+            else
+            {
+                actionName = "Error";
             }
 
             Server.ClearError();
