@@ -79,6 +79,13 @@
                 $("#loader").hide();
             });
     }
+    
+    function photosLoaded() {
+        var $photos = $('#photoWrapper > div.invisible > img');
+        calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
+        $('#photoWrapper > div.invisible').removeClass("invisible");
+        $("#loader").hide();
+    }
 
     function getPhotos(photos) {
         if (photos.length < photoPortion) {
@@ -86,32 +93,30 @@
             $(window).unbind("scroll");
         }
         if (photos.length > 0) {
-            ko.utils.arrayPushAll(koPhotos, photos);
-            var $newPhotoContainers = $('#photoWrapper > div.invisible');
-            var $photos = $newPhotoContainers.find("img:first");
-            var lenght = $photos.length;
+            var lenght = photos.length;
             var numLoad = 0;
-            $photos.load(function () {
-                numLoad++;
-                if (numLoad == lenght) { //todo How to check by another way that all of photos have been loaded? 
-                    calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
-                    $newPhotoContainers.removeClass("invisible");
-                }
-            })
-            .error(function() {
-                lenght--;
-                $(this).closest("div").remove();
-                $(this).remove();
-                $photos = $newPhotoContainers.find("img:first");
-                if (numLoad == lenght) { 
-                    calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
-                    $newPhotoContainers.removeClass("invisible");
-                }
+            jQuery.each(photos, function (ind) {
+                var img = new Image();
+                img.src = this.PhotoThumbSource;
+                $(img).load(function () {
+                    numLoad++;
+                    koPhotos.push(photos[ind]);
+                    if (numLoad == lenght) {
+                        photosLoaded();
+                    }
+                })
+                    .error(function() {
+                        lenght--;
+                        if (numLoad == lenght) {
+                            photosLoaded();
+                        }
+                    });
             });
+            
             startIndex += photoPortion;
             busy = false;
-        } 
-        $("#loader").hide();
+        }
+        else $("#loader").hide();
     }
     
 });
