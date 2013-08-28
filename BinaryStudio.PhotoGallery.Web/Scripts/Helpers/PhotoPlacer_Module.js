@@ -45,6 +45,7 @@
 
         jQuery.each($photos, function (indPh) {
             this.workWidth = this.width > maxWidth ? maxWidth : this.width;
+            var test = this.height;
             width += this.workWidth;
             margins += marginPhotoCont;
             if (width > wrapperWidth - margins) {

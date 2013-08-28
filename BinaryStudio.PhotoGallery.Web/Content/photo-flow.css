@@ -23,7 +23,7 @@ body {
 }
 
 .photoContainer img {
-	height:150px;
+	height: 150px;
 	max-width: none;
 	-moz-opacity: 0.70;
 	opacity: 0.70;

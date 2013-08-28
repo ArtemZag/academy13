@@ -39,6 +39,10 @@
             // tags
             // postAlbumTags();
         };
+        
+        self.gotoPhotoPage = function (data) {
+            window.location = data.PhotoViewPageUrl;
+        };
     }
 
     ko.bindingHandlers.editableText = {

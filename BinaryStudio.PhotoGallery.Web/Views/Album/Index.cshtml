@@ -25,7 +25,7 @@
 
 <div class="album-container">
     <div id="photoWrapper" class="grid" data-bind="foreach: photos">
-        <div class="photoContainer invisible" >
+        <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
             <img data-bind="attr: { src: PhotoThumbSource }"/>
         </div>
     </div>
