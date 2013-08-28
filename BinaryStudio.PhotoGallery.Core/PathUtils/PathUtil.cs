@@ -75,7 +75,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
                 return BuildRealCollagePath(userId, albumId);
             }
 
-            return CUSTOM_COLLAGE_PATH;
+            return VirtualPathUtility.ToAbsolute(CUSTOM_COLLAGE_PATH);
         }
 
         private string BuildRealCollagePath(int userId, int albumId)
