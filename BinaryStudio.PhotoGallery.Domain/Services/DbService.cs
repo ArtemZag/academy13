@@ -61,7 +61,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
             try
             {
-                return foundUser.Albums.First(album => album.Id == userId && !album.IsDeleted);
+                return foundUser.Albums.First(album => album.Id == albumId && !album.IsDeleted);
             }
             catch
             {
