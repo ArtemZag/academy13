@@ -2,7 +2,7 @@
 
     var getTagsUrl = $("#getTagsUrl").data("url");
     var getAlbumInfoUrl = $("#getAlbumInfoUrl").data("url");
-    var getPhotos = $("#getPhotos").data("url");
+    var getPhotosUrl = $("#getPhotosUrl").data("url");
 
     function albumViewModel() {
 
@@ -10,11 +10,15 @@
 
         self.albumId = ko.observable();
 
+        self.collagePath = ko.observable();
+
         self.name = ko.observableArray();
 
-        self.description = ko.observable();
+        self.description = ko.observable("no description");
 
         self.photosCount = ko.observable();
+
+        self.dateOfCreation = ko.observable();
 
         self.photos = ko.observableArray();
 
@@ -25,6 +29,11 @@
 
             return self.tags().join(", ");
         }, self);
+
+        self.sendInfo = function () {
+
+
+        };
     }
 
     ko.bindingHandlers.editableText = {
@@ -49,6 +58,8 @@
 
         album.name(info.AlbumName);
         album.description(info.Description);
+        album.collagePath(info.CollageSource);
+        album.dateOfCreation(formatDate(info.DateOfCreation));
     }
 
     function setAlbumTags(tags) {
@@ -71,6 +82,22 @@
     
     function initPhotosDownloader() {
         PhotoPlacer_Module(getPhotos, album.photos, albumId);
+    }
+
+    function getAlbumPhotos() {
+
+        // todo: photo-placer module call
+    }
+
+    function formatDate(dateTime) {
+
+        var dateEndIndex = dateTime.indexOf("T");
+        var timeEndIndex = dateTime.lastIndexOf(":");
+
+        var date = dateTime.substring(0, dateEndIndex);
+        var time = dateTime.substring(dateEndIndex + 1, timeEndIndex);
+
+        return date + " " + time;
     }
 
     getAlbumInfo();

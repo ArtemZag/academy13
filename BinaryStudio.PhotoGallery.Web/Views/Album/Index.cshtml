@@ -34,12 +34,14 @@
 
     <div class="sidebar">
         <div class="title editable" contenteditable="true" data-bind="editableText: name"></div>
-@*        <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>*@
+        @*       <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>*@
+        <div class="prop">created <!--ko text: dateOfCreation--><!--/ko--></div>
         <div class="title">Description</div>
         <div class="prop editable" contenteditable="true" data-bind="editableText: description"></div>
         <div class="title" contenteditable="true">Tags</div>
         <div class="prop editable" contenteditable="true" data-bind="editableText: tagsString"></div>
         <div class="title">Rights</div>
+        <a class="btn save-info-btn">Save</a>
     </div>
 </div>
 
