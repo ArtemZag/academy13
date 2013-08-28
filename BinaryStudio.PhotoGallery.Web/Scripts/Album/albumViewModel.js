@@ -2,6 +2,7 @@
 
     var getTagsUrl = $("#getTagsUrl").data("url");
     var getAlbumInfoUrl = $("#getAlbumInfoUrl").data("url");
+    var getPhotos = $("#getPhotos").data("url");
 
     function albumViewModel() {
 
@@ -67,9 +68,14 @@
 
         $.get(getAlbumInfoUrl, album.albumId(), setAlbumInfo);
     }
+    
+    function initPhotosDownloader() {
+        PhotoPlacer_Module(getPhotos, album.photos, albumId);
+    }
 
     getAlbumInfo();
     getAlbumTags();
+    initPhotosDownloader();
 
     ko.applyBindings(album);
 });

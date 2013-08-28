@@ -1,4 +1,4 @@
-﻿var PhotoPlacer_Module = (function (controllerUrl, albumId) {
+﻿var PhotoPlacer_Module = (function (controllerUrl, koPhotos, albumId) {
 
     var marginsOfPhotoCont;
     $(document).ready(function () {
@@ -86,7 +86,7 @@
             $(window).unbind("scroll");
         }
         if (photos.length > 0) {
-            ko.utils.arrayPushAll(window.viewModel.Photos, photos);
+            ko.utils.arrayPushAll(koPhotos, photos);
             var $newPhotoContainers = $('#photoWrapper > div.invisible');
             var $photos = $newPhotoContainers.find("img:first");
             var lenght = $photos.length;
