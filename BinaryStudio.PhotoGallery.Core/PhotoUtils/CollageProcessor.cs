@@ -43,24 +43,26 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                 {
                     SetUpGraphics(graphics);
 
-
                     IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
                                                                                           ImageSize.Small);
+                    string backup = Randomizer.GetEnumerator(_pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId, ImageSize.Big)).First();
+                    TileImages(graphics, Randomizer.GetEnumerator(thumbnailsPaths),backup, width, height);
 
-                    TileImages(graphics, Randomizer.GetEnumerator(thumbnailsPaths), width, height);
-                    try
-                    {
-                        Directory.Delete(collagesDirectoryPath, true);
-                    }
-                    catch{}
+                        foreach (var VARIABLE in Directory.EnumerateFiles(collagesDirectoryPath))
+                        {
+                            try
+                            {
+                                File.Delete(VARIABLE);
+                            }
+                            catch(Exception e){}
+                        }
                     Directory.CreateDirectory(collagesDirectoryPath);
-
                     image.Save(collagePath, ImageFormat.Jpeg);
                 }
             }
         }
 
-        private void TileImages(Graphics graphics, IEnumerable<string> thumbnails, int width, int heigth)
+        private void TileImages(Graphics graphics, IEnumerable<string> thumbnails,string biggestFile ,int width, int heigth)
         {
 
             List<string> list = thumbnails.ToList();
@@ -70,7 +72,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             if (countPhotos <= 12)
             {
-                using (Image thumbImage = Image.FromFile(list[0]))
+                using (Image thumbImage = Image.FromFile(biggestFile))
                 {
                     graphics.DrawImage(thumbImage, 0, 0, graphics.VisibleClipBounds.Width,
                                        graphics.VisibleClipBounds.Height);
