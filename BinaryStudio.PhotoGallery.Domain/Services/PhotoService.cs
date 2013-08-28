@@ -96,7 +96,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 if (_secureService.CanUserDeletePhoto(userId, photoId))
                 {
-                    PhotoModel photoToDelete = unitOfWork.Photos.Find(model => model.Id == photoId);
+                    PhotoModel photoToDelete = unitOfWork.Photos.Find(photoId);
 
                     photoToDelete.IsDeleted = true;
 

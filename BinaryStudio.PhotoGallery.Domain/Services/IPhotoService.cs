@@ -92,6 +92,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="takeCount">Number of photos to be returned</param>
         IEnumerable<PhotoModel> GetRandomPublicPhotos(int takeCount);
 
+        /// <summary>
+        /// Deletes photo
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="photoId"></param>
         void DeletePhoto(int userId, int photoId);
     }
 }
