@@ -3,6 +3,7 @@
     margin: auto;
 	min-width : 750px;
 	margin: 5px auto auto 9px;
+	max-width: 100%;
 }
 
 body {

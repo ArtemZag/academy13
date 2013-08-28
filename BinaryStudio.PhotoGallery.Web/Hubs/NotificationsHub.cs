@@ -18,14 +18,13 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
     [HubName("NotificationsHub")]
     public class NotificationsHub : Hub, ICustomPrincipalInHub
     {
-        public virtual new CustomPrincipal User
+        public CustomPrincipal User
         {
             get { return HttpContext.Current.User as CustomPrincipal; }
         }
 
         public override Task OnConnected()
         {
-            var test = User.Identity.Name;
             Groups.Add(Context.ConnectionId, User.Id.ToString("d"));
             return base.OnConnected();
         }
