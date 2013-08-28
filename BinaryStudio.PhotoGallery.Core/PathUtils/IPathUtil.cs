@@ -30,8 +30,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         /// </summary>
         string BuildCollagePath(int userId, int albumId);
 
-        string BuildCollagePathOrCustomCollage(int userId, int albumId);
-
         string BuildAbsoluteAvatarPath(int userId, ImageSize imageSize);
 
         string BuildAbsoluteAlbumPath(int userId, int albumId);

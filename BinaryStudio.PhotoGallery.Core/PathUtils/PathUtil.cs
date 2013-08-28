@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
-using BinaryStudio.PhotoGallery.Core.Exceptions;
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
     internal class PathUtil : IPathUtil
     {
-        private const string DELIMITER = @"\";
+        private const string DELIMITER = @"/";
 
-        private const string DATA_DIRECTORY_NAME = @"~\data";
+        private const string DATA_DIRECTORY_NAME = @"~/data";
 
         private const string PHOTOS_DIRECTORY_NAME = "photos";
 
@@ -22,8 +19,8 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private const string COLLAGE_FILE_FORMAT = "jpg";
         private const string COLLAGES_DIRECTORY_NAME = "collages";
 
-        private const string CUSTOM_AVATAR_PATH = @"~\Content\images\no_avatar.png";
-        private const string CUSTOM_COLLAGE_PATH = @"/Content/images/no_collage.png";
+        private const string CUSTOM_AVATAR_PATH = @"~/Content/images/no_avatar.png";
+        private const string CUSTOM_COLLAGE_PATH = @"~/Content/images/no_collage.png";
         private const string SUFFIX_AVATAR_FILENAME = "Avatar";
         private const string AVATAR_FILE_FORMAT = "jpg";
 
@@ -71,25 +68,27 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         /// </summary>
         public string BuildCollagePath(int userId, int albumId)
         {
-                var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
-
-                builder.Append(DELIMITER)
-                       .Append(COLLAGES_DIRECTORY_NAME)
-                       .Append(DELIMITER)
-                       .Append(COLLAGE_FILE_NAME)
-                       .Append(MakeExtension(COLLAGE_FILE_FORMAT));
-
-                return builder.ToString().Replace(@"\", "/");
-        }
-
-        public string BuildCollagePathOrCustomCollage(int userId, int albumId)
-        {
             string collagePath = BuildAbsoluteCollagePath(userId, albumId);
+
             if (File.Exists(collagePath))
             {
-                return BuildCollagePath(userId, albumId);
+                return BuildRealCollagePath(userId, albumId);
             }
+
             return CUSTOM_COLLAGE_PATH;
+        }
+
+        private string BuildRealCollagePath(int userId, int albumId)
+        {
+            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
+
+            builder.Append(DELIMITER)
+                    .Append(COLLAGES_DIRECTORY_NAME)
+                    .Append(DELIMITER)
+                    .Append(COLLAGE_FILE_NAME)
+                    .Append(MakeExtension(COLLAGE_FILE_FORMAT));
+
+            return builder.ToString();
         }
 
         /// <summary>
@@ -142,7 +141,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string BuildAbsoluteCollagePath(int userId, int albumId)
         {
-            return HostingEnvironment.MapPath(BuildCollagePath(userId, albumId));
+            return HostingEnvironment.MapPath(BuildRealCollagePath(userId, albumId));
         }
 
         public string BuildAbsoluteCollagesDirPath(int userId, int albumId)
