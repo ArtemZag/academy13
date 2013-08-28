@@ -62,25 +62,38 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
         private void TileImages(Graphics graphics, IEnumerable<string> thumbnails, int width, int heigth)
         {
+
+            List<string> list = thumbnails.ToList();
+            int countPhotos = list.Count;
             int iter = 0;
             int sumWidth = 0;
 
-            foreach (string file in thumbnails)
+            if (countPhotos <= 12)
             {
-                using (Image thumbImage = Image.FromFile(file))
+                using (Image thumbImage = Image.FromFile(list[0]))
                 {
-                    graphics.DrawImageUnscaled(thumbImage, sumWidth, iter);
-                    sumWidth += thumbImage.Width;
-                    if (sumWidth >= width)
-                    {
-                        sumWidth = 0;
-                        iter += MAX_HEIGHT;
-                        if (iter >= heigth)
-                            break;
-                    }
+                    graphics.DrawImage(thumbImage, 0, 0, graphics.VisibleClipBounds.Width,
+                                       graphics.VisibleClipBounds.Height);
                 }
             }
-            
+            else
+            {
+                foreach (string file in list)
+                {
+                    using (Image thumbImage = Image.FromFile(file))
+                    {
+                        graphics.DrawImageUnscaled(thumbImage, sumWidth, iter);
+                        sumWidth += thumbImage.Width;
+                        if (sumWidth >= width)
+                        {
+                            sumWidth = 0;
+                            iter += MAX_HEIGHT;
+                            if (iter >= heigth)
+                                break;
+                        }
+                    }
+                } 
+            }     
         }
 
         private void SetUpGraphics(Graphics graphics)
