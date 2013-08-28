@@ -285,7 +285,6 @@
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\Photo\UserInfoViewModel.cs" />
     <Compile Include="Extensions\ViewModels\AlbumConvertionExtensions.cs" />
-    <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Content Include="Content\album-page.css" />
     <Content Include="Content\profile-page.css" />

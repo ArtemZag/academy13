@@ -1,85 +1,132 @@
 ﻿@using System.Web.Optimization
-@model BinaryStudio.PhotoGallery.Web.ViewModels.UsersListViewModel
-
-
 @{
 	Layout = "~/Views/Shared/_MainLayout.cshtml";
 	ViewBag.Title = "Administration | Bingally";
 }
+
 @Styles.Render("~/Content/admin-page.css")
 
-<div class="user-container" data-bind="foreach: Users">
-			<a href="" >
-				<div class="user-row"  data-bind="click: $parent.SetCurrentUser">
-					<div class="user-main-info">
-						<img src="~/Content/images/no_avatar.png" data-bind="attr: { alt: Email }" />
-						<span data-bind="text: FirstName"></span>
-						<span data-bind="text: LastName"></span><br>
-						<span data-bind="style: { color: IsOnline == true ? 'Green' : 'Red'}, text :  IsOnline == true ? 'Online' : 'Offline'"></span>
-					</div>
-				</div>
-			</a>
-</div>
-<div class="user-info" data-bind="with: SelectedUser">
-	<p data-bind="text: Email"></p>
-	<img src="~/Content/images/no_avatar.png" alt="" />
-	<p>
-		<strong>First Name:</strong>
-		<span data-bind="text: FirstName" />
-	</p>
-	<p>
-		<strong>Last Name:</strong>
-		<span data-bind="text: LastName" />
-	</p>
-	<p>
-		<strong>Role:</strong>
-		<span data-bind="text: IsAdmin == true ? 'Admin' : 'User' "></span>
-	</p>
-	<p>
-		<strong>Total albums:</strong>
-		<span data-bind="text: AlbumsCount"></span>
-	</p>
-</div>
-<form class="form-horizontal" id="invite-form">
-	<p>
-		<input type="email" name="inviteEmail" id="inviteEmail" placeholder="E-mail address" />
-	</p>
-	<p>
-		<input type="text" name="inviteFirstname" id="inviteFirstname" placeholder="First name" />
-	</p>
-	<p>
-		<input type="text" name="inviteLastname" id="inviteLastname" placeholder="Last name" />
-	</p>
-	<input type="submit" name="inviteButton" id="inviteButton" class="btn" value="Send invite" />
-</form>
-<div class="hidden-field">
-	<input type="button" class="btn" value="Reset Password" onclick="alert('Another admin action!')" />
-	<input type="button" class="btn" value="Another action" onclick="alert('Another admin action!')" />
-	<a type="button" class="btn"  data-toggle="modal" href="#deleteModal">Delete user</a>
+<div id="user-list">
+    <div class="user status-unactivated">
+        <div class="avatar">
+            <img  src="~/Content/images/no_avatar.png" />
+            <div class="status">Unactivated</div>
+        </div>
+        <div class="description">
+            <button class="edit-info icon-edit"></button>
+            <div class="full-name">Jony Joshua</div>
+            <div class="email">jony@jhgfdsafgchjkl;'il.com</div>
+            <div class="department">.Net</div>
+        </div>
+        <div class="actions btn-block">
+            <button class="btn btn-inverse">Block</button>
+            <button class="btn btn-warning">Delete</button>
+            <button class="btn btn-primary">Resend invitation</button>
+        </div>
+    </div>
+    <div class="user status-online">
+        <div class="avatar">
+            <img src="~/Content/images/no_avatar.png" />
+            <div class="status">Online</div>
+        </div>
+        <div class="description">
+            <button class="edit-info icon-edit"></button>
+            <div class="full-name">Jony Joshua</div>
+            <div class="email">jony@gmail.com</div>
+            <div class="department">.Net</div>
+        </div>
+        <div class="actions btn-block">
+            <button class="btn btn-inverse">Block</button>
+            <button class="btn btn-warning">Delete</button>
+            <button class="btn btn-primary">Reset password</button>
+        </div>
+    </div>
+    <div class="user status-offline">
+        <div class="avatar">
+            <img  src="~/Content/images/no_avatar.png" />
+            <div class="status">Offline</div>
+        </div>
+        <div class="description">
+            <button class="edit-info icon-edit"></button>
+            <div class="full-name">Jony Joshua</div>
+            <div class="email">jony@gmail.com</div>
+            <div class="department">.Net</div>
+        </div>
+        <div class="actions btn-block">
+            <button class="btn btn-inverse">Block</button>
+            <button class="btn btn-warning">Delete</button>
+            <button class="btn btn-primary">Reset password</button>
+        </div>
+    </div>
+    <div class="user status-blocked">
+        <div class="avatar">
+            <img  src="~/Content/images/no_avatar.png" />
+            <div class="status">Blocked</div>
+        </div>
+        <div class="description">
+            <button class="edit-info icon-edit"></button>
+            <div class="full-name">Jony Joshua</div>
+            <div class="email">jony@gmail.com</div>
+            <div class="department">.Net</div>
+        </div>
+        <div class="actions btn-block">
+            <button class="btn btn-inverse">Ublock</button>
+            <button class="btn btn-warning">Delete</button>
+            <button class="btn btn-primary">Send activation</button>
+        </div>
+    </div>
 </div>
 
-<div id="deleteModal" class="modal hide fade in" style="display: none;">
-	<div class="modal-header">
-		<a class="close" data-dismiss="modal">×</a>
-		<h4>Delete confirmation</h4>
-	</div>
-	<div class="modal-body">
-		<h5>Are you sure you want to delete <strong data-bind="text: SelectedUser().FirstName">this</strong> ?</h5>
-	</div>
-	<div class="modal-footer">
-		<input type="button" class="btn btn-success" value="Delete" id="deleteButton"/>
-		<input type="button" class="btn" data-dismiss="modal" value="Cancel"/>
-	</div>
-</div>
+@*<div id="actions-panel">*@
+@*    <div class="action">*@
+@*        <span>Task manager control</span>*@
+@*    </div>*@
+@*    <div class="action">*@
+@*        <span>Invite new person</span>*@
+@*    </div>*@
+@*</div>*@
 
 
-<script type="text/javascript">
-	$(function() {
-		var initData = @Html.Raw(Json.Encode(Model));
-		Bingally.AdminPage.initializeViewModel(initData);
-	});
-</script>
-
-@Scripts.Render("~/bundles/scripts/jquery.validate")
-@Scripts.Render("~/Scripts/AdminPanel/AdminPage.js")
-@Scripts.Render("~/Scripts/AdminPanel/UserSlider.js")
+@*<form class="form-horizontal" id="invite-form">*@
+@*	<p>*@
+@*		<input type="email" name="inviteEmail" id="inviteEmail" placeholder="E-mail address" />*@
+@*	</p>*@
+@*	<p>*@
+@*		<input type="text" name="inviteFirstname" id="inviteFirstname" placeholder="First name" />*@
+@*	</p>*@
+@*	<p>*@
+@*		<input type="text" name="inviteLastname" id="inviteLastname" placeholder="Last name" />*@
+@*	</p>*@
+@*	<input type="submit" name="inviteButton" id="inviteButton" class="btn" value="Send invite" />*@
+@*</form>*@
+@*<div class="hidden-field">*@
+@*	<input type="button" class="btn" value="Reset Password" onclick="alert('Another admin action!')" />*@
+@*	<input type="button" class="btn" value="Another action" onclick="alert('Another admin action!')" />*@
+@*	<a type="button" class="btn"  data-toggle="modal" href="#deleteModal">Delete user</a>*@
+@*</div>*@
+@**@
+@*<div id="deleteModal" class="modal hide fade in" style="display: none;">*@
+@*	<div class="modal-header">*@
+@*		<a class="close" data-dismiss="modal">×</a>*@
+@*		<h4>Delete confirmation</h4>*@
+@*	</div>*@
+@*	<div class="modal-body">*@
+@*		<h5>Are you sure you want to delete <strong data-bind="text: SelectedUser().FirstName">this</strong> ?</h5>*@
+@*	</div>*@
+@*	<div class="modal-footer">*@
+@*		<input type="button" class="btn btn-success" value="Delete" id="deleteButton"/>*@
+@*		<input type="button" class="btn" data-dismiss="modal" value="Cancel"/>*@
+@*	</div>*@
+@*</div>*@
+@**@
+@**@
+@*<script type="text/javascript">*@
+@*	$(function() {*@
+@*		var initData = @Html.Raw(Json.Encode(Model));*@
+@*		Bingally.AdminPage.initializeViewModel(initData);*@
+@*	});*@
+@*</script>*@
+@**@
+@*@Scripts.Render("~/bundles/scripts/jquery.validate")*@
+@*@Scripts.Render("~/Scripts/AdminPanel/AdminPage.js")*@
+@*@Scripts.Render("~/Scripts/AdminPanel/UserSlider.js")*@
