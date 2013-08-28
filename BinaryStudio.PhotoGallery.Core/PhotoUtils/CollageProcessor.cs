@@ -44,10 +44,10 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                     SetUpGraphics(graphics);
 
 
-                    List<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
-                                                                                          ImageSize.Small).ToList();
+                    IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
+                                                                                          ImageSize.Small);
 
-                    TileImages(graphics, thumbnailsPaths, width, height);
+                    TileImages(graphics, Randomizer.GetEnumerator(thumbnailsPaths), width, height);
 
                     Directory.CreateDirectory(collagesDirectoryPath);
                     DeleteFile(collagePath);
