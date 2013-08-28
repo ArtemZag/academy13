@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         {
             int height = rows*MAX_HEIGHT;
 
-            string collagePath = _pathUtil.BuildAbsoluteCollagePath(userId, albumId);
+            string collagePath = _pathUtil.CreateCollagePath(userId, albumId);
 
             using (Image image = new Bitmap(width, height))
             {
@@ -48,23 +48,18 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                                                                                           ImageSize.Small);
 
                     TileImages(graphics, Randomizer.GetEnumerator(thumbnailsPaths), width, height);
-
+                    try
+                    {
+                        Directory.Delete(collagesDirectoryPath, true);
+                    }
+                    catch{}
                     Directory.CreateDirectory(collagesDirectoryPath);
-                    DeleteFile(collagePath);
 
                     image.Save(collagePath, ImageFormat.Jpeg);
                 }
             }
         }
-        private void DeleteFile(string path)
-        {
-            try
-            {
-                File.Delete(path);
-            }
-            catch
-            {}
-        }
+
         private void TileImages(Graphics graphics, IEnumerable<string> thumbnails, int width, int heigth)
         {
             int iter = 0;
