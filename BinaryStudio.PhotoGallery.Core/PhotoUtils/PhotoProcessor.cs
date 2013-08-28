@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
@@ -25,10 +26,13 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             if (File.Exists(originalPhotoPath))
             {
-                Parallel.Invoke(options,
+                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Big);
+                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Medium);
+                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Small);
+                /* Parallel.Invoke(options,
                     () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Big), 
                     () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Medium), 
-                    () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Small));
+                    () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Small));*/
             }
         }
 
@@ -74,8 +78,17 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             using (Image image = Image.FromFile(imagePath))
             {
                 Size size = CalculateThumbnailSize(image.Size, maxSize);
-                var resizedImage = new Bitmap(image, size);
-                resizedImage.Save(thumbnailPath);
+                using (Image newImage = new Bitmap(size.Width, size.Height))
+                {
+                    using (Graphics grfx = Graphics.FromImage(newImage))
+                    {
+                        grfx.CompositingQuality = CompositingQuality.HighQuality;
+                        grfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        grfx.SmoothingMode = SmoothingMode.AntiAlias;
+                        grfx.DrawImage(image, 0, 0, size.Width, size.Height);
+                    }
+                    newImage.Save(thumbnailPath);
+                }
             }
         }
 

@@ -121,7 +121,9 @@ p.textStyle {
     border-radius: 10px;
     border: 4px double green;
     margin: 20px;
-    
+    width: 256px;
+    height: 192px;
+
     -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
     -moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
     -ms-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
