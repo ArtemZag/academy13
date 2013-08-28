@@ -112,7 +112,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Albums.Filter(model => model.OwnerId == userId && !model.IsDeleted).Sum(model => 1);
+                return unitOfWork.Albums.Filter(model => model.OwnerId == userId && !model.IsDeleted && model.Name != "Temporary").Sum(model => 1);
             }
         }
 
@@ -121,7 +121,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 return
-                    unitOfWork.Albums.Filter(model => model.OwnerId == userId && !model.IsDeleted)
+                    unitOfWork.Albums.Filter(model => model.OwnerId == userId && !model.IsDeleted && model.Name!="Temporary")
                               .OrderByDescending(model => model.DateOfCreation)
                               .Skip(skipCount)
                               .Take(takeCount)
