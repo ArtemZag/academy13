@@ -41,6 +41,7 @@
         };
         
         self.gotoPhotoPage = function (data) {
+            
             window.location = data.PhotoViewPageUrl;
         };
     }

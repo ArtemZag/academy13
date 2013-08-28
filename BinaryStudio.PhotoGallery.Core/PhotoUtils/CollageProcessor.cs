@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -44,27 +43,31 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                     SetUpGraphics(graphics);
 
                     IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
-                                                                                          ImageSize.Small);
-                    string backup = Randomizer.GetEnumerator(_pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId, ImageSize.Big)).First();
-                    TileImages(graphics, Randomizer.GetEnumerator(thumbnailsPaths),backup, width, height);
+                        ImageSize.Small);
+                    string backup =
+                        Randomizer.GetEnumerator(_pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId, ImageSize.Big))
+                            .First();
+                    TileImages(graphics, Randomizer.GetEnumerator(thumbnailsPaths), backup, width, height);
 
-                        foreach (var VARIABLE in Directory.EnumerateFiles(collagesDirectoryPath))
+                    foreach (string variable in Directory.EnumerateFiles(collagesDirectoryPath))
+                    {
+                        try
                         {
-                            try
-                            {
-                                File.Delete(VARIABLE);
-                            }
-                            catch(Exception e){}
+                            File.Delete(variable);
                         }
+                        catch
+                        {
+                        }
+                    }
                     Directory.CreateDirectory(collagesDirectoryPath);
                     image.Save(collagePath, ImageFormat.Jpeg);
                 }
             }
         }
 
-        private void TileImages(Graphics graphics, IEnumerable<string> thumbnails,string biggestFile ,int width, int heigth)
+        private void TileImages(Graphics graphics, IEnumerable<string> thumbnails, string biggestFile, int width,
+            int heigth)
         {
-
             List<string> list = thumbnails.ToList();
             int countPhotos = list.Count;
             int iter = 0;
@@ -75,7 +78,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                 using (Image thumbImage = Image.FromFile(biggestFile))
                 {
                     graphics.DrawImage(thumbImage, 0, 0, graphics.VisibleClipBounds.Width,
-                                       graphics.VisibleClipBounds.Height);
+                        graphics.VisibleClipBounds.Height);
                 }
             }
             else
@@ -94,8 +97,8 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                                 break;
                         }
                     }
-                } 
-            }     
+                }
+            }
         }
 
         private void SetUpGraphics(Graphics graphics)

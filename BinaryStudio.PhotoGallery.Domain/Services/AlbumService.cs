@@ -24,7 +24,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         Permissions = 0,
                         Photos = new Collection<PhotoModel>(),
                         AvailableGroups = new Collection<AvailableGroupModel>(),
-                        Tags = new Collection<AlbumTagModel>()
                     }
                 #endregion
             };
@@ -126,14 +125,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                               .Skip(skipCount)
                               .Take(takeCount)
                               .ToList();
-            }
-        }
-
-        public IEnumerable<AlbumTagModel> GetTags(int albumId)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                return unitOfWork.AlbumTags.Filter(tag => tag.Id == albumId).ToList();
             }
         }
 

@@ -25,8 +25,6 @@ namespace BinaryStudio.PhotoGallery.Database
 
         private readonly Lazy<IPhotoTagRepository> photoTagLazy;
 
-        private readonly Lazy<IAlbumTagRepository> albumTagLazy;
-
 
         /// <summary>
         /// Create unit of work with databaseContext
@@ -35,7 +33,6 @@ namespace BinaryStudio.PhotoGallery.Database
         {
             databaseContext = new DatabaseContext("BinaryStudio.PhotoGallery.Database.DatabaseContext");
             
-            albumTagLazy = new Lazy<IAlbumTagRepository>(() => new AlbumTagRepository(databaseContext));
             photoTagLazy = new Lazy<IPhotoTagRepository>(() => new PhotoTagRepository(databaseContext));
             albumLazy = new Lazy<IAlbumRepository>(() => new AlbumRepository(databaseContext));
             photoCommentLazy = new Lazy<IPhotoCommentRepository>(() => new PhotoCommentRepository(databaseContext));
@@ -96,11 +93,6 @@ namespace BinaryStudio.PhotoGallery.Database
         public IAlbumRepository Albums
         {
             get { return this.albumLazy.Value; }
-        }
-
-        public IAlbumTagRepository AlbumTags
-        {
-            get { return albumTagLazy.Value; }
         }
 
         public IPhotoTagRepository PhotoTags

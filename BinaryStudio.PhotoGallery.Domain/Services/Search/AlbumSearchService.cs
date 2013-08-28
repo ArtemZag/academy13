@@ -45,30 +45,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
                     result.AddRange(found);
                 }
-
-                if (searchArguments.IsSearchAlbumsByTags)
-                {
-                    IEnumerable<AlbumFound> found = SearchByTags(avialableAlbums, searchWords);
-
-                    result.AddRange(found);
-                }
             }
 
             return Group(result);
-        }
-
-        private IEnumerable<AlbumFound> SearchByTags(IEnumerable<AlbumModel> fromAlbums, IEnumerable<string> searchWords)
-        {
-            return fromAlbums.Where(
-                model => model.Tags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
-                .Select(model => new AlbumFound
-                {
-                    Id = model.Id,
-                    DateOfCreation = model.DateOfCreation,
-                    Name = model.Name,
-                    OwnerId = model.OwnerId,
-                    Relevance = CalculateRelevanceByTags(searchWords, model)
-                });
         }
 
         private IEnumerable<AlbumFound> SearchByCondition(IEnumerable<string> searchWords,
@@ -84,14 +63,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 OwnerId = model.OwnerId,
                 Relevance = getRelevance(searchWords, model)
             });
-        }
-
-        private int CalculateRelevanceByTags(IEnumerable<string> searchWords, AlbumModel albumModel)
-        {
-            return
-                albumModel.Tags.Sum(
-                    albumTagModel =>
-                        searchWords.Sum(searchWord => Regex.Matches(albumTagModel.TagName, searchWord.ShieldString()).Count));
         }
 
         private int CalculateRelevanceByName(IEnumerable<string> searchWords, AlbumModel albumModel)

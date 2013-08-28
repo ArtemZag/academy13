@@ -23,12 +23,11 @@
         }
 
         public bool IsSearchAlbumsByName { get; set; }
-        public bool IsSearchAlbumsByTags { get; set; }
         public bool IsSearchAlbumsByDescription { get; set; }
 
         public bool IsSearchByAlbums
         {
-            get { return IsSearchAlbumsByName || IsSearchAlbumsByTags || IsSearchAlbumsByDescription; }
+            get { return IsSearchAlbumsByName || IsSearchAlbumsByDescription; }
         }
 
         public bool IsSearchUsersByName { get; set; }

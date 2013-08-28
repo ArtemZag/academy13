@@ -21,7 +21,6 @@
         self.isSearchPhotosByDescription = ko.observable(true);
 
         self.isSearchAlbumsByName = ko.observable(true);
-        self.isSearchAlbumsByTags = ko.observable(true);
         self.isSearchAlbumsByDescription = ko.observable(true);
 
         self.isSearchUsersByName = ko.observable(true);
@@ -54,11 +53,6 @@
         });
 
         self.isSearchAlbumsByName.subscribe(function() {
-
-            isModelChanged = true;
-        });
-
-        self.isSearchAlbumsByTags.subscribe(function() {
 
             isModelChanged = true;
         });

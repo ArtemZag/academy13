@@ -21,8 +21,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         IEnumerable<AlbumModel> GetAlbumsRange(int userId, int skipCount, int takeCount);
 
-        IEnumerable<AlbumTagModel> GetTags(int albumId);
-
         void UpdateAlbum(AlbumModel albumModel);
 
         /// <summary>

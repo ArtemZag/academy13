@@ -99,20 +99,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
         {
             foreach (AlbumModel albumModel in albumsToCleanup)
             {
-                DeleteTags(albumModel, unitOfWork);
-
                 unitOfWork.Albums.Delete(albumModel);
-            }
-        }
-
-        private void DeleteTags(AlbumModel albumModel, IUnitOfWork unitOfWork)
-        {
-            var tagsToDelete = new List<AlbumTagModel>();
-            tagsToDelete.AddRange(albumModel.Tags);
-
-            foreach (AlbumTagModel tag in tagsToDelete)
-            {
-                unitOfWork.AlbumTags.Delete(tag);
             }
         }
 
