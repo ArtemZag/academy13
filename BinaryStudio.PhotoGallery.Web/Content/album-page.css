@@ -9,6 +9,13 @@
     width: 78%;
 }
 
+.save-info-btn {
+    display: block;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
 .title {
     color: #343434;
     font-family: "Segoe UI Light", "Segoe UI Web Light", "Segoe UI Web Regular", "Segoe UI", "Segoe UI Symbol", "HelveticaNeue-Light", "Helvetica Neue", Arial, sans-serif;
@@ -38,3 +45,5 @@
     margin-left: 20px;
     margin-right: 30px;
 }
+
+.album-container { min-width: 1000px; }

@@ -38,7 +38,7 @@
 @ko.Initialize(Model)
 <script type="text/javascript">
     $(document).ready(function () {
-        PhotoPlacer_Module("/api/photo/allusers");
+        PhotoPlacer_Module("/api/photo/allusers", window.viewModel.Photos);
     });
 
     viewModel.gotoPhotoPage = function(data) {
