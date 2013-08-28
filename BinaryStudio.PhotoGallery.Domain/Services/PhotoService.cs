@@ -1,38 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BinaryStudio.PhotoGallery.Core.IOUtils;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
-
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class PhotoService : DbService, IPhotoService
     {
-        private readonly ISecureService _secureService;
         private readonly IGlobalEventsAggregator _eventsAggregator;
+        private readonly IFileWrapper _fileWrapper;
+        private readonly IPathUtil _pathUtil;
+        private readonly ISecureService _secureService;
 
         private Dictionary<int, PhotoModel> _publicPhotos;
 
-        public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator) : base(workFactory)
+        public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService,
+            IGlobalEventsAggregator eventsAggregator, IFileWrapper fileWrapper, IPathUtil pathUtil) : base(workFactory)
         {
             _secureService = secureService;
             _eventsAggregator = eventsAggregator;
+            _fileWrapper = fileWrapper;
+            _pathUtil = pathUtil;
         }
 
-        private Dictionary<int, PhotoModel> PublicPhotos 
-        { 
+        private Dictionary<int, PhotoModel> PublicPhotos
+        {
             get
             {
                 using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
                 {
                     return _publicPhotos ?? (_publicPhotos =
-                        unitOfWork.Albums.Filter(x => ((int)AlbumModel.PermissionsMask.PublicAlbum & x.Permissions)== x.Permissions)
-                                         .SelectMany(model => model.Photos)
-                                         .ToDictionary(mPhoto => mPhoto.Id, mPhoto => mPhoto));
+                        unitOfWork.Albums.Filter(
+                            x => ((int) AlbumModel.PermissionsMask.PublicAlbum & x.Permissions) == x.Permissions)
+                            .SelectMany(model => model.Photos)
+                            .ToDictionary(mPhoto => mPhoto.Id, mPhoto => mPhoto));
                 }
-            } 
+            }
         }
 
         public PhotoModel AddPhoto(PhotoModel photoModel)
@@ -55,7 +63,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 AlbumModel album = GetAlbum(userId, albumId);
 
-                var notAllowed = !_secureService.CanUserAddPhoto(userId, album.Id);
+                bool notAllowed = !_secureService.CanUserAddPhoto(userId, album.Id);
 
                 if (notAllowed)
                 {
@@ -96,7 +104,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 if (_secureService.CanUserDeletePhoto(userId, photoId))
                 {
-                    PhotoModel photoToDelete = unitOfWork.Photos.Find(model => model.Id == photoId);
+                    PhotoModel photoToDelete = unitOfWork.Photos.Find(photoId);
 
                     photoToDelete.IsDeleted = true;
 
@@ -105,6 +113,55 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 else
                 {
                     throw new NoEnoughPrivilegesException("User can't get access to photos");
+                }
+            }
+        }
+
+        //todo: call collage rebuild in the end of this method
+        public void MovePhotoToAlbum(int userId, int photoId, int albumId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                PhotoModel photo = unitOfWork.Photos.Find(photoId);
+                AlbumModel album = GetAlbum(userId, photo.AlbumId);
+
+                if (album.OwnerId == userId)
+                {
+                    photo.AlbumId = albumId;
+
+
+                    unitOfWork.Photos.Update(photo);
+                    unitOfWork.SaveChanges();
+
+
+                    var imageSizes = new List<ImageSize>
+                    {
+                        ImageSize.Small,
+                        ImageSize.Medium,
+                        ImageSize.Big
+                    };
+
+                    string curFilePath;
+                    string disFilePath;
+                    foreach (ImageSize imageSize in imageSizes)
+                    {
+                        curFilePath = _pathUtil.BuildAbsoluteThumbailPath(userId, album.Id, photoId, photo.Format,
+                            imageSize);
+                        disFilePath = _pathUtil.BuildAbsoluteThumbailPath(userId, albumId, photoId, photo.Format,
+                            imageSize);
+
+                        _fileWrapper.Move(curFilePath, disFilePath);
+                    }
+
+                    curFilePath = _pathUtil.BuildAbsoluteOriginalPhotoPath(userId, album.Id, photoId, photo.Format);
+                    disFilePath = _pathUtil.BuildAbsoluteOriginalPhotoPath(userId, albumId, photoId, photo.Format);
+
+                    _fileWrapper.Move(curFilePath, disFilePath);
+                }
+                else
+                {
+                    throw new NoEnoughPrivilegesException(
+                        "User doesn't have enought privileges for moving photo from one album to another");
                 }
             }
         }
@@ -165,7 +222,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="photoId"></param>
@@ -178,14 +234,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 UserModel user = GetUser(userId, unitOfWork);
-                var photo = GetPhoto(userId, photoId);
+                PhotoModel photo = GetPhoto(userId, photoId);
 
-                foreach(var photoTag in photo.Tags)
-                { 
-                    
+                foreach (PhotoTagModel photoTag in photo.Tags)
+                {
                 }
-
-
 
 
                 return null;
@@ -240,7 +293,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userId, unitOfWork);
 
-                unitOfWork.Photos.Find(photoId).Likes.Add(user);
+                ICollection<UserModel> userModels = unitOfWork.Photos.Find(photoId).Likes;
+                if (userModels.Contains(user))
+                {
+                    userModels.Remove(user);
+                }
+                else
+                {
+                    userModels.Add(user);
+                }
+
                 unitOfWork.SaveChanges();
 
                 _eventsAggregator.PushLikeToPhotoAddedEvent(user, photoId);
@@ -266,8 +328,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         public IEnumerable<PhotoModel> GetRandomPublicPhotos(int takeCount)
         {
             return PublicPhotos.Values.OrderBy(x => Guid.NewGuid())
-                                       .Take(takeCount)
-                                       .ToList();
+                .Take(takeCount)
+                .ToList();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class GroupService : DbService, IGroupService
     {
-        private readonly List<string> systemGroupList = new List<string>
+        private readonly List<string> _systemGroupList = new List<string>
         {
             "BlockedUsers"
         };
@@ -184,7 +184,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private bool IsGroupSystem(GroupModel groupModel)
         {
-            return systemGroupList.Contains(groupModel.GroupName);
+            return _systemGroupList.Contains(groupModel.GroupName);
         }
     }
 }
