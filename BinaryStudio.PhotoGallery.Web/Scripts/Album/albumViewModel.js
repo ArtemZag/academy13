@@ -81,12 +81,7 @@
     }
     
     function initPhotosDownloader() {
-        PhotoPlacer_Module(getPhotos, album.photos, albumId);
-    }
-
-    function getAlbumPhotos() {
-
-        // todo: photo-placer module call
+        PhotoPlacer_Module(getPhotosUrl, album.photos, album.albumId);
     }
 
     function formatDate(dateTime) {

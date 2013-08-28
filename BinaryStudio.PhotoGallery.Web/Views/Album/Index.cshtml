@@ -1,7 +1,5 @@
 ﻿@using System.Web.Optimization
 @using BinaryStudio.PhotoGallery.Web.ViewModels
-@using BinaryStudio.PhotoGallery.Web.ViewModels.Photo
-@using PerpetuumSoft.Knockout
 @model AlbumViewModel
 
 <script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"> </script>
@@ -47,7 +45,7 @@
 
 <div id="getTagsUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumTagApi", action = "GetTags"})"></div>
 <div id="getAlbumInfoUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbum"})"></div>
-<div id="getPhotos" data-url="@Url.RouteUrl(new {httproute = "", controller = "PhotoApi", action = "GetPhotos"})"></div>
+<div id="getPhotosUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "PhotoApi", action = "GetPhotos"})"></div>
 <input id="albumId" type="hidden" value="@ViewBag.AlbumId"/>
 
 @Scripts.Render("~/Scripts/Helpers/PhotoPlacer_Module.js")
