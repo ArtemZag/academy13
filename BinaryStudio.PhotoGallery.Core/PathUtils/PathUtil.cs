@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
+using BinaryStudio.PhotoGallery.Core.Exceptions;
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
@@ -147,6 +150,29 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         public string BuildAbsoluteOriginalPhotoPath(int userId, int albumId, int photoId, string format)
         {
             return HostingEnvironment.MapPath(BuildOriginalPhotoPath(userId, albumId, photoId, format));
+        }
+
+        public IEnumerable<string> GetPhotoDimensionSubdirectories(string parentDirectory)
+        {
+            var derInfo = new DirectoryInfo(parentDirectory);
+            var subDirectories = new List<string>();
+
+            try
+            {
+                if (!derInfo.Exists)
+                    throw new FilePathNotExistException(string.Format("File path \"{0}\" does not exist",
+                        parentDirectory));
+                DirectoryInfo[] subdirs = derInfo.GetDirectories();
+
+                subDirectories.AddRange(from directoryInfo in subdirs
+                                        where !directoryInfo.Name.Equals(COLLAGES_DIRECTORY_NAME)
+                    select directoryInfo.Name);
+                return subDirectories;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private string BuildAbsoluteOriginalAvatarPath(int userId)
