@@ -3,12 +3,13 @@
     var getTagsUrl = $("#getTagsUrl").data("url");
     var getAlbumInfoUrl = $("#getAlbumInfoUrl").data("url");
     var getPhotosUrl = $("#getPhotosUrl").data("url");
+    var postAlbumInfoUrl = $("#postAlbumInfoUrl").data("url");
 
     function albumViewModel() {
 
         var self = this;
 
-        self.albumId = ko.observable();
+        self.albumId = 0;
 
         self.collagePath = ko.observable();
 
@@ -32,7 +33,11 @@
 
         self.sendInfo = function () {
 
+            // post name and description
+            postAlbumInfo();
 
+            // tags
+            // postAlbumTags();
         };
     }
 
@@ -51,8 +56,7 @@
 
     var album = new albumViewModel();
 
-    var albumId = document.getElementById("albumId").value;
-    album.albumId(albumId);
+    album.albumId = document.getElementById("albumId").value;
 
     function setAlbumInfo(info) {
 
@@ -70,16 +74,22 @@
         });
     }
 
+    // post name and description
+    function postAlbumInfo() {
+
+        $.post(postAlbumInfoUrl, { Id: album.albumId, AlbumName: album.name(), Description: album.description() });
+    }
+
     function getAlbumTags() {
 
-        $.get(getTagsUrl, album.albumId(), setAlbumTags);
+        $.get(getTagsUrl, album.albumId, setAlbumTags);
     }
 
     function getAlbumInfo() {
 
-        $.get(getAlbumInfoUrl, album.albumId(), setAlbumInfo);
+        $.get(getAlbumInfoUrl, album.albumId, setAlbumInfo);
     }
-    
+
     function initPhotosDownloader() {
         PhotoPlacer_Module(getPhotosUrl, album.photos, album.albumId);
     }

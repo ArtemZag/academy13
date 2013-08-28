@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Runtime.InteropServices;
 using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
@@ -61,6 +62,27 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
+
+        [POST("")]
+        public HttpResponseMessage PostAlbumInfo(AlbumViewModel albumViewModel)
+        {
+            try
+            {
+                AlbumModel album = _albumService.GetAlbum(albumViewModel.Id);
+
+                album.Name = albumViewModel.AlbumName;
+                album.Description = albumViewModel.Description;
+                
+                _albumService.UpdateAlbum(album);
+
+                return Request.CreateResponse(HttpStatusCode.Accepted);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            
         }
 
         [POST("")]
