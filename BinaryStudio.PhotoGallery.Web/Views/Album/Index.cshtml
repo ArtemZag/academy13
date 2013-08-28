@@ -37,11 +37,14 @@
         <div class="title" contenteditable="true">Tags</div>
         <div class="prop editable" contenteditable="true" data-bind="editableText: tagsString"></div>
         <div class="title">Rights</div>
+        <a class="btn save-info-btn">Bootstrap Button Generator</a>
     </div>
 </div>
 
 <div id="getTagsUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumTagApi", action = "GetTags"})"></div>
 <div id="getAlbumInfoUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbum"})"></div>
+<div id="getPhotosUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "PhotoApi", action = "GetPhotos"})"></div>
+
 <input id="albumId" type="hidden" value="@ViewBag.AlbumId"/>
 
 @Scripts.Render("~/Scripts/Album/albumViewModel.js")
