@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
-using BinaryStudio.PhotoGallery.Core.EnumerableExtensions;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Models;
@@ -11,11 +9,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     internal class PhotoSearchService : DbService, IPhotoSearchService
     {
-        private readonly ISecureService secureService;
+        private readonly ISecureService _secureService;
 
         public PhotoSearchService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
         {
-            this.secureService = secureService;
+            _secureService = secureService;
         }
 
         public IEnumerable<IFound> Search(SearchArguments searchArguments)
@@ -26,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId,
+                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetAvailableAlbums(searchArguments.UserId,
                     unitOfWork);
 
                 if (searchArguments.IsSearchPhotosByDescription)
@@ -81,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             foreach (AlbumModel albumModel in fromAlbums)
             {
                 IEnumerable<PhotoFound> found = albumModel.Photos.Where(
-                    model => model.PhotoTags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
+                    model => model.Tags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
                     .Select(model => new PhotoFound
                     {
                         Id = model.Id,
@@ -102,14 +100,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
         private int CalculateRelevanceByTags(IEnumerable<string> searchWords, PhotoModel photoModel)
         {
             return
-                photoModel.PhotoTags.Sum(
+                photoModel.Tags.Sum(
                     photoTagModel =>
-                        searchWords.Sum(searchWord => Regex.Matches(photoTagModel.TagName, searchWord).Count));
+                        searchWords.Sum(searchWord => Regex.Matches(photoTagModel.TagName, searchWord.ShieldString()).Count));
         }
 
         private int CalculateRelevanceByDescription(IEnumerable<string> searchWords, PhotoModel photoModel)
         {
-            return searchWords.Sum(searchWord => Regex.Matches(photoModel.Description.ToLower(), searchWord).Count);
+            return searchWords.Sum(searchWord => Regex.Matches(photoModel.Description.ToLower(), searchWord.ShieldString()).Count);
         }
 
         private IEnumerable<IFound> Group(IEnumerable<PhotoFound> photos)

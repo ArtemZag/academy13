@@ -14,7 +14,6 @@
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "Album | Bingally";
-    KnockoutContext<AlbumViewModel> ko = Html.CreateKnockoutContext();
 }
  
 <div id="loader">
@@ -26,44 +25,23 @@
     </ul>
 </div>
 
-<div class="container-fluid no-padding">
-    <div class="row-fluid">
-        <div class="span9">
-            <div id="photoWrapper">
-                @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it.Photos))
-                {
-                    <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
-                        <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
-                    </div>
-                }
-            </div>
-        </div>
-        <div class="span3 sidebar">
-                <div class="title editable" contenteditable="true">@Html.DisplayFor(model => model.AlbumName)</div>
-                <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>
-                <div class="title">Description</div>
-                <div class="prop editable" contenteditable="true">@Html.DisplayFor(model => model.Description)</div>
-                <div class="title" contenteditable="true">Tags</div>
-                <div class="prop editable" contenteditable="true">
-                    tag, tag 2, other tag, looong  tag, some tag, your tag, my tag, tag-tag
-                </div>
-                <div class="title">Rights</div>
-        </div>
+<div class="album-container">
+    <div id="photoWrapper" class="grid">
+    </div>
+
+    <div class="sidebar">
+        <div class="title editable" contenteditable="true" data-bind="editableText: name"></div>
+@*        <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>*@
+        <div class="title">Description</div>
+        <div class="prop editable" contenteditable="true" data-bind="editableText: description"></div>
+        <div class="title" contenteditable="true">Tags</div>
+        <div class="prop editable" contenteditable="true" data-bind="editableText: tagsString"></div>
+        <div class="title">Rights</div>
     </div>
 </div>
 
+<div id="getTagsUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumTagApi", action = "GetTags"})"></div>
+<div id="getAlbumInfoUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbum"})"></div>
+<input id="albumId" type="hidden" value="@ViewBag.AlbumId"/>
 
-@ko.Initialize(Model)
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        PhotoPlacer_Module("/api/photo/", "@Model.Id");
-    });
-
-    viewModel.gotoPhotoPage = function(data) {
-        self.location = data.PhotoViewPageUrl;
-    };
-</script>
-
-@ko.Apply(Model)
-@Scripts.Render("~/Scripts/Helpers/PhotoPlacer_Module.js")
+@Scripts.Render("~/Scripts/Album/albumViewModel.js")

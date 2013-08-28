@@ -9,41 +9,47 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
     internal class CollageProcessor : ICollageProcessor
     {
-        private const int MAX_HEIGHT = 1024;
+        private const int MAX_HEIGHT = 64;
 
-        private readonly IPathUtil pathUtil;
+        private const int COLLAGE_WITH = 256;
+
+        private const int COLLAGE_ROWS = 3;
+
+        private readonly IPathUtil _pathUtil;
 
         public CollageProcessor(IPathUtil pathUtil)
         {
-            this.pathUtil = pathUtil;
+            _pathUtil = pathUtil;
         }
 
-        public void CreateCollage(int userId, int albumId, int width, int rows)
+        public void CreateCollage(int userId, int albumId)
         {
-            string collagesDirectoryPath = pathUtil.BuildAbsoluteCollagesDirPath(userId, albumId);
+            string collagesDirectoryPath = _pathUtil.BuildAbsoluteCollagesDirPath(userId, albumId);
 
-            MakeCollage(userId, albumId, width, rows, collagesDirectoryPath);
+            MakeCollage(userId, albumId, COLLAGE_WITH, COLLAGE_ROWS, collagesDirectoryPath);
         }
 
         private void MakeCollage(int userId, int albumId, int width, int rows, string collagesDirectoryPath)
         {
-            int height = rows * MAX_HEIGHT;
+            int height = rows*MAX_HEIGHT;
 
-            string collagePath = pathUtil.BuildAbsoluteCollagePath(userId, albumId);
+            string collagePath = _pathUtil.BuildAbsoluteCollagePath(userId, albumId);
 
             using (Image image = new Bitmap(width, height))
             {
-                Graphics graphics = Graphics.FromImage(image);
+                using (Graphics graphics = Graphics.FromImage(image))
+                {
+                    SetUpGraphics(graphics);
 
-                SetUpGraphics(graphics);
+                    IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
+                                                                                                 ImageSize.Small);
 
-                IEnumerable<string> thumbnailsPaths = pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId, ImageSize.Small);
+                    TileImages(graphics, thumbnailsPaths, width, height);
 
-                TileImages(graphics, thumbnailsPaths, width, height);
+                    Directory.CreateDirectory(collagesDirectoryPath);
 
-                Directory.CreateDirectory(collagesDirectoryPath);
-
-                image.Save(collagePath, ImageFormat.Jpeg);
+                    image.Save(collagePath, ImageFormat.Jpeg);
+                }
             }
         }
 
@@ -67,13 +73,17 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                     }
                 }
             }
+            
         }
 
-        private void SetUpGraphics(Graphics grfx)
+        private void SetUpGraphics(Graphics graphics)
         {
-            grfx.CompositingQuality = CompositingQuality.HighQuality;
-            grfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            grfx.SmoothingMode = SmoothingMode.HighQuality;
+            graphics.CompositingQuality = CompositingQuality.HighQuality;
+            graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            graphics.SmoothingMode = SmoothingMode.HighQuality;
+
+            graphics.FillRectangle(new SolidBrush(Color.WhiteSmoke), 0, 0, graphics.VisibleClipBounds.Width,
+                graphics.VisibleClipBounds.Height);
         }
     }
 }

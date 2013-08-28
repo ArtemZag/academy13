@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
@@ -14,15 +12,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     {
         private readonly ISecureService _secureService;
         private readonly IGlobalEventsAggregator _eventsAggregator;
-        private readonly IMaskHelper _maskHelper;
 
         private Dictionary<int, PhotoModel> _publicPhotos;
 
-        public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator, IMaskHelper maskHelper) : base(workFactory)
+        public PhotoService(IUnitOfWorkFactory workFactory, ISecureService secureService, IGlobalEventsAggregator eventsAggregator) : base(workFactory)
         {
             _secureService = secureService;
             _eventsAggregator = eventsAggregator;
-            _maskHelper = maskHelper;
         }
 
         private Dictionary<int, PhotoModel> PublicPhotos 
@@ -184,7 +180,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 UserModel user = GetUser(userId, unitOfWork);
                 var photo = GetPhoto(userId, photoId);
 
-                foreach(var photoTag in photo.PhotoTags)
+                foreach(var photoTag in photo.Tags)
                 { 
                     
                 }

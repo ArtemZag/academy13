@@ -1,5 +1,4 @@
-﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumViewModel
-@using System.Web.Optimization
+﻿@using System.Web.Optimization
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "Albums | Bingally";
@@ -49,3 +48,6 @@
         </td>
     </tr>
 </table>
+
+<div id="albumApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbums"})"></div>
+<div id="userApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "UserApi", action = "GetCurrent"})"></div>

@@ -139,7 +139,6 @@
                 viewModel.searchCacheToken = searchResult.SearchCacheToken;
 
                 addResultItems(searchResult.Items);
-                resizeImages();
 
                 $("#loader").hide();
                 busy = false;
@@ -161,15 +160,6 @@
 
             viewModel.foundItems.push(value);
         });
-    }
-
-    // todo: delete
-
-    function resizeImages() {
-
-        setTimeout(function() {
-            setImageSize();
-        }, 900);
     }
 
     // transforms some fileds for result item
@@ -198,37 +188,6 @@
         var time = dateTime.substring(dateEndIndex + 1, timeEndIndex);
 
         return date + " " + time;
-    }
-
-    // todo: delete
-
-    function setImageSize() {
-
-        $(".result-image").each(function() {
-
-            var maxWidth = 180;
-            var maxHeight = 180;
-            var width = $(this).width();
-            var height = $(this).height();
-
-            var ratio;
-
-            if (width > maxWidth) {
-
-                ratio = maxWidth / width;
-                $(this).css("width", maxWidth);
-                $(this).css("height", height * ratio);
-                height = height * ratio;
-                width = width * ratio;
-            }
-
-            if (height > maxHeight) {
-
-                ratio = maxHeight / height;
-                $(this).css("height", maxHeight);
-                $(this).css("width", width * ratio);
-            }
-        });
     }
 
     $(window).scroll(function() {

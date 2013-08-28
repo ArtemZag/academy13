@@ -12,6 +12,7 @@ using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core.Helpers;
 using BinaryStudio.PhotoGallery.Core.IOUtils;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
@@ -27,6 +28,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     {
         private readonly IAlbumService _albumService;
         private readonly ICryptoProvider _cryptoProvider;
+        private readonly IPhotoProcessor _photoProcessor;
+        private readonly ICollageProcessor _collageProcessor;
         private readonly IDirectoryWrapper _directoryWrapper;
         private readonly IFileHelper _fileHelper;
         private readonly IFileWrapper _fileWrapper;
@@ -42,7 +45,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             IFileWrapper fileWrapper,
             IPhotoService photoService,
             IAlbumService albumService,
-            ICryptoProvider cryptoProvider)
+            ICryptoProvider cryptoProvider,
+            IPhotoProcessor photoProcessor,
+            ICollageProcessor collageProcessor)
         {
             _pathUtil = pathUtil;
             _directoryWrapper = directoryWrapper;
@@ -51,6 +56,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _photoService = photoService;
             _albumService = albumService;
             _cryptoProvider = cryptoProvider;
+            _photoProcessor = photoProcessor;
+            _collageProcessor = collageProcessor;
         }
 
         [POST("move")]
@@ -124,6 +131,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                         _photoService.UpdatePhoto(photoModel);
 
+                        // Create thumbnails for photo
+                        _photoProcessor.CreateThumbnails(User.Id, albumId, photoModel.Id, photoModel.Format);
+
                         uploadFileInfos.Add(new UploadResultViewModel
                         {
                             Id = photoId,
@@ -140,6 +150,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         });
                     }
                 }
+
+                // Create collage for album
+                _collageProcessor.CreateCollage(User.Id, albumId);
             }
             catch (Exception ex)
             {
@@ -181,6 +194,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 // Read the form data from request (save all files in selected folder) TODO must be wrapped too
                 await Request.Content.ReadAsMultipartAsync(provider);
 
+                int albumId = _albumService.GetAlbumId(User.Id, "Temporary");
+
                 // Check all uploaded files
                 foreach (MultipartFileData fileData in provider.FileData)
                 {
@@ -219,14 +234,17 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                     string format = _fileHelper.GetRealFileFormat(fileData.LocalFileName);
 
-                    int albumId = _albumService.GetAlbumId(User.Id, "Temporary");
+                    var photoModel = _photoService.AddPhoto(PhotoViewModel.ToModel(User.Id, albumId, format));
 
-                    int photoId = _photoService.AddPhoto(PhotoViewModel.ToModel(User.Id, albumId, format)).Id;
-
-                    string destFileName = string.Format("{0}\\{1}.{2}", pathToTempAlbum, photoId, format);
+                    string destFileName = string.Format("{0}\\{1}.{2}", pathToTempAlbum, photoModel.Id, format);
 
                     try
                     {
+                        if (File.Exists(destFileName))
+                        {
+                            _fileWrapper.Delete(destFileName);
+                        }
+
                         _fileWrapper.Move(fileData.LocalFileName, destFileName);
                     }
                     catch (IOException)
@@ -243,13 +261,19 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         continue;
                     }
 
+                    // Create thumbnails for photo
+                    _photoProcessor.CreateThumbnails(User.Id, albumId, photoModel.Id, photoModel.Format);
+
                     uploadFileInfos.Add(new UploadResultViewModel
                     {
                         Hash = fileHash,
-                        Id = photoId,
+                        Id = photoModel.Id,
                         IsAccepted = true
                     });
                 }
+
+                // Create collage for album 'Temporary'
+                _collageProcessor.CreateCollage(User.Id, albumId);
             }
             catch (Exception ex)
             {

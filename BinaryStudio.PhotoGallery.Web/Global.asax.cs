@@ -6,9 +6,12 @@ using System.Web.Routing;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 using BinaryStudio.PhotoGallery.Database;
+using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Web.App_Start;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
 using BinaryStudio.PhotoGallery.Web.Extensions;
+using BinaryStudio.PhotoGallery.Web.Registers;
+using FluentScheduler;
 using Microsoft.Practices.Unity;
 using PerpetuumSoft.Knockout;
 
@@ -34,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Web
             IUnityContainer container = Bootstrapper.Initialise();
 
             // todo
-            // TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
+            TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
 //            TaskManager.Initialize(new UsersMonitorRegistry(container.Resolve<IUsersMonitorTask>()));
             // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
         }
@@ -74,20 +77,27 @@ namespace BinaryStudio.PhotoGallery.Web
             var httpException = exception as HttpException;
             string actionName;
 
-            switch (httpException.GetHttpCode())
+            if (httpException != null)
             {
-                case 500:
-                    actionName = "HttpError500";
-                    break;
-                case 404:
-                    actionName = "NotFound";
-                    break;                
-                case 403:
-                    actionName = "AccessDenied";
-                    break;
-                default:
-                    actionName = "Error";
-                    break;
+                switch (httpException.GetHttpCode())
+                {
+                    case 500:
+                        actionName = "HttpError500";
+                        break;
+                    case 404:
+                        actionName = "NotFound";
+                        break;
+                    case 403:
+                        actionName = "AccessDenied";
+                        break;
+                    default:
+                        actionName = "Error";
+                        break;
+                }
+            }
+            else
+            {
+                actionName = "Error";
             }
 
             Server.ClearError();

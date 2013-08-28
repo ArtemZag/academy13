@@ -10,6 +10,7 @@ using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
@@ -26,6 +27,23 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _pathUtil = pathUtil;
         }
 
+        [GET("{albumId: int}")]
+        public HttpResponseMessage GetAlbum(int albumId)
+        {
+            try
+            {
+                AlbumViewModel result = _albumService.GetAlbum(albumId).ToAlbumViewModel();
+
+                result.CollageSource = _pathUtil.BuildCollagePath(result.OwnerId, result.Id);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [GET("?{userId:int}&{skip:int}&{take:int}")]
         public HttpResponseMessage GetAlbums(int userId, int skip, int take)
         {
@@ -34,7 +52,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 var albums = _albumService
                     .GetAlbumsRange(userId, skip, take)
                     .Select(album => album.ToAlbumViewModel(
-                        _pathUtil.BuildCollagePath(userId, album.Id))).ToList();
+                        _pathUtil.BuildCollagePath(userId, album.Id)));
 
                 return Request.CreateResponse(HttpStatusCode.OK, albums, new JsonMediaTypeFormatter());
             }
