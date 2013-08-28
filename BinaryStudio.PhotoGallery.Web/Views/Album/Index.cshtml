@@ -1,7 +1,5 @@
 ﻿@using System.Web.Optimization
 @using BinaryStudio.PhotoGallery.Web.ViewModels
-@using BinaryStudio.PhotoGallery.Web.ViewModels.Photo
-@using PerpetuumSoft.Knockout
 @model AlbumViewModel
 
 <script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"> </script>
@@ -14,7 +12,6 @@
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "Album | Bingally";
-    KnockoutContext<AlbumViewModel> ko = Html.CreateKnockoutContext();
 }
  
 <div id="loader">
@@ -26,44 +23,30 @@
     </ul>
 </div>
 
-<div class="container-fluid no-padding">
-    <div class="row-fluid">
-        <div class="span9">
-            <div id="photoWrapper">
-                @using (KnockoutForeachContext<PhotoViewModel> photos = ko.Foreach(it => it.Photos))
-                {
-                    <div class="photoContainer invisible" data-bind="click: $parent.gotoPhotoPage.bind($data)">
-                        <img @photos.Bind.Attr("src", photo => photo.PhotoThumbSource)/>
-                    </div>
-                }
-            </div>
+<div class="album-container">
+    <div id="photoWrapper" class="grid" data-bind="foreach: photos">
+        <div class="photoContainer invisible" >
+            <img data-bind="attr: { src: PhotoThumbSource }"/>
         </div>
-        <div class="span3 sidebar">
-                <div class="title editable" contenteditable="true">@Html.DisplayFor(model => model.AlbumName)</div>
-                <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>
-                <div class="title">Description</div>
-                <div class="prop editable" contenteditable="true">@Html.DisplayFor(model => model.Description)</div>
-                <div class="title" contenteditable="true">Tags</div>
-                <div class="prop editable" contenteditable="true">
-                    tag, tag 2, other tag, looong  tag, some tag, your tag, my tag, tag-tag
-                </div>
-                <div class="title">Rights</div>
-        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="title editable" contenteditable="true" data-bind="editableText: name"></div>
+        @*       <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>*@
+        <div class="prop">created <!--ko text: dateOfCreation--><!--/ko--></div>
+        <div class="title">Description</div>
+        <div class="prop editable" contenteditable="true" data-bind="editableText: description"></div>
+        <div class="title" contenteditable="true">Tags</div>
+        <div class="prop editable" contenteditable="true" data-bind="editableText: tagsString"></div>
+        <a class="btn save-info-btn" data-bind="click: sendInfo">Save</a>
     </div>
 </div>
 
-@ko.Initialize(Model)
+<div id="getTagsUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumTagApi", action = "GetTags"})"></div>
+<div id="getAlbumInfoUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbum"})"></div>
+<div id="getPhotosUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "PhotoApi", action = "GetPhotos"})"></div>
+<div id="postAlbumInfoUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "PostAlbumInfo"})"></div>
+<input id="albumId" type="hidden" value="@ViewBag.AlbumId"/>
 
-<script type="text/javascript">
-    var getPhotosApi = '@Url.RouteUrl(new {httproute = "", controller = "PhotoApi", action = "GetPhotos"})';
-    $(document).ready(function() {
-        PhotoPlacer_Module(getPhotosApi, "@Model.Id");
-    });
-
-    viewModel.gotoPhotoPage = function(data) {
-        self.location = data.PhotoViewPageUrl;
-    };
-</script>
-
-@ko.Apply(Model)
 @Scripts.Render("~/Scripts/Helpers/PhotoPlacer_Module.js")
+@Scripts.Render("~/Scripts/Album/albumViewModel.js")

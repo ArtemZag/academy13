@@ -3,13 +3,16 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Runtime.InteropServices;
 using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
+using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.Extensions.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
@@ -26,6 +29,23 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _pathUtil = pathUtil;
         }
 
+        [GET("{albumId: int}")]
+        public HttpResponseMessage GetAlbum(int albumId)
+        {
+            try
+            {
+                AlbumViewModel result = _albumService.GetAlbum(albumId).ToAlbumViewModel();
+
+                result.CollagePath = _pathUtil.BuildCollagePath(result.OwnerId, result.Id);
+
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
         [GET("?{userId:int}&{skip:int}&{take:int}")]
         public HttpResponseMessage GetAlbums(int userId, int skip, int take)
         {
@@ -34,7 +54,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 var albums = _albumService
                     .GetAlbumsRange(userId, skip, take)
                     .Select(album => album.ToAlbumViewModel(
-                        _pathUtil.BuildCollagePath(userId, album.Id)));
+                        _pathUtil.BuildCollagePath(userId, album.Id))).ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, albums, new JsonMediaTypeFormatter());
             }
@@ -42,6 +62,27 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
+
+        [POST("")]
+        public HttpResponseMessage PostAlbumInfo(AlbumViewModel albumViewModel)
+        {
+            try
+            {
+                AlbumModel album = _albumService.GetAlbum(albumViewModel.Id);
+
+                album.Name = albumViewModel.AlbumName;
+                album.Description = albumViewModel.Description;
+                
+                _albumService.UpdateAlbum(album);
+
+                return Request.CreateResponse(HttpStatusCode.Accepted);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            
         }
 
         [POST("")]

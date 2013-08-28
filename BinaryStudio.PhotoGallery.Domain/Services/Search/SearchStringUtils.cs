@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
@@ -14,6 +15,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return searchString.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)
                 .Distinct()
                 .Select(s => s.ToLower());
+        }
+
+        public static string ShieldString(this string value)
+        {
+            return Regex.Escape(value);
         }
     }
 }

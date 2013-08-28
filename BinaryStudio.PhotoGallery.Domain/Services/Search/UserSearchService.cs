@@ -88,14 +88,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return
                 searchWords.Sum(
                     searchWord =>
-                        Regex.Matches(userModel.FirstName.ToLower(), searchWord).Count +
-                        Regex.Matches(userModel.LastName.ToLower(), searchWord).Count);
+                        Regex.Matches(userModel.FirstName.ToLower(), searchWord.ShieldString()).Count +
+                        Regex.Matches(userModel.LastName.ToLower(), searchWord.ShieldString()).Count);
         }
 
         private int GetRelevanceByDepartment(IEnumerable<string> searchWords, UserModel userModel)
         {
             return searchWords.Sum(
-                searchWord => Regex.Matches(userModel.Department.ToLower(), searchWord).Count);
+                searchWord => Regex.Matches(userModel.Department.ToLower(), searchWord.ShieldString()).Count);
         }
     }
 }

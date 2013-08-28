@@ -1,5 +1,4 @@
-﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumViewModel
-@using System.Web.Optimization
+﻿@using System.Web.Optimization
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "Albums | Bingally";
@@ -12,7 +11,7 @@
 
 <script id="collageTmpl" type="text/x-jquery-tmpl">
     <div class="album">
-        <a href="/album/{{:Id}}"><img class="collage" src="{{:CollageSource}}"/></a>
+        <a href="/album/{{:Id}}"><img class="collage" src="{{:CollagePath}}"/></a>
     </div>
 </script>
 

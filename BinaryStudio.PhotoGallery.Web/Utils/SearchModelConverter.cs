@@ -12,16 +12,16 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
     {
         private readonly IAlbumService _albumService;
 
-        private readonly IPathUtil _pathUtil;
-        private readonly IUrlUtil _urlUtil;
+        private readonly IPathUtil pathUtil;
+        private readonly IUrlUtil urlUtil;
         private readonly IUserService _userService;
 
         public SearchModelConverter(IUserService userService, IPathUtil pathUtil, IUrlUtil urlUtil,
             IAlbumService albumService)
         {
             _userService = userService;
-            _pathUtil = pathUtil;
-            _urlUtil = urlUtil;
+            this.pathUtil = pathUtil;
+            this.urlUtil = urlUtil;
             _albumService = albumService;
         }
 
@@ -84,12 +84,12 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             return new CommentFoundViewModel
             {
-                CommentUrl = _urlUtil.BuildCommentUrl(commentFound.PhotoId, commentFound.Id),
+                CommentUrl = urlUtil.BuildCommentUrl(commentFound.PhotoId, commentFound.Id),
                 DateOfCreation = commentFound.DateOfCreation,
                 UserName = userName,
                 Text = commentFound.Text,
-                UserViewUrl = _urlUtil.BuildUserViewUrl(commentFound.OwnerId),
-                UserAvatarPath = _pathUtil.BuildAvatarPath(commentFound.OwnerId, ImageSize.Medium)
+                UserViewUrl = urlUtil.BuildUserViewUrl(commentFound.OwnerId),
+                UserAvatarPath = pathUtil.BuildAvatarPath(commentFound.OwnerId, ImageSize.Medium)
             };
         }
 
@@ -104,9 +104,9 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             {
                 Name = albumFound.Name,
                 DateOfCreation = albumFound.DateOfCreation,
-                UserViewUrl = _urlUtil.BuildUserViewUrl(albumFound.OwnerId),
-                AlbumViewUrl = _urlUtil.BuildAlbumViewUrl(albumFound.Id),
-                ThumbnailPath = string.Empty,
+                UserViewUrl = urlUtil.BuildUserViewUrl(albumFound.OwnerId),
+                AlbumViewUrl = urlUtil.BuildAlbumViewUrl(albumFound.Id),
+                CollagePath = pathUtil.BuildCollagePath(albumFound.OwnerId, albumFound.Id),
                 UserName = userName
             };
         }
@@ -117,11 +117,11 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             return new UserFoundViewModel
             {
-                AvatarPath = _pathUtil.BuildAvatarPath(userFound.Id, ImageSize.Medium),
+                AvatarPath = pathUtil.BuildAvatarPath(userFound.Id, ImageSize.Medium),
                 Department = userFound.Department,
                 IsOnline = userFound.IsOnline,
                 Name = userFound.Name,
-                UserViewUri = _urlUtil.BuildUserViewUrl(userFound.Id)
+                UserViewUri = urlUtil.BuildUserViewUrl(userFound.Id)
             };
         }
 
@@ -135,17 +135,17 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
             UserModel user = _userService.GetUser(photoModel.OwnerId);
             string userName = user.FirstName + " " + user.LastName;
 
-            string thumbnailPath = _pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
+            string thumbnailPath = pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
                 photoModel.Format, ImageSize.Medium);
 
             return new PhotoFoundViewModel
             {
                 ThumbnailPath = thumbnailPath,
-                PhotoViewUrl = _urlUtil.BuildPhotoViewUrl(photoModel.Id),
+                PhotoViewUrl = urlUtil.BuildPhotoViewUrl(photoModel.Id),
                 AlbumName = albumName,
-                AlbumViewUrl = _urlUtil.BuildAlbumViewUrl(photoModel.AlbumId),
+                AlbumViewUrl = urlUtil.BuildAlbumViewUrl(photoModel.AlbumId),
                 UserName = userName,
-                UserViewUrl = _urlUtil.BuildUserViewUrl(photoModel.OwnerId),
+                UserViewUrl = urlUtil.BuildUserViewUrl(photoModel.OwnerId),
                 DateOfCreation = photoModel.DateOfCreation,
                 Rating = photoModel.Rating
             };

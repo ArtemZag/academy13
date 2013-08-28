@@ -129,9 +129,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-                var photoModel = _photoService.GetPhoto(User.Id, photoId);
+                PhotoModel photoModel = _photoService.GetPhoto(User.Id, photoId);
 
-                var photoViewModel = photoModel.ToPhotoViewModel();
+                PhotoViewModel photoViewModel = photoModel.ToPhotoViewModel();
 
                 return Request.CreateResponse(HttpStatusCode.OK, photoViewModel, new JsonMediaTypeFormatter());
             }
@@ -170,7 +170,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [DELETE("{photoId:int}")]
         public HttpResponseMessage Delete(int photoId)
         {
-            if (photoId <= 0)
+            if (photoId < 1)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Can't delete photo by invalid id");
             }
@@ -178,6 +178,30 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 _photoService.DeletePhoto(User.Id, photoId);
+            }
+            catch (NoEnoughPrivilegesException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [POST("movephoto?{photoId}&{albumId}")]
+        public HttpResponseMessage MovePhoto(int photoId, int albumId)
+        {
+            if (photoId < 1 || albumId < 1)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid photoID or albumID");
+            }
+
+            try
+            {
+                _photoService.MovePhotoToAlbum(User.Id, photoId, albumId);
             }
             catch (NoEnoughPrivilegesException ex)
             {

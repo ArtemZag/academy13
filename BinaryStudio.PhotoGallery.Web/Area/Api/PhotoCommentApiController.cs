@@ -35,11 +35,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 var viewModels = new List<PhotoCommentViewModel>();
 
-                var photoComments = _photoCommentService.GetPhotoComments(User.Id, photoId, skip, take);
+                IEnumerable<PhotoCommentModel> photoComments = _photoCommentService.GetPhotoComments(User.Id, photoId,
+                    skip, take);
 
                 viewModels.AddRange(from commentModel in photoComments
-                                    let userModel = _userService.GetUser(commentModel.UserId)
-                                    select commentModel.ToPhotoCommentViewModel(userModel));
+                    let userModel = _userService.GetUser(commentModel.UserId)
+                    select commentModel.ToPhotoCommentViewModel(userModel));
 
                 return Request.CreateResponse(HttpStatusCode.OK, viewModels, new JsonMediaTypeFormatter());
             }
@@ -65,6 +66,14 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 _photoCommentService.AddPhotoComment(User.Id, photoCommentModel);
+
+                var viewModels = new List<PhotoCommentViewModel>();
+                IEnumerable<PhotoCommentModel> photoComments = _photoCommentService.GetPhotoComments(User.Id, viewModel.PhotoId, 0, 1000);
+                viewModels.AddRange(from commentModel in photoComments
+                    let userModel = _userService.GetUser(commentModel.UserId)
+                    select commentModel.ToPhotoCommentViewModel(userModel));
+
+                return Request.CreateResponse(HttpStatusCode.OK, viewModels, new JsonMediaTypeFormatter());
             }
             catch (NoEnoughPrivilegesException ex)
             {

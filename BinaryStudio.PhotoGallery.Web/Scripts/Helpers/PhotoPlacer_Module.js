@@ -1,4 +1,4 @@
-﻿var PhotoPlacer_Module = (function (controllerUrl, albumId) {
+﻿var PhotoPlacer_Module = (function (controllerUrl, koPhotos, albumId) {
 
     var marginsOfPhotoCont;
     $(document).ready(function () {
@@ -69,7 +69,7 @@
         return ($lastRow);
     }
 
-    var photoPortion = 25;
+    var photoPortion = 35;
     var startIndex = 0;
 
     function ajaxPhotoLoad() {
@@ -86,7 +86,7 @@
             $(window).unbind("scroll");
         }
         if (photos.length > 0) {
-            ko.utils.arrayPushAll(window.viewModel.Photos, photos);
+            ko.utils.arrayPushAll(koPhotos, photos);
             var $newPhotoContainers = $('#photoWrapper > div.invisible');
             var $photos = $newPhotoContainers.find("img:first");
             var lenght = $photos.length;
@@ -101,6 +101,12 @@
             .error(function() {
                 lenght--;
                 $(this).closest("div").remove();
+                $(this).remove();
+                $photos = $newPhotoContainers.find("img:first");
+                if (numLoad == lenght) { 
+                    calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
+                    $newPhotoContainers.removeClass("invisible");
+                }
             });
             startIndex += photoPortion;
             busy = false;

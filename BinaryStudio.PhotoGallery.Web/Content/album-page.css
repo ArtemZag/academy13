@@ -1,13 +1,19 @@
 ﻿.sidebar {
     background-color: rgb(235, 235, 235);
-    margin-top: 5px;
-    margin-left: 0 !important;
-    width: 340px !important;
+    float: right;
+    width: 20%;
 }
 
-.no-padding {
-    padding-left: 0;
-    padding-right: 0;
+.grid {
+    float: left;
+    width: 78%;
+}
+
+.save-info-btn {
+    display: block;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .title {
@@ -39,3 +45,5 @@
     margin-left: 20px;
     margin-right: 30px;
 }
+
+.album-container { min-width: 1000px; }

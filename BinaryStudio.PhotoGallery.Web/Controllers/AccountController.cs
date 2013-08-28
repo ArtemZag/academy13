@@ -49,6 +49,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             }
 
             return View(new SigninViewModel {RememberMe = true});
+                {
+
+                };
+            
         }
 
         [GET("registration/{invite}", RouteName = "Registration")]

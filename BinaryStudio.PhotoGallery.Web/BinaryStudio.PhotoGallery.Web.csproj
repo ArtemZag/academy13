@@ -16,7 +16,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44301</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
@@ -223,6 +224,7 @@
     <Compile Include="Area\Api\AccountApiController.cs" />
     <Compile Include="Area\Api\AdminApiController.cs" />
     <Compile Include="Area\Api\AlbumApiController.cs" />
+    <Compile Include="Area\Api\AlbumTagApiController.cs" />
     <Compile Include="Area\Api\PublicPhotoController.cs" />
     <Compile Include="Area\Api\UserApiController.cs" />
     <Compile Include="Area\Api\UploadApiController.cs" />
@@ -242,6 +244,7 @@
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="Area\Api\BaseApiController.cs" />
+    <Compile Include="Events\BaseEventManager.cs" />
     <Compile Include="Events\NotificationsEventManager.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="CustomStructure\BaseViewPage.cs" />
@@ -256,6 +259,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Events\GlobalEventsHandler.cs" />
+    <Compile Include="Hubs\ICustomPrincipalInHub.cs" />
     <Compile Include="Hubs\NotificationTitles.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="CustomStructure\UserInfoSerializeModel.cs" />
@@ -285,8 +289,11 @@
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\Photo\UserInfoViewModel.cs" />
     <Compile Include="Extensions\ViewModels\AlbumConvertionExtensions.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="ViewModels\UsersListViewModel.cs" />
+    <Compile Include="ViewModels\User\UsersListViewModel.cs" />
+    <Compile Include="ViewModels\User\UserViewModel.cs" />
     <Content Include="Content\album-page.css" />
+    <Content Include="Content\images\no_collage.png" />
     <Content Include="Content\profile-page.css" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\panel.css" />
@@ -321,6 +328,7 @@
     <Content Include="Scripts\Account\initVertResizer.js" />
     <Content Include="Scripts\Account\signup.validate.js" />
     <Content Include="Scripts\Account\signup.js" />
+    <Content Include="Scripts\Album\albumViewModel.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
     <Content Include="Scripts\Helpers\verticalResizer_Module.js" />
