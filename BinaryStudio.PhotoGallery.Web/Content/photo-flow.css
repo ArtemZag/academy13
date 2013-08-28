@@ -19,6 +19,7 @@ body {
 	overflow: hidden;
 	border: 5px solid #fff;
 	border-radius: 5px;
+	max-width: 500px;
 }
 
 .photoContainer img {

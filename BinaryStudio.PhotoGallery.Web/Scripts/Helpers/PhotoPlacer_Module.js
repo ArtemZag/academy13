@@ -41,14 +41,16 @@
         var margins = 0;
         var wrapperWidth = $container.width();
         var $lastRow = $();
+        var maxWidth = parseInt($('.photoContainer').css("max-width"));
 
         jQuery.each($photos, function (indPh) {
-            width += this.width;
+            this.workWidth = this.width > maxWidth ? maxWidth : this.width;
+            width += this.workWidth;
             margins += marginPhotoCont;
             if (width > wrapperWidth - margins) {
                 var koef = (wrapperWidth - margins) / width;
                 for (var indSub = firstElemInRow; indSub <= indPh; indSub++) {
-                    $($photos[indSub]).closest("div").css('width', ($photos[indSub].width * koef) - 0.2);
+                    $($photos[indSub]).closest("div").css('width', ($photos[indSub].workWidth * koef) - 0.2);
                     $($photos[indSub]).closest("div").addClass("resized");
                 }
                 firstElemInRow = indPh + 1;
