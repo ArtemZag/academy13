@@ -1,6 +1,6 @@
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Models;
-using BinaryStudio.PhotoGallery.Web.ViewModels;
+using BinaryStudio.PhotoGallery.Web.ViewModels.User;
 
 namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
 {

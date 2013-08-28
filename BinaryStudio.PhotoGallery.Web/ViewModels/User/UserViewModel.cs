@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BinaryStudio.PhotoGallery.Web.ViewModels
+namespace BinaryStudio.PhotoGallery.Web.ViewModels.User
 {
     public class UserViewModel : BaseViewModel
 	{

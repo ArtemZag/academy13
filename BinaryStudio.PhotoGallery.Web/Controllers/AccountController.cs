@@ -47,6 +47,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             {
                 return Redirect(FB.CreateAuthUrl(Randomizer.GetString(16)));
             }
+
+            var viewModel = new SigninViewModel()
+                {
+
+                };
             
             return View(new SigninViewModel());
         }
