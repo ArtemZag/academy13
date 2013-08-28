@@ -9,6 +9,15 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
     {
         public static AlbumViewModel ToAlbumViewModel(this AlbumModel model, string collageSource)
         {
+            var viewModel = model.ToAlbumViewModel();
+
+            viewModel.CollageSource = collageSource;
+
+            return viewModel;
+        }
+
+        public static AlbumViewModel ToAlbumViewModel(this AlbumModel model)
+        {
             var viewModel = new AlbumViewModel
             {
                 AlbumName = model.Name,
@@ -17,7 +26,6 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
                 OwnerId = model.OwnerId,
                 Id = model.Id,
                 Photos = new List<PhotoViewModel>(),
-                CollageSource = collageSource
             };
 
             return viewModel;
