@@ -11,6 +11,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         int GetAlbumId(int userId, string albumName);
 
+        /// <summary>
+        ///     Returns all unique tags from all photos.
+        /// </summary>
+        IEnumerable<string> GetAlbumsTags(int albumId);
+
         int GetPhotosCount(int albumId);
 
         /// <summary>
@@ -34,6 +39,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         ///     Creates album for specified user by his email.
         /// </summary>
         AlbumModel CreateAlbum(int userId, AlbumModel album);
+
         AlbumModel CreateAlbum(int userId, string albumName);
 
         /// <summary>
@@ -50,6 +56,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         ///     Get all available albums for specified user
         /// </summary>
         IEnumerable<AlbumModel> GetAvailableAlbums(int userId);
+
         IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork);
     }
 }

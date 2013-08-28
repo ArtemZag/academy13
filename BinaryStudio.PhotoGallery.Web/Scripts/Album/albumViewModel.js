@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 
-//    var getTagsUrl = $("#getPhotoTagsUrl").data("url");
+    var getTagsUrl = $("#getTagsUrl").data("url");
     var getAlbumInfoUrl = $("#getAlbumInfoUrl").data("url");
     var getPhotosUrl = $("#getPhotosUrl").data("url");
     var postAlbumInfoUrl = $("#postAlbumInfoUrl").data("url");
@@ -37,9 +37,6 @@
 
             // post name and description
             postAlbumInfo();
-
-            // tags
-            // postAlbumTags();
         };
         
         self.gotoPhotoPage = function (data) {
@@ -90,7 +87,7 @@
 
     function getAlbumTags() {
 
-//        $.get(getTagsUrl, album.albumId, setAlbumTags);
+        $.get(getTagsUrl, album.albumId, setAlbumTags);
     }
 
     function getAlbumInfo() {
@@ -110,7 +107,7 @@
     }
 
     getAlbumInfo();
-//    getAlbumTags();
+    getAlbumTags();
     initPhotosDownloader();
 
     ko.applyBindings(album);
