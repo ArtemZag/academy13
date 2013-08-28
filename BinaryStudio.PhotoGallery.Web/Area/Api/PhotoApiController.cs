@@ -170,7 +170,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [DELETE("{photoId:int}")]
         public HttpResponseMessage Delete(int photoId)
         {
-            if (photoId <= 0)
+            if (photoId < 1)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Can't delete photo by invalid id");
             }
