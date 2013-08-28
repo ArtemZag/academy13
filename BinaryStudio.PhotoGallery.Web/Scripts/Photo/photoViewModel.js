@@ -89,7 +89,7 @@
         };
 
         self.AddComment = function() {
-            $.post("/api/photo/comment", { NewComment: self.newComment(), PhotoId: self.PhotoId() }, function(data) {
+            $.post("/api/photo/comment", { CommentText: self.newComment(), PhotoId: self.PhotoId() }, function(data) {
                 setComments(data);
             });
         };
