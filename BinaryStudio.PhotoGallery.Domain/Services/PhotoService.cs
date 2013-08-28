@@ -293,7 +293,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = GetUser(userId, unitOfWork);
 
-                unitOfWork.Photos.Find(photoId).Likes.Add(user);
+                ICollection<UserModel> userModels = unitOfWork.Photos.Find(photoId).Likes;
+                if (userModels.Contains(user))
+                {
+                    userModels.Remove(user);
+                }
+                else
+                {
+                    userModels.Add(user);
+                }
+
                 unitOfWork.SaveChanges();
 
                 _eventsAggregator.PushLikeToPhotoAddedEvent(user, photoId);
