@@ -51,6 +51,22 @@ namespace BinaryStudio.PhotoGallery.Web.Events
             }
         }
 
+        public void SomeoneRepliedToComment(PhotoCommentModel mComment)
+        {
+            var mWhoseComment = _userService.GetUser(mComment.UserId);
+            var mParentComment = _commentService.GetPhotoComment(mComment.Reply);
+
+            if (mWhoseComment.Id != mParentComment.UserId)
+            {
+                var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
+                                           "ответил на ваш комментарий к фотографии."
+                                           , mWhoseComment.FirstName, mWhoseComment.LastName);
+
+                _hubNotify.Clients.Group(mParentComment.UserId.ToString("d"))
+                              .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildCommentUrl(mComment.PhotoId, mComment.Id));
+            }
+        }
+
         public void PhotoAddedNotify(PhotoModel mPhoto)
         {
             var mAlbum = _albumService.GetAlbum(mPhoto.AlbumId);
@@ -63,7 +79,7 @@ namespace BinaryStudio.PhotoGallery.Web.Events
                                          "добавил фотографию в ваш альбом"
                                          , mPhotoOwner.FirstName, mPhotoOwner.LastName);
                 _hubNotify.Clients.Group(mAlbum.OwnerId.ToString("d"))
-                          .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
+                          .SendNotification(NotificationTitles.PhotoAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
             }
         }
 
@@ -78,23 +94,7 @@ namespace BinaryStudio.PhotoGallery.Web.Events
                                              , mWhoseLike.FirstName, mWhoseLike.LastName);
 
                 _hubNotify.Clients.Group(mPhoto.OwnerId.ToString("d"))
-                              .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
-            }
-        }
-
-        public void SomeoneRepliedToComment(PhotoCommentModel mComment)
-        {
-            var mWhoseComment = _userService.GetUser(mComment.UserId);
-            var mParentComment = _commentService.GetPhotoComment(mComment.Reply);
-
-            if (mWhoseComment.Id != mParentComment.UserId)
-            {
-                var noty = String.Format("Пользователь <span class='highlight_from'>{0} {1}</span> " +
-                                           "ответил на ваш комментарий к фотографии."
-                                           , mWhoseComment.FirstName, mWhoseComment.LastName);
-
-                _hubNotify.Clients.Group(mParentComment.UserId.ToString("d"))
-                              .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildCommentUrl(mComment.PhotoId, mComment.Id));
+                              .SendNotification(NotificationTitles.Like, noty, _urlUtil.BuildPhotoViewUrl(mPhoto.Id));
             }
         }
 

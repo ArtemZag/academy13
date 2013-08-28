@@ -186,7 +186,7 @@
             photoHeight = this.height;
             photoWidth = this.width;
         };
-        img.src = photo.PhotoThumbSource;
+        img.src = photo.PhotoSource;
         model.src(img.src);
 
         // todo: needs fixing

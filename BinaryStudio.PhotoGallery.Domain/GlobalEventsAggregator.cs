@@ -17,7 +17,6 @@ namespace BinaryStudio.PhotoGallery.Domain
         void PushCommentAddedEvent(PhotoCommentModel mComment);
         void PushPhotoAddedEvent(PhotoModel mModel);
         void PushLikeToPhotoAddedEvent(UserModel user, int photoId);
-        void SomeoneRepliedToCommentEvent(PhotoCommentModel mComment);
     }
 
     public class GlobalEventsAggregator : IGlobalEventsAggregator
@@ -39,6 +38,11 @@ namespace BinaryStudio.PhotoGallery.Domain
         {
             CommentAddedHandler handler = CommentAdded;
             if (handler != null) handler(mComment);
+            if (mComment.Reply != 0)
+            {
+                SomeoneRepliedToCommentHandler handlerTwo = SomeoneRepliedToComment;
+                if (handler != null) handlerTwo(mComment);
+            }
         }
 
         public void PushPhotoAddedEvent(PhotoModel mPhoto)
@@ -53,11 +57,6 @@ namespace BinaryStudio.PhotoGallery.Domain
             if (handler != null) handler(user, photoId);
         }
 
-        public void SomeoneRepliedToCommentEvent(PhotoCommentModel mcomment)
-        {
-            SomeoneRepliedToCommentHandler handler = SomeoneRepliedToComment;
-            if (handler != null) handler(mcomment);
-        }
     }
 
 }

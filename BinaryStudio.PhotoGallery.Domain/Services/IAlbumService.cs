@@ -23,6 +23,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         IEnumerable<AlbumTagModel> GetTags(int albumId);
 
+        void UpdateAlbum(AlbumModel albumModel);
+
         /// <summary>
         ///     Gets all albums for specified user.
         /// </summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
@@ -25,7 +26,7 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             if (File.Exists(originalPhotoPath))
             {
-                Parallel.Invoke(options,
+                 Parallel.Invoke(options,
                     () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Big), 
                     () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Medium), 
                     () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Small));
@@ -73,24 +74,28 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         {
             using (Image image = Image.FromFile(imagePath))
             {
-                Size size = CalculateThumbnailSize(image.Size, maxSize, false);
-
-                using (Image thumb = image.GetThumbnailImage(size.Width, size.Height, () => false, IntPtr.Zero))
+                Size size = CalculateThumbnailSize(image.Size, maxSize);
+                using (Image newImage = new Bitmap(size.Width, size.Height))
                 {
-                    thumb.Save(thumbnailPath);
+                    using (Graphics grfx = Graphics.FromImage(newImage))
+                    {
+                        grfx.CompositingQuality = CompositingQuality.HighQuality;
+                        grfx.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        grfx.SmoothingMode = SmoothingMode.AntiAlias;
+                        grfx.DrawImage(image, 0, 0, size.Width, size.Height);
+                    }
+                    newImage.Save(thumbnailPath);
                 }
             }
         }
 
-        private Size CalculateThumbnailSize(Size size, int maxSize, bool twoBounds)
+        private Size CalculateThumbnailSize(Size size, int maxSize)
         {
-            if (twoBounds)
-            {
-                if (size.Width > size.Height)
-                    return new Size(maxSize, (int) (((double) size.Height/size.Width)*maxSize));
-            }
+            var height = size.Height > maxSize ? maxSize : size.Height;
+            var koef = (double) height/size.Height;
+            var width = (int)(size.Width*koef);
 
-            return new Size((int) (((double) size.Width/size.Height)*maxSize), maxSize);
+            return new Size(width, height);
         }
     }
 }
