@@ -9,7 +9,7 @@
             + parseInt($('.photoContainer').css("border-right-width"));
         ajaxPhotoLoad();
     });
-    $(window).on('resize', function() {
+    $(window).on('resize', function () {
         calcPhotoSizes($('#photoWrapper'), $("div.photoContainer > img"), marginsOfPhotoCont);
     });
     $(window).scroll(scrolled);
@@ -41,14 +41,17 @@
         var margins = 0;
         var wrapperWidth = $container.width();
         var $lastRow = $();
+        var maxWidth = parseInt($('.photoContainer').css("max-width"));
 
         jQuery.each($photos, function (indPh) {
-            width += this.width;
+            this.workWidth = this.width > maxWidth ? maxWidth : this.width;
+            var test = this.height;
+            width += this.workWidth;
             margins += marginPhotoCont;
             if (width > wrapperWidth - margins) {
                 var koef = (wrapperWidth - margins) / width;
                 for (var indSub = firstElemInRow; indSub <= indPh; indSub++) {
-                    $($photos[indSub]).closest("div").css('width', ($photos[indSub].width * koef) - 0.2);
+                    $($photos[indSub]).closest("div").css('width', ($photos[indSub].workWidth * koef) - 0.2);
                     $($photos[indSub]).closest("div").addClass("resized");
                 }
                 firstElemInRow = indPh + 1;
@@ -61,7 +64,7 @@
                     } else {
                         $($photos[indSub]).closest("div").remove();
                         startIndex--;
-                    } 
+                    }
                 }
             }
 
@@ -74,10 +77,18 @@
 
     function ajaxPhotoLoad() {
         $("#loader").show();
-        $.get(controllerUrl, { albumId: albumId , skip: startIndex, take: photoPortion }, getPhotos)
-            .fail(function() {
+        $.get(controllerUrl, { albumId: albumId, skip: startIndex, take: photoPortion }, getPhotos)
+            .fail(function () {
                 $("#loader").hide();
             });
+    }
+
+    function photosLoaded(goodPhotos) {
+        ko.utils.arrayPushAll(koPhotos, goodPhotos);
+        var $photos = $('#photoWrapper > div.invisible > img');
+        calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
+        $('#photoWrapper > div.invisible').removeClass("invisible");
+        $("#loader").hide();
     }
 
     function getPhotos(photos) {
@@ -86,32 +97,31 @@
             $(window).unbind("scroll");
         }
         if (photos.length > 0) {
-            ko.utils.arrayPushAll(koPhotos, photos);
-            var $newPhotoContainers = $('#photoWrapper > div.invisible');
-            var $photos = $newPhotoContainers.find("img:first");
-            var lenght = $photos.length;
+            var goodPhotos = new Array();
+            var lenght = photos.length;
             var numLoad = 0;
-            $photos.load(function () {
-                numLoad++;
-                if (numLoad == lenght) { //todo How to check by another way that all of photos have been loaded? 
-                    calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
-                    $newPhotoContainers.removeClass("invisible");
-                }
-            })
-            .error(function() {
-                lenght--;
-                $(this).closest("div").remove();
-                $(this).remove();
-                $photos = $newPhotoContainers.find("img:first");
-                if (numLoad == lenght) { 
-                    calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
-                    $newPhotoContainers.removeClass("invisible");
-                }
+            jQuery.each(photos, function (ind) {
+                var img = new Image();
+                img.src = this.PhotoThumbSource;
+                $(img).load(function () {
+                    numLoad++;
+                    goodPhotos.push(photos[ind]);
+                    if (numLoad == lenght) {
+                        photosLoaded(goodPhotos);
+                    }
+                })
+                    .error(function () {
+                        lenght--;
+                        if (numLoad == lenght) {
+                            photosLoaded(goodPhotos);
+                        }
+                    });
             });
+
             startIndex += photoPortion;
             busy = false;
-        } 
-        $("#loader").hide();
+        }
+        else $("#loader").hide();
     }
-    
+
 });
