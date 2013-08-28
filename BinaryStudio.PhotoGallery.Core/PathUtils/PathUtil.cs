@@ -23,7 +23,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private const string COLLAGES_DIRECTORY_NAME = "collages";
 
         private const string CUSTOM_AVATAR_PATH = @"~\Content\images\no_avatar.png";
-
+        private const string CUSTOM_COLLAGE_PATH = @"/Content/images/no_collage.png";
         private const string SUFFIX_AVATAR_FILENAME = "Avatar";
         private const string AVATAR_FILE_FORMAT = "jpg";
 
@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             var builder = new StringBuilder(BuildUserPath(userId));
             builder.Append(DELIMITER)
                 .Append(albumId);
-
+            
             return builder.ToString();
         }
 
@@ -71,15 +71,25 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         /// </summary>
         public string BuildCollagePath(int userId, int albumId)
         {
-            var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
+                var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
 
-            builder.Append(DELIMITER)
-                .Append(COLLAGES_DIRECTORY_NAME)
-                .Append(DELIMITER)
-                .Append(COLLAGE_FILE_NAME)
-                .Append(MakeExtension(COLLAGE_FILE_FORMAT));
+                builder.Append(DELIMITER)
+                       .Append(COLLAGES_DIRECTORY_NAME)
+                       .Append(DELIMITER)
+                       .Append(COLLAGE_FILE_NAME)
+                       .Append(MakeExtension(COLLAGE_FILE_FORMAT));
 
-            return builder.ToString().Replace(@"\", "/");
+                return builder.ToString().Replace(@"\", "/");
+        }
+
+        public string BuildCollagePathOrCustomCollage(int userId, int albumId)
+        {
+            string collagePath = BuildAbsoluteCollagePath(userId, albumId);
+            if (File.Exists(collagePath))
+            {
+                return BuildCollagePath(userId, albumId);
+            }
+            return CUSTOM_COLLAGE_PATH;
         }
 
         /// <summary>
