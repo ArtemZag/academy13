@@ -152,29 +152,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return HostingEnvironment.MapPath(BuildOriginalPhotoPath(userId, albumId, photoId, format));
         }
 
-        public IEnumerable<string> GetPhotoDimensionSubdirectories(string parentDirectory)
-        {
-            var derInfo = new DirectoryInfo(parentDirectory);
-            var subDirectories = new List<string>();
-
-            try
-            {
-                if (!derInfo.Exists)
-                    throw new FilePathNotExistException(string.Format("File path \"{0}\" does not exist",
-                        parentDirectory));
-                DirectoryInfo[] subdirs = derInfo.GetDirectories();
-
-                subDirectories.AddRange(from directoryInfo in subdirs
-                                        where !directoryInfo.Name.Equals(COLLAGES_DIRECTORY_NAME)
-                    select directoryInfo.Name);
-                return subDirectories;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         private string BuildAbsoluteOriginalAvatarPath(int userId)
         {
             var builder = new StringBuilder(BuildUserPath(userId));

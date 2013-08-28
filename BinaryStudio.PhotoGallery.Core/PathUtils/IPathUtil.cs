@@ -43,12 +43,5 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         string BuildAbsoluteCollagesDirPath(int userId, int albumId);
 
         string BuildAbsoluteOriginalPhotoPath(int userId, int albumId, int photoId, string format);
-
-        /// <summary>
-        ///     Gets names for album subfolders with photo dimension
-        /// </summary>
-        /// <param name="parentDirectory"></param>
-        /// <returns></returns>
-        IEnumerable<string> GetPhotoDimensionSubdirectories(string parentDirectory);
     }
 }
