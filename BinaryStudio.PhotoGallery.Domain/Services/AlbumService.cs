@@ -99,6 +99,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public int GetPhotosCount(int albumId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                AlbumModel album = unitOfWork.Albums.Find(albumId);
+
+                return album.Photos.Count;
+            }
+        }
+
         public AlbumModel GetAlbum(int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 
-    var getTagsUrl = $("#getTagsUrl").data("url");
+//    var getTagsUrl = $("#getPhotoTagsUrl").data("url");
     var getAlbumInfoUrl = $("#getAlbumInfoUrl").data("url");
     var getPhotosUrl = $("#getPhotosUrl").data("url");
     var postAlbumInfoUrl = $("#postAlbumInfoUrl").data("url");
@@ -13,7 +13,9 @@
 
         self.collagePath = ko.observable();
 
-        self.name = ko.observableArray();
+        self.photosCount = ko.observable();
+
+        self.name = ko.observable();
 
         self.description = ko.observable("no description");
 
@@ -66,6 +68,7 @@
     function setAlbumInfo(info) {
 
         album.name(info.AlbumName);
+        album.photosCount(info.PhotosCount);
         album.description(info.Description);
         album.collagePath(info.CollageSource);
         album.dateOfCreation(formatDate(info.DateOfCreation));
@@ -87,7 +90,7 @@
 
     function getAlbumTags() {
 
-        $.get(getTagsUrl, album.albumId, setAlbumTags);
+//        $.get(getTagsUrl, album.albumId, setAlbumTags);
     }
 
     function getAlbumInfo() {
@@ -102,16 +105,12 @@
     function formatDate(dateTime) {
 
         var dateEndIndex = dateTime.indexOf("T");
-        var timeEndIndex = dateTime.lastIndexOf(":");
 
-        var date = dateTime.substring(0, dateEndIndex);
-        var time = dateTime.substring(dateEndIndex + 1, timeEndIndex);
-
-        return date + " " + time;
+        return dateTime.substring(0, dateEndIndex);
     }
 
     getAlbumInfo();
-    getAlbumTags();
+//    getAlbumTags();
     initPhotosDownloader();
 
     ko.applyBindings(album);

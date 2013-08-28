@@ -32,8 +32,8 @@
 
     <div class="sidebar">
         <div class="title editable" contenteditable="true" data-bind="editableText: name"></div>
-        @*       <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>*@
-        <div class="prop">created <!--ko text: dateOfCreation--><!--/ko--></div>
+        <div class="photos-count"><!--ko text: photosCount--><!--/ko--> photos</div>
+        <div class="prop">date of creation: <!--ko text: dateOfCreation--><!--/ko--></div>
         <div class="title">Description</div>
         <div class="prop editable" contenteditable="true" data-bind="editableText: description"></div>
         <div class="title" contenteditable="true">Tags</div>
@@ -42,7 +42,7 @@
     </div>
 </div>
 
-@*<div id="getTagsUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumTagApi", action = "GetTags"})"></div>*@
+@*<div id="getPhotoTagsUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumTagApi", action = "GetTags"})"></div>*@
 <div id="getAlbumInfoUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbum"})"></div>
 <div id="getPhotosUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "PhotoApi", action = "GetPhotos"})"></div>
 <div id="postAlbumInfoUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "PostAlbumInfo"})"></div>

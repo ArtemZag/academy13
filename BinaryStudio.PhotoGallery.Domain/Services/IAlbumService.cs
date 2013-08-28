@@ -11,6 +11,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         int GetAlbumId(int userId, string albumName);
 
+        int GetPhotosCount(int albumId);
+
         /// <summary>
         ///     Gets user's album specified by id.
         /// </summary>

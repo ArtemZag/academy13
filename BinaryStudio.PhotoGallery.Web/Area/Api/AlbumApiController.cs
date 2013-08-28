@@ -36,6 +36,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 AlbumViewModel result = _albumService.GetAlbum(albumId).ToAlbumViewModel();
 
                 result.CollagePath = _pathUtil.BuildCollagePath(result.OwnerId, result.Id);
+                result.PhotosCount = _albumService.GetPhotosCount(albumId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
