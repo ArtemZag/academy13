@@ -34,7 +34,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 AlbumViewModel result = _albumService.GetAlbum(albumId).ToAlbumViewModel();
 
-                result.CollageSource = _pathUtil.BuildCollagePath(result.OwnerId, result.Id);
+                result.CollagePath = _pathUtil.BuildCollagePath(result.OwnerId, result.Id);
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
