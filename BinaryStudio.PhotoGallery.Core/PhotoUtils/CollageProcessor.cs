@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 
 namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
@@ -41,18 +43,28 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                 {
                     SetUpGraphics(graphics);
 
-                    IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
-                                                                                                 ImageSize.Small);
+
+                    List<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
+                                                                                          ImageSize.Small).ToList();
 
                     TileImages(graphics, thumbnailsPaths, width, height);
 
                     Directory.CreateDirectory(collagesDirectoryPath);
+                    DeleteFile(collagePath);
 
                     image.Save(collagePath, ImageFormat.Jpeg);
                 }
             }
         }
-
+        private void DeleteFile(string path)
+        {
+            try
+            {
+                File.Delete(path);
+            }
+            catch
+            {}
+        }
         private void TileImages(Graphics graphics, IEnumerable<string> thumbnails, int width, int heigth)
         {
             int iter = 0;

@@ -76,7 +76,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
                 .Append(COLLAGE_FILE_NAME)
                 .Append(MakeExtension(COLLAGE_FILE_FORMAT));
 
-            return builder.ToString();
+            return builder.ToString().Replace(@"\", "/");
         }
 
         /// <summary>
