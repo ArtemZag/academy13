@@ -80,7 +80,8 @@
             });
     }
     
-    function photosLoaded() {
+    function photosLoaded(goodPhotos) {
+        ko.utils.arrayPushAll(koPhotos, goodPhotos);
         var $photos = $('#photoWrapper > div.invisible > img');
         calcPhotoSizes($('#photoWrapper'), $photos, marginsOfPhotoCont);
         $('#photoWrapper > div.invisible').removeClass("invisible");
@@ -93,6 +94,7 @@
             $(window).unbind("scroll");
         }
         if (photos.length > 0) {
+            var goodPhotos = new Array();
             var lenght = photos.length;
             var numLoad = 0;
             jQuery.each(photos, function (ind) {
@@ -100,15 +102,15 @@
                 img.src = this.PhotoThumbSource;
                 $(img).load(function () {
                     numLoad++;
-                    koPhotos.push(photos[ind]);
+                    goodPhotos.push(photos[ind]);
                     if (numLoad == lenght) {
-                        photosLoaded();
+                        photosLoaded(goodPhotos);
                     }
                 })
-                    .error(function() {
+                    .error(function () {
                         lenght--;
                         if (numLoad == lenght) {
-                            photosLoaded();
+                            photosLoaded(goodPhotos);
                         }
                     });
             });
