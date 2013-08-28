@@ -9,7 +9,7 @@
             + parseInt($('.photoContainer').css("border-right-width"));
         ajaxPhotoLoad();
     });
-    $(window).on('resize', function() {
+    $(window).on('resize', function () {
         calcPhotoSizes($('#photoWrapper'), $("div.photoContainer > img"), marginsOfPhotoCont);
     });
     $(window).scroll(scrolled);
@@ -61,7 +61,7 @@
                     } else {
                         $($photos[indSub]).closest("div").remove();
                         startIndex--;
-                    } 
+                    }
                 }
             }
 
@@ -74,12 +74,12 @@
 
     function ajaxPhotoLoad() {
         $("#loader").show();
-        $.get(controllerUrl, { albumId: albumId , skip: startIndex, take: photoPortion }, getPhotos)
-            .fail(function() {
+        $.get(controllerUrl, { albumId: albumId, skip: startIndex, take: photoPortion }, getPhotos)
+            .fail(function () {
                 $("#loader").hide();
             });
     }
-    
+
     function photosLoaded(goodPhotos) {
         ko.utils.arrayPushAll(koPhotos, goodPhotos);
         var $photos = $('#photoWrapper > div.invisible > img');
@@ -114,11 +114,11 @@
                         }
                     });
             });
-            
+
             startIndex += photoPortion;
             busy = false;
         }
         else $("#loader").hide();
     }
-    
+
 });
