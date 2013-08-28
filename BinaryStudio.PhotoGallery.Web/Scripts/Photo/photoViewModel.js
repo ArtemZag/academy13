@@ -5,7 +5,6 @@
 
 
     var photoArray = new Array();
-    var photoIndex = 0;
 
 
     var navbarClass = $(".navbar");
@@ -63,6 +62,7 @@
         var self = this;
 
         self.PhotoId = ko.observable();
+        self.PhotoIndex = ko.observable(0);
         self.AlbumId = ko.observable();
         self.OwnerID = ko.observable();
         self.Description = ko.observable();
@@ -77,14 +77,16 @@
 
         self.PhotosByTags = ko.observableArray();
 
+        self.NumberOfPhotos = ko.observable();
+
         self.ShowNextPhoto = function() {
-            photoIndex < (photoArray.length - 1) ? photoIndex++ : photoIndex = 0;
-            setPhoto(photoArray[photoIndex]);
+            self.PhotoIndex() < (photoArray.length - 1) ? self.PhotoIndex(self.PhotoIndex() + 1) : self.PhotoIndex(0);
+            setPhoto(photoArray[self.PhotoIndex()]);
         };
 
         self.ShowPrevPhoto = function() {
-            photoIndex > 0 ? photoIndex-- : photoIndex = (photoArray.length - 1);
-            setPhoto(photoArray[photoIndex]);
+            self.PhotoIndex() > 0 ? self.PhotoIndex(self.PhotoIndex() - 1) : self.PhotoIndex(photoArray.length - 1);
+            setPhoto(photoArray[self.PhotoIndex()]);
         };
 
         self.AddComment = function() {
@@ -147,11 +149,12 @@
         $.each(photos, function(index, value) {
             photoArray[index] = value;
             if (photoArray[index].PhotoId == model.PhotoId()) {
-                photoIndex = index;
+                model.PhotoIndex(index);
             }
         });
 
-        setPhoto(photoArray[photoIndex]);
+        model.NumberOfPhotos(photoArray.length);
+        setPhoto(photoArray[model.PhotoIndex()]);
     }
 
     function setPhoto(photo) {

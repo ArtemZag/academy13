@@ -9,8 +9,8 @@
 
 <div id="leftSideMenu" data-bind="event: { mouseout: HideLeftSideMenu }">
     <div>
-        <span data-bind="text: PhotoId"></span>/
-        @*<span data-bind="text: NumberOfPhotos"></span>*@
+        <span data-bind="text: (PhotoIndex()+1)"></span>/
+        <span data-bind="text: NumberOfPhotos"></span>
     </div>  
     
     <ul> 
