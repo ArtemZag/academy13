@@ -1,11 +1,9 @@
 ﻿$(document).ready(function () {
-    
-    $(window).resize(setPhotoSize);
-    
 
-
+    var photoHeight;
+    var photoWidth;
+    
     var photoArray = new Array();
-
 
     var navbarClass = $(".navbar");
     var photoSegmentId = $("#photoSegment");
@@ -71,6 +69,7 @@
         self.PhotoLikes = ko.observableArray();
         self.PhotoLikeIcon = ko.observable();
         self.tags = ko.observableArray();
+        
 
         self.comms = ko.observableArray();
         self.newComment = ko.observable();
@@ -180,7 +179,11 @@
         model.AlbumId(photo.AlbumId);
 
         var img = new Image();
-        img.onload = function() { setPhotoSize(this.width, this.height); };
+        img.onload = function () {
+            setPhotoSize(this.width, this.height);
+            photoHeight = this.height;
+            photoWidth = this.width;
+        };
         img.src = photo.PhotoThumbSource;
         model.src(img.src);
 
@@ -253,4 +256,5 @@
     });
 
     getFirstPhoto();
+    $(window).resize(setPhotoSize(photoWidth, photoHeight));
 });
