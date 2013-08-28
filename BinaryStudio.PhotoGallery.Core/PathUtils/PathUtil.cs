@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
@@ -131,7 +132,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         {
             return HostingEnvironment.MapPath(BuildThumbnailPath(userId, albumId, photoId, format, size));
         }
-
+        
         public IEnumerable<string> BuildAbsoluteThumbnailsPaths(int userId, int albumId, ImageSize size)
         {
             string thumbnailsDirectoryPath = BuildAbsoluteThumbnailsDirPath(userId, albumId, size);
@@ -154,6 +155,22 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             string virtualCollagesDirectoryPath = builder.ToString();
 
             return HostingEnvironment.MapPath(virtualCollagesDirectoryPath);
+        }
+
+        public string CreateCollagePath(int userId, int albumId)
+        {
+            return Path.Combine(BuildAbsoluteAlbumPath(userId, albumId), COLLAGES_DIRECTORY_NAME,
+                                Randomizer.GetString(20) + MakeExtension(COLLAGE_FILE_FORMAT));
+        }
+
+        public string GetCollage(int userId, int albumId)
+        {
+            return GetUserReference(Directory.GetFiles(Path.Combine(BuildAbsoluteAlbumPath(userId, albumId), COLLAGES_DIRECTORY_NAME)).First());
+        }
+
+        public string GetUserReference(string absolutePath)
+        {
+            return absolutePath.Remove(0, absolutePath.IndexOf("data") - 1).Replace(@"\", "/");
         }
 
         public string BuildAbsoluteOriginalPhotoPath(int userId, int albumId, int photoId, string format)

@@ -28,6 +28,12 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         /// <summary>
         ///     Pattern: ~data\photos\userId\albumId\collage.jpg
         /// </summary>
+        string CreateCollagePath(int userId, int albumId);
+
+        string GetCollage(int userId, int albumId);
+
+        string GetUserReference(string absolutePath);
+
         string BuildCollagePath(int userId, int albumId);
 
         string BuildAbsoluteAvatarPath(int userId, ImageSize imageSize);
