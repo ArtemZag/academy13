@@ -137,6 +137,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public void UpdateAlbum(AlbumModel albumModel)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                unitOfWork.Albums.Update(albumModel);
+
+                unitOfWork.SaveChanges();
+            }
+        }
+
         public IEnumerable<AlbumModel> GetAllAlbums(int userId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

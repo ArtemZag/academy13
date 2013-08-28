@@ -16,7 +16,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44301</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
@@ -291,6 +292,7 @@
     <Compile Include="ViewModels\User\UsersListViewModel.cs" />
     <Compile Include="ViewModels\User\UserViewModel.cs" />
     <Content Include="Content\album-page.css" />
+    <Content Include="Content\images\no_collage.png" />
     <Content Include="Content\profile-page.css" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\panel.css" />

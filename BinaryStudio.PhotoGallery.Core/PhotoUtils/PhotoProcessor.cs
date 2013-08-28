@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
 
 namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
@@ -8,10 +9,11 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
     public class PhotoProcessor : IPhotoProcessor
     {
         private readonly IPathUtil _pathUtil;
-
+        private readonly ParallelOptions options;
         public PhotoProcessor(IPathUtil pathUtil)
         {
             _pathUtil = pathUtil;
+            options = new ParallelOptions() {MaxDegreeOfParallelism = Environment.ProcessorCount};
         }
 
         /// <summary>
@@ -23,9 +25,10 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             if (File.Exists(originalPhotoPath))
             {
-                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Big);
-                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Medium);
-                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Small);
+                Parallel.Invoke(options,
+                    () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Big), 
+                    () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Medium), 
+                    () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Small));
             }
         }
 
@@ -38,9 +41,10 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             if (File.Exists(originalAvatarPath))
             {
-                CreateAvatarThumbnail(userId, originalAvatarPath, ImageSize.Big);
-                CreateAvatarThumbnail(userId, originalAvatarPath, ImageSize.Medium);
-                CreateAvatarThumbnail(userId, originalAvatarPath, ImageSize.Small);
+                Parallel.Invoke(options,
+                    () => CreateAvatarThumbnail(userId, originalAvatarPath, ImageSize.Big),
+                    () => CreateAvatarThumbnail(userId, originalAvatarPath, ImageSize.Medium),
+                    () => CreateAvatarThumbnail(userId, originalAvatarPath, ImageSize.Small));
             }
         }
 

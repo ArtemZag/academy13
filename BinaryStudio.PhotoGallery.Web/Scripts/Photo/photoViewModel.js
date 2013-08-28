@@ -1,12 +1,9 @@
 ﻿$(document).ready(function () {
-    
-    $(window).resize(setPhotoSize);
-    
 
-
+    var photoHeight;
+    var photoWidth;
+    
     var photoArray = new Array();
-    var photoIndex = 0;
-
 
     var navbarClass = $(".navbar");
     var photoSegmentId = $("#photoSegment");
@@ -63,6 +60,7 @@
         var self = this;
 
         self.PhotoId = ko.observable();
+        self.PhotoIndex = ko.observable(0);
         self.AlbumId = ko.observable();
         self.OwnerID = ko.observable();
         self.Description = ko.observable();
@@ -71,25 +69,46 @@
         self.PhotoLikes = ko.observableArray();
         self.PhotoLikeIcon = ko.observable();
         self.tags = ko.observableArray();
+        
 
         self.comms = ko.observableArray();
         self.newComment = ko.observable();
 
         self.PhotosByTags = ko.observableArray();
 
+        self.NumberOfPhotos = ko.observable();
+
         self.ShowNextPhoto = function() {
-            photoIndex < (photoArray.length - 1) ? photoIndex++ : photoIndex = 0;
-            setPhoto(photoArray[photoIndex]);
+            self.PhotoIndex() < (photoArray.length - 1) ? self.PhotoIndex(self.PhotoIndex() + 1) : self.PhotoIndex(0);
+            setPhoto(photoArray[self.PhotoIndex()]);
         };
 
         self.ShowPrevPhoto = function() {
-            photoIndex > 0 ? photoIndex-- : photoIndex = (photoArray.length - 1);
-            setPhoto(photoArray[photoIndex]);
+            self.PhotoIndex() > 0 ? self.PhotoIndex(self.PhotoIndex() - 1) : self.PhotoIndex(photoArray.length - 1);
+            setPhoto(photoArray[self.PhotoIndex()]);
         };
 
         self.AddComment = function() {
-            $.post("/api/photo/comment", { NewComment: self.newComment(), PhotoId: self.PhotoId() }, function(data) {
+            $.post("/api/photo/comment", { CommentText: self.newComment(), PhotoId: self.PhotoId() }, function(data) {
                 setComments(data);
+            });
+        };
+
+        // Needs refactoring
+        self.DeletePhoto = function() {
+            $.ajax({
+                url: '/api/photo/' + model.PhotoId(),
+                type: 'DELETE',
+                success: function(){},
+                error: function(){}
+            }).done(function (msg) {
+                alert("Data Saved: " + msg);
+            });
+        };
+        
+        self.MovePhoto = function () {
+            $.post("/api/photo/movephoto?photoId=" + self.PhotoId() + "&albumId=" + (self.AlbumId()+2), {}, function (data) {
+                
             });
         };
 
@@ -147,11 +166,12 @@
         $.each(photos, function(index, value) {
             photoArray[index] = value;
             if (photoArray[index].PhotoId == model.PhotoId()) {
-                photoIndex = index;
+                model.PhotoIndex(index);
             }
         });
 
-        setPhoto(photoArray[photoIndex]);
+        model.NumberOfPhotos(photoArray.length);
+        setPhoto(photoArray[model.PhotoIndex()]);
     }
 
     function setPhoto(photo) {
@@ -159,7 +179,11 @@
         model.AlbumId(photo.AlbumId);
 
         var img = new Image();
-        img.onload = function() { setPhotoSize(this.width, this.height); };
+        img.onload = function () {
+            setPhotoSize(this.width, this.height);
+            photoHeight = this.height;
+            photoWidth = this.width;
+        };
         img.src = photo.PhotoThumbSource;
         model.src(img.src);
 
@@ -232,4 +256,5 @@
     });
 
     getFirstPhoto();
+    $(window).resize(setPhotoSize(photoWidth, photoHeight));
 });

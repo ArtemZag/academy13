@@ -2,19 +2,24 @@
 
     var getTagsUrl = $("#getTagsUrl").data("url");
     var getAlbumInfoUrl = $("#getAlbumInfoUrl").data("url");
-    var getPhotos = $("#getPhotos").data("url");
+    var getPhotosUrl = $("#getPhotosUrl").data("url");
+    var postAlbumInfoUrl = $("#postAlbumInfoUrl").data("url");
 
     function albumViewModel() {
 
         var self = this;
 
-        self.albumId = ko.observable();
+        self.albumId = 0;
+
+        self.collagePath = ko.observable();
 
         self.name = ko.observableArray();
 
-        self.description = ko.observable();
+        self.description = ko.observable("no description");
 
         self.photosCount = ko.observable();
+
+        self.dateOfCreation = ko.observable();
 
         self.photos = ko.observableArray();
 
@@ -25,6 +30,15 @@
 
             return self.tags().join(", ");
         }, self);
+
+        self.sendInfo = function () {
+
+            // post name and description
+            postAlbumInfo();
+
+            // tags
+            // postAlbumTags();
+        };
     }
 
     ko.bindingHandlers.editableText = {
@@ -42,13 +56,14 @@
 
     var album = new albumViewModel();
 
-    var albumId = document.getElementById("albumId").value;
-    album.albumId(albumId);
+    album.albumId = document.getElementById("albumId").value;
 
     function setAlbumInfo(info) {
 
         album.name(info.AlbumName);
         album.description(info.Description);
+        album.collagePath(info.CollageSource);
+        album.dateOfCreation(formatDate(info.DateOfCreation));
     }
 
     function setAlbumTags(tags) {
@@ -59,18 +74,35 @@
         });
     }
 
+    // post name and description
+    function postAlbumInfo() {
+
+        $.post(postAlbumInfoUrl, { Id: album.albumId, AlbumName: album.name(), Description: album.description() });
+    }
+
     function getAlbumTags() {
 
-        $.get(getTagsUrl, album.albumId(), setAlbumTags);
+        $.get(getTagsUrl, album.albumId, setAlbumTags);
     }
 
     function getAlbumInfo() {
 
-        $.get(getAlbumInfoUrl, album.albumId(), setAlbumInfo);
+        $.get(getAlbumInfoUrl, album.albumId, setAlbumInfo);
     }
-    
+
     function initPhotosDownloader() {
-        PhotoPlacer_Module(getPhotos, album.photos, albumId);
+        PhotoPlacer_Module(getPhotosUrl, album.photos, album.albumId);
+    }
+
+    function formatDate(dateTime) {
+
+        var dateEndIndex = dateTime.indexOf("T");
+        var timeEndIndex = dateTime.lastIndexOf(":");
+
+        var date = dateTime.substring(0, dateEndIndex);
+        var time = dateTime.substring(dateEndIndex + 1, timeEndIndex);
+
+        return date + " " + time;
     }
 
     getAlbumInfo();

@@ -50,7 +50,7 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
 
             // todo owner
             viewModel.PhotoThumbSource = viewModel.PathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId,
-                photoModel.Id, photoModel.Format, ImageSize.Medium);
+                photoModel.Id, photoModel.Format, ImageSize.Big);
 
             viewModel.PhotoViewPageUrl = viewModel.UrlUtil.BuildPhotoViewUrl(photoModel.Id);
 
