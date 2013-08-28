@@ -91,17 +91,17 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return
                 albumModel.Tags.Sum(
                     albumTagModel =>
-                        searchWords.Sum(searchWord => Regex.Matches(albumTagModel.TagName, searchWord).Count));
+                        searchWords.Sum(searchWord => Regex.Matches(albumTagModel.TagName, searchWord.ShieldString()).Count));
         }
 
         private int CalculateRelevanceByName(IEnumerable<string> searchWords, AlbumModel albumModel)
         {
-            return searchWords.Sum(searchWord => Regex.Matches(albumModel.Name.ToLower(), searchWord).Count);
+            return searchWords.Sum(searchWord => Regex.Matches(albumModel.Name.ToLower(), searchWord.ShieldString()).Count);
         }
 
         private int CalculateRelevaceByDescription(IEnumerable<string> searchWords, AlbumModel albumModel)
         {
-            return searchWords.Sum(searchWord => Regex.Matches(albumModel.Description.ToLower(), searchWord).Count);
+            return searchWords.Sum(searchWord => Regex.Matches(albumModel.Description.ToLower(), searchWord.ShieldString()).Count);
         }
 
         private IEnumerable<IFound> Group(IEnumerable<AlbumFound> albums)

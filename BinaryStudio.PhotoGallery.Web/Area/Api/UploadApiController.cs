@@ -134,9 +134,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         // Create thumbnails for photo
                         _photoProcessor.CreateThumbnails(User.Id, albumId, photoModel.Id, photoModel.Format);
 
-                        // Create collage for album
-                        _collageProcessor.CreateCollage(User.Id, albumId);
-
                         uploadFileInfos.Add(new UploadResultViewModel
                         {
                             Id = photoId,
@@ -153,6 +150,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         });
                     }
                 }
+
+                // Create collage for album
+                _collageProcessor.CreateCollage(User.Id, albumId);
             }
             catch (Exception ex)
             {
@@ -194,6 +194,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 // Read the form data from request (save all files in selected folder) TODO must be wrapped too
                 await Request.Content.ReadAsMultipartAsync(provider);
 
+                int albumId = _albumService.GetAlbumId(User.Id, "Temporary");
+
                 // Check all uploaded files
                 foreach (MultipartFileData fileData in provider.FileData)
                 {
@@ -232,8 +234,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                     string format = _fileHelper.GetRealFileFormat(fileData.LocalFileName);
 
-                    int albumId = _albumService.GetAlbumId(User.Id, "Temporary");
-
                     var photoModel = _photoService.AddPhoto(PhotoViewModel.ToModel(User.Id, albumId, format));
 
                     string destFileName = string.Format("{0}\\{1}.{2}", pathToTempAlbum, photoModel.Id, format);
@@ -264,9 +264,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     // Create thumbnails for photo
                     _photoProcessor.CreateThumbnails(User.Id, albumId, photoModel.Id, photoModel.Format);
 
-                    // Create collage for album 'Temporary'
-                    _collageProcessor.CreateCollage(User.Id, albumId);
-
                     uploadFileInfos.Add(new UploadResultViewModel
                     {
                         Hash = fileHash,
@@ -274,6 +271,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         IsAccepted = true
                     });
                 }
+
+                // Create collage for album 'Temporary'
+                _collageProcessor.CreateCollage(User.Id, albumId);
             }
             catch (Exception ex)
             {

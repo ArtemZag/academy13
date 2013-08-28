@@ -14,7 +14,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Search
 
         public DateTime DateOfCreation { get; set; }
 
-        public string ThumbnailPath { get; set; }
+        public string CollagePath { get; set; }
 
         public string Type
         {
