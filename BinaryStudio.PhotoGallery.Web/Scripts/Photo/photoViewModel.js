@@ -95,6 +95,24 @@
             });
         };
 
+        // Needs refactoring
+        self.DeletePhoto = function() {
+            $.ajax({
+                url: '/api/photo/' + model.PhotoId(),
+                type: 'DELETE',
+                success: function(){},
+                error: function(){}
+            }).done(function (msg) {
+                alert("Data Saved: " + msg);
+            });
+        };
+        
+        self.MovePhoto = function () {
+            $.post("/api/photo/movephoto?photoId=" + self.PhotoId() + "&albumId=" + (self.AlbumId()+2), {}, function (data) {
+                
+            });
+        };
+
         self.fbSync = function() {
             $.get("/photo/facebook", { photoId: "2" });
         };

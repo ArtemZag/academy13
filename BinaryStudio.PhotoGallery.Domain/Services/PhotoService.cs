@@ -117,42 +117,46 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        //todo: call collage rebuild in the end of this method
         public void MovePhotoToAlbum(int userId, int photoId, int albumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AlbumModel album = GetAlbum(userId, unitOfWork.Photos.Find(photoId).AlbumId);
+                PhotoModel photo = unitOfWork.Photos.Find(photoId);
+                AlbumModel album = GetAlbum(userId, photo.AlbumId);
 
                 if (album.OwnerId == userId)
                 {
-                    PhotoModel photo = unitOfWork.Photos.Find(photoId);
-                    int oldPhotoId = photo.Id;
                     photo.AlbumId = albumId;
 
-                    AddPhoto(photo);
+
+                    unitOfWork.Photos.Update(photo);
+                    unitOfWork.SaveChanges();
+
 
                     var imageSizes = new List<ImageSize>
                     {
                         ImageSize.Small,
                         ImageSize.Medium,
-                        ImageSize.Big,
-                        ImageSize.Original
+                        ImageSize.Big
                     };
 
+                    string curFilePath;
+                    string disFilePath;
                     foreach (ImageSize imageSize in imageSizes)
                     {
-                        string curFilePath = _pathUtil.BuildThumbnailPath(userId, album.Id, photoId, photo.Format,
+                        curFilePath = _pathUtil.BuildAbsoluteThumbailPath(userId, album.Id, photoId, photo.Format,
                             imageSize);
-                        string disFilePath = _pathUtil.BuildThumbnailPath(userId, albumId, photoId, photo.Format,
+                        disFilePath = _pathUtil.BuildAbsoluteThumbailPath(userId, albumId, photoId, photo.Format,
                             imageSize);
 
                         _fileWrapper.Move(curFilePath, disFilePath);
                     }
 
-                    DeletePhoto(userId, oldPhotoId);
+                    curFilePath = _pathUtil.BuildAbsoluteOriginalPhotoPath(userId, album.Id, photoId, photo.Format);
+                    disFilePath = _pathUtil.BuildAbsoluteOriginalPhotoPath(userId, albumId, photoId, photo.Format);
 
-                    //todo: delete?
-                    unitOfWork.SaveChanges();
+                    _fileWrapper.Move(curFilePath, disFilePath);
                 }
                 else
                 {
