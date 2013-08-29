@@ -101,10 +101,12 @@
             $.ajax({
                 url: '/api/photo/' + model.PhotoId(),
                 type: 'DELETE',
-                success: function(){},
-                error: function(){}
-            }).done(function (msg) {
-                alert("Data Saved: " + msg);
+                success: function(data) {
+                    alert(data);
+                },
+                error: function(data) {
+                    alert(data);
+                }
             });
         };
         

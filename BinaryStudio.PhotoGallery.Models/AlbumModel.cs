@@ -12,6 +12,7 @@ namespace BinaryStudio.PhotoGallery.Models
         public AlbumModel()
         {
             DateOfCreation = DateTime.Now;
+            Description = string.Empty;
         }
 
         public AlbumModel(string name, int ownerId)
@@ -20,6 +21,7 @@ namespace BinaryStudio.PhotoGallery.Models
             OwnerId = ownerId;
             DateOfCreation = DateTime.Now;
             Permissions = (int)PermissionsMask.PublicAlbum; // in moment, it is just for future
+            Description = string.Empty;
         }
 
         [Flags]

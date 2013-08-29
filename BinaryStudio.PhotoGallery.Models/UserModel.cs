@@ -13,6 +13,12 @@ namespace BinaryStudio.PhotoGallery.Models
         {
             DateOfCreating = DateTime.Now;
             Birthday = DateTime.Now;
+            Email = string.Empty;
+            FirstName = string.Empty;
+            LastName = string.Empty;
+            Department = string.Empty;
+            UserPassword = string.Empty;
+            Salt = string.Empty;
         }
 
         /// <summary>
