@@ -30,7 +30,7 @@
 
         self.photos = ko.observableArray();
 
-        self.tags = ko.observableArray();
+        self.tags = ko.observableArray();        
 
         // tags array to string
         self.tagsString = ko.computed(function () {
@@ -58,9 +58,12 @@
 
         self.name = ko.observable(name);
 
-        self.canSeePhotos = ko.observable(canSeePhotos);
+        self.canSeePhotos = ko.observable();
 
-        self.canSeeComments = ko.observable(canSeeComments);
+        self.canSeeComments = ko.observable();
+
+        self.canSeePhotos(canSeePhotos);
+        self.canSeeComments(canSeeComments);
     }
 
     // for contenteditable binding 
@@ -136,7 +139,6 @@
 
         return dateTime.substring(0, dateEndIndex);
     }
-
 
     var album = new albumViewModel();
     album.albumId = document.getElementById("albumId").value;
