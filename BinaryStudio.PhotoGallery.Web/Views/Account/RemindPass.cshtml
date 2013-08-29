@@ -1,18 +1,23 @@
-﻿@model dynamic
+﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.Extensions
+@model dynamic
 
 @{
-    Layout = null;
+    ViewBag.Title = "Remind Password | Bingally";
 }
 
-<!DOCTYPE html>
-
-<html>
-    <head>
-        <title>title</title>
-    </head>
-    <body>
-        <div>
-              
-        </div>
-    </body>
-</html>
+<div id="passRecoveryPanel" class="login-panel invisible">
+    @Html.Image(Url.Content("~/Content/images/logo_big.png"))
+    <div class="well">
+        <form class="control-group form-horizontal pagination-centered">
+            <input id="Email" name="Email" type="email" class="input-block-level" maxlength="255" placeholder="E-mail address" />
+            <button id="sendRecovery" type="submit" class="btn btn-primary effeckt-button zoom-in">
+                <span class="effeckt-label">Send password recovery Email</span>
+                <span class="effeckt-spinner effeckt-spinner-blue"></span>
+            </button>
+            <a id="backToLogin" class="btn btn-link">Back to the login page</a>
+        </form>
+        <div class="error-field"></div>
+        <hr />
+    </div>
+</div>

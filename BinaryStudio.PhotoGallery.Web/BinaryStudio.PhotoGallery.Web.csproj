@@ -273,11 +273,6 @@
     <Compile Include="Registers\CleanupServiceRegistry.cs" />
     <Compile Include="Registers\SearchCacheRegistry.cs" />
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
-    <Compile Include="Templates\Notifications.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Notifications.tt</DependentUpon>
-    </Compile>
     <Compile Include="Utils\ISearchModelConverter.cs" />
     <Compile Include="Utils\SearchModelConverter.cs" />
     <Compile Include="ViewModels\Admin\InviteUserViewModel.cs" />
@@ -328,6 +323,7 @@
     <Content Include="Content\search.css" />
     <Content Include="Content\style-libs\chosen.css" />
     <Content Include="Content\verticalResizer.css" />
+    <Content Include="Scripts\Account\forgotPass.js" />
     <Content Include="Scripts\Admin\AdminPage.js" />
     <Content Include="Scripts\Account\initVertResizer.js" />
     <Content Include="Scripts\Account\signup.validate.js" />
@@ -471,10 +467,6 @@
     <Content Include="Views\Shared\AccessDenied.cshtml" />
     <Content Include="Views\Gallery\Index.cshtml" />
     <Content Include="Views\Error\Error.cshtml" />
-    <Content Include="Templates\Notifications.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>Notifications.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

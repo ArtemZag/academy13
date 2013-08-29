@@ -69,9 +69,12 @@ body {
     padding: 5px;
 }
 
+.login-panel #signin-button {
+	width: 48%;
+}
+
 .login-panel .btn-primary {
     margin-top: 8px;
-    width: 48%;
     font-size: 18px;
     padding: 5px;
 }

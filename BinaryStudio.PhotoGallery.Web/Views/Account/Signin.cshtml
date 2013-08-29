@@ -7,7 +7,7 @@
     ViewBag.Title = "Login | Bingally";
 }
 
-<div class="login-panel">
+<div id="loginPanel" class="login-panel">
     @Html.Image(Url.Content("~/Content/images/logo_big.png"))
     <div class="well">
         <form class="control-group form-horizontal pagination-centered">
@@ -20,7 +20,8 @@
                 <span class="effeckt-label">Sign in</span>
                 <span class="effeckt-spinner effeckt-spinner-blue"></span>
             </button>
-            @Html.ActionLink("Forgot password?", "RemindPass", "Account", new {@class = "btn btn-link"})
+            <a id="forgotPass" class="btn btn-link">Forgot password?</a>
+@*            @Html.ActionLink("Forgot password?", "RemindPass", "Account", new {@class = "btn btn-link"})*@
         </form>
         <div class="error-field"></div>
         <hr />
@@ -33,5 +34,8 @@
     </div>
 </div>
 
+@RenderPage("~/Views/Account/RemindPass.cshtml")
+
 @Scripts.Render("~/Scripts/Account/signin.js")
 @Scripts.Render("~/Scripts/Account/signin.validate.js")
+@Scripts.Render("~/Scripts/Account/forgotPass.js")
