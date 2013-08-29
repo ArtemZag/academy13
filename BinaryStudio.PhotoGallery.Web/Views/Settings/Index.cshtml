@@ -10,7 +10,7 @@
 
 <div class="span8">
     <h2>Your profile</h2>
-    @using(Html.BeginForm("Edit", "Profile", FormMethod.Get))
+    @using(Html.BeginForm("Edit", "Settings", FormMethod.Get))
     {
         <div class="span3">
             <img src="@Model.PhotoUrl" class="img-polaroid" id="user-photo">
@@ -25,7 +25,7 @@
             @Html.LabelFor(x => x.Email, "Email")
             @Html.TextBoxFor(x => x.Email, new { disabled="disabled" })
             <div class="btn-group" id="button-group">
-                @Html.ActionLink("Edit", "Edit", "Profile", new {@class="btn btn-inverse"})
+                @Html.ActionLink("Edit", "Edit", "Settings", new {@class="btn btn-inverse"})
             </div>
         </div>
     }

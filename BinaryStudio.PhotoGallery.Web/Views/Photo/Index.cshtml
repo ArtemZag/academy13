@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.Extensions
 
 @{
 	ViewBag.Title = "Index";
@@ -110,4 +111,4 @@
 </div>
 
 <script src="~/Scripts/Photo/photoViewModel.js"></script>
-<div id="albumApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAllAlbums"})"></div>
+<div id="albumApiUrl" data-url="@Html.RouteUrl("AlbumApi", "GetAllAlbums")"></div>

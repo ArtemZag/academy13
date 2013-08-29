@@ -19,7 +19,7 @@
                 
                 var actionUrl = referrerUrl == null ? (Request.Url.Host + Url.Action("Index", "Home")) : referrerUrl;
                 
-                @Html.ImageLink(Url.Content("~/Content/images/notfound.png"), referrerUrl);
+                @Html.ImageLink("~/Content/images/notfound.png", referrerUrl);
             }
         </div>
     </body>

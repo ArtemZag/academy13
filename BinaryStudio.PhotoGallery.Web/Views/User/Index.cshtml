@@ -1,8 +1,9 @@
 ﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumsViewModel
 @using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.Extensions
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    ViewBag.Title = "Albums | Bingally";
+    ViewBag.Title = "User page | Bingally";
 }
 @Scripts.Render("~/Scripts/User/user.js",
                 "~/Scripts/jsrender.js")
@@ -63,5 +64,5 @@
 </table>
 
 <div id ="userId" data-url="@ViewBag.UserId"></div>
-<div id="albumApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbums"})"></div>
-<div id="userApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "UserApi", action = "GetCurrent"})"></div>
+<div id="albumApiUrl" data-url="@Html.RouteUrl("AlbumApi", "GetAlbums")"></div>
+<div id="userApiUrl" data-url="@Html.RouteUrl("UserApi", "GetCurrent")"></div>

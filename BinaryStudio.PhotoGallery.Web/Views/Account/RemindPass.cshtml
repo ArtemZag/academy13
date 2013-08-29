@@ -9,7 +9,7 @@
     @Html.Image(Url.Content("~/Content/images/logo_big.png"))
     <div class="well">
         <h4>Remind password</h4>
-        <form action="~/api/remind" method="post" class="control-group form-horizontal pagination-centered">
+        <form action="@Html.RouteUrl("AccountApi", "RemindPass")" method="post" class="control-group form-horizontal pagination-centered">
             <input id="Email" name="Email" type="email" class="input-block-level" maxlength="255" placeholder="E-mail address" />
             <button id="sendRecovery" type="submit" class="btn btn-primary effeckt-button zoom-in">
                 <span class="effeckt-label">Send password recovery Email</span>
