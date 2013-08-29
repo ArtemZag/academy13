@@ -31,7 +31,7 @@
 
 <script id="dontHaveRightsTmpl" type="text/x-jquery-tmpl">
     <div class = "noAlbumsTextContainer">
-        <p class ="noAlbumsText">{{:requestsUserName}} you can't view albums by {{:ownerUserName}}.</p>
+        <p class ="noAlbumsText">{{:RequestsUserName}} you can't view albums by {{:OwnerUserName}}.</p>
     </div>
 </script>
 
@@ -50,15 +50,17 @@
     <p class="textStyle">Photos: {{:PhotoCount}}</p>                                                                                                                                                                                                                                                                                                                          
 </script>
 
-<div id="content">
-        <div class="albums">
+<table id="content">
+    <tr>
+        <td class="albums">
             
-        </div>
-        <div class="infoArea">
+        </td>
+        <td class="infoArea">
             <div class="info" id="userInformation">
             </div>
-        </div>
-</div>
+        </td>
+    </tr>
+</table>
 
 <div id ="userId" data-url="@ViewBag.UserId"></div>
 <div id="albumApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbums"})"></div>
