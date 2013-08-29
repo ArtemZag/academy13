@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Runtime.InteropServices;
 using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
@@ -37,6 +36,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 AlbumViewModel result = _albumService.GetAlbum(albumId).ToAlbumViewModel();
 
                 result.CollagePath = _pathUtil.BuildCollagePath(result.OwnerId, result.Id);
+                result.PhotosCount = _albumService.GetPhotosCount(albumId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
@@ -114,7 +114,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 var albumNames = _albumService
                     .GetAllAlbums(User.Id)
-                    .Where(album => album.Name != "Temporary")
                     .Select(album => album.Name)
                     .ToList();
 

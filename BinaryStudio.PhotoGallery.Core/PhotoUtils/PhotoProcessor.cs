@@ -26,13 +26,10 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 
             if (File.Exists(originalPhotoPath))
             {
-                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Big);
-                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Medium);
-                CreateThumbnail(userId, albumId, photoId, format, ImageSize.Small);
-                /* Parallel.Invoke(options,
+                 Parallel.Invoke(options,
                     () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Big), 
                     () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Medium), 
-                    () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Small));*/
+                    () => CreateThumbnail(userId, albumId, photoId, format, ImageSize.Small));
             }
         }
 

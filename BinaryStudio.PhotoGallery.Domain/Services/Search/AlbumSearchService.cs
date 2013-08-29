@@ -10,11 +10,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     internal class AlbumSearchService : DbService, IAlbumSearchService
     {
-        private readonly ISecureService secureService;
+        private readonly IAlbumService albumService;
 
-        public AlbumSearchService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
+        public AlbumSearchService(IUnitOfWorkFactory workFactory, IAlbumService albumService) : base(workFactory)
         {
-            this.secureService = secureService;
+            this.albumService = albumService;
         }
 
         public IEnumerable<IFound> Search(SearchArguments searchArguments)
@@ -25,13 +25,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId,
-                    unitOfWork);
+                IEnumerable<AlbumModel> avialableAlbums = albumService.GetAvialableAlbums(searchArguments.UserId, unitOfWork);
 
                 if (searchArguments.IsSearchAlbumsByName)
                 {
                     IEnumerable<AlbumFound> found = SearchByCondition(searchWords, avialableAlbums,
-                        model => searchWords.Any(searchWord => model.Name.Contains(searchWord)),
+                        model => searchWords.Any(searchWord => model.Name.ToLower().Contains(searchWord)),
                         CalculateRelevanceByName);
 
                     result.AddRange(found);
@@ -40,35 +39,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchAlbumsByDescription)
                 {
                     IEnumerable<AlbumFound> found = SearchByCondition(searchWords, avialableAlbums,
-                        model => searchWords.Any(searchWord => model.Description.Contains(searchWord)),
+                        model => searchWords.Any(searchWord => model.Description.ToLower().Contains(searchWord)),
                         CalculateRelevaceByDescription);
-
-                    result.AddRange(found);
-                }
-
-                if (searchArguments.IsSearchAlbumsByTags)
-                {
-                    IEnumerable<AlbumFound> found = SearchByTags(avialableAlbums, searchWords);
 
                     result.AddRange(found);
                 }
             }
 
             return Group(result);
-        }
-
-        private IEnumerable<AlbumFound> SearchByTags(IEnumerable<AlbumModel> fromAlbums, IEnumerable<string> searchWords)
-        {
-            return fromAlbums.Where(
-                model => model.Tags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
-                .Select(model => new AlbumFound
-                {
-                    Id = model.Id,
-                    DateOfCreation = model.DateOfCreation,
-                    Name = model.Name,
-                    OwnerId = model.OwnerId,
-                    Relevance = CalculateRelevanceByTags(searchWords, model)
-                });
         }
 
         private IEnumerable<AlbumFound> SearchByCondition(IEnumerable<string> searchWords,
@@ -84,14 +62,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 OwnerId = model.OwnerId,
                 Relevance = getRelevance(searchWords, model)
             });
-        }
-
-        private int CalculateRelevanceByTags(IEnumerable<string> searchWords, AlbumModel albumModel)
-        {
-            return
-                albumModel.Tags.Sum(
-                    albumTagModel =>
-                        searchWords.Sum(searchWord => Regex.Matches(albumTagModel.TagName, searchWord.ShieldString()).Count));
         }
 
         private int CalculateRelevanceByName(IEnumerable<string> searchWords, AlbumModel albumModel)

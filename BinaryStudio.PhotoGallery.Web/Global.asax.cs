@@ -36,10 +36,11 @@ namespace BinaryStudio.PhotoGallery.Web
 
             IUnityContainer container = Bootstrapper.Initialise();
 
-            // todo
             TaskManager.Initialize(new CleanupRegistry(container.Resolve<ICleanupTask>()));
+            TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
+
+            // todo
 //            TaskManager.Initialize(new UsersMonitorRegistry(container.Resolve<IUsersMonitorTask>()));
-            // TaskManager.Initialize(new SearchCacheRegistry(container.Resolve<ISearchCacheTask>()));
         }
 
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)

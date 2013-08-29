@@ -43,6 +43,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 int photoCount = _photoService.PhotoCount(userId);
                 int albumCount = _albumService.AlbumsCount(userId);
+
                 UserViewModel viewModel = userModel.ToUserViewModel(photoCount, albumCount);
 
                 return Request.CreateResponse(HttpStatusCode.OK, viewModel, new JsonMediaTypeFormatter());

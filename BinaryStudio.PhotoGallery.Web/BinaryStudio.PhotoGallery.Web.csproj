@@ -224,8 +224,8 @@
     <Compile Include="Area\Api\AccountApiController.cs" />
     <Compile Include="Area\Api\AdminApiController.cs" />
     <Compile Include="Area\Api\AlbumApiController.cs" />
-    <Compile Include="Area\Api\AlbumTagApiController.cs" />
     <Compile Include="Area\Api\PublicPhotoController.cs" />
+    <Compile Include="Area\Api\TagApiController.cs" />
     <Compile Include="Area\Api\UserApiController.cs" />
     <Compile Include="Area\Api\UploadApiController.cs" />
     <Compile Include="Area\Api\PhotoCommentApiController.cs" />

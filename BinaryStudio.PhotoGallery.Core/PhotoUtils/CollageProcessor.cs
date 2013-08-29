@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -43,44 +42,63 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                 {
                     SetUpGraphics(graphics);
 
-
                     IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
-                                                                                          ImageSize.Small);
+                        ImageSize.Small);
+                    string backup =
+                        Randomizer.GetEnumerator(_pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId, ImageSize.Big))
+                            .First();
+                    TileImages(graphics, Randomizer.GetEnumerator(thumbnailsPaths), backup, width, height);
 
-                    TileImages(graphics, Randomizer.GetEnumerator(thumbnailsPaths), width, height);
-                    try
+                    foreach (string variable in Directory.EnumerateFiles(collagesDirectoryPath))
                     {
-                        Directory.Delete(collagesDirectoryPath, true);
+                        try
+                        {
+                            File.Delete(variable);
+                        }
+                        catch
+                        {
+                        }
                     }
-                    catch{}
                     Directory.CreateDirectory(collagesDirectoryPath);
-
                     image.Save(collagePath, ImageFormat.Jpeg);
                 }
             }
         }
 
-        private void TileImages(Graphics graphics, IEnumerable<string> thumbnails, int width, int heigth)
+        private void TileImages(Graphics graphics, IEnumerable<string> thumbnails, string biggestFile, int width,
+            int heigth)
         {
+            List<string> list = thumbnails.ToList();
+            int countPhotos = list.Count;
             int iter = 0;
             int sumWidth = 0;
 
-            foreach (string file in thumbnails)
+            if (countPhotos <= 12)
             {
-                using (Image thumbImage = Image.FromFile(file))
+                using (Image thumbImage = Image.FromFile(biggestFile))
                 {
-                    graphics.DrawImageUnscaled(thumbImage, sumWidth, iter);
-                    sumWidth += thumbImage.Width;
-                    if (sumWidth >= width)
+                    graphics.DrawImage(thumbImage, 0, 0, graphics.VisibleClipBounds.Width,
+                        graphics.VisibleClipBounds.Height);
+                }
+            }
+            else
+            {
+                foreach (string file in list)
+                {
+                    using (Image thumbImage = Image.FromFile(file))
                     {
-                        sumWidth = 0;
-                        iter += MAX_HEIGHT;
-                        if (iter >= heigth)
-                            break;
+                        graphics.DrawImageUnscaled(thumbImage, sumWidth, iter);
+                        sumWidth += thumbImage.Width;
+                        if (sumWidth >= width)
+                        {
+                            sumWidth = 0;
+                            iter += MAX_HEIGHT;
+                            if (iter >= heigth)
+                                break;
+                        }
                     }
                 }
             }
-            
         }
 
         private void SetUpGraphics(Graphics graphics)
