@@ -298,7 +298,7 @@
     <Compile Include="ViewModels\User\UserViewModel.cs" />
     <Content Include="Content\album-page.css" />
     <Content Include="Content\images\no_collage.png" />
-    <Content Include="Content\profile-page.css" />
+    <Content Include="Content\settings-page.css" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\panel.css" />
     <Content Include="Content\spinner.css" />
