@@ -300,12 +300,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 }
                 else
                 {
+                    _eventsAggregator.PushLikeToPhotoAddedEvent(user, photoId);
                     userModels.Add(user);
                 }
 
                 unitOfWork.SaveChanges();
-
-                _eventsAggregator.PushLikeToPhotoAddedEvent(user, photoId);
+                
             }
         }
 
