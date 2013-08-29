@@ -35,16 +35,14 @@
         <div class="title">Tags</div>
         <div class="prop"><!--ko text: tagsString--><!--/ko--></div>
         <div class="title">Rights</div>
-        <div>
+        <div class="prop">
             <select data-bind="options: groups, optionsText: 'name', value: selectedGroup, optionCaption: 'Select group...'">
             </select>
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: 'selectedGroup.CanSeePhotos'"> <small>Can see photos</small>
-            </label>
+            <div data-bind="with: selectedGroup">
+                <input type="checkbox" data-bind="checked: canSeePhotos"> Can see photos
             
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: 'selectedGroup.CanSeeComments'"> <small>Can see comments</small>
-            </label>
+                <input type="checkbox" data-bind="checked: canSeeComments"> Can see comments
+            </div>
         </div>
         <a class="btn save-info-btn" data-bind="click: sendInfo">Save</a>
     </div>
