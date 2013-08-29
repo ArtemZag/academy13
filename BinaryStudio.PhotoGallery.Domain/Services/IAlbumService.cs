@@ -12,16 +12,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         int GetAlbumId(int userId, string albumName);
 
         /// <summary>
+        ///     Returns all unique tags from all photos.
+        /// </summary>
+        IEnumerable<string> GetAlbumsTags(int albumId);
+
+        int GetPhotosCount(int albumId);
+
+        /// <summary>
         ///     Gets user's album specified by id.
         /// </summary>
         /// <param name="albumId">Album Id</param>
         AlbumModel GetAlbum(int albumId);
 
-        int AlbumsCount(int userId);
+        int AlbumsCount(int userId, int tempAlbumId);
 
-        IEnumerable<AlbumModel> GetAlbumsRange(int userId, int skipCount, int takeCount);
-
-        IEnumerable<AlbumTagModel> GetTags(int albumId);
+        IEnumerable<AlbumModel> GetAlbumsRange(int userRequestsId, int userOwnerId, int skipCount, int takeCount, out bool reasonOfNotAlbums);
 
         void UpdateAlbum(AlbumModel albumModel);
 
@@ -30,10 +35,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         IEnumerable<AlbumModel> GetAllAlbums(int userId);
 
+        IEnumerable<AlbumModel> GetAllAlbums(int userId, IUnitOfWork unitOfWork);
+
         /// <summary>
         ///     Creates album for specified user by his email.
         /// </summary>
         AlbumModel CreateAlbum(int userId, AlbumModel album);
+
         AlbumModel CreateAlbum(int userId, string albumName);
 
         /// <summary>
@@ -47,9 +55,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         void DeleteAlbum(int userId, int albumId);
 
         /// <summary>
-        ///     Get all available albums for specified user
+        ///     Returns all public albums and user's albums
         /// </summary>
-        IEnumerable<AlbumModel> GetAvailableAlbums(int userId);
-        IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork);
+        IEnumerable<AlbumModel> GetAvialableAlbums(int userId, IUnitOfWork unitOfWork);
     }
 }

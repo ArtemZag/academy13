@@ -72,9 +72,6 @@
                 <ul class="unstyled">
                     <li class="search-info-item"><a data-bind="attr: { href: UserViewUri }"><!--ko text: Name--><!--/ko--></a></li>
                     <li class="search-info-item"><!--ko text: Department--><!--/ko--></li>
-                    <!-- ko if: IsOnline -->
-                    <li class="search-info-item">Online</li>
-                    <!-- /ko -->
                 </ul>
 
             </div>
@@ -142,10 +139,6 @@
             
                     <label class="checkbox">
                         <input type="checkbox" data-bind="checked: isSearchAlbumsByDescription"> <small>description</small>
-                    </label>
-
-                    <label class="checkbox">
-                        <input type="checkbox" data-bind="checked: isSearchAlbumsByTags"> <small>tags</small>
                     </label>
                 </div>
             

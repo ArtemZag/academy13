@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Runtime.InteropServices;
 using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
@@ -22,11 +21,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     {
         private readonly IAlbumService _albumService;
         private readonly IPathUtil _pathUtil;
-
-        public AlbumApiController(IAlbumService albumService, IPathUtil pathUtil)
+        private readonly IUserService _userService;
+        public AlbumApiController(IAlbumService albumService, IPathUtil pathUtil, IUserService userService)
         {
             _albumService = albumService;
             _pathUtil = pathUtil;
+            _userService = userService;
         }
 
         [GET("{albumId: int}")]
@@ -37,6 +37,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 AlbumViewModel result = _albumService.GetAlbum(albumId).ToAlbumViewModel();
 
                 result.CollagePath = _pathUtil.BuildCollagePath(result.OwnerId, result.Id);
+                result.PhotosCount = _albumService.GetPhotosCount(albumId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
@@ -51,12 +52,23 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
+                bool pr;
                 var albums = _albumService
-                    .GetAlbumsRange(userId, skip, take)
+                    .GetAlbumsRange(User.Id, userId, skip, take, out pr)
                     .Select(album => album.ToAlbumViewModel(
                         _pathUtil.GetCollage(userId, album.Id))).ToList();
 
-                return Request.CreateResponse(HttpStatusCode.OK, albums, new JsonMediaTypeFormatter());
+                UserModel requestsUser = _userService.GetUser(User.Id);
+                UserModel ownerUser = _userService.GetUser(userId);
+
+                var model = new AlbumsViewModel
+                    {
+                        albums = albums,
+                        requestsUserName = string.Format("{0} {1}", requestsUser.FirstName, requestsUser.LastName),
+                        ownerUserName = string.Format("{0} {1}", ownerUser.FirstName, ownerUser.LastName),
+                        noAlbumsToView = pr
+                    };
+                return Request.CreateResponse(HttpStatusCode.OK, model, new JsonMediaTypeFormatter());
             }
             catch (Exception ex)
             {
@@ -114,7 +126,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 var albumNames = _albumService
                     .GetAllAlbums(User.Id)
-                    .Where(album => album.Name != "Temporary")
                     .Select(album => album.Name)
                     .ToList();
 

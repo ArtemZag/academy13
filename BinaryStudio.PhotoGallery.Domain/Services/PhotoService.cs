@@ -166,21 +166,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public int PhotoCount(int userId)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-                return unitOfWork.Photos.Filter(model => model.OwnerId == userId && !model.IsDeleted).Count();
-        }
-
-        public IEnumerable<PhotoModel> GetLastPhotos(int userId, int skipCount, int takeCount)
+        public int PhotoCount(int userId, int tempAlbumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Photos.Filter(model => model.OwnerId == userId)
-                    .OrderByDescending(model => model.DateOfCreation)
-                    .Skip(skipCount)
-                    .Take(takeCount)
-                    .ToList();
+                return unitOfWork.Photos.Filter(model => model.OwnerId == userId && model.AlbumId!=tempAlbumId && !model.IsDeleted).Count();
             }
         }
 
@@ -204,7 +194,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
-
 
         public IEnumerable<PhotoModel> GetPhotos(int userId, int skipCount, int takeCount)
         {
@@ -260,7 +249,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-
         //todo Shall refactor and delete. Soon ..)
         public PhotoModel GetPhotoWithoutRightsCheck(int photoId)
         {
@@ -300,12 +288,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 }
                 else
                 {
+                    _eventsAggregator.PushLikeToPhotoAddedEvent(user, photoId);
                     userModels.Add(user);
                 }
 
                 unitOfWork.SaveChanges();
-
-                _eventsAggregator.PushLikeToPhotoAddedEvent(user, photoId);
+                
             }
         }
 
@@ -313,7 +301,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetAvailableAlbums(userId, unitOfWork);
+                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetPublicAlbums(userId, unitOfWork);
 
                 return
                     avialableAlbums.SelectMany(model => model.Photos)

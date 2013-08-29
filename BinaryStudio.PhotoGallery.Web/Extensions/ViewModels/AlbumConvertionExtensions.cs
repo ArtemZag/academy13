@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
     {
         public static AlbumViewModel ToAlbumViewModel(this AlbumModel model, string collageSource)
         {
-            var viewModel = model.ToAlbumViewModel();
+            AlbumViewModel viewModel = model.ToAlbumViewModel();
 
             viewModel.CollagePath = collageSource;
 

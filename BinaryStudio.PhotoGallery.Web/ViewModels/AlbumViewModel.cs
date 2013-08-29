@@ -10,6 +10,8 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         
         public int OwnerId { get; set; }
 
+        public int PhotosCount { get; set; }
+
         public string CollagePath { get; set; }
 
         public string AlbumName { get; set; }
