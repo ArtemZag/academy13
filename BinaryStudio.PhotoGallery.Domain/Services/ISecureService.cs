@@ -85,5 +85,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="albumId">For what album will be given permissions</param>
         /// <param name="let">Give or take away permissions</param>
         void LetGroupViewLikes(int userId, int groupId, int albumId, bool let);
+
+        /// <summary>
+        ///     Returns AvialableGroupModel for groupId
+        /// </summary>
+        AvailableGroupModel GetAvailableGroup(int userId, int groupId, int albumId, IUnitOfWork unitOfWork);
     }
 }

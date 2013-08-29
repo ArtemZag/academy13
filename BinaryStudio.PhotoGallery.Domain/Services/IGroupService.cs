@@ -1,9 +1,12 @@
-﻿using BinaryStudio.PhotoGallery.Models;
+﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services
 {
-    interface IGroupService
+    public interface IGroupService
     {
+        IEnumerable<AvailableGroupModel> GetAvialableGroups(int userId, int albumId);
+
         /// <summary>
         /// Creates new group by model
         /// </summary>
