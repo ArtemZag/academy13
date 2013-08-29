@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Web;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
 using Microsoft.AspNet.SignalR;
@@ -12,7 +13,16 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
     {
         public CustomPrincipal User
         {
-            get { return HttpContext.Current.User as CustomPrincipal; }
+            get
+            {
+                CustomPrincipal ret = null;
+                try
+                {
+                    ret = HttpContext.Current.User as CustomPrincipal; //todo MMMMagic
+                }
+                catch (Exception e) { }
+                return ret;
+            }
         }
 
         public override Task OnConnected()
