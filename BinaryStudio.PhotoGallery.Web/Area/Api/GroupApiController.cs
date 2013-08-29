@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using AttributeRouting;
@@ -23,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         [GET("")]
         public HttpResponseMessage GetAvialableGroups(int albumId)
         {
-            IEnumerable<AvailableGroupModel> result = groupService.GetAvialableGroups(User.Id, albumId);
+            IEnumerable<AvailableGroupModel> result = groupService.GetAvialableGroups(User.Id, albumId).Select(model => model);
 
             throw new NotImplementedException();
         }

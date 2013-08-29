@@ -253,6 +253,7 @@
     <Compile Include="CustomStructure\CustomPrincipal.cs" />
     <Compile Include="CustomStructure\ICustomPrincipal.cs" />
     <Compile Include="Extensions\HtmlHelperExtentions.cs" />
+    <Compile Include="Extensions\ViewModels\AvialableGroupExtension.cs" />
     <Compile Include="Extensions\ViewModels\PhotoConvertionExtensions.cs" />
     <Compile Include="Extensions\ViewModels\UserConvertionExtensions.cs" />
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
