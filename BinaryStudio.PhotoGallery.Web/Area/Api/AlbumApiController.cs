@@ -63,10 +63,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 var model = new AlbumsViewModel
                     {
-                        albums = albums,
-                        requestsUserName = string.Format("{0} {1}", requestsUser.FirstName, requestsUser.LastName),
-                        ownerUserName = string.Format("{0} {1}", ownerUser.FirstName, ownerUser.LastName),
-                        noAlbumsToView = pr
+                        Albums = albums,
+                        RequestsUserName = string.Format("{0} {1}", requestsUser.FirstName, requestsUser.LastName),
+                        OwnerUserName = string.Format("{0} {1}", ownerUser.FirstName, ownerUser.LastName),
+                        NoAlbumsToView = pr
                     };
                 return Request.CreateResponse(HttpStatusCode.OK, model, new JsonMediaTypeFormatter());
             }
@@ -75,6 +75,20 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+		[GET("GetAllAlbums")]
+		public HttpResponseMessage GetAllAlbums()
+		{
+			try
+			{
+				var albums = _albumService.GetAllAlbums(User.Id).ToList();
+				return Request.CreateResponse(HttpStatusCode.OK, albums, new JsonMediaTypeFormatter());
+			}
+			catch (Exception ex)
+			{
+				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
 
         [POST("")]
         public HttpResponseMessage PostAlbumInfo(AlbumViewModel albumViewModel)

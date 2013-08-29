@@ -20,7 +20,7 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
                 {
                     ret = HttpContext.Current.User as CustomPrincipal; //todo MMMMagic
                 }
-                catch (Exception e) { }
+                catch (Exception) { }
                 return ret;
             }
         }

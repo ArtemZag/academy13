@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using AttributeRouting;
-using AttributeRouting.Web.Mvc;
+﻿using System.Collections.Generic;
 
 namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
     public class AlbumsViewModel
     {
-        public IEnumerable<AlbumViewModel> albums;
-        public string requestsUserName;
-        public string ownerUserName;
-        public bool noAlbumsToView;
+        public IEnumerable<AlbumViewModel> Albums;
+        public string RequestsUserName;
+        public string OwnerUserName;
+        public bool NoAlbumsToView;
     }
 }

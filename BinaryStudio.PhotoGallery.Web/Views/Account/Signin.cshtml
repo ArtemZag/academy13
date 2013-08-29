@@ -8,28 +8,29 @@
 }
 
 <div id="loginPanel" class="login-panel">
-    @Html.Image(Url.Content("~/Content/images/logo_big.png"))
+    @Html.Image("~/Content/images/logo_big.png")
     <div class="well">
         <form class="control-group form-horizontal pagination-centered">
-            <input id="Email" name="Email" type="email" class="input-block-level" maxlength="255" placeholder="E-mail address" />
-            <input id="Password" name="Password" type="password" class="input-block-level" maxlength="20" placeholder="Password" />
+            @Html.TextBoxFor(model => model.Email, new {@class = "input-block-level", @placeholder = "E-mail address"})
+            @Html.PasswordFor(model => model.Password, new {@class = "input-block-level", @placeholder = "Password"})
             <label class="checkbox">
-                <input id="RememberMe" name="RememberMe" type="checkbox" value="true" checked> Remember me
+@*            @Html.CheckBoxFor(model => model.RememberMe) Remember me*@
+            <input id="RememberMe" name="RememberMe" type="checkbox" value="true" checked> Remember me
             </label>
             <button id="signin-button" type="submit" class="btn btn-primary effeckt-button zoom-in">
                 <span class="effeckt-label">Sign in</span>
                 <span class="effeckt-spinner effeckt-spinner-blue"></span>
             </button>
             <a id="forgotPass" class="btn btn-link">Forgot password?</a>
-@*            @Html.ActionLink("Forgot password?", "RemindPass", "Account", new {@class = "btn btn-link"})*@
+@*            @Html.ActionLink("Forgot password?", "RemindPass", "Account", new {@class = "btn btn-link", @id="forgotPass"})*@
         </form>
         <div class="error-field"></div>
         <hr />
         <div class="social">
-            <a href="~/login/vkontakte"><img src="~/Content/images/vkontakte_logo.png" /></a>
-            <a href="~/login/facebook"><img src="~/Content/images/facebook_logo.png"/></a>
-            <a href="~/login/twitter"><img src="~/Content/images/twitter_logo.png" /></a>
-            <a href="~/login/github"><img src="~/Content/images/github_logo.png" /></a>
+            @Html.ImageLink("~/Content/images/vkontakte_logo.png", Url.Action("SignIn") + "/vkontakte")
+            @Html.ImageLink("~/Content/images/facebook_logo.png", Url.Action("SignIn") + "/facebook")
+            @Html.ImageLink("~/Content/images/twitter_logo.png", Url.Action("SignIn") + "/twitter")
+            @Html.ImageLink("~/Content/images/github_logo.png", Url.Action("SignIn") + "/github")
         </div>
     </div>
 </div>

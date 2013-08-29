@@ -107,11 +107,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanSeeComments = let;
+                availableGroupView.CanSeeComments = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
@@ -122,11 +122,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanAddComments = let;
+                availableGroupView.CanAddComments = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
@@ -136,11 +136,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanSeePhotos = let;
+                availableGroupView.CanSeePhotos = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
@@ -150,11 +150,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanAddPhotos = let;
+                availableGroupView.CanAddPhotos = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
@@ -164,11 +164,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanSeeLikes = let;
+                availableGroupView.CanSeeLikes = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
@@ -212,7 +212,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Gets available group or creates if doesn't exist.
         /// </summary>
-        public AvailableGroupModel GetAvailableGroup(int userId, int groupId, int albumId, IUnitOfWork unitOfWork)
+        private AvailableGroupModel GetAvailableGroup(int userId, int groupId, int albumId, IUnitOfWork unitOfWork)
         {
             AlbumModel album = GetAlbum(albumId, unitOfWork);
             UserModel user = GetUser(userId, unitOfWork);

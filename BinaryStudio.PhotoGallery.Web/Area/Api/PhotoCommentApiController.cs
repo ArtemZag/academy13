@@ -83,8 +83,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            return Request.CreateResponse(HttpStatusCode.Created);
         }
     }
 }

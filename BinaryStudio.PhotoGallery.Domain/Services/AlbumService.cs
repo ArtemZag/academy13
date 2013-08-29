@@ -27,11 +27,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             #endregion
         };
 
-        private readonly ISecureService secureService;
+        private readonly ISecureService _secureService;
 
         public AlbumService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
         {
-            this.secureService = secureService;
+            _secureService = secureService;
         }
 
         public AlbumModel CreateAlbum(int userId, AlbumModel albumModel)
@@ -104,7 +104,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             var result = new List<AlbumModel>();
 
-            IEnumerable<AlbumModel> publicAlbums = secureService.GetPublicAlbums(userId, unitOfWork);
+            IEnumerable<AlbumModel> publicAlbums = _secureService.GetPublicAlbums(userId, unitOfWork);
             IEnumerable<AlbumModel> userAlbums = GetAllAlbums(userId, unitOfWork);
 
             IEnumerable<AlbumModel> difference =
@@ -162,13 +162,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 reasonOfNotAlbums = true;
-                var albums = unitOfWork.Albums.Filter(model => model.OwnerId == userOwnerId &&  !model.IsDeleted && model.Name != "Temporary")
+                var albums = unitOfWork.Albums.Filter(model => model.OwnerId == userOwnerId && !model.IsDeleted && model.Name != TEMPORARY_ALBUM_NAME)
                                  .OrderByDescending(model => model.DateOfCreation)
                                  .Skip(skipCount)
                                  .Take(takeCount)
                                  .ToList();
                 if (albums.Count == 0)
+                {
                     reasonOfNotAlbums = false;
+                    return albums;
+                }
 
                 var albumsToTake = 
                     albums.Select(album => album)

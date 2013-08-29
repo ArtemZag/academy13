@@ -11,6 +11,7 @@
     var leftSideMenuId = $("#leftSideMenu");
     var leftSideMenuButtonId = $("#leftSideMenuButton");
     var photoId = $("#photo");
+	var userId;
 
     function User(data) {
         var u = this;
@@ -67,7 +68,6 @@
         self.src = ko.observable();
         self.IsVisible = ko.observable();
         self.PhotoLikes = ko.observableArray();
-        self.PhotoLikeIcon = ko.observable();
         self.tags = ko.observableArray();
         
 
@@ -90,7 +90,9 @@
 
         self.AddComment = function() {
             $.post("/api/photo/comment", { CommentText: self.newComment(), PhotoId: self.PhotoId() }, function(data) {
-                setComments(data);
+            	setComments(data);
+	            // scroll down to new added comment. need pure js
+            	document.getElementById('anchor').scrollIntoView();
             });
         };
 
@@ -131,27 +133,60 @@
             leftSideMenuButtonId.css("background-color", "transparent");
         };
 
-        self.HideLeftSideMenu = function() {
-            navbarClass.css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
-                .animate({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
+        self.HideLeftSideMenu = function (data, event) {
+	        if (isRealMouseOut(event)) {
+		        navbarClass.css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
+			        .animate({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
 
-            photoSegmentId.css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
-                .animate({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
+		        photoSegmentId.css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
+			        .animate({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
 
-            actionSegmentId.css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
-                .animate({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
-            leftSideMenuId.css("-webkit-transform", "translateX(-300px)").animate("-webkit-transform", "translateX(0px)", 500);
-            leftSideMenuButtonId.css("background-color", "#e7e7e7");
+		        actionSegmentId.css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
+			        .animate({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
+		        leftSideMenuId.css("-webkit-transform", "translateX(-300px)").animate("-webkit-transform", "translateX(0px)", 500);
+		        leftSideMenuButtonId.css("background-color", "#e7e7e7");
+	        }
         };
 
         self.IncrementPhotoLike = function() {
             addLike(self.PhotoId);
-            self.PhotoLikeIcon("/Content/images/photo-page/like-icon.png");
         };
     }
 
     var model = new PhotoVieModel();
     ko.applyBindings(model);
+
+    //var apiUrl = $("#albumApiUrl").data("url");
+    //$.get(apiUrl, function(albums) {
+	//	$.each(albums, function (index, album) {
+	//		var a;
+	//	});
+	//});
+	
+	function isChildOf(parent, child) {
+		if (child !== null) {
+			while (child.parentNode) {
+				if ((child = child.parentNode) === parent) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	function isRealMouseOut(event) {
+		var current_mouse_target = null;
+		if (event.toElement) {
+			current_mouse_target = event.toElement;
+		} else if (event.relatedTarget) {
+			current_mouse_target = event.relatedTarget;
+		}
+		if (!isChildOf(event.currentTarget, current_mouse_target) && event.currentTarget !== current_mouse_target) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
     var id = document.getElementById("hiddenPhotoID").value;
     model.PhotoId(id);
@@ -259,4 +294,16 @@
 
     getFirstPhoto();
     $(window).resize(setPhotoSize(photoWidth, photoHeight));
+
+    var cursorChangeIDs = '#photoLike img, #cosialNetworkSync, #prevPhotoButton, #mainPhoto';
+	$(document).on('mouseover',cursorChangeIDs,function() {
+		document.body.style.cursor = "pointer";
+	}).on('mouseout', cursorChangeIDs, function () {
+		document.body.style.cursor = "default";
+	});
+
+	$('#newCommentInputFild').on('keydown', function(e) {
+		if (e.keyCode == 13 && e.shiftKey)
+			$('#newCommentAddButton').click();
+	});
 });

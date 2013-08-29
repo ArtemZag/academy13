@@ -28,6 +28,7 @@
 
     function getInfo(inf) {
         $("#userInformation").html($("#userTmpl").render(inf));
+
         if (inf.FirstName == "None" && inf.LastName == "None") {
             $(".albums").html(
                 $("#noneUserTmpl").render());
@@ -44,14 +45,14 @@
         skipCount += takeAlbumsCount;
     }
     function getAlbums(model) {
-        var length = model.albums.length;
+        var length = model.Albums.length;
         if (length > 0) {
             $(".albums").html(
-                $("#collageTmpl").render(model.albums));
+                $("#collageTmpl").render(model.Albums));
         } else {
             if (skipCount - takeAlbumsCount == 0) {
                 windowObject.resize(moveNoAlbumsContainer);
-                if (model.noAlbumsToView) {
+                if (model.NoAlbumsToView) {
                     $(".albums").html(
                         $("#dontHaveRightsTmpl").render(model));
                     moveNoAlbumsContainer();

@@ -48,12 +48,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 return Redirect(FB.CreateAuthUrl(Randomizer.GetString(16)));
             }
 
-            var viewModel = new SigninViewModel()
-                {
-
-                };
-            
-            return View(new SigninViewModel());
+            return View(new SigninViewModel {RememberMe = true});
         }
 
         [GET("registration/{invite}", RouteName = "Registration")]
@@ -148,18 +143,10 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return RedirectToRoute("Login");
         }
 
-        [HttpGet]
         [GET("remind")]
         public ActionResult RemindPass()
         {
             return View(new RemindPassViewModel());
-        }
-
-        [HttpPost]
-        [POST("remind")]
-        public ActionResult RemindPass(RemindPassViewModel remindPassViewModel)
-        {
-            return View();
         }
     }
 }

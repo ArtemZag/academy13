@@ -14,6 +14,7 @@ using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
 using BinaryStudio.PhotoGallery.Web.Properties;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Account;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Admin;
 
@@ -106,6 +107,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
+
+        [POST("remind")]
+        public HttpResponseMessage RemindPassword([FromBody] RemindPassViewModel viewModel)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [POST("invite")]

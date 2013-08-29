@@ -237,7 +237,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
-    <Compile Include="Controllers\AlbumsController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -253,6 +253,7 @@
     <Compile Include="CustomStructure\CustomPrincipal.cs" />
     <Compile Include="CustomStructure\ICustomPrincipal.cs" />
     <Compile Include="Extensions\HtmlHelperExtentions.cs" />
+    <Compile Include="Extensions\ViewModels\AvialableGroupConvertationExtension.cs" />
     <Compile Include="Extensions\ViewModels\PhotoConvertionExtensions.cs" />
     <Compile Include="Extensions\ViewModels\UserConvertionExtensions.cs" />
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
@@ -281,7 +282,7 @@
     <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Account\SigninViewModel.cs" />
-    <Compile Include="ViewModels\AvialableGroupViewModel.cs" />
+    <Compile Include="ViewModels\AvailableGroupViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\PublicPhotosViewModel.cs" />
     <Compile Include="ViewModels\Photo\NewCommentViewModel.cs" />
@@ -314,7 +315,7 @@
     <Compile Include="ViewModels\Search\UserFoundViewModel.cs" />
     <Compile Include="ViewModels\Upload\MovePhotosViewModel.cs" />
     <Compile Include="ViewModels\Upload\UploadResultViewModel.cs" />
-    <Content Include="Content\albums-page.css" />
+    <Content Include="Content\user-page.css" />
     <Content Include="Content\images\1.png" />
     <Content Include="Content\images\2.png" />
     <Content Include="Content\images\arrowLeft.png" />
@@ -348,7 +349,7 @@
     <Content Include="Scripts\mediator.js" />
     <Content Include="Scripts\mediator.min.js" />
     <Content Include="Scripts\Notifications.js" />
-    <Content Include="Scripts\Albums\albums.js" />
+    <Content Include="Scripts\User\user.js" />
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
     <Content Include="Scripts\panel.js" />
@@ -465,7 +466,7 @@
     <Content Include="Views\Photo\Index.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
-    <Content Include="Views\Albums\Index.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\Shared\AccessDenied.cshtml" />
@@ -523,7 +524,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1940</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57376</IISUrl>
+          <IISUrl>http://localhost:57374</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
