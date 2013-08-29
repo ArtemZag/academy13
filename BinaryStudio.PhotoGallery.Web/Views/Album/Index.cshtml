@@ -39,9 +39,14 @@
             <select data-bind="options: groups, optionsText: 'name', value: selectedGroup, optionCaption: 'Select group...'">
             </select>
             <div data-bind="with: selectedGroup">
-                <input type="checkbox" data-bind="checked: canSeePhotos"> Can see photos
-            
-                <input type="checkbox" data-bind="checked: canSeeComments"> Can see comments
+                <label class="checkbox">
+                
+                    <input type="checkbox" data-bind="checked: canSeePhotos"> Can see photos
+                </label>
+
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: canSeeComments"> Can see comments
+                </label>
             </div>
         </div>
         <a class="btn save-info-btn" data-bind="click: sendInfo">Save</a>

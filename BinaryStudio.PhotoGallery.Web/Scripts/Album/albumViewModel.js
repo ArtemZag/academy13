@@ -30,7 +30,7 @@
 
         self.photos = ko.observableArray();
 
-        self.tags = ko.observableArray();        
+        self.tags = ko.observableArray();
 
         // tags array to string
         self.tagsString = ko.computed(function () {
@@ -42,6 +42,9 @@
 
             // post name and description
             postAlbumInfo();
+            
+            // post new rights for groups
+            postRights();
         };
 
         self.gotoPhotoPage = function (data) {

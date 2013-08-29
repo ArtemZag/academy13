@@ -51,5 +51,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);                
             }
         }
+
+        [POST("")]
+        public HttpResponseMessage PostRights(IEnumerable<AvailableGroupViewModel> viewModels)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
