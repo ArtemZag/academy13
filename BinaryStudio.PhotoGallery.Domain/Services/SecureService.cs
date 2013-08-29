@@ -101,17 +101,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return result;
         }
 
-        public void LetGroupViewComments(int userId, int groupId, int albumId, bool @let, IUnitOfWork unitOfWork)
-        {
-            AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
-
-            availableGroupView.CanSeeComments = let;
-
-            unitOfWork.AvailableGroups.Update(availableGroupView);
-            unitOfWork.SaveChanges();
-        }
-
-
         public void LetGroupAddComment(int userId, int groupId, int albumId, bool let)
         {
             //todo: add try-catch
@@ -126,13 +115,37 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public void LetGroupViewComments(int userId, int groupId, int albumId, bool let, IUnitOfWork unitOfWork)
+        {
+            AvailableGroupModel availableGroupModel = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+
+            availableGroupModel.CanSeeComments = let;
+
+            SetAvialableGroupToAlbum(albumId, availableGroupModel, unitOfWork);
+        }
+
         public void LetGroupViewPhotos(int userId, int groupId, int albumId, bool let, IUnitOfWork unitOfWork)
         {
-            AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+            AvailableGroupModel availableGroupModel = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-            availableGroupView.CanSeePhotos = let;
+            availableGroupModel.CanSeePhotos = let;
 
-            unitOfWork.AvailableGroups.Update(availableGroupView);
+            SetAvialableGroupToAlbum(albumId, availableGroupModel, unitOfWork);
+        }
+
+        private void SetAvialableGroupToAlbum(int albumId, AvailableGroupModel availableGroupModel, IUnitOfWork unitOfWork)
+        {
+            if (availableGroupModel.Id == 0)
+            {
+                AlbumModel album = GetAlbum(albumId, unitOfWork);
+
+                album.AvailableGroups.Add(availableGroupModel);
+            }
+            else
+            {
+                unitOfWork.AvailableGroups.Update(availableGroupModel);
+            }
+
             unitOfWork.SaveChanges();
         }
 
