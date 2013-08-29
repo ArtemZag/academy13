@@ -9,11 +9,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     internal class PhotoSearchService : DbService, IPhotoSearchService
     {
-        private readonly ISecureService _secureService;
+        private readonly IAlbumService albumService;
 
-        public PhotoSearchService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
+        public PhotoSearchService(IUnitOfWorkFactory workFactory, IAlbumService albumService) : base(workFactory)
         {
-            _secureService = secureService;
+            this.albumService = albumService;
         }
 
         public IEnumerable<IFound> Search(SearchArguments searchArguments)
@@ -24,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetAvailableAlbums(searchArguments.UserId, unitOfWork);
+                IEnumerable<AlbumModel> avialableAlbums = albumService.GetAvialableAlbums(searchArguments.UserId, unitOfWork);
 
                 if (searchArguments.IsSearchPhotosByDescription)
                 {
@@ -53,7 +53,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             {
                 IEnumerable<PhotoFound> found =
                     album.Photos.Where(
-                        model => searchWords.Any(model.Description.ToLower().Contains) && !model.IsDeleted)
+                        model => searchWords.Any(model.Description.ToLower().Contains))
                         .Select(model => new PhotoFound
                         {
                             Id = model.Id,
@@ -78,7 +78,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             foreach (AlbumModel albumModel in fromAlbums)
             {
                 IEnumerable<PhotoFound> found = albumModel.Photos.Where(
-                    model => model.Tags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)) && !model.IsDeleted)
+                    model => model.Tags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
                     .Select(model => new PhotoFound
                     {
                         Id = model.Id,

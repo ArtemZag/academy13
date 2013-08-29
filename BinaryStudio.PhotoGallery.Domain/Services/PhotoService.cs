@@ -302,7 +302,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetAvailableAlbums(userId, unitOfWork);
+                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetPublicAlbums(userId, unitOfWork);
 
                 return
                     avialableAlbums.SelectMany(model => model.Photos)

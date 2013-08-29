@@ -12,11 +12,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     internal class UserSearchService : DbService, IUserSearchService
     {
-        private readonly IUsersMonitorTask usersMonitorTask;
-
-        public UserSearchService(IUnitOfWorkFactory workFactory, IUsersMonitorTask usersMonitorTask) : base(workFactory)
+        public UserSearchService(IUnitOfWorkFactory workFactory) : base(workFactory)
         {
-            this.usersMonitorTask = usersMonitorTask;
         }
 
         public IEnumerable<IFound> Search(SearchArguments searchArguments)
@@ -72,7 +69,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             {
                 Id = model.Id,
                 Department = model.Department,
-                IsOnline = usersMonitorTask.IsOnline(model.Id),
                 Name = model.FirstName + " " + model.LastName,
                 Relevance = getRelevance(searchWords, model)
             });

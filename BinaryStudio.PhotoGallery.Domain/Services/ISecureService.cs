@@ -37,9 +37,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         bool CanUserViewLikes(int userId, int albumId);
 
         /// <summary>
-        ///     Gets a list of all available albums for user
+        ///     Returns all public albums except users albums
         /// </summary>
-        IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork);
+        IEnumerable<AlbumModel> GetPublicAlbums(int userId, IUnitOfWork unitOfWork);
 
         /// <summary>
         ///     Lets group of users view comments in the album
