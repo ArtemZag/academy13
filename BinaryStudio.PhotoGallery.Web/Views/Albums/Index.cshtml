@@ -37,17 +37,15 @@
     <p class="textStyle">Photos: {{:PhotoCount}}</p>                                                                                                                                                                                                                                                                                                                          
 </script>
 
-<table id="content">
-    <tr>
-        <td class="albums">
+<div id="content">
+        <div class="albums">
             
-        </td>
-        <td class="infoArea">
+        </div>
+        <div class="infoArea">
             <div class="info" id="userInformation">
             </div>
-        </td>
-    </tr>
-</table>
+        </div>
+</div>
 
 <div id="albumApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbums"})"></div>
 <div id="userApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "UserApi", action = "GetCurrent"})"></div>

@@ -64,6 +64,20 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
+		[GET("GetAllAlbums")]
+		public HttpResponseMessage GetAllAlbums()
+		{
+			try
+			{
+				var albums = _albumService.GetAllAlbums(User.Id).ToList();
+				return Request.CreateResponse(HttpStatusCode.OK, albums, new JsonMediaTypeFormatter());
+			}
+			catch (Exception ex)
+			{
+				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
+
         [POST("")]
         public HttpResponseMessage PostAlbumInfo(AlbumViewModel albumViewModel)
         {
