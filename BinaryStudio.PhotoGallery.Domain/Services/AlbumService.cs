@@ -9,15 +9,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class AlbumService : DbService, IAlbumService
     {
-        private readonly ISecureService _secureService;
-
+        private const string TEMPORARY_ALBUM_NAME = "Temporary";
 
         private readonly List<AlbumModel> _systemAlbumsList = new List<AlbumModel>
         {
             #region "Temporary" album
             new AlbumModel
             {
-                Name = "Temporary",
+                Name = TEMPORARY_ALBUM_NAME,
                 Description = "System album. Not for use",
                 OwnerId = -1,
                 IsDeleted = false,
@@ -28,9 +27,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             #endregion
         };
 
+        private readonly ISecureService secureService;
+
         public AlbumService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
         {
-            _secureService = secureService;
+            this.secureService = secureService;
         }
 
         public AlbumModel CreateAlbum(int userId, AlbumModel albumModel)
@@ -97,6 +98,22 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 unitOfWork.SaveChanges();
             }
+        }
+
+        public IEnumerable<AlbumModel> GetAvialableAlbums(int userId, IUnitOfWork unitOfWork)
+        {
+            var result = new List<AlbumModel>();
+
+            IEnumerable<AlbumModel> publicAlbums = secureService.GetPublicAlbums(userId, unitOfWork);
+            IEnumerable<AlbumModel> userAlbums = GetAllAlbums(userId, unitOfWork);
+
+            IEnumerable<AlbumModel> difference =
+                userAlbums.Where(model => publicAlbums.All(albumModel => albumModel.Id != model.Id));
+
+            result.AddRange(publicAlbums);
+            result.AddRange(difference);
+
+            return result;
         }
 
         public IEnumerable<string> GetAlbumsTags(int albumId)
@@ -178,10 +195,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                UserModel user = GetUser(userId, unitOfWork);
-
-                return user.Albums.Where(model => !model.IsDeleted).ToList();
+                return GetAllAlbums(userId, unitOfWork);
             }
+        }
+
+        public IEnumerable<AlbumModel> GetAllAlbums(int userId, IUnitOfWork unitOfWork)
+        {
+            UserModel user = GetUser(userId, unitOfWork);
+
+            return user.Albums.Where(model => !model.Name.Equals(TEMPORARY_ALBUM_NAME) && !model.IsDeleted).ToList();
         }
 
 
@@ -199,19 +221,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 return foundAlbum.Id;
             }
-        }
-
-        public IEnumerable<AlbumModel> GetAvailableAlbums(int userId)
-        {
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                return GetAvailableAlbums(userId, unitOfWork);
-            }
-        }
-
-        public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
-        {
-            return _secureService.GetAvailableAlbums(userId, unitOfWork);
         }
 
         private bool IsAlbumSystem(AlbumModel album)

@@ -35,6 +35,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         IEnumerable<AlbumModel> GetAllAlbums(int userId);
 
+        IEnumerable<AlbumModel> GetAllAlbums(int userId, IUnitOfWork unitOfWork);
+
         /// <summary>
         ///     Creates album for specified user by his email.
         /// </summary>
@@ -53,10 +55,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         void DeleteAlbum(int userId, int albumId);
 
         /// <summary>
-        ///     Get all available albums for specified user
+        ///     Returns all public albums and user's albums
         /// </summary>
-        IEnumerable<AlbumModel> GetAvailableAlbums(int userId);
-
-        IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork);
+        IEnumerable<AlbumModel> GetAvialableAlbums(int userId, IUnitOfWork unitOfWork);
     }
 }

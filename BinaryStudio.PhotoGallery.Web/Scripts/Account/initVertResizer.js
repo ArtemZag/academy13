@@ -16,27 +16,31 @@
     var photoPortion = 40;
 
     $.get("api/publicphoto/" + photoPortion)
-        .done(function(photos) {
-            viewModel.addPhotos(photos);
-            var $photos = $("div.invisible > img");
-            var length = $photos.length;
+        .done(function (photos) {
+            var goodPhotos = new Array();
+            var length = photos.length;
             var numLoad = 0;
-            $photos.load(function() {
-                numLoad++;
-                if (numLoad == length) { //todo How to check by another way that all of photos have been loaded? 
-                    loaded();
-                }
-            })
-            .error(function() {
-                length--;
-                $(this).closest("div").remove();
-                if (numLoad == length) { //todo How to check by another way that all of photos have been loaded? 
-                    loaded();
-                }
+            jQuery.each(photos, function(ind) {
+                var img = new Image();
+                img.src = this.PhotoThumbSource;
+                $(img).load(function() {
+                    numLoad++;
+                    goodPhotos.push(photos[ind]);
+                    if (numLoad == length) { //todo How to check by another way that all of photos have been loaded? 
+                        loaded(goodPhotos);
+                    }
+                })
+                    .error(function() {
+                        length--;
+                        if (numLoad == length) { //todo How to check by another way that all of photos have been loaded? 
+                            loaded(goodPhotos);
+                        }
+                    });
             });
         });
     
-    function loaded() {
+    function loaded(goodPhotos) {
+        viewModel.addPhotos(goodPhotos);
         initResizer();
     }
     

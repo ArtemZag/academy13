@@ -126,7 +126,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 var albumNames = _albumService
                     .GetAllAlbums(User.Id)
-                    .Where(album => album.Name != "Temporary")
                     .Select(album => album.Name)
                     .ToList();
 
