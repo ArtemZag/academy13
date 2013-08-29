@@ -11,6 +11,7 @@ namespace BinaryStudio.PhotoGallery.Models
         public PhotoCommentModel()
         {
             DateOfCreating = DateTime.Now;
+            Text = string.Empty;
         }
 
         public PhotoCommentModel(int userId,  int photoId, string text, int reply)

@@ -12,6 +12,8 @@ namespace BinaryStudio.PhotoGallery.Models
         public PhotoModel()
         {
             DateOfCreation = DateTime.Now;
+            Format = string.Empty;
+            Description = string.Empty;
         }
 
         public PhotoModel(int albumId, int userId)
@@ -19,6 +21,8 @@ namespace BinaryStudio.PhotoGallery.Models
             AlbumId = albumId;
             OwnerId = userId;
             DateOfCreation = DateTime.Now;
+            Format = string.Empty;
+            Description = string.Empty;
         }
 
         /// <summary>
