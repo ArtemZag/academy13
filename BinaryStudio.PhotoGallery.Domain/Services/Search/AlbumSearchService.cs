@@ -30,7 +30,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchAlbumsByName)
                 {
                     IEnumerable<AlbumFound> found = SearchByCondition(searchWords, avialableAlbums,
-                        model => searchWords.Any(searchWord => model.Name.ToLower().Contains(searchWord)),
+                        model => searchWords.Any(searchWord => (model.Name ?? string.Empty).ToLower().Contains(searchWord)),
                         CalculateRelevanceByName);
 
                     result.AddRange(found);
@@ -39,7 +39,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchAlbumsByDescription)
                 {
                     IEnumerable<AlbumFound> found = SearchByCondition(searchWords, avialableAlbums,
-                        model => searchWords.Any(searchWord => model.Description.ToLower().Contains(searchWord)),
+                        model => searchWords.Any(searchWord => (model.Description ?? string.Empty).ToLower().Contains(searchWord)),
                         CalculateRelevaceByDescription);
 
                     result.AddRange(found);
@@ -66,12 +66,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
         private int CalculateRelevanceByName(IEnumerable<string> searchWords, AlbumModel albumModel)
         {
-            return searchWords.Sum(searchWord => Regex.Matches(albumModel.Name.ToLower(), searchWord.ShieldString()).Count);
+            return searchWords.Sum(searchWord => Regex.Matches((albumModel.Name ?? string.Empty).ToLower(), searchWord.ShieldString()).Count);
         }
 
         private int CalculateRelevaceByDescription(IEnumerable<string> searchWords, AlbumModel albumModel)
         {
-            return searchWords.Sum(searchWord => Regex.Matches(albumModel.Description.ToLower(), searchWord.ShieldString()).Count);
+            return searchWords.Sum(searchWord => Regex.Matches((albumModel.Description ?? string.Empty).ToLower(), searchWord.ShieldString()).Count);
         }
 
         private IEnumerable<IFound> Group(IEnumerable<AlbumFound> albums)
