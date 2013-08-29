@@ -9,11 +9,14 @@ using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Http;
 using BinaryStudio.PhotoGallery.Core.EmailUtils;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
 using BinaryStudio.PhotoGallery.Web.Properties;
+using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Account;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Admin;
 
@@ -24,11 +27,15 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     {
         private readonly IUserService _userService;
         private readonly IEmailSender _emailSender;
+        private readonly ICryptoProvider _cryptoProvider;
+        private readonly IUrlUtil _urlUtil;
 
-        public AccountApiController(IUserService userService, IEmailSender emailSender)
+        public AccountApiController(IUserService userService, IEmailSender emailSender, ICryptoProvider cryptoProvider, IUrlUtil urlUtil)
         {
             _userService = userService;
             _emailSender = emailSender;
+            _cryptoProvider = cryptoProvider;
+            _urlUtil = urlUtil;
         }
 
         [POST("login")]
@@ -139,6 +146,42 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             catch (UserAlreadyExistException ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+
+        [POST("remind")]
+        public HttpResponseMessage RemindPass(RemindPassViewModel remindPassViewModel)
+        {
+            try
+            {
+                var mUser = _userService.GetUser(remindPassViewModel.Email);
+                string host = ConfigurationManager.AppSettings["NotificationHost"];
+                string fromEmail = ConfigurationManager.AppSettings["NotificationEmail"];
+                string fromPass = ConfigurationManager.AppSettings["NotificationPassword"];
+                string mailSubject = Resources.Email_RemindPassSubject;
+                var remingSalt = _cryptoProvider.GetNewSalt();
+                //mUser.RemindPasswordSalt = remingSalt;
+                var emailHash = _cryptoProvider.CreateHashForPassword(remindPassViewModel.Email, remingSalt);
+                string remingLink = string.Format("{0}/remind/{1}/{2}", HttpContext.Current.Request.Url.Authority, remindPassViewModel.Email,
+                                                  emailHash);
+                string text = string.Format(
+                    "<p>Dear {0} {1}!\n\n<p>You or someone else asked to recover password procedure</p>. " +
+                    "<p>To change you password, follow this link:\n{2}. This link will be available until the tomorrow.</p>" +
+                    "<p>If it wasn't you, just ignore this message.</p>",
+                    mUser.FirstName,
+                    mUser.LastName,
+                    remingLink);
+                _emailSender.Send(host, fromEmail, fromPass, remindPassViewModel.Email, mailSubject, text);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (UserNotFoundException e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.NoContent, e.Message);
             }
             catch (Exception ex)
             {

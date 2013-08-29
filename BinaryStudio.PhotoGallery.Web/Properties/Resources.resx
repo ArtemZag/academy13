@@ -123,4 +123,7 @@
   <data name="Email_InviteSubject" xml:space="preserve">
     <value>Binary Studio Gallery Invitation</value>
   </data>
+  <data name="Email_RemindPassSubject" xml:space="preserve">
+    <value>Binary Studio. Recovery Email</value>
+  </data>
 </root>
