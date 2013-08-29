@@ -60,7 +60,7 @@
 <div id="getPhotosUrl" data-url="@Html.RouteUrl("PhotoApi", "GetPhotos")"></div>
 <div id="getGroupsUrl" data-url="@Html.RouteUrl("GroupApi", "GetGroups")"></div>
 
-<div id="postGroupsUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "GroupApi", action = "PostGroups"})"></div>
+<div id="postGroupsUrl" data-url="@Html.RouteUrl("GroupApi", "PostGroups")"></div>
 <div id="postAlbumInfoUrl" data-url="@Html.RouteUrl("AlbumApi", "PostAlbumInfo")"></div>
 <input id="albumId" type="hidden" value="@ViewBag.AlbumId"/>
 

@@ -88,11 +88,14 @@
             setPhoto(photoArray[self.PhotoIndex()]);
         };
 
-        self.AddComment = function() {
+        self.AddComment = function () {
+
             $.post("/api/photo/comment", { CommentText: self.newComment(), PhotoId: self.PhotoId() }, function(data) {
             	setComments(data);
 	            // scroll down to new added comment. need pure js
             	document.getElementById('anchor').scrollIntoView();
+
+                self.newComment("");
             });
         };
 
