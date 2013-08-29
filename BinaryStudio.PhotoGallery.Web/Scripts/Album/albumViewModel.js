@@ -42,6 +42,9 @@
 
             // post name and description
             postAlbumInfo();
+            
+            // post new rights for groups
+            postRights();
         };
 
         self.gotoPhotoPage = function (data) {
@@ -58,9 +61,12 @@
 
         self.name = ko.observable(name);
 
-        self.canSeePhotos = ko.observable(canSeePhotos);
+        self.canSeePhotos = ko.observable();
 
-        self.canSeeComments = ko.observable(canSeeComments);
+        self.canSeeComments = ko.observable();
+
+        self.canSeePhotos(canSeePhotos);
+        self.canSeeComments(canSeeComments);
     }
 
     // for contenteditable binding 
@@ -136,7 +142,6 @@
 
         return dateTime.substring(0, dateEndIndex);
     }
-
 
     var album = new albumViewModel();
     album.albumId = document.getElementById("albumId").value;

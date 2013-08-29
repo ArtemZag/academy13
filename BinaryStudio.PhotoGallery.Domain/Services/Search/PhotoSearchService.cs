@@ -53,7 +53,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             {
                 IEnumerable<PhotoFound> found =
                     album.Photos.Where(
-                        model => searchWords.Any(model.Description.ToLower().Contains))
+                        model => searchWords.Any((model.Description ?? "").ToLower().Contains))
                         .Select(model => new PhotoFound
                         {
                             Id = model.Id,
@@ -78,7 +78,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             foreach (AlbumModel albumModel in fromAlbums)
             {
                 IEnumerable<PhotoFound> found = albumModel.Photos.Where(
-                    model => model.Tags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
+                    model => model.Tags.Any(tagModel => searchWords.Any((tagModel.TagName ?? "").ToLower().Contains)))
                     .Select(model => new PhotoFound
                     {
                         Id = model.Id,
@@ -101,12 +101,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return
                 photoModel.Tags.Sum(
                     photoTagModel =>
-                        searchWords.Sum(searchWord => Regex.Matches(photoTagModel.TagName, searchWord.ShieldString()).Count));
+                        searchWords.Sum(searchWord => Regex.Matches((photoTagModel.TagName ?? ""), searchWord.ShieldString()).Count));
         }
 
         private int CalculateRelevanceByDescription(IEnumerable<string> searchWords, PhotoModel photoModel)
         {
-            return searchWords.Sum(searchWord => Regex.Matches(photoModel.Description.ToLower(), searchWord.ShieldString()).Count);
+            return searchWords.Sum(searchWord => Regex.Matches((photoModel.Description ?? "").ToLower(), searchWord.ShieldString()).Count);
         }
 
         private IEnumerable<IFound> Group(IEnumerable<PhotoFound> photos)
