@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
 using Microsoft.AspNet.SignalR;
-using AttributeRouting;
-using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using Microsoft.AspNet.SignalR.Hubs;
 
 namespace BinaryStudio.PhotoGallery.Web.Hubs
