@@ -94,26 +94,21 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 result.AddRange(
                     albumIds.Where(id => !userAlbumsIds.Contains(id))
-                    .Select(albumId => GetAlbum(albumId, unitOfWork))
-                    .Where(model => !model.IsDeleted));
+                        .Select(albumId => GetAlbum(albumId, unitOfWork))
+                        .Where(model => !model.IsDeleted));
             }
 
             return result;
         }
 
-
-        public void LetGroupViewComments(int userId, int groupId, int albumId, bool let)
+        public void LetGroupViewComments(int userId, int groupId, int albumId, bool @let, IUnitOfWork unitOfWork)
         {
-            //todo: add try-catch
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+            AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroupView.CanSeeComments = let;
+            availableGroupView.CanSeeComments = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroupView);
-                unitOfWork.SaveChanges();
-            }
+            unitOfWork.AvailableGroups.Update(availableGroupView);
+            unitOfWork.SaveChanges();
         }
 
 
@@ -131,18 +126,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public void LetGroupViewPhotos(int userId, int groupId, int albumId, bool let)
+        public void LetGroupViewPhotos(int userId, int groupId, int albumId, bool let, IUnitOfWork unitOfWork)
         {
-            //todo: add try-catch
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+            AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroupView.CanSeePhotos = let;
+            availableGroupView.CanSeePhotos = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroupView);
-                unitOfWork.SaveChanges();
-            }
+            unitOfWork.AvailableGroups.Update(availableGroupView);
+            unitOfWork.SaveChanges();
         }
 
         public void LetGroupAddPhoto(int userId, int groupId, int albumId, bool let)

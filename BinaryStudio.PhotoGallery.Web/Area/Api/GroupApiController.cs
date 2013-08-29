@@ -53,7 +53,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         [POST("")]
-        public HttpResponseMessage PostRights(IEnumerable<AvailableGroupViewModel> viewModels)
+        public HttpResponseMessage PostGroups([FromBody]AlbumGroupsViewModel albumGroupsViewModel)
         {
             throw new NotImplementedException();
         }
