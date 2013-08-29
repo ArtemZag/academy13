@@ -24,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             this.groupService = groupService;
         }
 
-        [GET("")]
+        [GET("{albumId: int}")]
         public HttpResponseMessage GetGroups(int albumId)
         {
             try
@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         new AvailableGroupModel
                         {
                             AlbumId = albumId,
-                            GroupId = groupModel.Id
+                            GroupId = groupModel.Id,
                         }
                     select viewModel.ToAvialableGroupViewModel(groupModel.GroupName)).ToList();
 

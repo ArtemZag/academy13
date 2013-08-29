@@ -1,6 +1,5 @@
 ﻿@using System.Web.Optimization
-@using BinaryStudio.PhotoGallery.Web.ViewModels
-@model AlbumViewModel
+@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumViewModel
 
 @Styles.Render("~/Content/photo-flow.css")
 @Styles.Render("~/Content/spinner.css")
@@ -36,7 +35,17 @@
         <div class="title">Tags</div>
         <div class="prop"><!--ko text: tagsString--><!--/ko--></div>
         <div class="title">Rights</div>
-        <div></div>
+        <div>
+            <select data-bind="options: groups, optionsText: 'name', value: selectedGroup, optionCaption: 'Select group...'">
+            </select>
+            <label class="checkbox">
+                <input type="checkbox" data-bind="checked: 'selectedGroup.CanSeePhotos'"> <small>Can see photos</small>
+            </label>
+            
+            <label class="checkbox">
+                <input type="checkbox" data-bind="checked: 'selectedGroup.CanSeeComments'"> <small>Can see comments</small>
+            </label>
+        </div>
         <a class="btn save-info-btn" data-bind="click: sendInfo">Save</a>
     </div>
 </div>
