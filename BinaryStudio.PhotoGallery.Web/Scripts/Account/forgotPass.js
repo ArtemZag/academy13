@@ -1,12 +1,13 @@
 ﻿$(document).ready(function () {
     $("#forgotPass").click(function () {
+        $(".error-field .alert").remove();
         Bingally.animation($("#loginPanel"), "move",
             {
                 direction: 'top',
                 method: 'hide',
                 animTime: 500
             });
-        $("#passRecoveryPanel").removeClass("invisible");
+        $("#passRecoveryPanel").removeAttr("style");
         Bingally.animation($("#passRecoveryPanel"), "move",
             {
                 direction: 'top',
@@ -15,13 +16,15 @@
             });
     });
 
-    $("#backToLogin").click(function() {
+    $("#backToLogin").click(function () {
+        $(".error-field .alert").remove();
         Bingally.animation($("#passRecoveryPanel"), "move",
             {
                 direction: 'top',
                 method: 'hide',
                 animTime: 500
             });
+        $("#loginPanel").removeAttr("style");
         Bingally.animation($("#loginPanel"), "move",
             {
                 direction: 'top',

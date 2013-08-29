@@ -44,6 +44,15 @@ body {
 	z-index: 3;
 }
 
+#passRecoveryPanel .well {
+	display: inline-block;
+}
+.well h4 {
+	background-color: rgb(224, 224, 224);
+	text-align: center;
+}
+
+
 .login-panel .well {
     padding: 1px;
     border: 2px solid #03417d;
@@ -90,11 +99,21 @@ body {
     margin-bottom: 10px;
 }
 
+#loginPanel #forgotPass{
+	margin-left: 144px;
+}
+
+#backToLogin {
+	float: right;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	margin-right: 7px;
+}
+
 .login-panel .btn-link {
     background: transparent;
     border: 0;
     box-shadow: none;
-    margin-left: 144px;
     padding: 0;
     font-size: 14px!important;
 }
