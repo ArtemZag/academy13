@@ -167,15 +167,13 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 var remingSalt = _cryptoProvider.GetNewSalt();
                 //mUser.RemindPasswordSalt = remingSalt;
                 var emailHash = _cryptoProvider.CreateHashForPassword(remindPassViewModel.Email, remingSalt);
-                string remingLink = string.Format("{0}/remind/{1}/{2}", HttpContext.Current.Request.Url.Authority, remindPassViewModel.Email,
-                                                  emailHash);
+                string remindLink = string.Format("<a href='http://{0}/remind/{1}/{2}'>http://{0}/remind/{1}/{2}</a>", 
+                    HttpContext.Current.Request.Url.Authority, mUser.Id, emailHash);
                 string text = string.Format(
-                    "<p>Dear {0} {1}!\n\n<p>You or someone else asked to recover password procedure</p>. " +
-                    "<p>To change you password, follow this link:\n{2}. This link will be available until the tomorrow.</p>" +
+                    "<p>Dear {0} {1}!\n\n<p>You or someone else asked to recover password procedure.</p> " +
+                    "<p>To change you password, follow this link:\n{2}. <br/>This link will be available until the tomorrow.</p>" +
                     "<p>If it wasn't you, just ignore this message.</p>",
-                    mUser.FirstName,
-                    mUser.LastName,
-                    remingLink);
+                    mUser.FirstName, mUser.LastName, remindLink);
                 _emailSender.Send(host, fromEmail, fromPass, remindPassViewModel.Email, mailSubject, text);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
