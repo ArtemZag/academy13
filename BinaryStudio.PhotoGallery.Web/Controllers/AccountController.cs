@@ -168,7 +168,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             {
                 return HttpNotFound();
             }
-        }
+        } 
 
     }
 }
