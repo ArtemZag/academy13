@@ -14,7 +14,6 @@ namespace BinaryStudio.PhotoGallery.Database
         IPhotoRepository Photos { get; }
         IPhotoCommentRepository PhotoComments { get; }
         IAlbumRepository Albums { get; }
-        IAlbumTagRepository AlbumTags { get; }
         IPhotoTagRepository PhotoTags { get; }
     }
 }

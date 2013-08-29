@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Models;
@@ -13,9 +14,28 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             "BlockedUsers"
         };
 
-        public GroupService(IUnitOfWorkFactory workFactory)
+        private readonly ISecureService secureService;
+
+        public GroupService(IUnitOfWorkFactory workFactory, ISecureService secureService)
             : base(workFactory)
         {
+            this.secureService = secureService;
+        }
+
+        public IEnumerable<AvailableGroupModel> GetAvialableGroups(int userId, int albumId)
+        {
+            var result = new List<AvailableGroupModel>();
+
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel user = GetUser(userId, unitOfWork);
+
+                result.AddRange(
+                    user.Groups.Select(
+                        groupModel => secureService.GetAvailableGroup(userId, groupModel.Id, albumId, unitOfWork)));
+            }
+
+            return result;
         }
 
         //todo: add check permission for creating group event 

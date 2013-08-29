@@ -3,23 +3,22 @@
     var documentObject = $(document);
     var albumApiUrl = $("#albumApiUrl").data("url");
     var userApiUrl = $("#userApiUrl").data("url");
+    var userId = parseInt($("#userId").data("url"), 10);
     var takeAlbumsCount = 10;
     var skipCount = 0;
-    var userId = 0;
     
-    windowObject.scroll(scrolling);
     windowObject.resize(resizeTable);
     resizeTable();
     
     downloadUserInfo();
 
     function downloadUserInfo() {
-        $.get(userApiUrl, getInfo);
+        $.get(userApiUrl+'/'+userId, getInfo);
     }
     
     function moveNoAlbumsContainer() {
         var alb = $('.albums');
-        var noAlbContainer = $('.noAlbumsTextContainer');
+        var noAlbContainer = $(".noAlbumsTextContainer");
         noAlbContainer.offset({ top: (alb.height() - noAlbContainer.height()) / 2, left: (alb.width() - noAlbContainer.width()) / 2 });
     }
 
@@ -29,27 +28,40 @@
 
     function getInfo(inf) {
         $("#userInformation").html($("#userTmpl").render(inf));
-        userId = inf.Id;
-        downloadNextPartionOfAlbums(userId);
+        if (inf.FirstName == "None" && inf.LastName == "None") {
+            $(".albums").html(
+                $("#noneUserTmpl").render());
+            windowObject.resize(moveNoAlbumsContainer);
+            moveNoAlbumsContainer();
+        } else {
+            windowObject.scroll(scrolling);
+            downloadNextPartionOfAlbums(userId);
+        }
     }
 
     function downloadNextPartionOfAlbums(id) {
         $.get(albumApiUrl, { userId: id, skip: skipCount, take: takeAlbumsCount }, getAlbums);
         skipCount += takeAlbumsCount;
     }
-    function getAlbums(albums) {
-        var length = albums.length;
+    function getAlbums(model) {
+        var length = model.albums.length;
         if (length > 0) {
             $(".albums").html(
-                $("#collageTmpl").render(albums));
+                $("#collageTmpl").render(model.albums));
         } else {
             if (skipCount - takeAlbumsCount == 0) {
-                $(".albums").html(
-                    $("#uploadTmpl").render());
                 windowObject.resize(moveNoAlbumsContainer);
-                moveNoAlbumsContainer();
-                windowObject.resize(resizeArrow);
-                resizeArrow();
+                if (model.noAlbumsToView) {
+                    $(".albums").html(
+                        $("#dontHaveRightsTmpl").render(model));
+                    moveNoAlbumsContainer();
+                } else {
+                    $(".albums").html(
+                        $("#uploadTmpl").render());
+                    moveNoAlbumsContainer();
+                    windowObject.resize(resizeArrow);
+                    resizeArrow();
+                }
             }
             windowObject.unbind("scroll");
         }

@@ -62,28 +62,43 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             return CanUserDoAction(userId, albumId, predicate);
         }
 
-        public IEnumerable<AlbumModel> GetAvailableAlbums(int userId, IUnitOfWork unitOfWork)
+        /// <summary>
+        ///     Returns all public albums except users albums
+        /// </summary>
+        public IEnumerable<AlbumModel> GetPublicAlbums(int userId, IUnitOfWork unitOfWork)
         {
+            var result = new List<AlbumModel>();
+
             UserModel user = GetUser(userId, unitOfWork);
-            List<GroupModel> userGroups = user.Groups.ToList();
 
             if (user.IsAdmin)
             {
-                return unitOfWork.Albums.All().ToList();
+                result.AddRange(unitOfWork.Albums.All());
             }
+            else
+            {
+                List<int> userAlbumsIds = user.Albums.Select(model => model.Id).ToList();
 
-            IEnumerable<int> albumIds = unitOfWork.AvailableGroups.All().ToList().Join(userGroups,
-                avialableGroupModel => avialableGroupModel.GroupId, groupModel => groupModel.Id,
-                (avialableGroupModel, groupModel) => new
+                List<GroupModel> userGroups = user.Groups.ToList();
+
+                IEnumerable<int> albumIds = unitOfWork.AvailableGroups.All().ToList().Join(userGroups,
+                    avialableGroupModel => avialableGroupModel.GroupId, groupModel => groupModel.Id,
+                    (avialableGroupModel, groupModel) => new
                     {
                         avialableGroupModel.CanSeePhotos,
                         avialableGroupModel.AlbumId
                     })
-                .Where(arg => arg.CanSeePhotos)
-                .Select(arg => arg.AlbumId)
-                .Distinct();
+                    .Where(arg => arg.CanSeePhotos)
+                    .Select(arg => arg.AlbumId)
+                    .Distinct();
 
-            return albumIds.Select(albumId => GetAlbum(albumId, unitOfWork));
+                result.AddRange(
+                    albumIds.Where(id => !userAlbumsIds.Contains(id))
+                    .Select(albumId => GetAlbum(albumId, unitOfWork))
+                    .Where(model => !model.IsDeleted));
+            }
+
+            return result;
         }
 
 
@@ -197,7 +212,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Gets available group or creates if doesn't exist.
         /// </summary>
-        private AvailableGroupModel GetAvailableGroup(int userId, int groupId, int albumId, IUnitOfWork unitOfWork)
+        public AvailableGroupModel GetAvailableGroup(int userId, int groupId, int albumId, IUnitOfWork unitOfWork)
         {
             AlbumModel album = GetAlbum(albumId, unitOfWork);
             UserModel user = GetUser(userId, unitOfWork);

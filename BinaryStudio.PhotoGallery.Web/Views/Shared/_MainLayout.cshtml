@@ -23,7 +23,7 @@
             @Html.ImageLink("~/Content/images/logo_small.png", "Index", "Home", new {@class = "brand"})
             <ul class="nav">
                 <li>@Html.ActionLink("Gallery", "Index", "Gallery")</li>
-                <li>@Html.ActionLink("Albums", "Index", "Albums")</li>
+                <li>@Html.ActionLink("Albums", "Index", "Albums",new {userId = User.Id},null)</li>
                 <li>@Html.ActionLink("Search", "Index", "Search")</li>
             </ul>
 

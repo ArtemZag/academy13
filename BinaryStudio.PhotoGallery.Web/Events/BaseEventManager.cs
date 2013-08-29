@@ -8,7 +8,7 @@ namespace BinaryStudio.PhotoGallery.Web.Events
 {
     public class BaseEventManager 
     {
-        public virtual new CustomPrincipal User
+        public CustomPrincipal User
         {
             get { return HttpContext.Current.User as CustomPrincipal; }
         }

@@ -9,11 +9,15 @@
 @Styles.Render("~/Content/profile-page.css")
 <div class="span8">
     <h2>Edit profile</h2>
-    @using(Html.BeginForm("Edit", "Profile", FormMethod.Post))
+    @using (Html.BeginForm("UpdatePhoto", "Profile", FormMethod.Post, new { enctype = "multipart/form-data", id = "photo-form" }))
     {
-        <div class="span2">
-            <img src="@Model.PhotoUrl" class="img-polaroid" id="user-photo">
+        <div class="span3">
+            <img src="@Model.PhotoUrl" class="img-polaroid" id="photo" title="Click photo to upload new one">
+            <input type="file" name="photoFile" id="photoFile" data-url="upload-image" style="display: none;"/>
         </div>
+    }
+    @using (Html.BeginForm("Edit", "Profile", FormMethod.Post))
+    {
         <div class="span3">
             @Html.LabelFor(x => x.FirstName, "First Name")
             @Html.TextBoxFor(x => x.FirstName)
@@ -31,3 +35,20 @@
         </div>
     }
 </div>
+<script type="text/javascript">
+    
+    var photo = $("#photo"),
+        form = $("#photo-form"),
+        photoFile = $("#photoFile");
+    
+    photo.tooltip();
+
+    photo.on("click", function() {
+        photoFile.click();
+    });
+
+    photoFile.on('change', function() {
+        form.submit();
+    });
+    
+</script>

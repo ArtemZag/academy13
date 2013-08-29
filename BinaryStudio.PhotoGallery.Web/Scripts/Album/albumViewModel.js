@@ -13,7 +13,9 @@
 
         self.collagePath = ko.observable();
 
-        self.name = ko.observableArray();
+        self.photosCount = ko.observable();
+
+        self.name = ko.observable();
 
         self.description = ko.observable("no description");
 
@@ -35,9 +37,11 @@
 
             // post name and description
             postAlbumInfo();
-
-            // tags
-            // postAlbumTags();
+        };
+        
+        self.gotoPhotoPage = function (data) {
+            
+            window.location = data.PhotoViewPageUrl;
         };
     }
 
@@ -61,6 +65,7 @@
     function setAlbumInfo(info) {
 
         album.name(info.AlbumName);
+        album.photosCount(info.PhotosCount);
         album.description(info.Description);
         album.collagePath(info.CollageSource);
         album.dateOfCreation(formatDate(info.DateOfCreation));
@@ -97,12 +102,8 @@
     function formatDate(dateTime) {
 
         var dateEndIndex = dateTime.indexOf("T");
-        var timeEndIndex = dateTime.lastIndexOf(":");
 
-        var date = dateTime.substring(0, dateEndIndex);
-        var time = dateTime.substring(dateEndIndex + 1, timeEndIndex);
-
-        return date + " " + time;
+        return dateTime.substring(0, dateEndIndex);
     }
 
     getAlbumInfo();

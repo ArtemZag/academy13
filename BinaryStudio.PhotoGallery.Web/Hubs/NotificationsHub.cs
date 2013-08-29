@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
 using Microsoft.AspNet.SignalR;
-using AttributeRouting;
-using AttributeRouting.Web.Mvc;
-using BinaryStudio.PhotoGallery.Domain.Services;
 using Microsoft.AspNet.SignalR.Hubs;
 
 namespace BinaryStudio.PhotoGallery.Web.Hubs
@@ -18,14 +11,22 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
     [HubName("NotificationsHub")]
     public class NotificationsHub : Hub, ICustomPrincipalInHub
     {
-        public virtual new CustomPrincipal User
+        public CustomPrincipal User
         {
-            get { return HttpContext.Current.User as CustomPrincipal; }
+            get
+            {
+                CustomPrincipal ret = null;
+                try
+                {
+                    ret = HttpContext.Current.User as CustomPrincipal; //todo MMMMagic
+                }
+                catch (Exception e) { }
+                return ret;
+            }
         }
 
         public override Task OnConnected()
         {
-            var test = User.Identity.Name;
             Groups.Add(Context.ConnectionId, User.Id.ToString("d"));
             return base.OnConnected();
         }

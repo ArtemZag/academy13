@@ -64,6 +64,5 @@ namespace BinaryStudio.PhotoGallery.Models
 
         public virtual ICollection<PhotoModel> Photos { get; set; }
         public virtual ICollection<AvailableGroupModel> AvailableGroups { get; set; }
-        public virtual ICollection<AlbumTagModel> Tags { get; set; }
     }
 }

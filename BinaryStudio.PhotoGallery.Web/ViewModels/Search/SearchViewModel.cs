@@ -13,7 +13,6 @@
         public bool IsSearchPhotosByDescription { get; set; }
 
         public bool IsSearchAlbumsByName { get; set; }
-        public bool IsSearchAlbumsByTags { get; set; }
         public bool IsSearchAlbumsByDescription { get; set; }
 
         public bool IsSearchUsersByName { get; set; }
