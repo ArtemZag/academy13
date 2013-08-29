@@ -5,7 +5,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     public interface IGroupService
     {
-        IEnumerable<AvailableGroupModel> GetAvialableGroups(int userId, int albumId);
+        IEnumerable<GroupModel> GetUserGroups(int userId);
+
+        IEnumerable<AvailableGroupModel> GetAlbumGroups(int albumId);
 
         /// <summary>
         /// Creates new group by model

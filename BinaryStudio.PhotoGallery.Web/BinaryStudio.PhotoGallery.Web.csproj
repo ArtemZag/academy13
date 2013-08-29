@@ -253,7 +253,7 @@
     <Compile Include="CustomStructure\CustomPrincipal.cs" />
     <Compile Include="CustomStructure\ICustomPrincipal.cs" />
     <Compile Include="Extensions\HtmlHelperExtentions.cs" />
-    <Compile Include="Extensions\ViewModels\AvialableGroupExtension.cs" />
+    <Compile Include="Extensions\ViewModels\AvialableGroupConvertationExtension.cs" />
     <Compile Include="Extensions\ViewModels\PhotoConvertionExtensions.cs" />
     <Compile Include="Extensions\ViewModels\UserConvertionExtensions.cs" />
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
@@ -282,7 +282,7 @@
     <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Account\SigninViewModel.cs" />
-    <Compile Include="ViewModels\AvialableGroupViewModel.cs" />
+    <Compile Include="ViewModels\AvailableGroupViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\PublicPhotosViewModel.cs" />
     <Compile Include="ViewModels\Photo\NewCommentViewModel.cs" />

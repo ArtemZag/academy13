@@ -1,6 +1,6 @@
 ﻿namespace BinaryStudio.PhotoGallery.Web.ViewModels
 {
-    public class AvialableGroupViewModel
+    public class AvailableGroupViewModel
     {
         public bool CanSeePhotos { get; set; }
 

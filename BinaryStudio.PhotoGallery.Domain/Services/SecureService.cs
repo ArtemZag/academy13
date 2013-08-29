@@ -16,28 +16,28 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public bool CanUserViewComments(int userId, int albumId)
         {
-            Predicate<AvailableGroupModel> predicate = group => @group.CanSeeComments;
+            Predicate<AvailableGroupViewModel> predicate = group => @group.CanSeeComments;
 
             return CanUserDoAction(userId, albumId, predicate);
         }
 
         public bool CanUserAddComment(int userId, int albumId)
         {
-            Predicate<AvailableGroupModel> predicate = group => @group.CanAddComments;
+            Predicate<AvailableGroupViewModel> predicate = group => @group.CanAddComments;
 
             return CanUserDoAction(userId, albumId, predicate);
         }
 
         public bool CanUserViewPhotos(int userId, int albumId)
         {
-            Predicate<AvailableGroupModel> predicate = group => @group.CanSeePhotos;
+            Predicate<AvailableGroupViewModel> predicate = group => @group.CanSeePhotos;
 
             return CanUserDoAction(userId, albumId, predicate);
         }
 
         public bool CanUserAddPhoto(int userId, int albumId)
         {
-            Predicate<AvailableGroupModel> predicate = group => @group.CanAddPhotos;
+            Predicate<AvailableGroupViewModel> predicate = group => @group.CanAddPhotos;
 
             return CanUserDoAction(userId, albumId, predicate);
         }
@@ -57,7 +57,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public bool CanUserViewLikes(int userId, int albumId)
         {
-            Predicate<AvailableGroupModel> predicate = group => @group.CanSeeLikes;
+            Predicate<AvailableGroupViewModel> predicate = group => @group.CanSeeLikes;
 
             return CanUserDoAction(userId, albumId, predicate);
         }
@@ -107,11 +107,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupViewModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanSeeComments = let;
+                availableGroupView.CanSeeComments = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
@@ -122,11 +122,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupViewModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanAddComments = let;
+                availableGroupView.CanAddComments = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
@@ -136,11 +136,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupViewModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanSeePhotos = let;
+                availableGroupView.CanSeePhotos = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
@@ -150,11 +150,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupViewModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanAddPhotos = let;
+                availableGroupView.CanAddPhotos = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
@@ -164,11 +164,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupViewModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanSeeLikes = let;
+                availableGroupView.CanSeeLikes = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
@@ -177,7 +177,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Checks if user take a part in even one group, that have enough permissions to do some action
         /// </summary>
-        private bool CanUserDoAction(int userId, int albumId, Predicate<AvailableGroupModel> predicate)
+        private bool CanUserDoAction(int userId, int albumId, Predicate<AvailableGroupViewModel> predicate)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -193,7 +193,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 }
                 else
                 {
-                    List<AvailableGroupModel> availableGropusCanDo =
+                    List<AvailableGroupViewModel> availableGropusCanDo =
                         unitOfWork.Albums.Find(albumId).AvailableGroups.ToList().FindAll(predicate);
 
 
@@ -212,7 +212,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Gets available group or creates if doesn't exist.
         /// </summary>
-        public AvailableGroupModel GetAvailableGroup(int userId, int groupId, int albumId, IUnitOfWork unitOfWork)
+        private AvailableGroupViewModel GetAvailableGroup(int userId, int groupId, int albumId, IUnitOfWork unitOfWork)
         {
             AlbumModel album = GetAlbum(albumId, unitOfWork);
             UserModel user = GetUser(userId, unitOfWork);
@@ -223,7 +223,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         userId, groupId, albumId));
 
             return album.AvailableGroups.ToList().Find(ag => ag.GroupId == groupId) ??
-                   new AvailableGroupModel
+                   new AvailableGroupViewModel
                    {
                        AlbumId = albumId,
                        GroupId = groupId,

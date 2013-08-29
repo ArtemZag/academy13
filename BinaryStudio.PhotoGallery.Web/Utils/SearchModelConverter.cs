@@ -10,19 +10,19 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 {
     internal class SearchModelConverter : ISearchModelConverter
     {
-        private readonly IAlbumService _albumService;
+        private readonly IAlbumService albumService;
 
         private readonly IPathUtil pathUtil;
         private readonly IUrlUtil urlUtil;
-        private readonly IUserService _userService;
+        private readonly IUserService userService;
 
         public SearchModelConverter(IUserService userService, IPathUtil pathUtil, IUrlUtil urlUtil,
             IAlbumService albumService)
         {
-            _userService = userService;
+            this.userService = userService;
             this.pathUtil = pathUtil;
             this.urlUtil = urlUtil;
-            _albumService = albumService;
+            this.albumService = albumService;
         }
 
         public SearchArguments GetModel(SearchViewModel searchViewModel, int userId)
@@ -78,7 +78,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             var commentFound = (CommentFound) found;
 
-            UserModel user = _userService.GetUser(commentFound.OwnerId);
+            UserModel user = userService.GetUser(commentFound.OwnerId);
             string userName = user.FirstName + " " + user.LastName;
 
             return new CommentFoundViewModel
@@ -96,7 +96,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             var albumFound = (AlbumFound) found;
 
-            UserModel user = _userService.GetUser(albumFound.OwnerId);
+            UserModel user = userService.GetUser(albumFound.OwnerId);
             string userName = user.FirstName + " " + user.LastName;
 
             return new AlbumFoundViewModel
@@ -128,10 +128,10 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
         {
             var photoModel = (PhotoFound) found;
 
-            AlbumModel album = _albumService.GetAlbum(photoModel.AlbumId);
+            AlbumModel album = albumService.GetAlbum(photoModel.AlbumId);
             string albumName = album.Name;
 
-            UserModel user = _userService.GetUser(photoModel.OwnerId);
+            UserModel user = userService.GetUser(photoModel.OwnerId);
             string userName = user.FirstName + " " + user.LastName;
 
             string thumbnailPath = pathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id,
