@@ -168,7 +168,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                                  .Take(takeCount)
                                  .ToList();
                 if (albums.Count == 0)
+                {
                     reasonOfNotAlbums = false;
+                    return albums;
+                }
 
                 var albumsToTake = 
                     albums.Select(album => album)
