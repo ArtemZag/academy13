@@ -12,16 +12,17 @@
     <div class="well">
         <form class="control-group form-horizontal pagination-centered">
             @Html.TextBoxFor(model => model.Email, new {@class = "input-block-level", @placeholder = "E-mail address"})
-            @Html.TextBoxFor(model => model.Password, new {@class = "input-block-level", @placeholder = "Password"})
+            @Html.PasswordFor(model => model.Password, new {@class = "input-block-level", @placeholder = "Password"})
             <label class="checkbox">
-                @Html.CheckBoxFor(model => model.RememberMe) Remember me
+@*            @Html.CheckBoxFor(model => model.RememberMe) Remember me*@
+            <input id="RememberMe" name="RememberMe" type="checkbox" value="true" checked> Remember me
             </label>
             <button id="signin-button" type="submit" class="btn btn-primary effeckt-button zoom-in">
                 <span class="effeckt-label">Sign in</span>
                 <span class="effeckt-spinner effeckt-spinner-blue"></span>
             </button>
             <a id="forgotPass" class="btn btn-link">Forgot password?</a>
-@*            @Html.ActionLink("Forgot password?", "RemindPass", "Account", new {@class = "btn btn-link"})*@
+@*            @Html.ActionLink("Forgot password?", "RemindPass", "Account", new {@class = "btn btn-link", @id="forgotPass"})*@
         </form>
         <div class="error-field"></div>
         <hr />

@@ -237,7 +237,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
-    <Compile Include="Controllers\AlbumsController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -293,7 +293,6 @@
     <Compile Include="ViewModels\RemindPassViewModel.cs" />
     <Compile Include="ViewModels\Photo\UserInfoViewModel.cs" />
     <Compile Include="Extensions\ViewModels\AlbumConvertionExtensions.cs" />
-    <Compile Include="ViewModels\UsersListViewModel.cs" />
     <Compile Include="ViewModels\User\UsersListViewModel.cs" />
     <Compile Include="ViewModels\User\UserViewModel.cs" />
     <Content Include="Content\album-page.css" />
@@ -315,7 +314,7 @@
     <Compile Include="ViewModels\Search\UserFoundViewModel.cs" />
     <Compile Include="ViewModels\Upload\MovePhotosViewModel.cs" />
     <Compile Include="ViewModels\Upload\UploadResultViewModel.cs" />
-    <Content Include="Content\albums-page.css" />
+    <Content Include="Content\user-page.css" />
     <Content Include="Content\images\1.png" />
     <Content Include="Content\images\2.png" />
     <Content Include="Content\images\arrowLeft.png" />
@@ -349,7 +348,7 @@
     <Content Include="Scripts\mediator.js" />
     <Content Include="Scripts\mediator.min.js" />
     <Content Include="Scripts\Notifications.js" />
-    <Content Include="Scripts\Albums\albums.js" />
+    <Content Include="Scripts\User\user.js" />
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
     <Content Include="Scripts\panel.js" />
@@ -466,7 +465,7 @@
     <Content Include="Views\Photo\Index.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
-    <Content Include="Views\Albums\Index.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\Shared\AccessDenied.cshtml" />

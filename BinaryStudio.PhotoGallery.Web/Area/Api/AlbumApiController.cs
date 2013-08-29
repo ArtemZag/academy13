@@ -63,10 +63,10 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 var model = new AlbumsViewModel
                     {
-                        albums = albums,
-                        requestsUserName = string.Format("{0} {1}", requestsUser.FirstName, requestsUser.LastName),
-                        ownerUserName = string.Format("{0} {1}", ownerUser.FirstName, ownerUser.LastName),
-                        noAlbumsToView = pr
+                        Albums = albums,
+                        RequestsUserName = string.Format("{0} {1}", requestsUser.FirstName, requestsUser.LastName),
+                        OwnerUserName = string.Format("{0} {1}", ownerUser.FirstName, ownerUser.LastName),
+                        NoAlbumsToView = pr
                     };
                 return Request.CreateResponse(HttpStatusCode.OK, model, new JsonMediaTypeFormatter());
             }
