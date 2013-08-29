@@ -27,9 +27,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// </summary>
         void DeletePhoto(int userId, PhotoModel photo);
 
-        int PhotoCount(int userId);
+        int PhotoCount(int userId, int tempAlbumId);
 
-        IEnumerable<PhotoModel> GetLastPhotos(int userId, int skipCount, int takeCount);
         /// <summary>
         ///     Returns specified interval of photos (sorted by date) from specified album.
         /// </summary>

@@ -1,4 +1,5 @@
-﻿@using System.Web.Optimization
+﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumsViewModel
+@using System.Web.Optimization
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "Albums | Bingally";
@@ -28,6 +29,18 @@
     </div> 
 </script>
 
+<script id="dontHaveRightsTmpl" type="text/x-jquery-tmpl">
+    <div class = "noAlbumsTextContainer">
+        <p class ="noAlbumsText">{{:requestsUserName}} you can't view albums by {{:ownerUserName}}.</p>
+    </div>
+</script>
+
+<script id="noneUserTmpl" type="text/x-jquery-tmpl">
+    <div class = "noAlbumsTextContainer">
+        <p class ="noAlbumsText">The requested user does not exist</p>
+    </div>
+</script>
+
 <script id="userTmpl" type="text/x-jquery-tmpl">
     <p><img class="avatar" src="{{:PhotoUrl}}"/></p>
     <p class="textStyle">FirstName: {{:FirstName}}</p>
@@ -47,5 +60,6 @@
         </div>
 </div>
 
+<div id ="userId" data-url="@ViewBag.UserId"></div>
 <div id="albumApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbums"})"></div>
 <div id="userApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "UserApi", action = "GetCurrent"})"></div>

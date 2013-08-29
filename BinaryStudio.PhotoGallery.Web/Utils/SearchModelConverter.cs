@@ -37,7 +37,6 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 IsSearchPhotosByTags = searchViewModel.IsSearchPhotosByTags,
                 IsSearchPhotosByDescription = searchViewModel.IsSearchPhotosByDescription,
                 IsSearchAlbumsByName = searchViewModel.IsSearchAlbumsByName,
-                IsSearchAlbumsByTags = searchViewModel.IsSearchAlbumsByTags,
                 IsSearchAlbumsByDescription = searchViewModel.IsSearchAlbumsByDescription,
                 IsSearchUsersByName = searchViewModel.IsSearchUsersByName,
                 IsSearchUserByDepartment = searchViewModel.IsSearchUserByDepartment,

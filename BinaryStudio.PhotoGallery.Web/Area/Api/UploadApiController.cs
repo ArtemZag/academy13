@@ -96,7 +96,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 {
                     _directoryWrapper.CreateDirectory(pathToDestAlbum);
                 }
-
+                
                 foreach (int photoId in viewModel.PhotosId)
                 {
                     PhotoModel photoModel = _photoService.GetPhoto(User.Id, photoId);
@@ -153,6 +153,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 // Create collage for album
                 _collageProcessor.CreateCollage(User.Id, albumId);
+                // Get temporary album Id
+                _collageProcessor.CreateCollage(User.Id,tempAlbumId);
             }
             catch (Exception ex)
             {

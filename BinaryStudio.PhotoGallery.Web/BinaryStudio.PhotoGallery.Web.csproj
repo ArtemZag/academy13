@@ -107,6 +107,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unity.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes">
       <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.1\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
     </Reference>
@@ -224,8 +225,9 @@
     <Compile Include="Area\Api\AccountApiController.cs" />
     <Compile Include="Area\Api\AdminApiController.cs" />
     <Compile Include="Area\Api\AlbumApiController.cs" />
-    <Compile Include="Area\Api\AlbumTagApiController.cs" />
+    <Compile Include="Area\Api\GroupApiController.cs" />
     <Compile Include="Area\Api\PublicPhotoController.cs" />
+    <Compile Include="Area\Api\TagApiController.cs" />
     <Compile Include="Area\Api\UserApiController.cs" />
     <Compile Include="Area\Api\UploadApiController.cs" />
     <Compile Include="Area\Api\PhotoCommentApiController.cs" />
@@ -276,8 +278,10 @@
     <Compile Include="Utils\ISearchModelConverter.cs" />
     <Compile Include="Utils\SearchModelConverter.cs" />
     <Compile Include="ViewModels\Admin\InviteUserViewModel.cs" />
+    <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\Account\SigninViewModel.cs" />
+    <Compile Include="ViewModels\AvialableGroupViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\PublicPhotosViewModel.cs" />
     <Compile Include="ViewModels\Photo\NewCommentViewModel.cs" />
@@ -323,6 +327,7 @@
     <Content Include="Content\search.css" />
     <Content Include="Content\style-libs\chosen.css" />
     <Content Include="Content\verticalResizer.css" />
+    <Content Include="Scripts\Account\forgotPass.js" />
     <Content Include="Scripts\Admin\AdminPage.js" />
     <Content Include="Scripts\Account\initVertResizer.js" />
     <Content Include="Scripts\Account\signup.validate.js" />

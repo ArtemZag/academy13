@@ -9,11 +9,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 {
     internal class CommentSearchService : DbService, ICommentSearchService
     {
-        private readonly ISecureService secureService;
+        private readonly IAlbumService albumService;
 
-        public CommentSearchService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
+        public CommentSearchService(IUnitOfWorkFactory workFactory, IAlbumService albumService) : base(workFactory)
         {
-            this.secureService = secureService;
+            this.albumService = albumService;
         }
 
         public IEnumerable<IFound> Search(SearchArguments searchArguments)
@@ -22,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId,
+                IEnumerable<AlbumModel> avialableAlbums = albumService.GetAvialableAlbums(searchArguments.UserId,
                     unitOfWork);
 
                 return Group(SearchByText(avialableAlbums, searchWords));
@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     avialableAlbum.Photos.SelectMany(
                         model =>
                             model.PhotoComments.Where(
-                                commentModel => searchWords.Any(searchWord => commentModel.Text.Contains(searchWord)))
+                                commentModel => searchWords.Any(searchWord => commentModel.Text.ToLower().Contains(searchWord)))
                                 .Select(commentModel => new CommentFound
                                 {
                                     DateOfCreation = commentModel.DateOfCreating,

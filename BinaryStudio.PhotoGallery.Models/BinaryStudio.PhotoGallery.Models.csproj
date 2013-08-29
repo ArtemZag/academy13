@@ -38,7 +38,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlbumModel.cs" />
-    <Compile Include="AlbumTagModel.cs" />
     <Compile Include="AuthInfoModel.cs" />
     <Compile Include="AvailableGroupModel.cs" />
     <Compile Include="GroupModel.cs" />

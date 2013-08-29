@@ -232,7 +232,6 @@ namespace BinaryStudio.PhotoGallery.Database
                         Permissions = (int)AlbumModel.PermissionsMask.PublicAlbum,
                         OwnerId = userModel.Id,
                         Photos = new Collection<PhotoModel>(),
-                        Tags = new Collection<AlbumTagModel>(),
                         AvailableGroups = new Collection<AvailableGroupModel>()
                     });
                     unitOfWork.Users.Update(userModel);
@@ -274,7 +273,6 @@ namespace BinaryStudio.PhotoGallery.Database
                     IsDeleted = false,
                     Permissions = (int)AlbumModel.PermissionsMask.PublicAlbum,
                     OwnerId = maaak.Id,
-                    Tags = new Collection<AlbumTagModel>(),
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 });
@@ -308,22 +306,6 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 var golovinUser = unitOfWork.Users.Find(x => x.LastName == "Golovin");
 
-                var tags = new Collection<AlbumTagModel>
-                {
-                    new AlbumTagModel
-                    {
-                        TagName = "tag"
-                    },
-                    new AlbumTagModel
-                    {
-                        TagName = "tag1"
-                    },
-                    new AlbumTagModel
-                    {
-                        TagName = "looooooooooooooooooong tag"
-                    }
-                };
-
                 var albumForGolovin = new AlbumModel
                 {
                     Name = "Anton album",
@@ -331,7 +313,6 @@ namespace BinaryStudio.PhotoGallery.Database
                     IsDeleted = false,
                     Permissions = (int)AlbumModel.PermissionsMask.PublicAlbum,
                     OwnerId = golovinUser.Id,
-                    Tags = tags,
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 };

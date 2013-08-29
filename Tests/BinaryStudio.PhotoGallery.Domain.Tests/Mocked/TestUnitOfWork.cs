@@ -49,7 +49,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests.Mocked
         public IAvailableGroupRepository AvailableGroups { get; private set; }
         public IAuthInfoRepository AuthInfos { get; private set; }
         public IPhotoCommentRepository PhotoComments { get; private set; }
-        public IAlbumTagRepository AlbumTags { get; private set; }
         public IPhotoTagRepository PhotoTags { get; private set; }
     }
 }

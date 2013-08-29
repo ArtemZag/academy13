@@ -2,9 +2,6 @@
 @using BinaryStudio.PhotoGallery.Web.ViewModels
 @model AlbumViewModel
 
-<script src="@Url.Content("~/Scripts/knockout.mapping-latest.js")" type="text/javascript"> </script>
-<script src="@Url.Content("~/Scripts/perpetuum.knockout.js")" type="text/javascript"> </script>
-
 @Styles.Render("~/Content/photo-flow.css")
 @Styles.Render("~/Content/spinner.css")
 @Styles.Render("~/Content/album-page.css")
@@ -32,17 +29,19 @@
 
     <div class="sidebar">
         <div class="title editable" contenteditable="true" data-bind="editableText: name"></div>
-        @*       <div class="photos-count">@Html.DisplayFor(model => model.Photos.Count) photos..</div>*@
-        <div class="prop">created <!--ko text: dateOfCreation--><!--/ko--></div>
+        <div class="prop"><!--ko text: photosCount--><!--/ko--> photos</div>
+        <div class="prop">date of creation: <!--ko text: dateOfCreation--><!--/ko--></div>
         <div class="title">Description</div>
         <div class="prop editable" contenteditable="true" data-bind="editableText: description"></div>
-        <div class="title" contenteditable="true">Tags</div>
-        <div class="prop editable" contenteditable="true" data-bind="editableText: tagsString"></div>
+        <div class="title">Tags</div>
+        <div class="prop"><!--ko text: tagsString--><!--/ko--></div>
+        <div class="title">Rights</div>
+        <div></div>
         <a class="btn save-info-btn" data-bind="click: sendInfo">Save</a>
     </div>
 </div>
 
-<div id="getTagsUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumTagApi", action = "GetTags"})"></div>
+<div id="getTagsUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "TagApi", action = "GetAlbumTags"})"></div>
 <div id="getAlbumInfoUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbum"})"></div>
 <div id="getPhotosUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "PhotoApi", action = "GetPhotos"})"></div>
 <div id="postAlbumInfoUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "PostAlbumInfo"})"></div>
