@@ -6,7 +6,7 @@ using BinaryStudio.PhotoGallery.Domain.Services;
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     [Authorize]
-    [RoutePrefix("albums")]
+    [RoutePrefix("users")]
     public class AlbumsController : BaseController
     {
         [GET("{userId}")]
