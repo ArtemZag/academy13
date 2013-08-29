@@ -212,7 +212,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <summary>
         ///     Gets available group or creates if doesn't exist.
         /// </summary>
-        private AvailableGroupModel GetAvailableGroup(int userId, int groupId, int albumId, IUnitOfWork unitOfWork)
+        public AvailableGroupModel GetAvailableGroup(int userId, int groupId, int albumId, IUnitOfWork unitOfWork)
         {
             AlbumModel album = GetAlbum(albumId, unitOfWork);
             UserModel user = GetUser(userId, unitOfWork);
