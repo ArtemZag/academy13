@@ -40,11 +40,20 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 UserModel userModel = _userService.GetUser(userId);
+                UserViewModel viewModel;
+                if (userModel == null)
+                {
+                    userModel = new UserModel();
+                    viewModel = userModel.ToNoneUserViewModel();
+                }
+                else
+                {
+                    int tempAlbumId = _albumService.GetAlbumId(userId, "Temporary");
 
-                int photoCount = _photoService.PhotoCount(userId);
-                int albumCount = _albumService.AlbumsCount(userId);
-                UserViewModel viewModel = userModel.ToUserViewModel(photoCount, albumCount);
-
+                    int photoCount = _photoService.PhotoCount(userId, tempAlbumId);
+                    int albumCount = _albumService.AlbumsCount(userId, tempAlbumId);
+                    viewModel = userModel.ToUserViewModel(photoCount, albumCount);
+                }
                 return Request.CreateResponse(HttpStatusCode.OK, viewModel, new JsonMediaTypeFormatter());
             }
             catch (Exception ex)

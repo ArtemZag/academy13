@@ -165,7 +165,13 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string GetCollage(int userId, int albumId)
         {
-            return GetUserReference(Directory.GetFiles(Path.Combine(BuildAbsoluteAlbumPath(userId, albumId), COLLAGES_DIRECTORY_NAME)).First());
+            string path =
+                Directory.GetFiles(Path.Combine(BuildAbsoluteAlbumPath(userId, albumId), COLLAGES_DIRECTORY_NAME))
+                         .FirstOrDefault();
+            if (path != null)
+                return GetUserReference(path);
+
+            return VirtualPathUtility.ToAbsolute(CUSTOM_COLLAGE_PATH);
         }
 
         public string GetUserReference(string absolutePath)

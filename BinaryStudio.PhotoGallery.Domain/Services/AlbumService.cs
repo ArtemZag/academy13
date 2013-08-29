@@ -130,28 +130,37 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public int AlbumsCount(int userId)
+        public int AlbumsCount(int userId,int tempAlbumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 return
                     unitOfWork.Albums.Filter(
-                        model => model.OwnerId == userId && !model.IsDeleted && model.Name != "Temporary")
-                        .Sum(model => 1);
+                        model => model.OwnerId == userId && !model.IsDeleted && model.Id != tempAlbumId).Count();
             }
         }
 
-        public IEnumerable<AlbumModel> GetAlbumsRange(int userId, int skipCount, int takeCount)
+        public IEnumerable<AlbumModel> GetAlbumsRange(int userRequestsId, int userOwnerId, int skipCount, int takeCount, out bool reasonOfNotAlbums)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return
-                    unitOfWork.Albums.Filter(
-                        model => model.OwnerId == userId && !model.IsDeleted && model.Name != "Temporary")
-                        .OrderByDescending(model => model.DateOfCreation)
-                        .Skip(skipCount)
-                        .Take(takeCount)
-                        .ToList();
+                reasonOfNotAlbums = true;
+                var albums = unitOfWork.Albums.Filter(model => model.OwnerId == userOwnerId &&  !model.IsDeleted && model.Name != "Temporary")
+                                 .OrderByDescending(model => model.DateOfCreation)
+                                 .Skip(skipCount)
+                                 .Take(takeCount)
+                                 .ToList();
+                if (albums.Count == 0)
+                    reasonOfNotAlbums = false;
+
+                var albumsToTake = 
+                    albums.Select(album => album)
+                          .Where(album => _secureService.CanUserViewPhotos(userRequestsId, album.Id));
+
+                if (albumsToTake.Count() == 0)
+                    reasonOfNotAlbums = true;
+
+                return albumsToTake;
             }
         }
 

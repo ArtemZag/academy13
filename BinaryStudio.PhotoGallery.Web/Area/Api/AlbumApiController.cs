@@ -21,11 +21,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     {
         private readonly IAlbumService _albumService;
         private readonly IPathUtil _pathUtil;
-
-        public AlbumApiController(IAlbumService albumService, IPathUtil pathUtil)
+        private readonly IUserService _userService;
+        public AlbumApiController(IAlbumService albumService, IPathUtil pathUtil, IUserService userService)
         {
             _albumService = albumService;
             _pathUtil = pathUtil;
+            _userService = userService;
         }
 
         [GET("{albumId: int}")]
@@ -51,12 +52,23 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
+                bool pr;
                 var albums = _albumService
-                    .GetAlbumsRange(userId, skip, take)
+                    .GetAlbumsRange(User.Id, userId, skip, take, out pr)
                     .Select(album => album.ToAlbumViewModel(
                         _pathUtil.GetCollage(userId, album.Id))).ToList();
 
-                return Request.CreateResponse(HttpStatusCode.OK, albums, new JsonMediaTypeFormatter());
+                UserModel requestsUser = _userService.GetUser(User.Id);
+                UserModel ownerUser = _userService.GetUser(userId);
+
+                var model = new AlbumsViewModel
+                    {
+                        albums = albums,
+                        requestsUserName = string.Format("{0} {1}", requestsUser.FirstName, requestsUser.LastName),
+                        ownerUserName = string.Format("{0} {1}", ownerUser.FirstName, ownerUser.LastName),
+                        noAlbumsToView = pr
+                    };
+                return Request.CreateResponse(HttpStatusCode.OK, model, new JsonMediaTypeFormatter());
             }
             catch (Exception ex)
             {
