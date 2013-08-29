@@ -30,10 +30,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchUsersByName)
                 {
                     IEnumerable<UserFound> found = SearchByCondition(searchWords,
-                        model =>
-                            searchWords.Any(
-                                searchWord =>
-                                    model.FirstName.Contains(searchWord) || model.LastName.Contains(searchWord)),
+                        model => searchWords.Any(searchWord =>
+                                    model.FirstName.ToLower().Contains(searchWord) || model.LastName.ToLower().Contains(searchWord)),
                         GetRelevanceByName, unitOfWork);
 
                     result.AddRange(found);
@@ -42,9 +40,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchUserByDepartment)
                 {
                     IEnumerable<UserFound> found = SearchByCondition(searchWords,
-                        model => searchWords.Any(searchWord => model.Department.Contains(searchWord)),
-                        GetRelevanceByDepartment,
-                        unitOfWork);
+                        model => searchWords.Any(searchWord => model.Department.ToLower().Contains(searchWord)),
+                        GetRelevanceByDepartment, unitOfWork);
 
                     result.AddRange(found);
                 }

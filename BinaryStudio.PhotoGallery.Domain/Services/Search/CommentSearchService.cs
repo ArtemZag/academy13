@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     avialableAlbum.Photos.SelectMany(
                         model =>
                             model.PhotoComments.Where(
-                                commentModel => searchWords.Any(searchWord => commentModel.Text.Contains(searchWord)))
+                                commentModel => searchWords.Any(searchWord => commentModel.Text.ToLower().Contains(searchWord)))
                                 .Select(commentModel => new CommentFound
                                 {
                                     DateOfCreation = commentModel.DateOfCreating,

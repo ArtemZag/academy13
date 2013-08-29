@@ -24,8 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetAvailableAlbums(searchArguments.UserId,
-                    unitOfWork);
+                IEnumerable<AlbumModel> avialableAlbums = _secureService.GetAvailableAlbums(searchArguments.UserId, unitOfWork);
 
                 if (searchArguments.IsSearchPhotosByDescription)
                 {
@@ -79,7 +78,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             foreach (AlbumModel albumModel in fromAlbums)
             {
                 IEnumerable<PhotoFound> found = albumModel.Photos.Where(
-                    model => model.Tags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)))
+                    model => model.Tags.Any(tagModel => searchWords.Any(tagModel.TagName.ToLower().Contains)) && !model.IsDeleted)
                     .Select(model => new PhotoFound
                     {
                         Id = model.Id,

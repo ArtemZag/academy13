@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using BinaryStudio.PhotoGallery.Core.EnumerableExtensions;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
 using BinaryStudio.PhotoGallery.Models;
@@ -25,13 +26,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId,
-                    unitOfWork);
+                IEnumerable<AlbumModel> avialableAlbums = secureService.GetAvailableAlbums(searchArguments.UserId, unitOfWork);
 
                 if (searchArguments.IsSearchAlbumsByName)
                 {
                     IEnumerable<AlbumFound> found = SearchByCondition(searchWords, avialableAlbums,
-                        model => searchWords.Any(searchWord => model.Name.Contains(searchWord)),
+                        model => searchWords.Any(searchWord => model.Name.ToLower().Contains(searchWord)) && !model.IsDeleted,
                         CalculateRelevanceByName);
 
                     result.AddRange(found);
@@ -40,7 +40,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchAlbumsByDescription)
                 {
                     IEnumerable<AlbumFound> found = SearchByCondition(searchWords, avialableAlbums,
-                        model => searchWords.Any(searchWord => model.Description.Contains(searchWord)),
+                        model => searchWords.Any(searchWord => model.Description.ToLower().Contains(searchWord)) && !model.IsDeleted,
                         CalculateRelevaceByDescription);
 
                     result.AddRange(found);
