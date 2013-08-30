@@ -17,6 +17,7 @@ namespace BinaryStudio.PhotoGallery.Database
             //var random = new Random();
             var cryptoProvider = new CryptoProvider();
             var systemGroupList = new List<GroupModel>();
+            var groupList = new List<GroupModel>();
 
             #region adminModel creation
 
@@ -222,7 +223,7 @@ namespace BinaryStudio.PhotoGallery.Database
                 OwnerId = -1,
                 Users = new Collection<UserModel>()
             };
-            systemGroupList.Add(groupModel);
+            groupList.Add(groupModel);
             #endregion
 
 
@@ -267,23 +268,13 @@ namespace BinaryStudio.PhotoGallery.Database
                     systemGroup.OwnerId = adminID;
                     unitOfWork.Groups.Add(systemGroup);
                 }
-                unitOfWork.SaveChanges();
 
-
-                #region adding test groups
-
-                var group = new GroupModel
+                foreach (GroupModel simpleGroupModel in groupList)
                 {
-                    GroupName = "Test group",
-                    OwnerId = unitOfWork.Users.Find(a => a.Email == "Admin@bingally.com").Id,
-                    Description = "Test group"
-                };
-
-                unitOfWork.Groups.Add(group);
-
+                    simpleGroupModel.OwnerId = adminID;
+                    unitOfWork.Groups.Add(simpleGroupModel);
+                }
                 unitOfWork.SaveChanges();
-
-                #endregion
 
                 #region adding album to user with lastname Towstonog
 
@@ -299,9 +290,9 @@ namespace BinaryStudio.PhotoGallery.Database
                     Photos = new Collection<PhotoModel>()
                 });
 
-                var currentGroup = unitOfWork.Groups.Find(x => x.GroupName.Equals("Academy group"));
+                var academyGroup = unitOfWork.Groups.Find(x => x.GroupName.Equals("Academy"));
 
-                maaak.Groups.Add(currentGroup);
+                maaak.Groups.Add(academyGroup);
 
                 unitOfWork.Users.Update(maaak);
                 unitOfWork.SaveChanges();
@@ -315,7 +306,7 @@ namespace BinaryStudio.PhotoGallery.Database
                 var avialableGroup = new AvailableGroupModel
                 {
                     AlbumId = albumModel.Id,
-                    GroupId = 1,
+                    GroupId = academyGroup.Id,
                     CanAddComments = true,
                     CanAddPhotos = true,
                     CanSeeComments = true,
@@ -344,7 +335,7 @@ namespace BinaryStudio.PhotoGallery.Database
                     Photos = new Collection<PhotoModel>()
                 };
 
-                golovinUser.Groups.Add(currentGroup);
+                golovinUser.Groups.Add(academyGroup);
                 golovinUser.Albums.Add(albumForGolovin);
 
                 unitOfWork.SaveChanges();
