@@ -22,6 +22,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         private readonly IAlbumService _albumService;
         private readonly IPathUtil _pathUtil;
         private readonly IUserService _userService;
+
         public AlbumApiController(IAlbumService albumService, IPathUtil pathUtil, IUserService userService)
         {
             _albumService = albumService;
@@ -36,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 AlbumViewModel result = _albumService.GetAlbum(albumId).ToAlbumViewModel();
 
-                result.CollagePath = _pathUtil.BuildCollagePath(result.OwnerId, result.Id);
+                result.CollagePath = _pathUtil.GetCollage(result.OwnerId, result.Id);
                 result.PhotosCount = _albumService.GetPhotosCount(albumId);
 
                 return Request.CreateResponse(HttpStatusCode.OK, result);
@@ -56,7 +57,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 var albums = _albumService
                     .GetAlbumsRange(User.Id, userId, skip, take)
                     .Select(album => album.ToAlbumViewModel(
-                        _pathUtil.BuildCollagePath(userId, album.Id))).ToList();
+                        _pathUtil.GetCollage(userId, album.Id))).ToList();
 
                 // todo: fix this shit
                 if (!albums.Any() && userId!=User.Id)

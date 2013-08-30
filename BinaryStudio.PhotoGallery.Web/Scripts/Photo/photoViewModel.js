@@ -101,7 +101,7 @@
         };
 
         self.AddComment = function () {
-            
+
             $.post("/api/photo/comment", { CommentText: self.newComment(), PhotoId: self.PhotoId() }, function (data) {
                 setComments(data);
                 // scroll down to new added comment. need pure js
@@ -113,15 +113,12 @@
 
         // Needs refactoring
         self.DeletePhoto = function () {
-            alert('Hallo');
             $.ajax({
                 url: '/api/photo/' + model.PhotoId(),
                 type: 'DELETE',
                 success: function (data) {
-                    alert(data);
                 },
                 error: function (data) {
-                    alert(data);
                 }
             });
         };

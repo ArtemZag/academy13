@@ -23,5 +23,8 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Account
         [StringLength(20, MinimumLength = 6)]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public string Salt { get; set; }
     }
 }

@@ -13,7 +13,7 @@
     <div class="well">
         <h4>Remind password</h4>
         <form id="recoveryForm" class="control-group form-horizontal pagination-centered">
-            <input id="Email" name="Email" type="email" class="input-block-level" maxlength="255" placeholder="E-mail address" />
+            <input id="RemindEmail" name="Email" type="email" class="input-block-level" maxlength="255" placeholder="E-mail address" />
             <button id="sendRecovery" class="btn btn-primary effeckt-button zoom-in">
                 <span class="effeckt-label">Send password recovery Email</span>
                 <span class="effeckt-spinner effeckt-spinner-blue"></span>
@@ -35,6 +35,7 @@
 </div>
 
 @Scripts.Render("~/Scripts/Account/remindPass.js")
+@Scripts.Render("~/Scripts/Account/remindPass.validate.js")
 
 <script type="text/javascript">
     RemindPass_Init("/api/remind");

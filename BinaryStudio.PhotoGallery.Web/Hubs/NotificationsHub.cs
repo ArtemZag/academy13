@@ -33,10 +33,10 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
 
         public override Task OnDisconnected()
         {
-            if (Context.ConnectionId != null)
-            {
-                Groups.Remove(Context.ConnectionId, User.Id.ToString("d"));
-            }
+            //if (Context.ConnectionId != null && User.Id!= null)
+            //{
+            //    Groups.Remove(Context.ConnectionId, User.Id.ToString("d")); 
+            //}
                 
             return base.OnDisconnected();
         }

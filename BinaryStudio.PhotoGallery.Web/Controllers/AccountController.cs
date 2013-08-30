@@ -154,15 +154,15 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             try
             {
                 var mUser = _userService.GetUser(userId);
-                if (mUser.RemindPasswordSalt.Equals(hash))
+                if (hash.Equals(mUser.RemindPasswordSalt))
                 {
-                    return View(new RemindPassViewModel () { Email = mUser.Email });
+                    return View(new RemindPassViewModel() { Email = mUser.Email, Salt = mUser.RemindPasswordSalt });
                 }
-                return RedirectToRoute("Login");
+                return HttpNotFound();
             }
             catch (UserNotFoundException)
             {
-                return RedirectToRoute("Login");
+                return HttpNotFound();
             }
         } 
     }
