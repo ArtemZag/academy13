@@ -69,7 +69,7 @@ namespace BinaryStudio.PhotoGallery.Web.Events
 
         public void PhotoAddedNotify(PhotoModel mPhoto)
         {
-            var mAlbum = _albumService.GetAlbum(mPhoto.AlbumId);
+            var mAlbum = _albumService.GetAlbum(mPhoto.AlbumModelId);
 
             if (mPhoto.OwnerId != mAlbum.OwnerId)
             {

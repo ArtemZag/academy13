@@ -16,9 +16,9 @@ namespace BinaryStudio.PhotoGallery.Models
             Description = string.Empty;
         }
 
-        public PhotoModel(int albumId, int userId)
+        public PhotoModel(int albumModelId, int userId)
         {
-            AlbumId = albumId;
+            AlbumModelId = albumModelId;
             OwnerId = userId;
             DateOfCreation = DateTime.Now;
             Format = string.Empty;
@@ -57,7 +57,10 @@ namespace BinaryStudio.PhotoGallery.Models
 
 
         public int OwnerId { get; set; }
-        public int AlbumId { get; set; }
+
+        public int AlbumModelId { get; set; }
+
+        public virtual AlbumModel AlbumModel { get; set; }
 
         public virtual ICollection<PhotoCommentModel> PhotoComments { get; set; }
         public virtual ICollection<PhotoTagModel> Tags { get; set; }

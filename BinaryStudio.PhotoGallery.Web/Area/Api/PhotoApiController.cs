@@ -184,7 +184,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 _photoService.DeletePhoto(User.Id, photoId);
                 PhotoModel model = _photoService.GetPhoto(User.Id, photoId);
-                int albumId = model.AlbumId;
+                int albumId = model.AlbumModelId;
 
                 IEnumerable<PhotoModel> photos = _photoService.GetPhotos(User.Id, albumId, 0, 1000);
                 _collageProcessor.CreateCollage(User.Id, albumId, photos);
