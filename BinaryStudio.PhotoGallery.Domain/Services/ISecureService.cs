@@ -48,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="groupId">What goup needs to add</param>
         /// <param name="albumId">For what album will be given permissions</param>
         /// <param name="let">Give or take away permissions</param>
-        void LetGroupViewComments(int userId, int groupId, int albumId, bool let);
+        void LetGroupViewComments(int userId, int groupId, int albumId, bool let, IUnitOfWork unitOfWork);
 
         /// <summary>
         ///     Lets group of users add comment in the album
@@ -66,7 +66,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="groupId">What goup needs to add</param>
         /// <param name="albumId">For what album will be given permissions</param>
         /// <param name="let">Give or take away permissions</param>
-        void LetGroupViewPhotos(int userId, int groupId, int albumId, bool let);
+        void LetGroupViewPhotos(int userId, int groupId, int albumId, bool let, IUnitOfWork unitOfWork);
 
         /// <summary>
         ///     Lets group of users add photo in the album

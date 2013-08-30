@@ -33,37 +33,18 @@ hr {
     z-index: -1;
 }
 .avatar { 
-    border-radius: 6px;
-    border: 4px groove #ffa500;
     overflow: hidden;
-
-    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
-    -ms-box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
-    -o-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-	box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
-}
-
-.avatar:hover {
-    -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.9);
-    -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.9);
-    -ms-box-shadow: 0px 0px 20px rgba(0,0,0,0.9);
-    -o-box-shadow: 0px 0px 20px rgba(0,0,0,0.9);
-	box-shadow: 0px 0px 20px rgba(0,0,0,0.9);
 }
 
 .info {
-    background-color: darkgrey;
-    overflow: auto;
-    border-radius: 20px;
-    border: 4px dashed indianred;
-    padding: 10px;
+    background-color: #F1F1F1;
+    padding: 9px;
     margin: 10px;
     -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
     -ms-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     -o-box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
-	box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
 }
 
 .painting {
@@ -79,8 +60,9 @@ hr {
 }
 
 p.textStyle {
-    color: black;
-    font-size: medium;
+    color: #343434;
+    font-size: 20px;
+    font-family: "Segoe UI Light", "Segoe UI Web Light", "Segoe UI Web Regular", "Segoe UI", "Segoe UI Symbol", "HelveticaNeue-Light", "Helvetica Neue", Arial, sans-serif;
 }
 
 .thumbContaiter {
@@ -117,8 +99,7 @@ p.textStyle {
 .album {
     float: left;
     overflow: auto;
-    border-radius: 10px;
-    border: 4px double green;
+    border-radius: 6px;
     margin: 20px;
     width: 256px;
     height: 192px;
@@ -127,16 +108,6 @@ p.textStyle {
     -ms-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
     -o-box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
 	box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
-}
-
-.album:hover {
-    -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.9);
-    -moz-box-shadow: 0px 0px 20px rgba(0,0,0,0.9);
-    -ms-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.9);
-    -o-box-shadow: 0px 0px 20px rgba(0,0,0,0.9);
-	box-shadow: 0px 0px 20px rgba(0,0,0,0.9);
-    
-    -webkit-filter: sepia(0.2);
 }
 
 .collage {

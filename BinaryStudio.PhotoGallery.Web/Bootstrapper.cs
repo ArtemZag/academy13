@@ -4,6 +4,7 @@ using BinaryStudio.PhotoGallery.Domain;
 using BinaryStudio.PhotoGallery.Web.Events;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using Microsoft.Practices.Unity;
+using OAuth2;
 using Unity.Mvc4;
 
 namespace BinaryStudio.PhotoGallery.Web
@@ -42,6 +43,7 @@ namespace BinaryStudio.PhotoGallery.Web
             container.RegisterType<IGlobalEventsAggregator, GlobalEventsAggregator>(new ContainerControlledLifetimeManager());
             container.RegisterType<INotificationsEventManager, NotificationsEventManager>(new ContainerControlledLifetimeManager());
             container.RegisterType<IGlobalEventsHandler, GlobalEventsHandler>(new ContainerControlledLifetimeManager());
+            container.RegisterType<AuthorizationRoot>();
             container.RegisterInstance(container.Resolve<IGlobalEventsHandler>());
 
             container.RegisterType<ISearchModelConverter, SearchModelConverter>();

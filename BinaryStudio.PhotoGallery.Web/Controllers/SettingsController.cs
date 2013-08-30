@@ -32,14 +32,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult Index()
         {
             UserModel user = _userService.GetUser(User.Id);
-            return View(user.ToUserViewModel(false));
+            return View(user.ToUserViewModel());
         }
 
         [GET("edit")]
         public ActionResult Edit()
         {
             UserModel user = _userService.GetUser(User.Id);
-            return View(user.ToUserViewModel(false));
+            return View(user.ToUserViewModel());
         }
 
         [POST("edit")]
@@ -59,7 +59,9 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             _userService.Update(user);
 
-            return View("Index", user.ToUserViewModel(false));
+            var isUserBlocked = 
+
+            return View("Index", user.ToUserViewModel());
         }
 
         [POST("updatePhoto")]

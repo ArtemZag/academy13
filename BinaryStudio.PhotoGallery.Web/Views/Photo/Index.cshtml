@@ -2,7 +2,7 @@
 @using BinaryStudio.PhotoGallery.Web.Extensions
 
 @{
-	ViewBag.Title = "Index";
+	ViewBag.Title = "Photo page | Bingally";
 	Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
@@ -58,11 +58,6 @@
 		<input id="hiddenPhotoID" type="hidden" value="@ViewBag.PhotoID"/>
 		<img id="mainPhoto" alt="" data-bind="attr: { src: src }, click: ShowNextPhoto" />
 
-		<div id="cosialNetworkSync">
-			<div id="facebookSyncButton" data-bind="click: fbSync">f</div>
-			<div id="vkSyncButton">vk</div>
-			<div id="twetterSyncButton">t</div>
-		</div>
 		<div id="photoLike" data-bind="click: IncrementPhotoLike">
 			<img src="/Content/images/photo-page/unlike-icon.png" />
 			<span data-bind="text: PhotoLikes().length"></span>

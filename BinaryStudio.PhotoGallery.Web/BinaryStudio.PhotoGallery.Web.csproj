@@ -122,12 +122,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NotFoundMvc.1.2.0\lib\net40\NotFoundMvc.dll</HintPath>
     </Reference>
+    <Reference Include="OAuth2">
+      <HintPath>..\packages\OAuth2.0.8.26\lib\OAuth2.dll</HintPath>
+    </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="PerpetuumSoft.Knockout, Version=0.5.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\kMVC.0.5.4\lib\net40\PerpetuumSoft.Knockout.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.103.4\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -237,6 +243,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
+    <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GalleryController.cs" />
@@ -253,7 +260,7 @@
     <Compile Include="CustomStructure\CustomPrincipal.cs" />
     <Compile Include="CustomStructure\ICustomPrincipal.cs" />
     <Compile Include="Extensions\HtmlHelperExtentions.cs" />
-    <Compile Include="Extensions\ViewModels\AvialableGroupConvertationExtension.cs" />
+    <Compile Include="Extensions\ViewModels\AvailableGroupConvertationExtension.cs" />
     <Compile Include="Extensions\ViewModels\PhotoConvertionExtensions.cs" />
     <Compile Include="Extensions\ViewModels\UserConvertionExtensions.cs" />
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
@@ -284,6 +291,7 @@
     <Compile Include="ViewModels\Account\SigninViewModel.cs" />
     <Compile Include="ViewModels\AvailableGroupViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\AlbumGroupsViewModel.cs" />
     <Compile Include="ViewModels\PublicPhotosViewModel.cs" />
     <Compile Include="ViewModels\Photo\NewCommentViewModel.cs" />
     <Compile Include="ViewModels\Photo\PhotoCommentViewModel.cs" />
@@ -355,7 +363,6 @@
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
     <Content Include="Scripts\panel.js" />
-    <Content Include="Scripts\Photo\photo.js" />
     <Content Include="Content\photo-page.css" />
   </ItemGroup>
   <ItemGroup>
