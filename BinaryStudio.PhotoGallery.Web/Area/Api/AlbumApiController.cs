@@ -56,7 +56,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 var albums = _albumService
                     .GetAlbumsRange(User.Id, userId, skip, take, out pr)
                     .Select(album => album.ToAlbumViewModel(
-                        _pathUtil.GetCollage(userId, album.Id))).ToList();
+                        _pathUtil.BuildCollagePath(userId, album.Id))).ToList();
 
                 if (!albums.Any() && userId!=User.Id)
                     pr = true;
