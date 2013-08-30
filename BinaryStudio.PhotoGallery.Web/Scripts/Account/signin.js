@@ -75,6 +75,7 @@
     
     $("#forgotPass").click(function () {
         errors.clearErrorMessages();
+        $("#signin-button").parent().attr("disabled", true);
         $(".error-field .alert").remove();
         Bingally.animation($("#loginPanel"), "move",
             {

@@ -7,7 +7,7 @@
     var passwordTip = new Opentip(inputPassword, '', { showOn: null, extends: 'alert', target: true });
     inputPassword.data('opentip', passwordTip);
     
-    $('form').validate({
+    $('#loginPanel').validate({
         rules: {
             Email: {
                 required: true,
