@@ -323,6 +323,7 @@
     <Content Include="Content\search.css" />
     <Content Include="Content\style-libs\chosen.css" />
     <Content Include="Content\verticalResizer.css" />
+    <Content Include="Scripts\Account\changePass.js" />
     <Content Include="Scripts\Account\forgotPass.js" />
     <Content Include="Scripts\Admin\AdminPage.js" />
     <Content Include="Scripts\Account\initVertResizer.js" />
@@ -467,6 +468,7 @@
     <Content Include="Views\Shared\AccessDenied.cshtml" />
     <Content Include="Views\Gallery\Index.cshtml" />
     <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Account\ChangePass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
