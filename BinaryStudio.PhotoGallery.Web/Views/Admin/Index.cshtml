@@ -6,76 +6,30 @@
 
 @Styles.Render("~/Content/admin-page.css")
 
-<div id="user-list">
-    <div class="user status-unactivated">
+<div id="user-list" data-bind="foreach: userList">
+    <div class="user" data-bind="css: statusCss">
         <div class="avatar">
-            <img  src="~/Content/images/no_avatar.png" />
-            <div class="status">Unactivated</div>
+            <img src="~/Content/images/no_avatar.png" data-bind="attr: {src: profileUrl}" />
+            <div class="status" data-bind="text: statusText"></div>
         </div>
         <div class="description">
-            <button class="edit-info icon-edit"></button>
-            <div class="full-name">Jony Joshua</div>
-            <div class="email">jony@jhgfdsafgchjkl;'il.com</div>
-            <div class="department">.Net</div>
+            <button class="edit-info icon-edit" data-bind="click: editAction"></button>
+            <div class="full-name" data-bind="text: fullName"></div>
+            <a class="email" data-bind="text: email, attr: {href: email}"></a>
+            <div class="department" data-bind="text: department"></div>
         </div>
         <div class="actions btn-block">
-            <button class="btn btn-inverse">Block</button>
-            <button class="btn btn-warning">Delete</button>
-            <button class="btn btn-primary">Resend invitation</button>
-        </div>
-    </div>
-    <div class="user status-online">
-        <div class="avatar">
-            <img src="~/Content/images/no_avatar.png" />
-            <div class="status">Online</div>
-        </div>
-        <div class="description">
-            <button class="edit-info icon-edit"></button>
-            <div class="full-name">Jony Joshua</div>
-            <div class="email">jony@gmail.com</div>
-            <div class="department">.Net</div>
-        </div>
-        <div class="actions btn-block">
-            <button class="btn btn-inverse">Block</button>
-            <button class="btn btn-warning">Delete</button>
-            <button class="btn btn-primary">Reset password</button>
-        </div>
-    </div>
-    <div class="user status-offline">
-        <div class="avatar">
-            <img  src="~/Content/images/no_avatar.png" />
-            <div class="status">Offline</div>
-        </div>
-        <div class="description">
-            <button class="edit-info icon-edit"></button>
-            <div class="full-name">Jony Joshua</div>
-            <div class="email">jony@gmail.com</div>
-            <div class="department">.Net</div>
-        </div>
-        <div class="actions btn-block">
-            <button class="btn btn-inverse">Block</button>
-            <button class="btn btn-warning">Delete</button>
-            <button class="btn btn-primary">Reset password</button>
-        </div>
-    </div>
-    <div class="user status-blocked">
-        <div class="avatar">
-            <img  src="~/Content/images/no_avatar.png" />
-            <div class="status">Blocked</div>
-        </div>
-        <div class="description">
-            <button class="edit-info icon-edit"></button>
-            <div class="full-name">Jony Joshua</div>
-            <div class="email">jony@gmail.com</div>
-            <div class="department">.Net</div>
-        </div>
-        <div class="actions btn-block">
-            <button class="btn btn-inverse">Ublock</button>
-            <button class="btn btn-warning">Delete</button>
-            <button class="btn btn-primary">Send activation</button>
+            <button class="btn btn-inverse" data-bind="click: blockAction, text: blockAndUnblockText"></button>
+            <button class="btn btn-warning" data-bind="click: deleteAction">Delete</button>
+            <button class="btn btn-primary" data-bind="click: isActivated() ? resetPassword : resetInvitation, text: invitationAndPasswordText">Resend invitation</button>
         </div>
     </div>
 </div>
+
+@Scripts.Render("~/bundles/scripts/mediator")
+@Scripts.Render("~/Scripts/Admin/UserViewModel.js")
+@Scripts.Render("~/Scripts/Admin/AdminViewModel.js")
+@Scripts.Render("~/Scripts/Admin/AdminMain.js")
 
 @*<div id="actions-panel">*@
 @*    <div class="action">*@

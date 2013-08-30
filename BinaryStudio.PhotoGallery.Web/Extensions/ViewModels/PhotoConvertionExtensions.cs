@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Core.PhotoUtils;
+﻿using System;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 
@@ -11,14 +12,20 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
             var userInfo = new UserInfoViewModel
             {
                 OwnerFirstName = user.FirstName,
-                OwnerLastName = user.LastName
+                OwnerLastName = user.LastName,
             };
-
+            userInfo.OwnerPhotoSource = userInfo.PathUtil.BuildAvatarPath(user.Id, ImageSize.Small);
+            var d = photoComment.DateOfCreating;
             var photoCommentViewModel = new PhotoCommentViewModel
             {
                 UserInfo = userInfo,
                 Rating = photoComment.Rating,
-                DateOfCreating = photoComment.DateOfCreating,
+                year = d.Year,
+                month = d.Month,
+                day = d.Day,
+                hour = d.Hour,
+                minute = d.Minute,
+                second = d.Second,
                 Reply = photoComment.Reply,
                 Text = photoComment.Text
             };

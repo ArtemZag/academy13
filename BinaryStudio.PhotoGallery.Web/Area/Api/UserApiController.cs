@@ -70,7 +70,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 List<UserViewModel> usersViewModels = _userService
                     .GetAllUsers(skip, take)
-                    .Select(userModel => userModel.ToUserViewModel())
+                    .Select(userModel => userModel.ToUserViewModel(_userService.IsUserBlocked(userModel.Id)))
                     .ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, usersViewModels, new JsonMediaTypeFormatter());
@@ -81,8 +81,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-        [DELETE("")]
-        public HttpResponseMessage Delete(int userId)
+        [DELETE("{userId:int}")]
+        public HttpResponseMessage Delete([FromUri] int userId)
         {
             try
             {

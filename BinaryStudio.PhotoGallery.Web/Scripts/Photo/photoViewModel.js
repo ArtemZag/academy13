@@ -20,17 +20,31 @@
         u.photoSource = ko.observable(data.OwnerPhotoSource);
     }
 
+    function printDate(data) {
+        var dateStr =
+            padStr(data.day) + '.' +
+                padStr(data.month) + '.' +
+                padStr(data.year) + ' ' +
+                padStr(data.hour) + ':' +
+                padStr(data.minute) + ':' +
+                padStr(data.second);
+        return dateStr;
+    }
+
+    function padStr(i) {
+        return (i < 10) ? "0" + i : "" + i;
+    }
+
     function Comment(data) {
         var com = this;
 
         com.text = ko.observable(data.Text);
-
-        var date = new Date(parseInt(data.DateOfCreating.substr(6)));
-        com.dateOfCreating = ko.observable(date.toLocaleString());
+        com.dateOfCreating = ko.observable(printDate(data));
 
         com.rating = ko.observable(data.Rating);
-        com.userInfo = ko.observable(new User(data.UserInfo));
 
+        com.userInfo = ko.observable(new User(data.UserInfo));
+        com.src = ko.observable(data.UserInfo.OwnerPhotoSource);
         com.GetUserName = ko.computed(function () {
             return com.userInfo().firstName() + " " + com.userInfo().lastName();
         },
@@ -47,7 +61,7 @@
             return lik.firstName() + " " + lik.lastName();
         }, this);
 
-        /*lik.avaSRC = ko.observable(data.src);*/
+        //lik.avaSRC = ko.observable(data.src);
     }
 
     function PhotoByTag(data) {
@@ -87,7 +101,7 @@
         };
 
         self.AddComment = function () {
-
+            
             $.post("/api/photo/comment", { CommentText: self.newComment(), PhotoId: self.PhotoId() }, function (data) {
                 setComments(data);
                 // scroll down to new added comment. need pure js
@@ -99,6 +113,7 @@
 
         // Needs refactoring
         self.DeletePhoto = function () {
+            alert('Hallo');
             $.ajax({
                 url: '/api/photo/' + model.PhotoId(),
                 type: 'DELETE',

@@ -30,10 +30,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 var group = unitOfWork.Groups.Find(x => x.GroupName == "DeletedUsers");
                 return
-                    unitOfWork.Users.Filter(user => !user.IsAdmin && !user.Groups.Contains(group))
-                        .Include(g => g.Albums)
-                        .Include(g => g.Groups)
-                        .Include(g => g.AuthInfos)
+                    unitOfWork.Users
+                        .Filter(user => !user.IsAdmin && !user.Groups.Contains(group))
+                        .Include(user => user.Albums)
+                        .Include(user => user.Groups)
+                        .Include(user => user.AuthInfos)
+                        .OrderBy(user => user.DateOfCreating)
+                        .ThenBy(user => user.Id)
                         .Skip(skipCount)
                         .Take(takeCount)
                         .ToList();
@@ -272,8 +275,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Users.Find(userId).Groups.ToList().Find(group => group.GroupName == "BlockedUsers") !=
-                       null;
+                return unitOfWork
+                    .Users.Find(userId).Groups.ToList()
+                    .Find(group => group.GroupName == "BlockedUsers") != null;
             }
         }
 
