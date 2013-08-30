@@ -25,18 +25,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return BuildPathByPattern(USER_PART, userId);
         }
 
-        public string BuildCommentUrl(int photoId, int commentId)
-        {
-            const string COMMENT_DELIMITER = "#";
-
-            var url = new StringBuilder(BuildPhotoViewUrl(photoId));
-
-            url.Append(COMMENT_DELIMITER)
-                .Append(commentId);
-
-            return url.ToString();
-        }
-
         private string BuildPathByPattern(string pathPart, int id)
         {
             const string DELIMITER = "/";

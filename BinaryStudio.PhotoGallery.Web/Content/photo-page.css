@@ -163,6 +163,7 @@
 }
 
 .commentText {
+    margin-left: 51px;
 	padding: 30px 30px 30px 40px;
     font-size: 9pt;
 	width: 85%;
@@ -300,4 +301,15 @@
 
 #leftSideMenu .btn-group {
 	display: block;
+}
+
+.title {
+	font-family: "Segoe UI Light", "Segoe UI Web Light", "Segoe UI Web Regular", "Segoe UI", "Segoe UI Symbol", "HelveticaNeue-Light", "Helvetica Neue", Arial, sans-serif;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 40px;
+}
+
+#editable {
+	margin-right: 15px;
 }

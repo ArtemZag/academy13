@@ -58,7 +58,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                         {
                             Id = model.Id,
                             OwnerId = model.OwnerId,
-                            AlbumId = model.AlbumId,
+                            AlbumId = model.AlbumModelId,
                             Format = model.Format,
                             Rating = model.Rating,
                             DateOfCreation = model.DateOfCreation,
@@ -83,7 +83,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     {
                         Id = model.Id,
                         OwnerId = model.OwnerId,
-                        AlbumId = model.AlbumId,
+                        AlbumId = model.AlbumModelId,
                         Format = model.Format,
                         Rating = model.Rating,
                         DateOfCreation = model.DateOfCreation,

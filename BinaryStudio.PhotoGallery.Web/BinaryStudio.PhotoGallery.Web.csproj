@@ -292,6 +292,7 @@
     <Compile Include="ViewModels\AvailableGroupViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\AlbumGroupsViewModel.cs" />
+    <Compile Include="ViewModels\Photo\PhotoTagsViewModel.cs" />
     <Compile Include="ViewModels\PublicPhotosViewModel.cs" />
     <Compile Include="ViewModels\Photo\NewCommentViewModel.cs" />
     <Compile Include="ViewModels\Photo\PhotoCommentViewModel.cs" />
@@ -364,6 +365,7 @@
     <Content Include="Scripts\mediator.js" />
     <Content Include="Scripts\mediator.min.js" />
     <Content Include="Scripts\Notifications.js" />
+    <Content Include="Scripts\User\profile.validate.js" />
     <Content Include="Scripts\User\user.js" />
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />

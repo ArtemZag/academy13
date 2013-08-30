@@ -63,13 +63,13 @@ namespace BinaryStudio.PhotoGallery.Web.Events
                                            , mWhoseComment.FirstName, mWhoseComment.LastName);
 
                 _hubNotify.Clients.Group(mParentComment.UserId.ToString("d"))
-                              .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildCommentUrl(mComment.PhotoId, mComment.Id));
+                              .SendNotification(NotificationTitles.CommentAdded, noty, string.Empty);
             }
         }
 
         public void PhotoAddedNotify(PhotoModel mPhoto)
         {
-            var mAlbum = _albumService.GetAlbum(mPhoto.AlbumId);
+            var mAlbum = _albumService.GetAlbum(mPhoto.AlbumModelId);
 
             if (mPhoto.OwnerId != mAlbum.OwnerId)
             {

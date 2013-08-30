@@ -48,7 +48,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 UserModel user = unitOfWork.Users.Find(userId);
                 PhotoModel photo = unitOfWork.Photos.Find(photoId);
-                AlbumModel album = unitOfWork.Albums.Find(photo.AlbumId);
+                AlbumModel album = unitOfWork.Albums.Find(photo.AlbumModelId);
 
                 // if user is album owner OR user is photo owner OR user is admin
                 return (album.OwnerId == userId) || (photo.OwnerId == userId) || (user.IsAdmin);

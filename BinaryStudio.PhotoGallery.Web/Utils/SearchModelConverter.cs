@@ -83,7 +83,6 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             return new CommentFoundViewModel
             {
-                CommentUrl = urlUtil.BuildCommentUrl(commentFound.PhotoId, commentFound.Id),
                 DateOfCreation = commentFound.DateOfCreation,
                 UserName = userName,
                 Text = commentFound.Text,
