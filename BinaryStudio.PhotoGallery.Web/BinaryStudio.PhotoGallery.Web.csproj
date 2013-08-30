@@ -269,7 +269,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Events\GlobalEventsHandler.cs" />
-    <Compile Include="Hubs\ICustomPrincipalInHub.cs" />
     <Compile Include="Hubs\NotificationTitles.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="CustomStructure\UserInfoSerializeModel.cs" />
@@ -285,6 +284,7 @@
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
     <Compile Include="Utils\ISearchModelConverter.cs" />
     <Compile Include="Utils\SearchModelConverter.cs" />
+    <Compile Include="ViewModels\Account\ChangePassViewModel.cs" />
     <Compile Include="ViewModels\Admin\InviteUserViewModel.cs" />
     <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
@@ -309,6 +309,7 @@
     <Content Include="Content\settings-page.css" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\panel.css" />
+    <Content Include="Content\remindpass.css" />
     <Content Include="Content\spinner.css" />
     <Content Include="Content\style-libs\chosen-sprite.png" />
     <Content Include="Content\style-libs\pnotify.css" />
@@ -336,7 +337,8 @@
     <Content Include="Content\search.css" />
     <Content Include="Content\style-libs\chosen.css" />
     <Content Include="Content\verticalResizer.css" />
-    <Content Include="Scripts\Account\forgotPass.js" />
+    <Content Include="Scripts\Account\changePass.js" />
+    <Content Include="Scripts\Account\remindPass.js" />
     <Content Include="Scripts\Admin\AdminMain.js" />
     <Content Include="Scripts\Account\initVertResizer.js" />
     <Content Include="Scripts\Account\signup.validate.js" />
@@ -480,6 +482,7 @@
     <Content Include="Views\Shared\AccessDenied.cshtml" />
     <Content Include="Views\Gallery\Index.cshtml" />
     <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Account\ChangePass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,5 +8,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         [DataType(DataType.Text)]
         [MaxLength(255)]
         public string Email { get; set; }
+
     }
 }

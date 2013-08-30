@@ -1,10 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Net;
 using System.Web.Mvc;
 using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
+using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
@@ -17,10 +20,12 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class AccountController : BaseController
     {
         private readonly IUserService _userService;
+        private readonly ICryptoProvider _cryptoProvider;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, ICryptoProvider cryptoProvider)
         {
             _userService = userService;
+            _cryptoProvider = cryptoProvider;
         }
 
         [GET("login/{service?}", RouteName = "Login")]
@@ -143,10 +148,22 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return RedirectToRoute("Login");
         }
 
-        [GET("remind")]
-        public ActionResult RemindPass()
+        [GET("remind/{userId}/{hash}")]
+        public ActionResult ChangePass(int userId, string hash)
         {
-            return View(new RemindPassViewModel());
-        }
+            try
+            {
+                var mUser = _userService.GetUser(userId);
+                if (mUser.RemindPasswordSalt.Equals(hash))
+                {
+                    return View(new RemindPassViewModel () { Email = mUser.Email });
+                }
+                return RedirectToRoute("Login");
+            }
+            catch (UserNotFoundException)
+            {
+                return RedirectToRoute("Login");
+            }
+        } 
     }
 }

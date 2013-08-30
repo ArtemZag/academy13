@@ -19,14 +19,14 @@
         @Scripts.Render("~/bundles/scripts/knockout")
         @Scripts.Render("/Scripts/knockout.mapping-latest.js")
         
-        
         @Scripts.Render("~/Scripts/Helpers/animation.js")
         @Scripts.Render("~/Scripts/Helpers/verticalResizer_Module.js")
         @Scripts.Render("~/Scripts/Account/initVertResizer.js")
+        @Scripts.Render("~/Scripts/Account/errors.js")
 
     </head>
     <body>
-        <div id="full-screen-shadow"></div>
+        <div id="full-screen-shadow" style="display: block;"></div>
         <div id="wrapper">
             <div id='vFlow-images' data-bind="foreach: RandomPhotos">
                 <div class="photoContainer invisible" >
@@ -36,12 +36,18 @@
         </div>
         @RenderBody() 
         <div id="loader">
-        <ul class="spinner">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ul>
-</div>
+            <ul class="spinner">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
     </body>
 </html>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        InitVertResizer("/api/publicphoto/");
+    });
+</script>
