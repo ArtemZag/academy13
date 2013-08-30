@@ -5,7 +5,7 @@
         var $okPanel = $("#okPanel");
 
         $(".backToLogin").click(function() {
-            clearErrorMessages();
+            errors.clearErrorMessages();
             Bingally.animation($recoverypassPanel, "move", {direction: 'top',method: 'hide',animTime: 500});
             Bingally.animation($okPanel, "move", { direction: 'top', method: 'hide', animTime: 500 });
             $loginPanel.removeAttr("style");
@@ -14,10 +14,10 @@
 
         var $submitButton = $("#sendRecovery");
         $submitButton.click(function(event) {
-            clearErrorMessages();
+            errors.clearErrorMessages();
 
             if (!$('form').valid()) {
-                showErrorMessage("Correctly fill in all the fields");
+                errors.showErrorMessage("Correctly fill in all the fields");
                 return false;
             }
 
@@ -43,7 +43,7 @@
                         break;
                     }
 
-                    showErrorMessage(errorMsg);
+                    errors.showErrorMessage(errorMsg);
                 })
                 .always(function() {
                     $submitButton.removeClass('disabled');
@@ -54,16 +54,6 @@
             return true;
         });
 
-        function clearErrorMessages() {
-            $('.error-field').html('');
-        }
-
-        function showErrorMessage(message) {
-            var errorField = $('.error-field');
-
-            errorField.append('<div class="alert alert-error">'
-                + '<button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>');
-        }
     });
 }
 

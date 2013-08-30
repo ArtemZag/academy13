@@ -17,18 +17,18 @@
 
     loginPanel.find('input[type=email], input[type=password]')
         .on('focus', function() {
-            clearErrorMessages();
+            errors.clearErrorMessages();
         })
         .on('keypress', function() {
-            clearErrorMessages();
+            errors.clearErrorMessages();
         });
 
     function addClickEventTo(submitButton, address) {
         submitButton.click(function (event) {
-            clearErrorMessages();
+            errors.clearErrorMessages();
             
             if (!$('form').valid()) {
-                showErrorMessage("Correctly fill in all the fields");
+                errors.showErrorMessage("Correctly fill in all the fields");
                 return false;
             }
 
@@ -62,7 +62,7 @@
                             break;
                     }
 
-                    showErrorMessage(errorMsg);
+                    errors.showErrorMessage(errorMsg);
                 })
                 .always(function() {
                     submitButton.removeClass('disabled');
@@ -74,6 +74,7 @@
     }
     
     $("#forgotPass").click(function () {
+        errors.clearErrorMessages();
         $(".error-field .alert").remove();
         Bingally.animation($("#loginPanel"), "move",
             {
@@ -89,15 +90,5 @@
                 animTime: 600
             });
     });
-    
-    function clearErrorMessages() {
-        $('.error-field').html('');
-    }
 
-    function showErrorMessage(message) {
-        var errorField = $('.error-field');
-        
-        errorField.append('<div class="alert alert-error">'
-                + '<button type="button" class="close" data-dismiss="alert">×</button>' + message + '</div>');
-    }
 });
