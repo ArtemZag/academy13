@@ -159,8 +159,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 string fromEmail = ConfigurationManager.AppSettings["NotificationEmail"];
                 string fromPass = ConfigurationManager.AppSettings["NotificationPassword"];
                 string mailSubject = Resources.Email_RemindPassSubject;
-                var test = _userService.UserRestorePasswordAsk(mUser);
-                var emailHash = WebUtility.UrlEncode(test);
+                var emailHash = _userService.UserRestorePasswordAsk(mUser);
                 string remindLink = string.Format("<a href='http://{0}/remind/{1}/{2}'>http://{0}/remind/{1}/{2}</a>", 
                     HttpContext.Current.Request.Url.Authority, mUser.Id, emailHash);
                 string text = string.Format(

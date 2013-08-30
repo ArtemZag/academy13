@@ -158,12 +158,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                mUser.RemindPasswordSalt = _cryptoProvider.GetNewSalt();
+                mUser.RemindPasswordSalt = Randomizer.GetString(30);
                
                 unitOfWork.Users.Update(mUser);
                 unitOfWork.SaveChanges();
 
-                return _cryptoProvider.CreateHashForPassword(mUser.Email, mUser.RemindPasswordSalt);
+                return mUser.RemindPasswordSalt;
             }
         }
 

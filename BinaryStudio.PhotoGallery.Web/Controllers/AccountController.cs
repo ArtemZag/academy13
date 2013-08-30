@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -158,9 +159,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             try
             {
-                hash = WebUtility.UrlDecode(hash);
                 var mUser = _userService.GetUser(userId);
-                if (_cryptoProvider.IsPasswordsEqual(mUser.Email, hash, mUser.RemindPasswordSalt))
+                if (mUser.RemindPasswordSalt.Equals(hash))
                 {
                     return View(new RemindPassViewModel () { Email = mUser.Email });
                 }
