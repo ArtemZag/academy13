@@ -58,6 +58,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     .Select(album => album.ToAlbumViewModel(
                         _pathUtil.GetCollage(userId, album.Id))).ToList();
 
+                if (!albums.Any() && userId!=User.Id)
+                    pr = true;
+
                 UserModel requestsUser = _userService.GetUser(User.Id);
                 UserModel ownerUser = _userService.GetUser(userId);
 
@@ -68,6 +71,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         OwnerUserName = string.Format("{0} {1}", ownerUser.FirstName, ownerUser.LastName),
                         NoAlbumsToView = pr
                     };
+
                 return Request.CreateResponse(HttpStatusCode.OK, model, new JsonMediaTypeFormatter());
             }
             catch (Exception ex)

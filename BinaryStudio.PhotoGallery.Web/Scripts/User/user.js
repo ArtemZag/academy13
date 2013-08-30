@@ -29,7 +29,7 @@
     function getInfo(inf) {
         $("#userInformation").html($("#userTmpl").render(inf));
 
-        if (inf.FirstName == "None" && inf.LastName == "None") {
+        if (inf.FirstName == "None" || inf.LastName == "None") {
             $(".albums").html(
                 $("#noneUserTmpl").render());
             windowObject.resize(moveNoAlbumsContainer);
