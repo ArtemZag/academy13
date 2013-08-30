@@ -10,16 +10,6 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     [RoutePrefix("photo")]
     public class PhotoController : BaseController
     {
-        [POST("facebook/{photoId:int}")]
-        public ActionResult FbSync(int photoId)
-        {
-            /* var photoModel = _photoService.GetPhoto(Int32.Parse(photoId));
-            var photoPath = new List<string>();
-*/
-            return Redirect(FB.CreateAuthUrl(Randomizer.GetString(16)));
-            //FB.AddPhotosToAlbum(photoPath,"MakTest",);
-        }
-
         [GET("{photoId:int}")]
         public ActionResult Index(int photoId)
         {

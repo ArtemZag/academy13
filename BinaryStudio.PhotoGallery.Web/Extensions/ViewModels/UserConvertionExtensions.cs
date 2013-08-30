@@ -25,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
             var viewModel = new UserViewModel
             {
                 FirstName = "None",
-                LastName = "None",
+                LastName = "",
                 IsAdmin = false,
                 AlbumsCount = 0,
                 PhotoCount = 0
