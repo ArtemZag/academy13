@@ -29,17 +29,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 var group = unitOfWork.Groups.Find(x => x.GroupName == "DeletedUsers");
-                return
-                    unitOfWork.Users.All()
+                var users =
+                    unitOfWork.Users
+                        .All()
                         .Include(user => user.Albums)
                         .Include(user => user.Groups)
                         .Include(user => user.AuthInfos)
-//                        .Filter(user => !user.IsAdmin && !user.Groups.Contains(group))
                         .OrderBy(user => user.DateOfCreating)
                         .ThenBy(user => user.Id)
                         .Skip(skipCount)
                         .Take(takeCount)
                         .ToList();
+
+                return users.Where(user => !user.IsAdmin && !user.Groups.Contains(group));
             }
         }
 
