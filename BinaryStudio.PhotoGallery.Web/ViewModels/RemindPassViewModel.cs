@@ -9,5 +9,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels
         [MaxLength(255)]
         public string Email { get; set; }
 
+        public string Salt { get; set; }
     }
 }

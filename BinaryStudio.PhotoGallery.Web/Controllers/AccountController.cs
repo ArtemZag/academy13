@@ -156,7 +156,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 var mUser = _userService.GetUser(userId);
                 if (hash.Equals(mUser.RemindPasswordSalt))
                 {
-                    return View(new RemindPassViewModel () { Email = mUser.Email });
+                    return View(new RemindPassViewModel() { Email = mUser.Email, Salt = mUser.RemindPasswordSalt });
                 }
                 return HttpNotFound();
             }

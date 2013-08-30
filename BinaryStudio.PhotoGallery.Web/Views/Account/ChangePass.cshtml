@@ -12,10 +12,11 @@
 <div id="chPassPanel" class="login-panel">
     @Html.Image(Url.Content("~/Content/images/logo_big.png"))
     <div class="well">          
-        <form class="control-group form-horizontal pagination-centered">
+        <form  id="changePass" class="control-group form-horizontal pagination-centered">
             <input type="email" id="Email" name="Email" class="input-block-level" maxlength="255" placeholder="E-mail address" value="@Model.Email" readonly=""/>
             <input type="password" id="Password" name="Password" class="input-block-level" maxlength="20" placeholder="Password" />
             <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="input-block-level" maxlength="20" placeholder="Repeat password">
+            <input type="hidden" name="Salt" id="Salt" value="@Model.Salt"/>
 
             <button id="changePass-button" type="submit" class="btn btn-success effeckt-button zoom-in">
                 <span class="effeckt-label">Change password</span>
@@ -37,6 +38,7 @@
 </div>
 
 @Scripts.Render("~/Scripts/Account/changePass.js")
+@Scripts.Render("~/Scripts/Account/changePass.validate.js")
 
 <script type="text/javascript">
     $(function() {
