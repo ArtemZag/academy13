@@ -1,6 +1,6 @@
 ﻿namespace BinaryStudio.PhotoGallery.Web.ViewModels.Photo
 {
-    public class UserInfoViewModel
+    public class UserInfoViewModel:BaseViewModel
     {
         public string OwnerFirstName { get; set; }
         public string OwnerLastName { get; set; }
