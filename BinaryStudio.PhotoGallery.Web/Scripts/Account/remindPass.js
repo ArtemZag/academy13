@@ -6,6 +6,7 @@
 
         $(".backToLogin").click(function() {
             errors.clearErrorMessages();
+            $('#RemindEmail').data('opentip').hide();
             Bingally.animation($recoverypassPanel, "move", {direction: 'top',method: 'hide',animTime: 500});
             Bingally.animation($okPanel, "move", { direction: 'top', method: 'hide', animTime: 500 });
             $loginPanel.removeAttr("style");

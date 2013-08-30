@@ -8,9 +8,6 @@
     inputPassword.data('opentip', passwordTip);
     
     $('#loginForm').validate({
-        onfocusout: false,
-        onkeyup: false,
-        onclick: false,
         rules: {
             Email: {
                 required: true,
