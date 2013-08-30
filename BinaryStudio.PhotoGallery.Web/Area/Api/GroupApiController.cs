@@ -51,5 +51,23 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);                
             }
         }
+
+        [POST("")]
+        public HttpResponseMessage PostGroups([FromBody]AlbumGroupsViewModel albumGroupsViewModel)
+        {
+            try
+            {
+                IEnumerable<AvailableGroupModel> groupModels =
+                albumGroupsViewModel.ViewModels.Select(AvailableGroupViewModel.ToModel);
+
+                groupService.SetAlbumGroups(User.Id, albumGroupsViewModel.AlbumId, groupModels);
+
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);                
+            }
+        }
     }
 }

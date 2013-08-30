@@ -5,6 +5,7 @@
     var getPhotosUrl = $("#getPhotosUrl").data("url");
     var getGroupsUrl = $("#getGroupsUrl").data("url");
     var postAlbumInfoUrl = $("#postAlbumInfoUrl").data("url");
+    var postGroupsUrl = $("#postGroupsUrl").data("url");
 
     function albumViewModel() {
 
@@ -42,6 +43,9 @@
 
             // post name and description
             postAlbumInfo();
+
+            // post new rights for groups
+            postRights();
         };
 
         self.gotoPhotoPage = function (data) {
@@ -58,9 +62,12 @@
 
         self.name = ko.observable(name);
 
-        self.canSeePhotos = ko.observable(canSeePhotos);
+        self.canSeePhotos = ko.observable();
 
-        self.canSeeComments = ko.observable(canSeeComments);
+        self.canSeeComments = ko.observable();
+
+        self.canSeePhotos(canSeePhotos);
+        self.canSeeComments(canSeeComments);
     }
 
     // for contenteditable binding 
@@ -110,6 +117,16 @@
         $.post(postAlbumInfoUrl, { Id: album.albumId, AlbumName: album.name(), Description: album.description() });
     }
 
+    function postRights() {
+
+        $.ajax({
+            url: postGroupsUrl,
+            type: 'POST',
+            data: { viewModels: album.groups(), albumId: album.albumId }
+        });
+
+    }
+
     function getAlbumTags() {
 
         $.get(getTagsUrl, album.albumId, setAlbumTags);
@@ -136,7 +153,6 @@
 
         return dateTime.substring(0, dateEndIndex);
     }
-
 
     var album = new albumViewModel();
     album.albumId = document.getElementById("albumId").value;

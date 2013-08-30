@@ -13,7 +13,7 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions
         /// <param name="helper">HTML helper instance.</param>
         /// <param name="linkText">The inner text of the anchor element.</param>
         /// <param name="actionName">The name of the action.</param>
-        /// <param name="controllerName">The name of the controll.</param>
+        /// <param name="controllerName">The name of the controller.</param>
         /// <param name="htmlAttributes">Additional HTML attributes (can be specified via properties of anonymous object).</param>
         /// <returns>HTML code of link tag.</returns>
         public static MvcHtmlString ActionLink(
@@ -35,7 +35,7 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions
         /// <param name="helper">HTML helper instance.</param>
         /// <param name="imageSrc">Path to image.</param>
         /// <param name="actionName">The name of the action.</param>
-        /// <param name="controllerName">The name of the controll.</param>
+        /// <param name="controllerName">The name of the controller.</param>
         /// <param name="htmlAttributes">Additional HTML attributes (can be specified via properties of anonymous object).</param>
         /// <returns>HTML code of link tag with image inside.</returns>
         public static MvcHtmlString ImageLink(
@@ -140,6 +140,19 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions
             imageTag.MergeAttributes(htmlAttributes.ToDictionary(), false);
 
             return MvcHtmlString.Create(imageTag.ToString(TagRenderMode.SelfClosing));
+        }
+
+        /// <summary>
+        /// Generates a fully qualified URL for the specified route values by using a route name.
+        /// </summary>
+        /// <param name="helper">HTML helper instance.</param>
+        /// <param name="controllerName">The name of the controller.</param>
+        /// /// <param name="actionName">The name of the action</param>
+        /// <returns>The name of the route that is used to generate the URL.</returns>
+        public static string RouteUrl(this HtmlHelper helper, string controllerName, string actionName)
+        {
+            var urlHelper = new UrlHelper(helper.ViewContext.RequestContext);
+            return urlHelper.RouteUrl(new {httproute = "", controller = controllerName, action = actionName});;
         }
     }
 }

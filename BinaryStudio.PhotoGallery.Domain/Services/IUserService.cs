@@ -61,5 +61,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="godId">userID with God permissions</param>
         /// <param name="slaveId"></param>
         void MakeUserGod(int godId, int slaveId);
+
+        bool IsUserBlocked(int userId);
     }
 }

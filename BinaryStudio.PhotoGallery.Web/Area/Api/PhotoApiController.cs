@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Web.Helpers;
 using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
@@ -188,7 +189,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.OK, "ok" , new JsonMediaTypeFormatter());
         }
 
         [POST("movephoto?{photoId}&{albumId}")]
@@ -202,6 +203,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 _photoService.MovePhotoToAlbum(User.Id, photoId, albumId);
+
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (NoEnoughPrivilegesException ex)
             {
@@ -211,8 +214,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

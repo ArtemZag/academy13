@@ -10,6 +10,7 @@ namespace BinaryStudio.PhotoGallery.Models
     {
         public PhotoTagModel()
         {
+            TagName = string.Empty;
         }
 
         public PhotoTagModel(string tagName)

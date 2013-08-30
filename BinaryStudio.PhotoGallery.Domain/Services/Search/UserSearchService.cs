@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Domain.Services.Search.Results;
-using BinaryStudio.PhotoGallery.Domain.Services.Tasks;
 using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Domain.Services.Search
@@ -28,7 +27,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 {
                     IEnumerable<UserFound> found = SearchByCondition(searchWords,
                         model => searchWords.Any(searchWord =>
-                                    model.FirstName.ToLower().Contains(searchWord) || model.LastName.ToLower().Contains(searchWord)),
+                            (model.FirstName ?? string.Empty).ToLower().Contains(searchWord) ||
+                            (model.LastName ?? string.Empty).ToLower().Contains(searchWord)),
                         GetRelevanceByName, unitOfWork);
 
                     result.AddRange(found);
@@ -37,7 +37,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                 if (searchArguments.IsSearchUserByDepartment)
                 {
                     IEnumerable<UserFound> found = SearchByCondition(searchWords,
-                        model => searchWords.Any(searchWord => model.Department.ToLower().Contains(searchWord)),
+                        model => searchWords.Any(searchWord => (model.Department ?? string.Empty).ToLower().Contains(searchWord)),
                         GetRelevanceByDepartment, unitOfWork);
 
                     result.AddRange(found);
@@ -81,14 +81,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
             return
                 searchWords.Sum(
                     searchWord =>
-                        Regex.Matches(userModel.FirstName.ToLower(), searchWord.ShieldString()).Count +
-                        Regex.Matches(userModel.LastName.ToLower(), searchWord.ShieldString()).Count);
+                        Regex.Matches((userModel.FirstName ?? string.Empty).ToLower(), searchWord.ShieldString()).Count +
+                        Regex.Matches((userModel.LastName ?? string.Empty).ToLower(), searchWord.ShieldString()).Count);
         }
 
         private int GetRelevanceByDepartment(IEnumerable<string> searchWords, UserModel userModel)
         {
             return searchWords.Sum(
-                searchWord => Regex.Matches(userModel.Department.ToLower(), searchWord.ShieldString()).Count);
+                searchWord => Regex.Matches((userModel.Department ?? string.Empty).ToLower(), searchWord.ShieldString()).Count);
         }
     }
 }

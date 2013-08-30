@@ -241,7 +241,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\PhotoController.cs" />
@@ -253,7 +253,7 @@
     <Compile Include="CustomStructure\CustomPrincipal.cs" />
     <Compile Include="CustomStructure\ICustomPrincipal.cs" />
     <Compile Include="Extensions\HtmlHelperExtentions.cs" />
-    <Compile Include="Extensions\ViewModels\AvialableGroupConvertationExtension.cs" />
+    <Compile Include="Extensions\ViewModels\AvailableGroupConvertationExtension.cs" />
     <Compile Include="Extensions\ViewModels\PhotoConvertionExtensions.cs" />
     <Compile Include="Extensions\ViewModels\UserConvertionExtensions.cs" />
     <Compile Include="Filters\AdminAuthorizeAttribute.cs" />
@@ -284,6 +284,7 @@
     <Compile Include="ViewModels\Account\SigninViewModel.cs" />
     <Compile Include="ViewModels\AvailableGroupViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\AlbumGroupsViewModel.cs" />
     <Compile Include="ViewModels\PublicPhotosViewModel.cs" />
     <Compile Include="ViewModels\Photo\NewCommentViewModel.cs" />
     <Compile Include="ViewModels\Photo\PhotoCommentViewModel.cs" />
@@ -298,7 +299,7 @@
     <Compile Include="ViewModels\User\UserViewModel.cs" />
     <Content Include="Content\album-page.css" />
     <Content Include="Content\images\no_collage.png" />
-    <Content Include="Content\profile-page.css" />
+    <Content Include="Content\settings-page.css" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\panel.css" />
     <Content Include="Content\spinner.css" />
@@ -467,8 +468,8 @@
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\Profile\Index.cshtml" />
-    <Content Include="Views\Profile\Edit.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\Settings\Edit.cshtml" />
     <Content Include="Views\Shared\AccessDenied.cshtml" />
     <Content Include="Views\Gallery\Index.cshtml" />
     <Content Include="Views\Error\Error.cshtml" />

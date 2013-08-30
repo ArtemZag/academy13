@@ -40,7 +40,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
                     avialableAlbum.Photos.SelectMany(
                         model =>
                             model.PhotoComments.Where(
-                                commentModel => searchWords.Any(searchWord => commentModel.Text.ToLower().Contains(searchWord)))
+                                commentModel =>
+                                    searchWords.Any(
+                                        searchWord => (commentModel.Text ?? string.Empty).ToLower().Contains(searchWord)))
                                 .Select(commentModel => new CommentFound
                                 {
                                     DateOfCreation = commentModel.DateOfCreating,
@@ -59,12 +61,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Search
 
         private int CalculateRelevanceByText(IEnumerable<string> searchWords, PhotoCommentModel photoCommentModel)
         {
-            return searchWords.Sum(searchWord => Regex.Matches(photoCommentModel.Text.ToLower(), searchWord.ShieldString()).Count);
+            return
+                searchWords.Sum(
+                    searchWord =>
+                        Regex.Matches((photoCommentModel.Text ?? string.Empty).ToLower(), searchWord.ShieldString()).Count);
         }
 
         private IEnumerable<IFound> Group(IEnumerable<CommentFound> comments)
         {
-            return comments.GroupBy(item => new {item.Id, item.OwnerId, item.Text, item.Type, item.DateOfCreation, item.PhotoId})
+            return comments.GroupBy(
+                item => new {item.Id, item.OwnerId, item.Text, item.Type, item.DateOfCreation, item.PhotoId})
                 .Select(items => new CommentFound
                 {
                     DateOfCreation = items.Key.DateOfCreation,

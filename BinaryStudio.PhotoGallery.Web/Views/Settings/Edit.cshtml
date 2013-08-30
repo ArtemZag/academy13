@@ -6,17 +6,17 @@
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
-@Styles.Render("~/Content/profile-page.css")
+@Styles.Render("~/Content/settings-page.css")
 <div class="span8">
     <h2>Edit profile</h2>
-    @using (Html.BeginForm("UpdatePhoto", "Profile", FormMethod.Post, new { enctype = "multipart/form-data", id = "photo-form" }))
+    @using (Html.BeginForm("UpdatePhoto", "Settings", FormMethod.Post, new { enctype = "multipart/form-data", id = "photo-form" }))
     {
         <div class="span3">
             <img src="@Model.PhotoUrl" class="img-polaroid" id="photo" title="Click photo to upload new one">
             <input type="file" name="photoFile" id="photoFile" data-url="upload-image" style="display: none;"/>
         </div>
     }
-    @using (Html.BeginForm("Edit", "Profile", FormMethod.Post))
+    @using (Html.BeginForm("Edit", "Settings", FormMethod.Post))
     {
         <div class="span3">
             @Html.LabelFor(x => x.FirstName, "First Name")
@@ -30,7 +30,7 @@
             @Html.HiddenFor(x => x.Email)
             <div class="btn-group" id="button-group">
                 <input type="submit" value="Save" class="btn"/>
-                @Html.ActionLink("Cancel", "Index", "Profile", new {@class = "btn btn-inverse"})
+                @Html.ActionLink("Cancel", "Index", "Settings", new {@class = "btn btn-inverse"})
             </div>
         </div>
     }
