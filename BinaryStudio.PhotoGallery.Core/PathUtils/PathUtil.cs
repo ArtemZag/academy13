@@ -174,7 +174,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         public string GetCollage(int userId, int albumId)
         {
             string collagesDirName = Path.Combine(BuildAbsoluteAlbumPath(userId, albumId), COLLAGES_DIRECTORY_NAME);
-            if (File.Exists(collagesDirName))
+            if (Directory.Exists(collagesDirName))
             {
                 string path =
                     GetOnlyImages(collagesDirName)
