@@ -339,6 +339,7 @@
     <Content Include="Content\verticalResizer.css" />
     <Content Include="Scripts\Account\changePass.js" />
     <Content Include="Scripts\Account\remindPass.js" />
+    <Content Include="Scripts\Account\remindPass.validate.js" />
     <Content Include="Scripts\Admin\AdminMain.js" />
     <Content Include="Scripts\Account\initVertResizer.js" />
     <Content Include="Scripts\Account\signup.validate.js" />

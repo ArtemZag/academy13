@@ -27,7 +27,7 @@
         submitButton.click(function (event) {
             errors.clearErrorMessages();
             
-            if (!$('form').valid()) {
+            if (!$('#loginForm').valid()) {
                 errors.showErrorMessage("Correctly fill in all the fields");
                 return false;
             }

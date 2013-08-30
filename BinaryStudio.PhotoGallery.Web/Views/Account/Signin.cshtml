@@ -10,7 +10,7 @@
 <div id="loginPanel" class="login-panel">
     @Html.Image("~/Content/images/logo_big.png")
     <div class="well">
-        <form class="control-group form-horizontal pagination-centered">
+        <form id="loginForm" class="control-group form-horizontal pagination-centered">
             @Html.TextBoxFor(model => model.Email, new {@class = "input-block-level", @placeholder = "E-mail address"})
             @Html.PasswordFor(model => model.Password, new {@class = "input-block-level", @placeholder = "Password"})
             <label class="checkbox">

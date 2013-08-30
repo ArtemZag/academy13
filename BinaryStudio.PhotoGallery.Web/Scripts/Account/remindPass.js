@@ -16,7 +16,7 @@
         $submitButton.click(function(event) {
             errors.clearErrorMessages();
 
-            if (!$('form').valid()) {
+            if (!$('#recoveryForm').valid()) {
                 errors.showErrorMessage("Correctly fill in all the fields");
                 return false;
             }
