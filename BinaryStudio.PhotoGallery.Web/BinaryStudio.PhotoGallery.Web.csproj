@@ -292,6 +292,7 @@
     <Compile Include="ViewModels\AvailableGroupViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\AlbumGroupsViewModel.cs" />
+    <Compile Include="ViewModels\Photo\PhotoTagsViewModel.cs" />
     <Compile Include="ViewModels\PublicPhotosViewModel.cs" />
     <Compile Include="ViewModels\Photo\NewCommentViewModel.cs" />
     <Compile Include="ViewModels\Photo\PhotoCommentViewModel.cs" />

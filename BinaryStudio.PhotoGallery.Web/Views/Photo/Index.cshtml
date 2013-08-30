@@ -28,6 +28,10 @@
 			<li></li>
 		</ul>
 	</div>
+	<div class="title">Tags</div>
+	<div id="editable" contenteditable="true" >
+		
+	</div>
 	@* <button id="moveToBtn" class="btn" data-bind="click: MovePhoto">Move photo</button>*@
 </div>
 
@@ -107,3 +111,4 @@
 
 <script src="~/Scripts/Photo/photoViewModel.js"></script>
 <div id="albumApiUrl" data-url="@Html.RouteUrl("AlbumApi", "GetAllAlbums")"></div>
+<div id="postAlbumInfoUrl" data-url="@Html.RouteUrl("TagApi", "AddTagsToPhoto")"></div>

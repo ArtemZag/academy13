@@ -63,6 +63,7 @@
 
         //lik.avaSRC = ko.observable(data.src);
     }
+	
 
     function PhotoByTag(data) {
         var pbt = this;
@@ -82,7 +83,6 @@
         self.src = ko.observable();
         self.IsVisible = ko.observable();
         self.PhotoLikes = ko.observableArray();
-        self.tags = ko.observableArray();
 
 
         self.comms = ko.observableArray();
@@ -241,6 +241,7 @@
 
         $.get("/api/photo/" + photo.PhotoId + "/comments", { skip: 0, take: 50 }, setComments);
         $.get("/api/photo/" + model.PhotoId() + "/likes", setLikes);
+        $.get("/api/tag/" + model.PhotoId() + "/phototags" , setTags);
 
     }
 
@@ -257,6 +258,15 @@
             model.PhotoLikes.push(new Like(item));
         });
     }
+
+	function setTags(tags) {
+		$('#editable').empty();
+		var allTags = '';
+		$.each(tags, function(index, item) {
+			allTags += item.toString() + ' ';
+		});
+		$('#editable').text(allTags);
+	}
 
     function addLike(photoId) {
         // TODO Must be replaced with PUT method
@@ -307,7 +317,19 @@
     });
 
     $('#newCommentInputFild').on('keydown', function (e) {
-        if (e.keyCode == 13 && e.shiftKey)
-            $('#newCommentAddButton').click();
+    	if (e.keyCode == 13 && e.shiftKey) {
+    		model.newComment($('#newCommentInputFild').val());
+		    $('#newCommentAddButton').click();
+	    }
+    });
+
+    $(document).on('blur', '#editable', function () {
+    	var allTags = $('#editable').text();
+    	setTags(allTags.split(' '));
+    	var photoTags = {
+	    	PhotoId : model.PhotoId(),
+	    	Tags: allTags
+	    };
+    	$.post($('#postAlbumInfoUrl').data('url'), photoTags );
     });
 });

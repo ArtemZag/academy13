@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PhotoGallery.Models;
+﻿using System.Collections.Generic;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Web.ViewModels.Photo
 {
@@ -9,6 +10,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Photo
         public string PhotoViewPageUrl { get; set; }
         public int PhotoId { get; set; }
         public int AlbumId { get; set; }
+	    public IEnumerable<PhotoTagModel> Tags { get; set; }
 
         public static PhotoModel ToModel(int albumId, int userId, string realFileFormat)
         {

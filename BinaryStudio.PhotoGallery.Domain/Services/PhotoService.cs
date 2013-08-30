@@ -319,5 +319,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 .Take(takeCount)
                 .ToList();
         }
+
     }
 }
