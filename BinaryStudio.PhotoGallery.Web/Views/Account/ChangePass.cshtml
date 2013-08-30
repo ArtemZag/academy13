@@ -12,7 +12,7 @@
 <div id="chPassPanel" class="login-panel">
     @Html.Image(Url.Content("~/Content/images/logo_big.png"))
     <div class="well">          
-        <form class="control-group form-horizontal pagination-centered" autocomplete="off">
+        <form class="control-group form-horizontal pagination-centered">
             <input type="email" id="Email" name="Email" class="input-block-level" maxlength="255" placeholder="E-mail address" value="@Model.Email" readonly=""/>
             <input type="password" id="Password" name="Password" class="input-block-level" maxlength="20" placeholder="Password" />
             <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="input-block-level" maxlength="20" placeholder="Repeat password">
@@ -32,6 +32,7 @@
         <div class="success">
             <div class="message">You password have succesfully changed.</div>
         </div>
+         <div class="error-field"></div>
     </div>
 </div>
 
@@ -39,6 +40,6 @@
 
 <script type="text/javascript">
     $(function() {
-        ChangePass_Init("/api/changepass");
+        ChangePass_Init("/api/changepass/", "/api/login/");
     });
 </script>
