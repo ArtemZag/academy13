@@ -203,6 +203,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 _photoService.MovePhotoToAlbum(User.Id, photoId, albumId);
+
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (NoEnoughPrivilegesException ex)
             {
@@ -212,8 +214,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

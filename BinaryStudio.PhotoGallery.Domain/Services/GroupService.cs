@@ -13,9 +13,27 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             "BlockedUsers"
         };
 
-        public GroupService(IUnitOfWorkFactory workFactory)
+        private readonly ISecureService secureService;
+
+        public GroupService(IUnitOfWorkFactory workFactory, ISecureService secureService)
             : base(workFactory)
         {
+            this.secureService = secureService;
+        }
+
+        public void SetAlbumGroups(int userId, int albumId, IEnumerable<AvailableGroupModel> groups)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                foreach (AvailableGroupModel availableGroupModel in groups)
+                {
+                    secureService.LetGroupViewPhotos(userId, availableGroupModel.GroupId, albumId,
+                        availableGroupModel.CanSeePhotos, unitOfWork);
+
+                    secureService.LetGroupViewComments(userId, availableGroupModel.GroupId, albumId,
+                        availableGroupModel.CanSeeComments, unitOfWork);
+                }
+            }
         }
 
         public IEnumerable<GroupModel> GetUserGroups(int userId)
@@ -33,6 +51,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 return GetAlbum(albumId, unitOfWork).AvailableGroups;
             }
         }
+
 
         //todo: add check permission for creating group event 
         public void Create(int userId, GroupModel groupModel)

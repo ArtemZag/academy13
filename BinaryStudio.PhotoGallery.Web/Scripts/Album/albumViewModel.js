@@ -5,6 +5,7 @@
     var getPhotosUrl = $("#getPhotosUrl").data("url");
     var getGroupsUrl = $("#getGroupsUrl").data("url");
     var postAlbumInfoUrl = $("#postAlbumInfoUrl").data("url");
+    var postGroupsUrl = $("#postGroupsUrl").data("url");
 
     function albumViewModel() {
 
@@ -42,7 +43,7 @@
 
             // post name and description
             postAlbumInfo();
-            
+
             // post new rights for groups
             postRights();
         };
@@ -114,6 +115,16 @@
     function postAlbumInfo() {
 
         $.post(postAlbumInfoUrl, { Id: album.albumId, AlbumName: album.name(), Description: album.description() });
+    }
+
+    function postRights() {
+
+        $.ajax({
+            url: postGroupsUrl,
+            type: 'POST',
+            data: { viewModels: album.groups(), albumId: album.albumId }
+        });
+
     }
 
     function getAlbumTags() {

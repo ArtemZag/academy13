@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.Extensions
 @model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumViewModel
 
 @Styles.Render("~/Content/photo-flow.css")
@@ -51,14 +52,16 @@
         </div>
         <a class="btn save-info-btn" data-bind="click: sendInfo">Save</a>
     </div>
+
 </div>
 
-<div id="getTagsUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "TagApi", action = "GetAlbumTags"})"></div>
-<div id="getAlbumInfoUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbum"})"></div>
-<div id="getPhotosUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "PhotoApi", action = "GetPhotos"})"></div>
-<div id="getGroupsUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "GroupApi", action = "GetGroups"})"></div>
+<div id="getTagsUrl" data-url="@Html.RouteUrl("TagApi", "GetAlbumTags")"></div>
+<div id="getAlbumInfoUrl" data-url="@Html.RouteUrl("AlbumApi", "GetAlbum")"></div>
+<div id="getPhotosUrl" data-url="@Html.RouteUrl("PhotoApi", "GetPhotos")"></div>
+<div id="getGroupsUrl" data-url="@Html.RouteUrl("GroupApi", "GetGroups")"></div>
 
-<div id="postAlbumInfoUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "PostAlbumInfo"})"></div>
+<div id="postGroupsUrl" data-url="@Html.RouteUrl("GroupApi", "PostGroups")"></div>
+<div id="postAlbumInfoUrl" data-url="@Html.RouteUrl("AlbumApi", "PostAlbumInfo")"></div>
 <input id="albumId" type="hidden" value="@ViewBag.AlbumId"/>
 
 @Scripts.Render("~/Scripts/Helpers/PhotoPlacer_Module.js")

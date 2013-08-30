@@ -29,7 +29,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             _userService = userService;
         }
 
-        [GET("{albumId: int}")]
+        [GET("{albumId:int}")]
         public HttpResponseMessage GetAlbum(int albumId)
         {
             try
@@ -76,7 +76,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-		[GET("GetAllAlbums")]
+		[GET("all")]
 		public HttpResponseMessage GetAllAlbums()
 		{
 			try
@@ -90,7 +90,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 			}
 		}
 
-        [POST("")]
+        [POST("update")]
         public HttpResponseMessage PostAlbumInfo(AlbumViewModel albumViewModel)
         {
             try

@@ -14,14 +14,14 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.User;
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     [Authorize]
-    [RoutePrefix("profile")]
-    public class ProfileController : BaseController
+    [RoutePrefix("settings")]
+    public class SettingsController : BaseController
     {
         private readonly IUserService _userService;
         private readonly IPhotoProcessor _photoProcessor;
         private readonly IPathUtil _pathUtil;
 
-        public ProfileController(IUserService userService, IPhotoProcessor photoProcessor, IPathUtil pathUtil)
+        public SettingsController(IUserService userService, IPhotoProcessor photoProcessor, IPathUtil pathUtil)
         {
             _userService = userService;
             _photoProcessor = photoProcessor;

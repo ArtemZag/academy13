@@ -23,7 +23,7 @@
             @Html.ImageLink("~/Content/images/logo_small.png", "Index", "Home", new {@class = "brand"})
             <ul class="nav">
                 <li>@Html.ActionLink("Gallery", "Index", "Gallery")</li>
-                <li>@Html.ActionLink("Albums", "Index", "User",new {userId = User.Id},null)</li>
+                <li>@Html.ActionLink("Profile", "Index", "User", new {userId = User.Id}, null)</li>
                 <li>@Html.ActionLink("Search", "Index", "Search")</li>
             </ul>
 
@@ -41,7 +41,7 @@
                         }
                         <!-- TODO Make this page!!! -->
                         <!--<li><a href="~/news">Notifications</a></li>-->
-                        <li>@Html.ActionLink("Profile", "Index", "Profile")</li>
+                        <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
                         <li class="divider"></li>
                         <li>@Html.ActionLink("Sign out", "SignOut", "Account")</li>
                     </ul>

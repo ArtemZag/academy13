@@ -3,7 +3,7 @@ using BinaryStudio.PhotoGallery.Web.ViewModels;
 
 namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
 {
-    public static class AvialableGroupConvertationExtension
+    public static class AvailableGroupConvertationExtension
     {
         public static AvailableGroupViewModel ToAvialableGroupViewModel(this AvailableGroupModel groupViewModel, string name)
         {

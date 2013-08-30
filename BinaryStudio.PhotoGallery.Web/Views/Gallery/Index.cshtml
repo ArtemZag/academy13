@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.Extensions
 @using BinaryStudio.PhotoGallery.Web.ViewModels
 @using BinaryStudio.PhotoGallery.Web.ViewModels.Photo
 @using PerpetuumSoft.Knockout
@@ -38,7 +39,7 @@
 @ko.Initialize(Model)
 <script type="text/javascript">
     $(document).ready(function () {
-        PhotoPlacer_Module("/api/photo/all", window.viewModel.Photos);
+        PhotoPlacer_Module("@Html.RouteUrl("PhotoApi", "GetAllUserPhotos")", window.viewModel.Photos);
     });
 
     viewModel.gotoPhotoPage = function(data) {
