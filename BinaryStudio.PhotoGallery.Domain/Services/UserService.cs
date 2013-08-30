@@ -29,9 +29,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 var group = unitOfWork.Groups.Find(x => x.GroupName == "DeletedUsers");
-                return
+                var users =
                     unitOfWork.Users
-                        .Filter(user => !user.IsAdmin && !user.Groups.Contains(group))
+                        .All()
                         .Include(user => user.Albums)
                         .Include(user => user.Groups)
                         .Include(user => user.AuthInfos)
@@ -40,6 +40,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         .Skip(skipCount)
                         .Take(takeCount)
                         .ToList();
+
+                return users.Where(user => !user.IsAdmin && !user.Groups.Contains(group));
             }
         }
 
