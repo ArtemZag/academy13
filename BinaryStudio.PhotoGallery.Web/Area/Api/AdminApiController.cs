@@ -84,7 +84,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-//                _userService.UnblockUser(userId);
+                _userService.UnblockUser(userId);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)

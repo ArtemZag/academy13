@@ -14,6 +14,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class UserService : DbService, IUserService
     {
+
+        private const bool ADD_USER = true;
+        private const bool REMOVE_USER = false;
+
         private readonly IAlbumService _albumService;
         private readonly ICryptoProvider _cryptoProvider;
 
@@ -165,16 +169,28 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         public void DeleteUser(int userId)
         {
             Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "DeletedUsers";
-            AddUserToGroup(userId, expression);
+            UserActionForGroup(userId, expression, ADD_USER);
         }
 
         public void BlockUser(int userId)
         {
             Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "BlockedUsers";
-            AddUserToGroup(userId, expression);
+            UserActionForGroup(userId, expression, ADD_USER);
         }
 
-        private void AddUserToGroup(int userId, Expression<Func<GroupModel, bool>> expression)
+        public void UnblockUser(int userId)
+        {
+            Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "BlockedUsers";
+            UserActionForGroup(userId, expression, REMOVE_USER);
+        }
+
+        /// <summary>
+        /// Adds or Removes user from group
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="expression">group specific</param>
+        /// <param name="add">add [ADD_USER] or remove [REMOVE_USER] from group</param>
+        private void UserActionForGroup(int userId, Expression<Func<GroupModel, bool>> expression, bool add)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -184,7 +200,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                     GroupModel group = unitOfWork.Groups.Find(expression);
 
-                    user.Groups.Add(@group);
+                    if (add)
+                    {
+                        user.Groups.Add(@group);
+                    }
+                    else
+                    {
+                        user.Groups.Remove(@group);
+                    }
+                    
                     unitOfWork.Users.Update(user);
 
                     unitOfWork.SaveChanges();
