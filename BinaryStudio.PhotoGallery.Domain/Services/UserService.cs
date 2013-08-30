@@ -30,11 +30,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 var group = unitOfWork.Groups.Find(x => x.GroupName == "DeletedUsers");
                 return
-                    unitOfWork.Users
-                        .Filter(user => !user.IsAdmin && !user.Groups.Contains(group))
+                    unitOfWork.Users.All()
                         .Include(user => user.Albums)
                         .Include(user => user.Groups)
                         .Include(user => user.AuthInfos)
+//                        .Filter(user => !user.IsAdmin && !user.Groups.Contains(group))
                         .OrderBy(user => user.DateOfCreating)
                         .ThenBy(user => user.Id)
                         .Skip(skipCount)

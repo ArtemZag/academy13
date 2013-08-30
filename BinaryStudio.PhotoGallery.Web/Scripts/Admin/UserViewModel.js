@@ -19,28 +19,43 @@
     self.profileUrl = ko.observable(options.profileUrl);
 
     self.editAction = function(element) {
-        
+        // TODO modal editor
     };
 
-    self.blockAction = function() {
-
+    self.blockAction = function () {
+        if (self.isBlocked()) {
+            $.post('/api/admin/unblock', { '': userId })
+                .done(function () {
+                    self.isBlocked(false);
+                });
+        } else {
+            $.post('/api/admin/block', { '': userId })
+                .done(function() {
+                    self.isBlocked(true);
+                });
+        }
     };
 
     self.deleteAction = function (element) {
         // TODO modal dialog
         $.ajax({
             type: 'DELETE',
-            url: '/api/user/' + userId
-        });
-        mediator.publish("admin:deleteUser", element);
+            url: '/api/admin/delete/' + userId
+        }).done(function() {
+                mediator.publish('admin:deleteUser', element);
+            });
     };
 
-    self.resetPassword = function() {
-
+    self.resetPassword = function () {
+        
     };
 
     self.resetInvitation = function() {
-
+        $.post('/api/invite', { Email: self.email(), FirstName: self.firstName(), Second: self.lastName() })
+            .done(function() {
+                console.log("Invite successfully sended");
+                // TODO modal popup
+            });
     };
 
     self.fullName = ko.computed({

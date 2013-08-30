@@ -18,9 +18,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     [RoutePrefix("api/user")]
     public class UserApiController : BaseApiController
     {
-        private readonly IUserService _userService;
-        private readonly IPhotoService _photoService;
         private readonly IAlbumService _albumService;
+        private readonly IPhotoService _photoService;
+        private readonly IUserService _userService;
 
         public UserApiController(IUserService userService, IPhotoService photoService, IAlbumService albumService)
         {
@@ -74,20 +74,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     .ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, usersViewModels, new JsonMediaTypeFormatter());
-            }
-            catch (Exception ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
-        [DELETE("{userId:int}")]
-        public HttpResponseMessage Delete([FromUri] int userId)
-        {
-            try
-            {
-                _userService.DeleteUser(userId);
-                return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
