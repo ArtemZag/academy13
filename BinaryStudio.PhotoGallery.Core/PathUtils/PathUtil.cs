@@ -64,21 +64,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        /// <summary>
-        ///     Pattern: ~data\photos\userId\albumId\collage.jpg
-        /// </summary>
-        public string BuildCollagePath(int userId, int albumId)
-        {
-            string collagePath = BuildAbsoluteCollagePath(userId, albumId);
-
-            if (File.Exists(collagePath))
-            {
-                return BuildRealCollagePath(userId, albumId);
-            }
-
-            return VirtualPathUtility.ToAbsolute(CUSTOM_COLLAGE_PATH);
-        }
-
         private string BuildRealCollagePath(int userId, int albumId)
         {
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
@@ -116,6 +101,28 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             }
 
             return result;
+        }
+
+        public string CreateCollagePath(int userId, int albumId)
+        {
+            return Path.Combine(BuildAbsoluteAlbumPath(userId, albumId), COLLAGES_DIRECTORY_NAME,
+                                Randomizer.GetString(20) + MakeExtension(COLLAGE_FILE_FORMAT));
+        }
+
+        public string GetCollage(int userId, int albumId)
+        {
+            string path =
+                Directory.GetFiles(Path.Combine(BuildAbsoluteAlbumPath(userId, albumId), COLLAGES_DIRECTORY_NAME))
+                         .FirstOrDefault();
+            if (path != null)
+                return GetUserReference(path);
+
+            return VirtualPathUtility.ToAbsolute(CUSTOM_COLLAGE_PATH);
+        }
+
+        private string GetUserReference(string absolutePath)
+        {
+            return absolutePath.Remove(0, absolutePath.IndexOf("data") - 1).Replace(@"\", "/");
         }
 
         public string BuildAbsoluteAvatarPath(int userId, ImageSize imageSize)

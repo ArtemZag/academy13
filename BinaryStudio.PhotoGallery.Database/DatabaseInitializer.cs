@@ -192,10 +192,10 @@ namespace BinaryStudio.PhotoGallery.Database
 
             #endregion
 
-            #region DeletedUsers
+            #region DeletedUsers group
             var groupModel = new GroupModel()
             {
-                GroupName = "Academy group",
+                GroupName = "Deleted users",
                 Description = "System group. Not for use",
                 OwnerId = -1,
                 Users = new Collection<UserModel>()
@@ -203,7 +203,7 @@ namespace BinaryStudio.PhotoGallery.Database
             systemGroupList.Add(groupModel);
             #endregion
 
-            #region BlockedUsers
+            #region BlockedUsers group
             groupModel = new GroupModel()
                 {
                     GroupName = "BlockedUsers",
@@ -211,6 +211,17 @@ namespace BinaryStudio.PhotoGallery.Database
                     OwnerId = -1,
                     Users = new Collection<UserModel>()
                 };
+            systemGroupList.Add(groupModel);
+            #endregion
+
+            #region Academy group
+            groupModel = new GroupModel()
+            {
+                GroupName = "Academy",
+                Description = "Binary Studio academy",
+                OwnerId = -1,
+                Users = new Collection<UserModel>()
+            };
             systemGroupList.Add(groupModel);
             #endregion
 
