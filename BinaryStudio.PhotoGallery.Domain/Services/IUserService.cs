@@ -63,5 +63,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         void MakeUserGod(int godId, int slaveId);
 
         bool IsUserBlocked(int userId);
+
+        /// <summary>
+        /// Checks if user have social network account and it is valid for him
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        int GetUserBySocialAccount(string providerName, string id);
     }
 }
