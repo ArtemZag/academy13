@@ -192,8 +192,19 @@ namespace BinaryStudio.PhotoGallery.Database
 
             #endregion
 
-            #region BlockedUsers
+            #region DeletedUsers
             var groupModel = new GroupModel()
+            {
+                GroupName = "DeletedUsers",
+                Description = "System group. Not for use",
+                OwnerId = -1,
+                Users = new Collection<UserModel>()
+            };
+            systemGroupList.Add(groupModel);
+            #endregion
+
+            #region BlockedUsers
+            groupModel = new GroupModel()
                 {
                     GroupName = "BlockedUsers",
                     Description = "System group. Not for use",

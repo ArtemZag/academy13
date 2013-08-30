@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
@@ -156,20 +158,34 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public void DeleteUser(int userId)
         {
+            Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "DeletedUsers";
+            AddUserToGroup(userId, expression);
+        }
+
+        public void BlockUser(int userId)
+        {
+            Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "BlockedUsers";
+            AddUserToGroup(userId, expression);
+        }
+
+        private void AddUserToGroup(int userId, Expression<Func<GroupModel, bool>> expression)
+        {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 try
                 {
                     UserModel user = GetUser(userId, unitOfWork);
-                    GroupModel group = unitOfWork.Groups.Find(x => x.GroupName == "BlockedUsers");
 
-                    user.Groups.Add(group);
+                    GroupModel group = unitOfWork.Groups.Find(expression);
+
+                    user.Groups.Add(@group);
                     unitOfWork.Users.Update(user);
 
                     unitOfWork.SaveChanges();
                 }
                 catch (UserNotFoundException)
                 {
+                    throw;
                 }
             }
         }
