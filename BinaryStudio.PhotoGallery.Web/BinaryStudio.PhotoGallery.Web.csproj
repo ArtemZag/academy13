@@ -296,6 +296,7 @@
     <Content Include="Content\profile-page.css" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\panel.css" />
+    <Content Include="Content\remindpass.css" />
     <Content Include="Content\spinner.css" />
     <Content Include="Content\style-libs\chosen-sprite.png" />
     <Content Include="Content\style-libs\pnotify.css" />

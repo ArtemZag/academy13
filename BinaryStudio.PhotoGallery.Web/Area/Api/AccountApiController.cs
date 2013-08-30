@@ -172,7 +172,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
             catch (UserNotFoundException e)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.NoContent, e.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e.Message);
             }
             catch (Exception ex)
             {

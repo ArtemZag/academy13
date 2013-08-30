@@ -13,6 +13,10 @@
 	margin-right: 7px;
 }
 
+.login-panel form{
+	display: inline-block;
+}
+
 .success {	
 	background-color: gainsboro;
 	border-radius: 4px;
