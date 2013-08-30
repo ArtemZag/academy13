@@ -19,7 +19,7 @@
             <div class="department" data-bind="text: department"></div>
         </div>
         <div class="actions btn-block">
-            <button class="btn btn-inverse" data-bind="click: blockAction">Block</button>
+            <button class="btn btn-inverse" data-bind="click: blockAction, text: blockAndUnblockText"></button>
             <button class="btn btn-warning" data-bind="click: deleteAction">Delete</button>
             <button class="btn btn-primary" data-bind="click: isActivated() ? resetPassword : resetInvitation, text: invitationAndPasswordText">Resend invitation</button>
         </div>

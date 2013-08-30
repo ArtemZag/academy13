@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.Security;
@@ -15,16 +16,16 @@ using OAuth2.Models;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
-    [RoutePrefix("/OAuth")]
+    [RoutePrefix("OAuth")]
     public class OAuthController : BaseController
     {
         private const string ProviderNameKey = "providerName";
         private readonly AuthorizationRoot _authorizationRoot;
         private readonly IUserService _userService;
 
-        public OAuthController(AuthorizationRoot authorizationRoot, IUserService userService)
+        public OAuthController(IUserService userService)
         {
-            _authorizationRoot = authorizationRoot;
+            _authorizationRoot = new AuthorizationRoot();
             _userService = userService;
         }
 
@@ -35,7 +36,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         }
 
 
-        [GET("oauth")]
+        [GET("callback")]
         public ActionResult Auth()
         {
             UserInfo info = GetClient().GetUserInfo(Request.QueryString);
@@ -76,8 +77,8 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         /// <summary>
         ///     Redirect to login url of selected provider.
         /// </summary>
-        [GET("login")]
-        public RedirectResult Login(string providerName)
+        [GET("login/{providerName}")]
+        public RedirectResult Login([FromUri]string providerName)
         {
             ProviderName = providerName;
             return new RedirectResult(GetClient().GetLoginLinkUri());
@@ -85,7 +86,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
         private IClient GetClient()
         {
-            return _authorizationRoot.Clients.First(c => c.Name == ProviderName);
+            return _authorizationRoot.Clients.First(c => c.Name.ToLower() == ProviderName);
         }
     }
 }

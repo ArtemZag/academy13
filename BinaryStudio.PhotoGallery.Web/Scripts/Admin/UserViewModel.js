@@ -27,7 +27,7 @@
     };
 
     self.deleteAction = function (element) {
-        
+        // TODO modal dialog
         $.ajax({
             type: 'DELETE',
             url: '/api/user/' + userId
@@ -81,12 +81,22 @@
         }
     });
 
+    self.blockAndUnblockText = ko.computed({
+        read: function() {
+            if (self.isBlocked()) {
+                return "Unblock";
+            } else {
+                return "Block";
+            }
+        }
+    });
+
     self.invitationAndPasswordText = ko.computed({
         read: function () {
-            if (self.isBlocked()) {
-                return "Send invitation";
-            } else {
+            if (self.isActivated() && !self.isBlocked()) {
                 return "Reset password";
+            } else {
+                return "Send invitation";
             }
         }
     });
