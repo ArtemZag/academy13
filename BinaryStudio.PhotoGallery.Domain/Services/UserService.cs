@@ -154,6 +154,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public string UserRestorePasswordAsk(UserModel mUser)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                mUser.RemindPasswordSalt = _cryptoProvider.GetNewSalt();
+               
+                unitOfWork.Users.Update(mUser);
+                unitOfWork.SaveChanges();
+
+                return _cryptoProvider.CreateHashForPassword(mUser.Email, mUser.RemindPasswordSalt);
+            }
+        }
+
         public void DeleteUser(int userId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())

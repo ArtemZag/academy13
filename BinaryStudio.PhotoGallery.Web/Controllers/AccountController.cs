@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Net;
 using System.Web.Mvc;
 using System.Web.Security;
 using AttributeRouting;
@@ -153,20 +154,21 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
         [HttpGet]
         [GET("remind/{userId}/{hash}")]
-        public ActionResult RemindPass(int userId, string hash)
+        public ActionResult ChangePass(int userId, string hash)
         {
             try
             {
+                hash = WebUtility.UrlDecode(hash);
                 var mUser = _userService.GetUser(userId);
                 if (_cryptoProvider.IsPasswordsEqual(mUser.Email, hash, mUser.RemindPasswordSalt))
                 {
-                    return View(new RemindPassViewModel());
+                    return View(new RemindPassViewModel () { Email = mUser.Email });
                 }
-                return HttpNotFound();
+                return RedirectToRoute("Login");
             }
             catch (UserNotFoundException)
             {
-                return HttpNotFound();
+                return RedirectToRoute("Login");
             }
         } 
 

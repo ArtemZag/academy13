@@ -27,15 +27,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     {
         private readonly IUserService _userService;
         private readonly IEmailSender _emailSender;
-        private readonly ICryptoProvider _cryptoProvider;
-        private readonly IUrlUtil _urlUtil;
 
-        public AccountApiController(IUserService userService, IEmailSender emailSender, ICryptoProvider cryptoProvider, IUrlUtil urlUtil)
+        public AccountApiController(IUserService userService, IEmailSender emailSender)
         {
             _userService = userService;
             _emailSender = emailSender;
-            _cryptoProvider = cryptoProvider;
-            _urlUtil = urlUtil;
         }
 
         [POST("login")]
@@ -164,9 +160,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 string fromEmail = ConfigurationManager.AppSettings["NotificationEmail"];
                 string fromPass = ConfigurationManager.AppSettings["NotificationPassword"];
                 string mailSubject = Resources.Email_RemindPassSubject;
-                var remingSalt = _cryptoProvider.GetNewSalt();
-                //mUser.RemindPasswordSalt = remingSalt;
-                var emailHash = _cryptoProvider.CreateHashForPassword(remindPassViewModel.Email, remingSalt);
+                var emailHash = WebUtility.UrlEncode(_userService.UserRestorePasswordAsk(mUser));
                 string remindLink = string.Format("<a href='http://{0}/remind/{1}/{2}'>http://{0}/remind/{1}/{2}</a>", 
                     HttpContext.Current.Request.Url.Authority, mUser.Id, emailHash);
                 string text = string.Format(

@@ -15,11 +15,11 @@ using BinaryStudio.PhotoGallery.Web.ViewModels.Photo;
 namespace BinaryStudio.PhotoGallery.Web.Area.Api
 {
 	[RoutePrefix("api/publicphoto")]
-    public class PublicPhotoController : BaseApiController
+    public class PublicPhotoApiController : BaseApiController
     {
         private readonly IPhotoService _photoService;
 
-        public PublicPhotoController(IPhotoService photoService)
+        public PublicPhotoApiController(IPhotoService photoService)
         {
             _photoService = photoService;
         }
