@@ -227,7 +227,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     authInfoRepository.Contains(
                         model =>
                             string.Equals(model.AuthProvider, authProvider) &&
-                            string.Equals(model.AuthProviderToken, token));
+                            string.Equals(model.AuthProviderId, token));
             }
         }
 
@@ -254,6 +254,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 return unitOfWork.Users.Find(userId).Groups.ToList().Find(group => group.GroupName == "BlockedUsers") !=
                        null;
+            }
+        }
+
+        public int GetUserBySocialAccount(string providerName, string id)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                AuthInfoModel auth = unitOfWork.AuthInfos.Find(authInfo => authInfo.AuthProviderId == id &&
+                                                                           authInfo.AuthProvider == providerName);
+                if (auth == null)
+                {
+                    throw new UserNotFoundException(string.Format("There is some misstake in {0} authentication", providerName));
+                }
+                return auth.UserId;
             }
         }
     }

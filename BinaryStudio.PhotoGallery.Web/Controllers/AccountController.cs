@@ -105,7 +105,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                                 new AuthInfoModel()
                                     {
                                         AuthProvider = AuthInfoModel.ProviderType.Facebook.ToString(),
-                                        AuthProviderToken = token
+                                        AuthProviderId = token
                                     }
                             }
                     };

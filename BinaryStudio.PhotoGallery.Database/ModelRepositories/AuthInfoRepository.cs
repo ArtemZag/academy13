@@ -19,7 +19,7 @@ namespace BinaryStudio.PhotoGallery.Database.ModelRepositories
         {
             base.Add(new AuthInfoModel(userId, authProvider)
                 {
-                    AuthProviderToken = authToken
+                    AuthProviderId = authToken
                 });
         }
     }

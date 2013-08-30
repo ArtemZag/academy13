@@ -8,9 +8,10 @@ namespace BinaryStudio.PhotoGallery.Models
     {
         public enum ProviderType
         {
-            Local,
-            Google,
-            Facebook
+            Facebook,
+            Vk,
+            Twitter,
+            Github
         }
 
         public AuthInfoModel()
@@ -21,7 +22,7 @@ namespace BinaryStudio.PhotoGallery.Models
         /// Main constructor with important fields
         /// </summary>
         /// <param name="userId">user id</param>
-        /// <param name="authProvider">[local][google][facebook]</param>
+        /// <param name="authProvider"></param>
         public AuthInfoModel(int userId, string authProvider)
         {
             UserId = userId;
@@ -41,9 +42,9 @@ namespace BinaryStudio.PhotoGallery.Models
         public string AuthProvider { get; set; }
 
         /// <summary>
-        /// Gets or sets token for work with social webs
+        /// Gets or sets ID for work with social webs
         /// </summary>
-        public string AuthProviderToken { get; set; }
+        public string AuthProviderId { get; set; }
 
         public int UserId { get; set; }
     }
