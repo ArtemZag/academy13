@@ -2,6 +2,7 @@
     background-color: rgb(235, 235, 235);
     float: right;
     width: 20%;
+    padding-bottom: 10px
 }
 
 .grid {
@@ -41,3 +42,8 @@
 }
 
 .album-container { min-width: 1000px; }
+
+.notification {
+    color: #999999;
+    display: none;
+}

@@ -63,7 +63,7 @@ namespace BinaryStudio.PhotoGallery.Web.Events
                                            , mWhoseComment.FirstName, mWhoseComment.LastName);
 
                 _hubNotify.Clients.Group(mParentComment.UserId.ToString("d"))
-                              .SendNotification(NotificationTitles.CommentAdded, noty, _urlUtil.BuildCommentUrl(mComment.PhotoId, mComment.Id));
+                              .SendNotification(NotificationTitles.CommentAdded, noty, string.Empty);
             }
         }
 

@@ -163,6 +163,7 @@
 }
 
 .commentText {
+    margin-left: 51px;
 	padding: 30px 30px 30px 40px;
     font-size: 9pt;
 	width: 85%;

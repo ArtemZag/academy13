@@ -48,6 +48,9 @@
 
             // post new rights for groups
             postRights();
+
+            // notification
+            showNotification();
         };
 
         self.gotoPhotoPage = function (data) {
@@ -87,6 +90,15 @@
             $(element).text(value);
         }
     };
+
+    function showNotification() {
+
+        $("#notification").show('slow', function () {
+            setTimeout(function() {
+                $("#notification").hide('slow');
+            }, 400);
+        });
+    }
 
     function setAlbumInfo(info) {
 

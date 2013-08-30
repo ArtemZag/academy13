@@ -4,8 +4,6 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Search
 {
     public class CommentFoundViewModel : IFoundViewModel
     {
-        public string CommentUrl { get; set; }
-
         public string Text { get; set; }
 
         public string UserAvatarPath { get; set; }
