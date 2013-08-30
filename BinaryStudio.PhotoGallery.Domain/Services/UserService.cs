@@ -161,7 +161,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 try
                 {
                     UserModel user = GetUser(userId, unitOfWork);
-                    unitOfWork.Users.Delete(user);
+                    GroupModel group = unitOfWork.Groups.Find(x => x.GroupName == "BlockedUsers");
+
+                    user.Groups.Add(group);
+                    unitOfWork.Users.Update(user);
 
                     unitOfWork.SaveChanges();
                 }
@@ -265,7 +268,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                                                                            authInfo.AuthProvider == providerName);
                 if (auth == null)
                 {
-                    throw new UserNotFoundException(string.Format("There is some misstake in {0} authentication", providerName));
+                    throw new UserNotFoundException(string.Format("There is some misstake in {0} authentication",
+                        providerName));
                 }
                 return auth.UserId;
             }
