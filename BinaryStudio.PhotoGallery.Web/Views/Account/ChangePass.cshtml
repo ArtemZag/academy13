@@ -7,6 +7,8 @@
     ViewBag.Title = "Password Restore | Bingally";
 }
 
+@Styles.Render("~/Content/remindpass.css")
+
 <div id="chPassPanel" class="login-panel">
     @Html.Image(Url.Content("~/Content/images/logo_big.png"))
     <div class="well">          
@@ -24,10 +26,19 @@
     </div>
 </div>
 
+<div id="okPanel" class="login-panel" style="display:none;">
+    @Html.Image(Url.Content("~/Content/images/logo_big.png"))
+    <div class="well">
+        <div class="success">
+            <div class="message">You password have succesfully changed.</div>
+        </div>
+    </div>
+</div>
+
 @Scripts.Render("~/Scripts/Account/changePass.js")
 
 <script type="text/javascript">
     $(function() {
-        ChangePass_Init();
+        ChangePass_Init("/api/changepass");
     });
 </script>

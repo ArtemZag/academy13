@@ -159,7 +159,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 string fromEmail = ConfigurationManager.AppSettings["NotificationEmail"];
                 string fromPass = ConfigurationManager.AppSettings["NotificationPassword"];
                 string mailSubject = Resources.Email_RemindPassSubject;
-                var emailHash = WebUtility.UrlEncode(_userService.UserRestorePasswordAsk(mUser));
+                var test = _userService.UserRestorePasswordAsk(mUser);
+                var emailHash = WebUtility.UrlEncode(test);
                 string remindLink = string.Format("<a href='http://{0}/remind/{1}/{2}'>http://{0}/remind/{1}/{2}</a>", 
                     HttpContext.Current.Request.Url.Authority, mUser.Id, emailHash);
                 string text = string.Format(
@@ -181,11 +182,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         [POST("changepass")]
-        public HttpResponseMessage ChangePass(SignupViewModel signupView)
+        public HttpResponseMessage ChangePass(ChangePassViewModel changePassView)
         {
             try
             {
-                _userService.UserRestorePasswordChangePass(signupView.Email, signupView.Password);
+                _userService.UserRestorePasswordChangePass(changePassView.Email, changePassView.Password);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception e)
