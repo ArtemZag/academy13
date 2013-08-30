@@ -70,7 +70,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 List<UserViewModel> usersViewModels = _userService
                     .GetAllUsers(skip, take)
-                    .Where(userModel => !userModel.IsAdmin)
                     .Select(userModel => userModel.ToUserViewModel(_userService.IsUserBlocked(userModel.Id)))
                     .ToList();
 
