@@ -364,6 +364,7 @@
     <Content Include="Scripts\mediator.js" />
     <Content Include="Scripts\mediator.min.js" />
     <Content Include="Scripts\Notifications.js" />
+    <Content Include="Scripts\User\profile.validate.js" />
     <Content Include="Scripts\User\user.js" />
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
