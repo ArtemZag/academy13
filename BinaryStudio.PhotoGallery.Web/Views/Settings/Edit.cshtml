@@ -2,7 +2,7 @@
 @model BinaryStudio.PhotoGallery.Web.ViewModels.User.UserViewModel
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "User Profile";
     Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
@@ -16,7 +16,7 @@
             <input type="file" name="photoFile" id="photoFile" data-url="upload-image" style="display: none;"/>
         </div>
     }
-    @using (Html.BeginForm("Edit", "Settings", FormMethod.Post))
+    @using (Html.BeginForm("Edit", "Settings", FormMethod.Post, new {id = "EditForm"}))
     {
         <div class="span3">
             @Html.LabelFor(x => x.FirstName, "First Name")
@@ -35,6 +35,11 @@
         </div>
     }
 </div>
+
+@Scripts.Render("~/bundles/scripts/opentip")
+@Scripts.Render("~/bundles/scripts/jquery.validate")
+@Scripts.Render("~/Scripts/User/profile.validate.js");
+
 <script type="text/javascript">
     
     var photo = $("#photo"),

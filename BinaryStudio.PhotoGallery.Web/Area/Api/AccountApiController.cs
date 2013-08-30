@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Web;
@@ -7,10 +8,12 @@ using System.Web.Script.Serialization;
 using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Http;
+using BinaryStudio.PhotoGallery.Core.EmailUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
+using BinaryStudio.PhotoGallery.Web.Properties;
 using BinaryStudio.PhotoGallery.Web.ViewModels;
 using BinaryStudio.PhotoGallery.Web.ViewModels.Account;
 
@@ -20,12 +23,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     public class AccountApiController : BaseApiController
     {
         private readonly IUserService _userService;
-        
+        private readonly IEmailSender _emailSender;
 
-        public AccountApiController(IUserService userService)
+        public AccountApiController(IUserService userService, IEmailSender emailSender)
         {
             _userService = userService;
-            
+            _emailSender = emailSender;
         }
 
         [POST("login")]
@@ -106,9 +109,48 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         [POST("remind")]
-        public HttpResponseMessage RemindPassword([FromBody] RemindPassViewModel viewModel)
+        public HttpResponseMessage RemindPass(RemindPassViewModel remindPassViewModel)
         {
-            return Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                var mUser = _userService.GetUser(remindPassViewModel.Email);
+                string host = ConfigurationManager.AppSettings["NotificationHost"];
+                string fromEmail = ConfigurationManager.AppSettings["NotificationEmail"];
+                string fromPass = ConfigurationManager.AppSettings["NotificationPassword"];
+                string mailSubject = Resources.Email_RemindPassSubject;
+                var emailHash = _userService.UserRestorePasswordAsk(mUser);
+                string remindLink = string.Format("<a href='http://{0}/remind/{1}/{2}'>http://{0}/remind/{1}/{2}</a>", 
+                    HttpContext.Current.Request.Url.Authority, mUser.Id, emailHash);
+                string text = string.Format( //todo Shall refactor by using some template, but have no time
+                    "<p>Dear {0} {1}!\n\n<p>You or someone else asked to recover password procedure.</p> " +
+                    "<p>To change you password, follow this link:\n{2}. <br/>This link will be available until the tomorrow.</p>" +
+                    "<p>If it wasn't you, just ignore this message.</p>",
+                    mUser.FirstName, mUser.LastName, remindLink);
+                _emailSender.Send(host, fromEmail, fromPass, remindPassViewModel.Email, mailSubject, text);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (UserNotFoundException e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e.Message);
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [POST("changepass")]
+        public HttpResponseMessage ChangePass(ChangePassViewModel changePassView)
+        {
+            try
+            {
+                _userService.UserRestorePasswordChangePass(changePassView.Email, changePassView.Password);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e.Message);
+            }
         }
     }
 }

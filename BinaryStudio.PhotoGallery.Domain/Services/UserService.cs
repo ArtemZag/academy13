@@ -166,6 +166,34 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public string UserRestorePasswordAsk(UserModel mUser)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                mUser.RemindPasswordSalt = Randomizer.GetString(30);
+               
+                unitOfWork.Users.Update(mUser);
+                unitOfWork.SaveChanges();
+
+                return mUser.RemindPasswordSalt;
+            }
+        }
+
+        public void UserRestorePasswordChangePass(string userEmail, string userPassword)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel mUser = GetUser(userEmail, unitOfWork);
+                mUser.Salt = _cryptoProvider.GetNewSalt();
+
+                mUser.UserPassword = _cryptoProvider.CreateHashForPassword(userPassword, mUser.Salt);
+                mUser.RemindPasswordSalt = null;
+
+                unitOfWork.Users.Update(mUser);
+                unitOfWork.SaveChanges();
+            }
+        }
+
         public void DeleteUser(int userId)
         {
             Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "DeletedUsers";

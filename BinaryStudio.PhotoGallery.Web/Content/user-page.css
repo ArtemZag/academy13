@@ -16,11 +16,6 @@ hr {
     font-family: cursive;
 }
 
-#arrow {
-    position: absolute;
-    z-index: 100;
-}
-
 .noAlbumsTextContainer {
     vertical-align: central;
     display: inline-block;

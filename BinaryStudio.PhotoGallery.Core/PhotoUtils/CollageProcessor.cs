@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
 {
@@ -23,18 +24,18 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             _pathUtil = pathUtil;
         }
 
-        public void CreateCollage(int userId, int albumId)
+        public void CreateCollage(int userId, int albumId, IEnumerable<PhotoModel> models)
         {
             string collagesDirectoryPath = _pathUtil.BuildAbsoluteCollagesDirPath(userId, albumId);
 
-            MakeCollage(userId, albumId, COLLAGE_WITH, COLLAGE_ROWS, collagesDirectoryPath);
+            MakeCollage(userId, albumId, COLLAGE_WITH, COLLAGE_ROWS, collagesDirectoryPath,models);
         }
-
-        private void MakeCollage(int userId, int albumId, int width, int rows, string collagesDirectoryPath)
+        
+        private void MakeCollage(int userId, int albumId, int width, int rows, string collagesDirectoryPath, IEnumerable<PhotoModel> models)
         {
             int height = rows*MAX_HEIGHT;
-
-            string collagePath = _pathUtil.BuildAbsoluteCollagePath(userId, albumId);
+            
+            string collagePath = _pathUtil.CreateCollagePath(userId, albumId);
 
             using (Image image = new Bitmap(width, height))
             {
@@ -42,12 +43,12 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
                 {
                     SetUpGraphics(graphics);
 
-                    IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId,
-                        ImageSize.Small);
-                    string backup =
-                        Randomizer.GetEnumerator(_pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId, ImageSize.Big))
-                            .First();
-                    TileImages(graphics, Randomizer.GetEnumerator(thumbnailsPaths), backup, width, height);
+                    IEnumerable<string> thumbnailsPaths = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId, models,
+                                                                                                 ImageSize.Small);
+
+                    var backup = _pathUtil.BuildAbsoluteThumbnailsPaths(userId, albumId, models, ImageSize.Big).First();
+
+                    TileImages(graphics, thumbnailsPaths, backup, width, height);
 
                     if (Directory.Exists(collagesDirectoryPath))
                         ClearDirectory(collagesDirectoryPath);
@@ -74,10 +75,9 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
         private void TileImages(Graphics graphics, IEnumerable<string> thumbnails, string biggestFile, int width,
             int heigth)
         {
-            List<string> list = thumbnails.ToList();
-            int countPhotos = list.Count;
-            int iter = 0;
-            int sumWidth = 0;
+            var countPhotos = thumbnails.Count();
+            var iter = 0;
+            var sumWidth = 0;
 
             if (countPhotos <= 12)
             {
@@ -89,9 +89,9 @@ namespace BinaryStudio.PhotoGallery.Core.PhotoUtils
             }
             else
             {
-                foreach (string file in list)
+                foreach (var file in thumbnails)
                 {
-                    using (Image thumbImage = Image.FromFile(file))
+                    using (var thumbImage = Image.FromFile(file))
                     {
                         graphics.DrawImageUnscaled(thumbImage, sumWidth, iter);
                         sumWidth += thumbImage.Width;

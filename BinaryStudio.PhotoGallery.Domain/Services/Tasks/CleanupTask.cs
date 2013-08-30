@@ -28,6 +28,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
                 {
                     CleanPhotos(unitOfWork);
                     CleanAlbums(unitOfWork);
+                    CleanRestorePasswordHashs(unitOfWork);
 
                     unitOfWork.SaveChanges();
                 }
@@ -36,6 +37,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services.Tasks
             {
                 throw new CleanupException(e);
             }
+        }
+
+        private void CleanRestorePasswordHashs(IUnitOfWork unitOfWork)
+        {
+            var usersForCleanUp = unitOfWork.Users.Filter(mUser => mUser.RemindPasswordSalt != null ).ToList();
+            usersForCleanUp.ForEach(mUser => { mUser.RemindPasswordSalt = null;
+                                               unitOfWork.Users.Update(mUser); });
+            unitOfWork.SaveChanges();
         }
 
         private void CleanPhotos(IUnitOfWork unitOfWork)

@@ -72,11 +72,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         bool IsUserExist(string authProvider, string token);
 
         /// <summary>
+        ///     Creates restore salt and generate hash, which uses in restore link
+        /// </summary>
+        string UserRestorePasswordAsk(UserModel mUser);
+
+        /// <summary>
         ///     Makes user a God
         /// </summary>
         /// <param name="godId">userID with God permissions</param>
         /// <param name="slaveId"></param>
         void MakeUserGod(int godId, int slaveId);
+
+        void UserRestorePasswordChangePass(string userEmail, string userPassword);
+
 
         bool IsUserBlocked(int userId);
 
