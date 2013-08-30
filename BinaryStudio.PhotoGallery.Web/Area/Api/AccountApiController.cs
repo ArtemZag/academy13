@@ -149,7 +149,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-
         [POST("remind")]
         public HttpResponseMessage RemindPass(RemindPassViewModel remindPassViewModel)
         {
@@ -178,6 +177,20 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [POST("changepass")]
+        public HttpResponseMessage ChangePass(RemindPassViewModel remindPassViewModel)
+        {
+            try
+            {
+                _userService.UserRestorePasswordChangePass(remindPassViewModel.Email, remindPassViewModel.Password);
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e.Message);
             }
         }
     }
