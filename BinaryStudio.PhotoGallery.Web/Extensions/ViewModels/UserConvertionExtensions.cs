@@ -6,7 +6,7 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
 {
     public static class UserConvertionExtensions
     {
-        public static UserViewModel ToUserViewModel(this UserModel model)
+        public static UserViewModel ToUserViewModel(this UserModel model, bool isBlocked)
         {
             var viewModel = new UserViewModel
             {
@@ -14,8 +14,10 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
-                IsAdmin = model.IsAdmin,
-                Birthday = model.Birthday
+                Department = model.Department,
+                Birthday = model.Birthday,
+                IsActivated = model.IsActivated,
+                IsBlocked = isBlocked
             };
             viewModel.PhotoUrl = viewModel.PathUtil.BuildAvatarPath(model.Id, ImageSize.Medium);
             return viewModel;
@@ -26,7 +28,6 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
             {
                 FirstName = "None",
                 LastName = "None",
-                IsAdmin = false,
                 AlbumsCount = 0,
                 PhotoCount = 0
             };
@@ -35,7 +36,7 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
         }
         public static UserViewModel ToUserViewModel(this UserModel model, int photoCount, int albumCount)
         {
-            var viewModel = ToUserViewModel(model);
+            var viewModel = model.ToUserViewModel(false);
             viewModel.AlbumsCount = albumCount;
             viewModel.PhotoCount = photoCount;
             return viewModel;

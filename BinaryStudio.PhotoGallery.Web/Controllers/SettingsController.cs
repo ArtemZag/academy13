@@ -32,14 +32,14 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult Index()
         {
             UserModel user = _userService.GetUser(User.Id);
-            return View(user.ToUserViewModel());
+            return View(user.ToUserViewModel(false));
         }
 
         [GET("edit")]
         public ActionResult Edit()
         {
             UserModel user = _userService.GetUser(User.Id);
-            return View(user.ToUserViewModel());
+            return View(user.ToUserViewModel(false));
         }
 
         [POST("edit")]
@@ -59,7 +59,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             _userService.Update(user);
 
-            return View("Index", user.ToUserViewModel());
+            return View("Index", user.ToUserViewModel(false));
         }
 
         [POST("updatePhoto")]

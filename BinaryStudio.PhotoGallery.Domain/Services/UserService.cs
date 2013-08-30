@@ -28,9 +28,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 return
                     unitOfWork.Users.All()
-                        .Include(g => g.Albums)
-                        .Include(g => g.Groups)
-                        .Include(g => g.AuthInfos)
+                        .Include(user => user.Albums)
+                        .Include(user => user.Groups)
+                        .Include(user => user.AuthInfos)
+                        .OrderBy(user => user.DateOfCreating)
+                        .ThenBy(user => user.Id)
                         .Skip(skipCount)
                         .Take(takeCount)
                         .ToList();

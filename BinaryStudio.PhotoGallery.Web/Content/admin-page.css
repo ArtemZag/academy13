@@ -6,7 +6,7 @@
 
 #user-list > .user {
     margin: 5px;
-    width: 420px;
+    width: 415px;
     display: inline-block;
     border: 1px solid cadetblue;
     border-radius: 5px;
@@ -15,13 +15,13 @@
 }
 
 .user > .avatar {
-    width: 140px;
+    width: 138px;
     float: left;
     margin-right: 10px;
 }
 
 .avatar > img {
-    width: 138px;
+    width: 136px;
     border: 1px solid;
     border-bottom: 0px;
     border-radius: 4px 4px 0px 0px;
@@ -73,6 +73,7 @@
 
 .user .description {
     margin-left: 5px;
+    height: 125px;
 }
 
 .user > .actions {

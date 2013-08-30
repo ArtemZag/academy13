@@ -329,10 +329,12 @@
     <Content Include="Content\style-libs\chosen.css" />
     <Content Include="Content\verticalResizer.css" />
     <Content Include="Scripts\Account\forgotPass.js" />
-    <Content Include="Scripts\Admin\AdminPage.js" />
+    <Content Include="Scripts\Admin\AdminMain.js" />
     <Content Include="Scripts\Account\initVertResizer.js" />
     <Content Include="Scripts\Account\signup.validate.js" />
     <Content Include="Scripts\Account\signup.js" />
+    <Content Include="Scripts\Admin\AdminViewModel.js" />
+    <Content Include="Scripts\Admin\UserViewModel.js" />
     <Content Include="Scripts\Album\albumViewModel.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
@@ -441,7 +443,6 @@
     <Content Include="Scripts\Search\search.js" />
     <Content Include="Scripts\Upload\main.js" />
     <Content Include="Scripts\Upload\PhotoPreviewViewModel.js" />
-    <Content Include="Scripts\Admin\UserSlider.js" />
     <Content Include="Scripts\Upload\UploadViewModel.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -70,7 +70,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 List<UserViewModel> usersViewModels = _userService
                     .GetAllUsers(skip, take)
-                    .Select(userModel => userModel.ToUserViewModel())
+                    .Where(userModel => !userModel.IsAdmin)
+                    .Select(userModel => userModel.ToUserViewModel(false))
                     .ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, usersViewModels, new JsonMediaTypeFormatter());
@@ -81,8 +82,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-        [DELETE("")]
-        public HttpResponseMessage Delete(int userId)
+        [DELETE("{userId:int}")]
+        public HttpResponseMessage Delete([FromUri] int userId)
         {
             try
             {
