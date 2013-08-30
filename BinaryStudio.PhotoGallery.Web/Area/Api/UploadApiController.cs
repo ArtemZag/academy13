@@ -152,7 +152,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 }
 
                 // Create collage for album
-                _collageProcessor.CreateCollage(User.Id, albumId);
+                _collageProcessor.CreateCollage(User.Id, albumId, _photoService.GetAllPhotos(User.Id, albumId));
                 //todo: we dont use it
                 //_collageProcessor.CreateCollage(User.Id,tempAlbumId);
             }
