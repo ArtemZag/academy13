@@ -247,5 +247,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 slave.IsAdmin = true;
             }
         }
+
+        public bool IsUserBlocked(int userId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork.Users.Find(userId).Groups.ToList().Find(group => group.GroupName == "BlockedUsers") !=
+                       null;
+            }
+        }
     }
 }
