@@ -9,7 +9,7 @@ namespace BinaryStudio.PhotoGallery.Web.Hubs
 {
     [Authorize]
     [HubName("NotificationsHub")]
-    public class NotificationsHub : Hub, ICustomPrincipalInHub
+    public class NotificationsHub : Hub
     {
         public CustomPrincipal User
         {

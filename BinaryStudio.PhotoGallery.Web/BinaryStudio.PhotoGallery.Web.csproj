@@ -269,7 +269,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Events\GlobalEventsHandler.cs" />
-    <Compile Include="Hubs\ICustomPrincipalInHub.cs" />
     <Compile Include="Hubs\NotificationTitles.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="CustomStructure\UserInfoSerializeModel.cs" />
