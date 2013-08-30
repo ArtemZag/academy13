@@ -12,9 +12,12 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
             var userInfo = new UserInfoViewModel
             {
                 OwnerFirstName = user.FirstName,
-                OwnerLastName = user.LastName,
+                OwnerLastName = user.LastName
             };
+
             userInfo.OwnerPhotoSource = userInfo.PathUtil.BuildAvatarPath(user.Id, ImageSize.Small);
+            userInfo.OwnerViewUrl = userInfo.UrlUtil.BuildUserViewUrl(user.Id);
+
             var d = photoComment.DateOfCreating;
             var photoCommentViewModel = new PhotoCommentViewModel
             {

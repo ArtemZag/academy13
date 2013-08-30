@@ -18,6 +18,7 @@
         u.firstName = ko.observable(data.OwnerFirstName);
         u.lastName = ko.observable(data.OwnerLastName);
         u.photoSource = ko.observable(data.OwnerPhotoSource);
+        u.userViewUrl = ko.observable(data.OwnerViewUrl);
     }
 
     function printDate(data) {
@@ -49,6 +50,11 @@
             return com.userInfo().firstName() + " " + com.userInfo().lastName();
         },
             this);
+
+        com.GetUserUrl = ko.computed(function () {
+            
+            return com.userInfo().userViewUrl();
+        });
     }
 
     function Like(data) {
