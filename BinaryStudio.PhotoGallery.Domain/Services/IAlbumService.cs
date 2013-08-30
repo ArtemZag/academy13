@@ -26,7 +26,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         int AlbumsCount(int userId, int tempAlbumId);
 
-        IEnumerable<AlbumModel> GetAlbumsRange(int userRequestsId, int userOwnerId, int skipCount, int takeCount, out bool reasonOfNotAlbums);
+        /// <summary>
+        /// Gets all available for user owner albums
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="ownerId"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
+        IEnumerable<AlbumModel> GetAlbumsRange(int userId, int ownerId, int skip, int take);
 
         void UpdateAlbum(AlbumModel albumModel);
 

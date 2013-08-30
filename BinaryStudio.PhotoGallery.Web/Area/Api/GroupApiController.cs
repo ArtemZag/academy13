@@ -24,12 +24,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             this.groupService = groupService;
         }
 
-        [GET("{albumId: int}")]
-        public HttpResponseMessage GetGroups(int albumId)
+        [GET("?{albumId: int}&{userId: int}")]
+        public HttpResponseMessage GetGroups(int albumId, int userId)
         {
             try
             {
-                IEnumerable<GroupModel> userGroups = groupService.GetUserGroups(User.Id);
+                IEnumerable<GroupModel> userGroups = groupService.GetUserGroups(userId);
 
                 IEnumerable<AvailableGroupModel> albumGroups = groupService.GetAlbumGroups(albumId);
 

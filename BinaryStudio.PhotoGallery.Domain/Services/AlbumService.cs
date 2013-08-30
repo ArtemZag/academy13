@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using BinaryStudio.PhotoGallery.Database;
@@ -10,6 +11,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     internal class AlbumService : DbService, IAlbumService
     {
         private const string TEMPORARY_ALBUM_NAME = "Temporary";
+
+        private readonly ISecureService _secureService;
 
         private readonly List<AlbumModel> _systemAlbumsList = new List<AlbumModel>
         {
@@ -26,8 +29,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
             #endregion
         };
-
-        private readonly ISecureService _secureService;
 
         public AlbumService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
         {
@@ -147,7 +148,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public int AlbumsCount(int userId,int tempAlbumId)
+        public int AlbumsCount(int userId, int tempAlbumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -157,30 +158,27 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public IEnumerable<AlbumModel> GetAlbumsRange(int userRequestsId, int userOwnerId, int skipCount, int takeCount, out bool reasonOfNotAlbums)
+        public IEnumerable<AlbumModel> GetAlbumsRange(int userId, int ownerId, int skip, int take)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                reasonOfNotAlbums = true;
-                var albums = unitOfWork.Albums.Filter(model => model.OwnerId == userOwnerId && !model.IsDeleted && model.Name != TEMPORARY_ALBUM_NAME)
-                                 .OrderByDescending(model => model.DateOfCreation)
-                                 .Skip(skipCount)
-                                 .Take(takeCount)
-                                 .ToList();
-                if (albums.Count == 0)
+                try
                 {
-                    reasonOfNotAlbums = false;
-                    return albums;
+                    return
+                        unitOfWork.Albums.Filter(album => album.OwnerId == ownerId && !album.IsDeleted).ToList()
+                            .Where(album => !IsAlbumSystem(album)).ToList()
+                            .Where(album => _secureService.CanUserViewPhotos(userId, album.Id))
+                            .OrderByDescending(album => album.DateOfCreation)
+                            .Skip(skip)
+                            .Take(take)
+                            .ToList();
                 }
-
-                var albumsToTake = 
-                    albums.Select(album => album)
-                          .Where(album => _secureService.CanUserViewPhotos(userRequestsId, album.Id));
-
-                if (albumsToTake.Count() == 0)
-                    reasonOfNotAlbums = true;
-
-                return albumsToTake;
+                catch (Exception)
+                {
+                    throw new AlbumNotFoundException(
+                        string.Format("Cann't find any albums for user with ID={0}, requested by user with ID={1}",
+                            ownerId, userId));
+                }
             }
         }
 

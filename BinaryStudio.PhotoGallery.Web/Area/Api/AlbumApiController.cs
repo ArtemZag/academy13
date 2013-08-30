@@ -22,6 +22,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         private readonly IAlbumService _albumService;
         private readonly IPathUtil _pathUtil;
         private readonly IUserService _userService;
+
         public AlbumApiController(IAlbumService albumService, IPathUtil pathUtil, IUserService userService)
         {
             _albumService = albumService;
@@ -52,14 +53,15 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-                bool pr;
+                bool haveNoPermissionsToSeeAlbum = false;
                 var albums = _albumService
-                    .GetAlbumsRange(User.Id, userId, skip, take, out pr)
+                    .GetAlbumsRange(User.Id, userId, skip, take)
                     .Select(album => album.ToAlbumViewModel(
                         _pathUtil.BuildCollagePath(userId, album.Id))).ToList();
 
+                // todo: fix this shit
                 if (!albums.Any() && userId!=User.Id)
-                    pr = true;
+                    haveNoPermissionsToSeeAlbum = true;
 
                 UserModel requestsUser = _userService.GetUser(User.Id);
                 UserModel ownerUser = _userService.GetUser(userId);
@@ -69,7 +71,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                         Albums = albums,
                         RequestsUserName = string.Format("{0} {1}", requestsUser.FirstName, requestsUser.LastName),
                         OwnerUserName = string.Format("{0} {1}", ownerUser.FirstName, ownerUser.LastName),
-                        NoAlbumsToView = pr
+                        NoAlbumsToView = haveNoPermissionsToSeeAlbum
                     };
 
                 return Request.CreateResponse(HttpStatusCode.OK, model, new JsonMediaTypeFormatter());
