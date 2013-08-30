@@ -361,7 +361,6 @@
     <Content Include="Scripts\off-screen-nav.js" />
     <Compile Include="ViewModels\Search\SearchViewModel.cs" />
     <Content Include="Scripts\panel.js" />
-    <Content Include="Scripts\Photo\photo.js" />
     <Content Include="Content\photo-page.css" />
   </ItemGroup>
   <ItemGroup>
