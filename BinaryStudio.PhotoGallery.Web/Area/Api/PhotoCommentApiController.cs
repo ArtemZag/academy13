@@ -34,7 +34,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 var viewModels = new List<PhotoCommentViewModel>();
-
+                
                 IEnumerable<PhotoCommentModel> photoComments = _photoCommentService.GetPhotoComments(User.Id, photoId,
                     skip, take);
 
