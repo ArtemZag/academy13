@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.CustomStructure
 @using BinaryStudio.PhotoGallery.Web.Extensions
 @model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumViewModel
 
@@ -9,6 +10,8 @@
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
     ViewBag.Title = "Album | Bingally";
+
+    var user = ViewBag.User as CustomPrincipal;
 }
  
 <div id="loader">
@@ -28,29 +31,33 @@
     </div>
 
     <div class="sidebar">
-        <div class="title editable" contenteditable="true" data-bind="editableText: name"></div>
+        <div id="albumName" class="title editable" contenteditable="true" data-bind="editableText: name"></div>
         <div class="prop"><!--ko text: photosCount--><!--/ko--> photos</div>
         <div class="prop">date of creation: <!--ko text: dateOfCreation--><!--/ko--></div>
         <div class="title">Description</div>
-        <div class="prop editable" contenteditable="true" data-bind="editableText: description"></div>
+        <div id="description" class="prop editable" contenteditable="true" data-bind="editableText: description"></div>
         <div class="title">Tags</div>
         <div class="prop"><!--ko text: tagsString--><!--/ko--></div>
-        <div class="title">Rights</div>
-        <div class="prop">
-            <select data-bind="options: groups, optionsText: 'name', value: selectedGroup, optionCaption: 'Select group...'">
-            </select>
-            <div data-bind="with: selectedGroup">
-                <label class="checkbox">
-                
-                    <input type="checkbox" data-bind="checked: canSeePhotos"> Can see photos
-                </label>
 
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: canSeeComments"> Can see comments
-                </label>
+        <div id="rightsOptions">
+            <div class="title">Rights</div>
+            <div class="prop">
+                <select data-bind="options: groups, optionsText: 'name', value: selectedGroup, optionCaption: 'Select group...'">
+                </select>
+                <div data-bind="with: selectedGroup">
+                    <label class="checkbox">
+                
+                        <input type="checkbox" data-bind="checked: canSeePhotos"> Can see photos
+                    </label>
+
+                    <label class="checkbox">
+                        <input type="checkbox" data-bind="checked: canSeeComments"> Can see comments
+                    </label>
+                </div>
             </div>
         </div>
-        <a class="btn save-info-btn" data-bind="click: sendInfo">Save</a>
+
+        <a id="saveButton" class="btn save-info-btn" data-bind="click: sendInfo">Save</a><small id="notification" class="notification">changes have been saved..</small>
     </div>
 
 </div>
@@ -62,7 +69,10 @@
 
 <div id="postGroupsUrl" data-url="@Html.RouteUrl("GroupApi", "PostGroups")"></div>
 <div id="postAlbumInfoUrl" data-url="@Html.RouteUrl("AlbumApi", "PostAlbumInfo")"></div>
+
 <input id="albumId" type="hidden" value="@ViewBag.AlbumId"/>
+<input id="currentUserId" type="hidden" value="@user.Id"/>
+<input id="isAdmin" type="hidden" value="@user.IsAdmin"/>
 
 @Scripts.Render("~/Scripts/Helpers/PhotoPlacer_Module.js")
 @Scripts.Render("~/Scripts/Album/albumViewModel.js")

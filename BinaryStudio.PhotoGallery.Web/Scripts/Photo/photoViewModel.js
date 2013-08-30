@@ -18,6 +18,7 @@
         u.firstName = ko.observable(data.OwnerFirstName);
         u.lastName = ko.observable(data.OwnerLastName);
         u.photoSource = ko.observable(data.OwnerPhotoSource);
+        u.userViewUrl = ko.observable(data.OwnerViewUrl);
     }
 
     function printDate(data) {
@@ -49,6 +50,11 @@
             return com.userInfo().firstName() + " " + com.userInfo().lastName();
         },
             this);
+
+        com.GetUserUrl = ko.computed(function () {
+            
+            return com.userInfo().userViewUrl();
+        });
     }
 
     function Like(data) {
@@ -101,7 +107,7 @@
         };
 
         self.AddComment = function () {
-            
+
             $.post("/api/photo/comment", { CommentText: self.newComment(), PhotoId: self.PhotoId() }, function (data) {
                 setComments(data);
                 // scroll down to new added comment. need pure js
@@ -113,15 +119,12 @@
 
         // Needs refactoring
         self.DeletePhoto = function () {
-            alert('Hallo');
             $.ajax({
                 url: '/api/photo/' + model.PhotoId(),
                 type: 'DELETE',
                 success: function (data) {
-                    alert(data);
                 },
                 error: function (data) {
-                    alert(data);
                 }
             });
         };

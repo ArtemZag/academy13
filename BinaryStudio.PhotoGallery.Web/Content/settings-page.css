@@ -8,3 +8,11 @@
 #FirstName, #LastName, #Email {
     width: 100%;
 }
+
+.ot-content {
+	z-index: 100;
+	position: relative;
+	color: white;
+	padding-left: 3px;
+}
+

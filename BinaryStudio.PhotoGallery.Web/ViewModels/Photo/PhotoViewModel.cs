@@ -17,7 +17,7 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Photo
             var model = new PhotoModel
             {
                 OwnerId = userId,
-                AlbumId = albumId,
+                AlbumModelId = albumId,
                 Format = realFileFormat
             };
 

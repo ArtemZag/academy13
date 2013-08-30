@@ -13,6 +13,8 @@
 
         self.albumId = 0;
 
+        self.ownerId = 0;
+
         self.collagePath = ko.observable();
 
         self.photosCount = ko.observable();
@@ -46,6 +48,9 @@
 
             // post new rights for groups
             postRights();
+
+            // notification
+            showNotification();
         };
 
         self.gotoPhotoPage = function (data) {
@@ -86,13 +91,47 @@
         }
     };
 
+    function showNotification() {
+
+        $("#notification").show('slow', function () {
+            setTimeout(function() {
+                $("#notification").hide('slow');
+            }, 400);
+        });
+    }
+
     function setAlbumInfo(info) {
+
+        album.ownerId = info.OwnerId;
 
         album.name(info.AlbumName);
         album.photosCount(info.PhotosCount);
         album.description(info.Description);
         album.collagePath(info.CollageSource);
         album.dateOfCreation(formatDate(info.DateOfCreation));
+
+        getGroups();
+
+        setModifyMode();
+    }
+
+    function setModifyMode() {
+
+        if (!isCanModify()) {
+
+            $("#saveButton").hide();
+            $("#rightsOptions").hide();
+            $("#albumName").removeAttr("contenteditable");
+            $("#description").removeAttr("contenteditable");
+        }
+    }
+
+    function isCanModify() {
+
+        var currentUserId = document.getElementById("currentUserId").value;
+        var isAdmin = document.getElementById("isAdmin").value;
+
+        return album.ownerId == currentUserId || isAdmin;
     }
 
     function setAlbumTags(tags) {
@@ -109,12 +148,22 @@
 
             album.groups.push(new groupViewModel(val.GroupId, val.Name, val.CanSeePhotos, val.CanSeeComments));
         });
+
+        if (album.groups().length == 0) {
+
+            $("#rightsOptions").hide();
+        }
     }
 
     // post name and description
+
     function postAlbumInfo() {
 
-        $.post(postAlbumInfoUrl, { Id: album.albumId, AlbumName: album.name(), Description: album.description() });
+        $.post(postAlbumInfoUrl, {
+            Id: album.albumId,
+            AlbumName: album.name(),
+            Description: album.description()
+        });
     }
 
     function postRights() {
@@ -122,7 +171,10 @@
         $.ajax({
             url: postGroupsUrl,
             type: 'POST',
-            data: { viewModels: album.groups(), albumId: album.albumId }
+            data: {
+                viewModels: album.groups(),
+                albumId: album.albumId
+            }
         });
 
     }
@@ -139,7 +191,15 @@
 
     function getGroups() {
 
-        $.get(getGroupsUrl, album.albumId, setGroups);
+        $.ajax({
+            url: getGroupsUrl,
+            type: 'GET',
+            data: {
+                albumId: album.albumId,
+                userId: album.ownerId
+            }
+        })
+            .done(setGroups);
     }
 
     function initPhotosDownloader() {
@@ -161,7 +221,6 @@
 
     getAlbumInfo();
     getAlbumTags();
-    getGroups();
 
     initPhotosDownloader();
 });

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
@@ -25,7 +26,12 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         /// </summary>
         string BuildThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize size);
 
-        string BuildCollagePath(int userId, int albumId);
+        string GetCollage(int userId, int albumId);
+
+        /// <summary>
+        /// Pattern: ~data\photos\userId\albumId\[random].jpg
+        /// </summary>
+        string CreateCollagePath(int userId, int albumId);
 
         string BuildAbsoluteAvatarPath(int userId, ImageSize imageSize);
 
@@ -33,7 +39,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         string BuildAbsoluteThumbailPath(int userId, int albumId, int photoId, string format, ImageSize size);
 
-        IEnumerable<string> BuildAbsoluteThumbnailsPaths(int userId, int albumId, ImageSize size);
+        IEnumerable<string> BuildAbsoluteThumbnailsPaths(int userId, int albumId, IEnumerable<PhotoModel> models, ImageSize size);
 
         string BuildAbsoluteCollagePath(int userId, int albumId);
 

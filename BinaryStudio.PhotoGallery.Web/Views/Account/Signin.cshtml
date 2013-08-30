@@ -10,7 +10,7 @@
 <div id="loginPanel" class="login-panel">
     @Html.Image("~/Content/images/logo_big.png")
     <div class="well">
-        <form class="control-group form-horizontal pagination-centered">
+        <form id="loginForm" class="control-group form-horizontal pagination-centered">
             @Html.TextBoxFor(model => model.Email, new {@class = "input-block-level", @placeholder = "E-mail address"})
             @Html.PasswordFor(model => model.Password, new {@class = "input-block-level", @placeholder = "Password"})
             <label class="checkbox">
@@ -22,7 +22,6 @@
                 <span class="effeckt-spinner effeckt-spinner-blue"></span>
             </button>
             <a id="forgotPass" class="btn btn-link">Forgot password?</a>
-@*            @Html.ActionLink("Forgot password?", "RemindPass", "Account", new {@class = "btn btn-link", @id="forgotPass"})*@
         </form>
         <div class="error-field"></div>
         <hr />
@@ -39,4 +38,3 @@
 
 @Scripts.Render("~/Scripts/Account/signin.js")
 @Scripts.Render("~/Scripts/Account/signin.validate.js")
-@Scripts.Render("~/Scripts/Account/forgotPass.js")

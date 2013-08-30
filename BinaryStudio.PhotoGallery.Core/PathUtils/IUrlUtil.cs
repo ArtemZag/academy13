@@ -10,8 +10,5 @@
 
         /// <returns>Pattern: /user/userId</returns>
         string BuildUserViewUrl(int userId);
-
-        /// <returns>Pattern: /photo/photoId#commentId</returns>
-        string BuildCommentUrl(int photoId, int commentId);
     }
 }

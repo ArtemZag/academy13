@@ -83,7 +83,6 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
 
             return new CommentFoundViewModel
             {
-                CommentUrl = urlUtil.BuildCommentUrl(commentFound.PhotoId, commentFound.Id),
                 DateOfCreation = commentFound.DateOfCreation,
                 UserName = userName,
                 Text = commentFound.Text,
@@ -105,7 +104,7 @@ namespace BinaryStudio.PhotoGallery.Web.Utils
                 DateOfCreation = albumFound.DateOfCreation,
                 UserViewUrl = urlUtil.BuildUserViewUrl(albumFound.OwnerId),
                 AlbumViewUrl = urlUtil.BuildAlbumViewUrl(albumFound.Id),
-                CollagePath = pathUtil.BuildCollagePath(albumFound.OwnerId, albumFound.Id),
+                CollagePath = pathUtil.GetCollage(albumFound.OwnerId, albumFound.Id),
                 UserName = userName
             };
         }

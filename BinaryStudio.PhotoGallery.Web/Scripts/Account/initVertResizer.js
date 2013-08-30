@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿var InitVertResizer = function (controller) {
+
     $("#wrapper").css("height", $(window).height());
     verticalResizer_Module('#vFlow-images');
 
@@ -15,7 +16,7 @@
     
     var photoPortion = 40;
 
-    $.get("api/publicphoto/" + photoPortion)
+    $.get(controller + photoPortion)
         .done(function (photos) {
             var goodPhotos = new Array();
             var length = photos.length;
@@ -45,7 +46,7 @@
     }
     
     ko.applyBindings(viewModel);
-});
+};
 
 
 function LoginPhotoFlowViewModel() {
