@@ -16,7 +16,8 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.User
         public bool IsActivated { get; set; }
         public bool IsBlocked { get; set; }
 
-	    public string PhotoUrl { get; set; }
+	    public string AvatarUrl { get; set; }
+        public string ProfileUrl { get; set; }
         public DateTime Birthday { get; set; }
 	}
 }

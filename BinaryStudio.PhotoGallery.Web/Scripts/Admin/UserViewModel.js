@@ -10,6 +10,12 @@
     self.email = ko.observable(options.email);
     self.department = ko.observable(options.department);
 
+    self.mailtoEmail = ko.computed({
+        read: function() {
+            return "mailto:" + self.email();
+        }
+    });
+
     self.isOnline = ko.observable(options.isOnline || false);
     self.isActivated = ko.observable(options.isActivated || false);
     self.isBlocked = ko.observable(options.isBlocked || false);
@@ -44,10 +50,6 @@
         }).done(function() {
                 mediator.publish('admin:deleteUser', element);
             });
-    };
-
-    self.resetPassword = function () {
-        
     };
 
     self.resetInvitation = function() {
@@ -102,16 +104,6 @@
                 return "Unblock";
             } else {
                 return "Block";
-            }
-        }
-    });
-
-    self.invitationAndPasswordText = ko.computed({
-        read: function () {
-            if (self.isActivated() && !self.isBlocked()) {
-                return "Reset password";
-            } else {
-                return "Send invitation";
             }
         }
     });

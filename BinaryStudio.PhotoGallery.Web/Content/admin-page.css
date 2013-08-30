@@ -27,6 +27,14 @@
     border-radius: 4px 4px 0px 0px;
 }
 
+.full-name {
+    display: block;
+}
+
+.email {
+    display: block;
+}
+
 .avatar > .status {
     height: 20px;
     text-align: center;

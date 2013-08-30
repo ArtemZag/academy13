@@ -70,7 +70,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-//                _userService.BlockUser(userId);
+                _userService.BlockUser(userId);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -98,7 +98,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         {
             try
             {
-//                _userService.DeleteUser(userId);
+                _userService.DeleteUser(userId);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)

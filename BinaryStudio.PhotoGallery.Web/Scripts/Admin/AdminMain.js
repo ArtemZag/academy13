@@ -9,6 +9,7 @@
         .done(function (data) {
 //            console.log(data);
             $.map(data, function (user) {
+                console.log(user.ProfileUrl);
                 avm.userList.push(new UserViewModel({
                     id: user.Id,
                     firstName: user.FirstName,
@@ -18,7 +19,7 @@
                     isOnline: user.IsOnline,
                     isActivated: user.IsActivated,
                     isBlocked: user.IsBlocked,
-                    avatartUrl: user.AvatartUrl,
+                    avatarUrl: user.AvatarUrl,
                     profileUrl: user.ProfileUrl,
                     mediator: mediator
                 }));

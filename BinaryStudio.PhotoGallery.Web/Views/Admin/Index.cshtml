@@ -9,19 +9,19 @@
 <div id="user-list" data-bind="foreach: userList">
     <div class="user" data-bind="css: statusCss">
         <div class="avatar">
-            <img src="~/Content/images/no_avatar.png" data-bind="attr: {src: profileUrl}" />
+            <a data-bind="attr: {href: profileUrl}"><img src="~/Content/images/no_avatar.png" data-bind="    attr: { src: avatarUrl }" /></a>
             <div class="status" data-bind="text: statusText"></div>
         </div>
         <div class="description">
             <button class="edit-info icon-edit" data-bind="click: editAction"></button>
-            <div class="full-name" data-bind="text: fullName"></div>
-            <a class="email" data-bind="text: email, attr: {href: email}"></a>
+            <a class="full-name" data-bind="text: fullName, attr: {href: profileUrl}"></a>
+            <a class="email" data-bind="text: email, attr: {href: mailtoEmail}"></a>
             <div class="department" data-bind="text: department"></div>
         </div>
         <div class="actions btn-block">
             <button class="btn btn-inverse" data-bind="click: blockAction, text: blockAndUnblockText"></button>
             <button class="btn btn-warning" data-bind="click: deleteAction">Delete</button>
-            <button class="btn btn-primary" data-bind="click: isActivated() ? resetPassword : resetInvitation, text: invitationAndPasswordText">Resend invitation</button>
+            <button class="btn btn-primary" data-bind="click: resetInvitation, visible: !isActivated()">Resend invitation</button>
         </div>
     </div>
 </div>

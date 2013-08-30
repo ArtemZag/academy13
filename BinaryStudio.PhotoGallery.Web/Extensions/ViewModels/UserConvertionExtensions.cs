@@ -25,7 +25,10 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
                 Birthday = model.Birthday,
                 IsActivated = model.IsActivated
             };
-            viewModel.PhotoUrl = viewModel.PathUtil.BuildAvatarPath(model.Id, ImageSize.Medium);
+
+            viewModel.AvatarUrl = viewModel.PathUtil.BuildAvatarPath(model.Id, ImageSize.Medium);
+            viewModel.ProfileUrl = viewModel.UrlUtil.BuildUserViewUrl(model.Id);
+
             return viewModel;
         }
 
@@ -38,7 +41,7 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
                 AlbumsCount = 0,
                 PhotoCount = 0
             };
-            viewModel.PhotoUrl = viewModel.PathUtil.BuildAvatarPath(model.Id, ImageSize.Medium);
+            viewModel.AvatarUrl = viewModel.PathUtil.BuildAvatarPath(model.Id, ImageSize.Medium);
             return viewModel;
         }
 
