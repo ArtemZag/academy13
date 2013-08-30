@@ -175,7 +175,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 mUser.Salt = _cryptoProvider.GetNewSalt();
 
                 mUser.UserPassword = _cryptoProvider.CreateHashForPassword(userPassword, mUser.Salt);
-                //mUser.RemindPasswordSalt = null;
+                mUser.RemindPasswordSalt = null;
 
                 unitOfWork.Users.Update(mUser);
                 unitOfWork.SaveChanges();
