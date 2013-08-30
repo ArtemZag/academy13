@@ -1,5 +1,5 @@
 ﻿body {
-    background-color: #323232 !important;
+    /*background-color: #323232 !important;*/
 
     -webkit-perspective: 1800px; 
     -webkit-perspective-origin-x: 50%;
@@ -33,7 +33,7 @@
 #leftSideMenuButton{
 	width: 30px;
 	height: 100%;
-
+	margin-top: -50px !important;
 	position: fixed;
 	z-index: 1000;
 	background-color: #e7e7e7;
@@ -73,6 +73,10 @@
     /*min-width: 400px;
     min-height: 300px;*/
     -webkit-box-shadow: 0 0 15px rgba(0,0,0,0.65);
+	-moz-box-shadow: 0 0 15px rgba(0,0,0,0.65);
+    -ms-box-shadow: 0 0 15px rgba(0,0,0,0.65);
+    -o-box-shadow: 0 0 15px rgba(0,0,0,0.65);
+	box-shadow: 0 0 15px rgba(0,0,0,0.65);
 }
 
 #prevPhotoButton{
@@ -98,9 +102,6 @@
 
 
 #actionSegment {
-    height: 100%;
-    width: 100%;
-    padding-top: 2%;
     position: relative;
 
     background-color: #E6E6E6;
@@ -109,21 +110,27 @@
 #commentBlock{
     height: 100%;
 	width: 60%;
-    margin-left: 30px;
+    margin-left: 20%;
+	margin-bottom: 20px;
 	float: left;
     position: relative;
-
+	background-color: #EEEEEE;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 10px 0px;
 }
 
 .comment {
-    width: 100%;
+    width: 90%;
     margin-bottom: 20px;
+	margin-left: 50px;
     font-size: 10pt;
     /*background-color: pink;*/
 }
 
 .commentInfo {
-    width: 100%;
+    width: 90%;
     height: 50px;
 }
 
@@ -156,8 +163,14 @@
 }
 
 .commentText {
-    padding-left: 60px;
+	padding: 30px 30px 30px 40px;
     font-size: 9pt;
+	width: 85%;
+	word-wrap: break-word;
+	background-color: #E9E9E9;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
 }
 .commentFooter {
     text-align: right;
@@ -171,9 +184,6 @@
 
 	float: left;
 }
-
-
-
 
 
 #cosialNetworkSync {
@@ -233,16 +243,19 @@
     background-color: cornflowerblue;
 }
 
+#newCommentAddButton {
+   float: right;
+   margin-right: 60px; 
+}
+
+
 #addComment {
-    margin-bottom: 40px;
-    margin-left: 60px;
+    margin-bottom: 20px;
+    margin-left: 50px;
     width: 90%;
 }
 #addComment input{
-    width: 100%;
-}
-#addComment div{
-    float: right;
+	display: block;
 }
 
 .tag-photos {
@@ -273,4 +286,18 @@
    
 
     float: right;
+}
+
+#newCommentInputFild {
+	width: 90%;
+	height: 100px;
+	resize: none;
+}
+
+.moveToBtn {
+	margin-top: 10px;
+}
+
+#leftSideMenu .btn-group {
+	display: block;
 }

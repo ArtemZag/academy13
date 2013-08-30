@@ -27,11 +27,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             #endregion
         };
 
-        private readonly ISecureService secureService;
+        private readonly ISecureService _secureService;
 
         public AlbumService(IUnitOfWorkFactory workFactory, ISecureService secureService) : base(workFactory)
         {
-            this.secureService = secureService;
+            _secureService = secureService;
         }
 
         public AlbumModel CreateAlbum(int userId, AlbumModel albumModel)
@@ -104,7 +104,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             var result = new List<AlbumModel>();
 
-            IEnumerable<AlbumModel> publicAlbums = secureService.GetPublicAlbums(userId, unitOfWork);
+            IEnumerable<AlbumModel> publicAlbums = _secureService.GetPublicAlbums(userId, unitOfWork);
             IEnumerable<AlbumModel> userAlbums = GetAllAlbums(userId, unitOfWork);
 
             IEnumerable<AlbumModel> difference =
@@ -147,28 +147,40 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public int AlbumsCount(int userId)
+        public int AlbumsCount(int userId,int tempAlbumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 return
                     unitOfWork.Albums.Filter(
-                        model => model.OwnerId == userId && !model.IsDeleted && model.Name != TEMPORARY_ALBUM_NAME)
-                        .Count();
+                        model => model.OwnerId == userId && !model.IsDeleted && model.Id != tempAlbumId).Count();
             }
         }
 
-        public IEnumerable<AlbumModel> GetAlbumsRange(int userId, int skipCount, int takeCount)
+        public IEnumerable<AlbumModel> GetAlbumsRange(int userRequestsId, int userOwnerId, int skipCount, int takeCount, out bool reasonOfNotAlbums)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return
-                    unitOfWork.Albums.Filter(
-                        model => model.OwnerId == userId && !model.IsDeleted && model.Name != TEMPORARY_ALBUM_NAME)
-                        .OrderByDescending(model => model.DateOfCreation)
-                        .Skip(skipCount)
-                        .Take(takeCount)
-                        .ToList();
+                reasonOfNotAlbums = true;
+                var albums = unitOfWork.Albums.Filter(model => model.OwnerId == userOwnerId && !model.IsDeleted && model.Name != TEMPORARY_ALBUM_NAME)
+                                 .OrderByDescending(model => model.DateOfCreation)
+                                 .Skip(skipCount)
+                                 .Take(takeCount)
+                                 .ToList();
+                if (albums.Count == 0)
+                {
+                    reasonOfNotAlbums = false;
+                    return albums;
+                }
+
+                var albumsToTake = 
+                    albums.Select(album => album)
+                          .Where(album => _secureService.CanUserViewPhotos(userRequestsId, album.Id));
+
+                if (albumsToTake.Count() == 0)
+                    reasonOfNotAlbums = true;
+
+                return albumsToTake;
             }
         }
 

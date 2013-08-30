@@ -1,11 +1,13 @@
-﻿@using System.Web.Optimization
+﻿@model BinaryStudio.PhotoGallery.Web.ViewModels.AlbumsViewModel
+@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.Extensions
 @{
     Layout = "~/Views/Shared/_MainLayout.cshtml";
-    ViewBag.Title = "Albums | Bingally";
+    ViewBag.Title = "User page | Bingally";
 }
-@Scripts.Render("~/Scripts/Albums/albums.js",
+@Scripts.Render("~/Scripts/User/user.js",
                 "~/Scripts/jsrender.js")
-@Styles.Render("~/Content/albums-page.css")
+@Styles.Render("~/Content/user-page.css")
 
 <canvas id='perimeter'>Refresh browser</canvas>
 
@@ -28,12 +30,22 @@
     </div> 
 </script>
 
+<script id="dontHaveRightsTmpl" type="text/x-jquery-tmpl">
+    <div class = "noAlbumsTextContainer">
+        <p class ="noAlbumsText">{{:RequestsUserName}} you can't view albums by {{:OwnerUserName}}.</p>
+    </div>
+</script>
+
+<script id="noneUserTmpl" type="text/x-jquery-tmpl">
+    <div class = "noAlbumsTextContainer">
+        <p class ="noAlbumsText">The requested user does not exist</p>
+    </div>
+</script>
+
 <script id="userTmpl" type="text/x-jquery-tmpl">
     <p><img class="avatar" src="{{:PhotoUrl}}"/></p>
-    <p class="textStyle">FirstName: {{:FirstName}}</p>
-    <p class="textStyle">LastName: {{:LastName}}</p>
-    <p class="textStyle">User state: {{:IsAdmin===true?'admin':'simple'}}</p>
-    <p class="textStyle">Total albums: {{:AlbumsCount}}</p>
+    <p class="textStyle">Name: {{:FirstName}} {{:LastName}}</p>
+    <p class="textStyle">Albums: {{:AlbumsCount}}</p>
     <p class="textStyle">Photos: {{:PhotoCount}}</p>                                                                                                                                                                                                                                                                                                                          
 </script>
 
@@ -49,5 +61,6 @@
     </tr>
 </table>
 
-<div id="albumApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "AlbumApi", action = "GetAlbums"})"></div>
-<div id="userApiUrl" data-url="@Url.RouteUrl(new {httproute = "", controller = "UserApi", action = "GetCurrent"})"></div>
+<div id ="userId" data-url="@ViewBag.UserId"></div>
+<div id="albumApiUrl" data-url="@Html.RouteUrl("AlbumApi", "GetAlbums")"></div>
+<div id="userApiUrl" data-url="@Html.RouteUrl("UserApi", "GetCurrent")"></div>

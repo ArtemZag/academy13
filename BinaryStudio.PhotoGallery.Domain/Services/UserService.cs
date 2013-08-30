@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
@@ -12,6 +14,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class UserService : DbService, IUserService
     {
+
+        private const bool ADD_USER = true;
+        private const bool REMOVE_USER = false;
+
         private readonly IAlbumService _albumService;
         private readonly ICryptoProvider _cryptoProvider;
 
@@ -26,14 +32,20 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return
-                    unitOfWork.Users.All()
-                        .Include(g => g.Albums)
-                        .Include(g => g.Groups)
-                        .Include(g => g.AuthInfos)
+                var group = unitOfWork.Groups.Find(x => x.GroupName == "DeletedUsers");
+                var users =
+                    unitOfWork.Users
+                        .All()
+                        .Include(user => user.Albums)
+                        .Include(user => user.Groups)
+                        .Include(user => user.AuthInfos)
+                        .OrderBy(user => user.DateOfCreating)
+                        .ThenBy(user => user.Id)
                         .Skip(skipCount)
                         .Take(takeCount)
                         .ToList();
+
+                return users.Where(user => !user.IsAdmin && !user.Groups.Contains(group));
             }
         }
 
@@ -184,17 +196,54 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public void DeleteUser(int userId)
         {
+            Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "DeletedUsers";
+            UserActionForGroup(userId, expression, ADD_USER);
+        }
+
+        public void BlockUser(int userId)
+        {
+            Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "BlockedUsers";
+            UserActionForGroup(userId, expression, ADD_USER);
+        }
+
+        public void UnblockUser(int userId)
+        {
+            Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "BlockedUsers";
+            UserActionForGroup(userId, expression, REMOVE_USER);
+        }
+
+        /// <summary>
+        /// Adds or Removes user from group
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="expression">group specific</param>
+        /// <param name="add">add [ADD_USER] or remove [REMOVE_USER] from group</param>
+        private void UserActionForGroup(int userId, Expression<Func<GroupModel, bool>> expression, bool add)
+        {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 try
                 {
                     UserModel user = GetUser(userId, unitOfWork);
-                    unitOfWork.Users.Delete(user);
+
+                    GroupModel group = unitOfWork.Groups.Find(expression);
+
+                    if (add)
+                    {
+                        user.Groups.Add(@group);
+                    }
+                    else
+                    {
+                        user.Groups.Remove(@group);
+                    }
+                    
+                    unitOfWork.Users.Update(user);
 
                     unitOfWork.SaveChanges();
                 }
                 catch (UserNotFoundException)
                 {
+                    throw;
                 }
             }
         }
@@ -255,7 +304,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     authInfoRepository.Contains(
                         model =>
                             string.Equals(model.AuthProvider, authProvider) &&
-                            string.Equals(model.AuthProviderToken, token));
+                            string.Equals(model.AuthProviderId, token));
             }
         }
 
@@ -273,6 +322,31 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 god.IsAdmin = false;
                 slave.IsAdmin = true;
+            }
+        }
+
+        public bool IsUserBlocked(int userId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                return unitOfWork
+                    .Users.Find(userId).Groups.ToList()
+                    .Find(group => group.GroupName == "BlockedUsers") != null;
+            }
+        }
+
+        public int GetUserBySocialAccount(string providerName, string id)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                AuthInfoModel auth = unitOfWork.AuthInfos.Find(authInfo => authInfo.AuthProviderId == id &&
+                                                                           authInfo.AuthProvider == providerName);
+                if (auth == null)
+                {
+                    throw new UserNotFoundException(string.Format("There is some misstake in {0} authentication",
+                        providerName));
+                }
+                return auth.UserId;
             }
         }
     }

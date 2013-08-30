@@ -1,114 +1,105 @@
-﻿
-.user-container {
-	padding: 20px;
-	width: 70%;
-	float: left;
+﻿#user-list {
+    position: absolute;
+    margin: 5px;
+    word-break: break-all;
 }
 
-.user-row {
-	height: 200px;
-	padding: 10px;
-	float: left;
-	margin: 0px 8px 8px 0px;
-	border: 1px solid black;
-	background: #f3f3f3; /* Для старых браузров */
-    background: -moz-linear-gradient(-225deg, #f1f1f1, #d3d3d3); 
-    background: -webkit-gradient(linear, left top, right bottom, 
-                color-stop(0%,#f1f1f1), color-stop(100%, #d3d3d3));
-    background: -webkit-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-    background: -o-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-    background: -ms-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-    background: linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	text-align: center;
+#user-list > .user {
+    margin: 5px;
+    width: 420px;
+    display: inline-block;
+    border: 1px solid cadetblue;
+    border-radius: 5px;
+    padding: 6px;
+    background: white;
 }
 
-.user-row:hover {
-	background: #d5d5d5; /* Для старых браузров */
-    background: -moz-linear-gradient(-225deg, #ede7e7, #c5bebe); 
-    background: -webkit-gradient(linear, left top, right bottom, 
-                color-stop(0%, #ede7e7), color-stop(100%, #c5bebe));
-    background: -webkit-linear-gradient(-225deg, #ede7e7, #c5bebe);
-    background: -o-linear-gradient(-225deg, #ede7e7, #c5bebe);
-    background: -ms-linear-gradient(-225deg, #ede7e7, #c5bebe);
-    background: linear-gradient(-225deg, #ede7e7, #c5bebe);
+.user > .avatar {
+    width: 138px;
+    float: left;
+    margin-right: 10px;
 }
 
-.user-main-info {
-	width: 100px;
-	height: 200px;
-	float: left;
+.avatar > img {
+    width: 136px;
+    border: 1px solid;
+    border-bottom: 0px;
+    border-radius: 4px 4px 0px 0px;
 }
 
-.user-row img {
-	width: 80px;
-	height: 80px;
+.avatar > .status {
+    height: 20px;
+    text-align: center;
+    font-size: 16pt;
+    border: 1px solid;
+    border-top: 0px;
 }
 
-.user-status 
-{
-	color: red;
+.status-online .status {
+    color: greenyellow;
+    background: darkcyan;
 }
 
-a span {
-	color: black;
+.status-online > .avatar > img {
+    border-color: greenyellow;
 }
 
-.hidden-field {
-	height: 200px;
-	width: 130px;
-	margin: 0px;
-	padding: 0px;
-	float: left;
-	display: none;
+.status-offline .status {
+    color: red;
+    background: bisque;
 }
 
-.hidden-field input[type="button"], .hidden-field a {
-	margin-top: 10px;
+.status-offline > .avatar > img {
+    color: red;
 }
 
-.user-info {
+.status-unactivated .status {
+    color: orange;
+    background: lemonchiffon;
+}
+
+.status-unactivated > .avatar > img {
+    color: orange;
+}
+
+.status-blocked .status {
+    color: grey;
+    background: lavender;
+}
+
+.status-blocked > .avatar > img {
+    color: grey;
+}
+
+.user .description {
+    margin-left: 5px;
+    height: 125px;
+}
+
+.user > .actions {
+}
+
+.description .edit-info {
+    width: 18px;
+    height: 18px;
+    float: right;
+}
+
+#actions-panel {
 	width: 20%;
-	background: #f3f3f3; /* Для старых браузров */
-    background: -moz-linear-gradient(-225deg, #f1f1f1, #d3d3d3); 
-    background: -webkit-gradient(linear, left top, right bottom, 
-                color-stop(0%,#f1f1f1), color-stop(100%, #d3d3d3));
-    background: -webkit-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-    background: -o-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-    background: -ms-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-    background: linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	position: fixed;
-	left: 73%;
+    position: fixed;
+    background-color: black;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+    top: 50px;
+	right: 10px;
 	height: 250px;
-	margin: 20px 20px 0px 0px;
-	padding: 20px;
+    margin: 0px;
+    margin-top: 10px;
+	padding: 0px;
 }
 
-.user-info img {
-	padding-bottom: 15px;
-}
-
-#invite-form {
-	width: 20%;
-	background: #f3f3f3; /* Для старых браузров */
-    background: -moz-linear-gradient(-225deg, #f1f1f1, #d3d3d3); 
-    background: -webkit-gradient(linear, left top, right bottom, 
-                color-stop(0%,#f1f1f1), color-stop(100%, #d3d3d3));
-    background: -webkit-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-    background: -o-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-    background: -ms-linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-    background: linear-gradient(-225deg, #f1f1f1, #d3d3d3);
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	position: fixed;
-	left: 73%;
-	top: 350px;
-	margin: 20px 20px 0px 0px;
-	padding: 20px;
+#actions-panel > .action {
+    
 }

@@ -157,22 +157,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return HostingEnvironment.MapPath(virtualCollagesDirectoryPath);
         }
 
-        public string CreateCollagePath(int userId, int albumId)
-        {
-            return Path.Combine(BuildAbsoluteAlbumPath(userId, albumId), COLLAGES_DIRECTORY_NAME,
-                                Randomizer.GetString(20) + MakeExtension(COLLAGE_FILE_FORMAT));
-        }
-
-        public string GetCollage(int userId, int albumId)
-        {
-            return GetUserReference(Directory.GetFiles(Path.Combine(BuildAbsoluteAlbumPath(userId, albumId), COLLAGES_DIRECTORY_NAME)).First());
-        }
-
-        public string GetUserReference(string absolutePath)
-        {
-            return absolutePath.Remove(0, absolutePath.IndexOf("data") - 1).Replace(@"\", "/");
-        }
-
         public string BuildAbsoluteOriginalPhotoPath(int userId, int albumId, int photoId, string format)
         {
             return HostingEnvironment.MapPath(BuildOriginalPhotoPath(userId, albumId, photoId, format));

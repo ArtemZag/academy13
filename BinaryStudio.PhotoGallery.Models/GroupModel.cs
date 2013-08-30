@@ -7,6 +7,12 @@ namespace BinaryStudio.PhotoGallery.Models
     /// </summary>
     public class GroupModel
     {
+        public GroupModel()
+        {
+            Description = string.Empty;
+            GroupName = string.Empty;
+        }
+
         /// <summary>
         /// Gets or sets the id of the group.
         /// </summary>

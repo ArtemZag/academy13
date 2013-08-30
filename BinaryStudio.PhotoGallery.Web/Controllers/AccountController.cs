@@ -53,12 +53,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 return Redirect(FB.CreateAuthUrl(Randomizer.GetString(16)));
             }
 
-            var viewModel = new SigninViewModel()
-                {
-
-                };
-            
-            return View(new SigninViewModel());
+            return View(new SigninViewModel {RememberMe = true});
         }
 
         [GET("registration/{invite}", RouteName = "Registration")]
@@ -115,7 +110,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                                 new AuthInfoModel()
                                     {
                                         AuthProvider = AuthInfoModel.ProviderType.Facebook.ToString(),
-                                        AuthProviderToken = token
+                                        AuthProviderId = token
                                     }
                             }
                     };
@@ -153,7 +148,6 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             return RedirectToRoute("Login");
         }
 
-        [HttpGet]
         [GET("remind/{userId}/{hash}")]
         public ActionResult ChangePass(int userId, string hash)
         {
@@ -171,6 +165,5 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
                 return RedirectToRoute("Login");
             }
         } 
-
     }
 }

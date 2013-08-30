@@ -166,11 +166,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
-        public int PhotoCount(int userId)
+        public int PhotoCount(int userId, int tempAlbumId)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Photos.Filter(model => model.OwnerId == userId && !model.IsDeleted).Count();
+                return unitOfWork.Photos.Filter(model => model.OwnerId == userId && model.AlbumId!=tempAlbumId && !model.IsDeleted).Count();
             }
         }
 
@@ -248,7 +248,6 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 throw new NoEnoughPrivilegesException("User can't get access to photos");
             }
         }
-
 
         //todo Shall refactor and delete. Soon ..)
         public PhotoModel GetPhotoWithoutRightsCheck(int photoId)

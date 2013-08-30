@@ -21,6 +21,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         private readonly IUserService _userService;
         private readonly IPhotoService _photoService;
         private readonly IAlbumService _albumService;
+
         public UserApiController(IUserService userService, IPhotoService photoService, IAlbumService albumService)
         {
             _userService = userService;
@@ -40,12 +41,20 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 UserModel userModel = _userService.GetUser(userId);
+                UserViewModel viewModel;
+                if (userModel == null)
+                {
+                    userModel = new UserModel();
+                    viewModel = userModel.ToNoneUserViewModel();
+                }
+                else
+                {
+                    int tempAlbumId = _albumService.GetAlbumId(userId, "Temporary");
 
-                int photoCount = _photoService.PhotoCount(userId);
-                int albumCount = _albumService.AlbumsCount(userId);
-
-                UserViewModel viewModel = userModel.ToUserViewModel(photoCount, albumCount);
-
+                    int photoCount = _photoService.PhotoCount(userId, tempAlbumId);
+                    int albumCount = _albumService.AlbumsCount(userId, tempAlbumId);
+                    viewModel = userModel.ToUserViewModel(photoCount, albumCount);
+                }
                 return Request.CreateResponse(HttpStatusCode.OK, viewModel, new JsonMediaTypeFormatter());
             }
             catch (Exception ex)
@@ -61,7 +70,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 List<UserViewModel> usersViewModels = _userService
                     .GetAllUsers(skip, take)
-                    .Select(userModel => userModel.ToUserViewModel())
+                    .Select(userModel => userModel.ToUserViewModel(_userService.IsUserBlocked(userModel.Id)))
                     .ToList();
 
                 return Request.CreateResponse(HttpStatusCode.OK, usersViewModels, new JsonMediaTypeFormatter());
@@ -72,8 +81,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
-        [DELETE("")]
-        public HttpResponseMessage Delete(int userId)
+        [DELETE("{userId:int}")]
+        public HttpResponseMessage Delete([FromUri] int userId)
         {
             try
             {

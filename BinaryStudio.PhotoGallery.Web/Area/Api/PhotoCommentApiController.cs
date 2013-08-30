@@ -34,7 +34,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 var viewModels = new List<PhotoCommentViewModel>();
-
+                
                 IEnumerable<PhotoCommentModel> photoComments = _photoCommentService.GetPhotoComments(User.Id, photoId,
                     skip, take);
 
@@ -83,8 +83,6 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            return Request.CreateResponse(HttpStatusCode.Created);
         }
     }
 }

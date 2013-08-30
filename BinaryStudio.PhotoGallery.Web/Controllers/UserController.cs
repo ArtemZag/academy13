@@ -5,12 +5,13 @@ using AttributeRouting.Web.Mvc;
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
     [Authorize]
-    [RoutePrefix("albums")]
-    public class AlbumsController : BaseController
+    [RoutePrefix("user")]
+    public class UserController : BaseController
     {
-        [GET("")]
-        public ActionResult Index()
+        [GET("{userId}")]
+        public ActionResult Index(int userId)
         {
+            ViewBag.UserId = userId;
             return View();
         }
     }

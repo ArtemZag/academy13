@@ -4,6 +4,7 @@ using BinaryStudio.PhotoGallery.Domain;
 using BinaryStudio.PhotoGallery.Web.Events;
 using BinaryStudio.PhotoGallery.Web.Utils;
 using Microsoft.Practices.Unity;
+using OAuth2;
 using Unity.Mvc4;
 
 namespace BinaryStudio.PhotoGallery.Web

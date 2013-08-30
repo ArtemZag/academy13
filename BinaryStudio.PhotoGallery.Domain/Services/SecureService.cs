@@ -94,55 +94,59 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 result.AddRange(
                     albumIds.Where(id => !userAlbumsIds.Contains(id))
-                    .Select(albumId => GetAlbum(albumId, unitOfWork))
-                    .Where(model => !model.IsDeleted));
+                        .Select(albumId => GetAlbum(albumId, unitOfWork))
+                        .Where(model => !model.IsDeleted));
             }
 
             return result;
         }
-
-
-        public void LetGroupViewComments(int userId, int groupId, int albumId, bool let)
-        {
-            //todo: add try-catch
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
-
-                availableGroup.CanSeeComments = let;
-
-                unitOfWork.AvailableGroups.Update(availableGroup);
-                unitOfWork.SaveChanges();
-            }
-        }
-
 
         public void LetGroupAddComment(int userId, int groupId, int albumId, bool let)
         {
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanAddComments = let;
+                availableGroupView.CanAddComments = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
 
-        public void LetGroupViewPhotos(int userId, int groupId, int albumId, bool let)
+        public void LetGroupViewComments(int userId, int groupId, int albumId, bool let, IUnitOfWork unitOfWork)
         {
-            //todo: add try-catch
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            AvailableGroupModel availableGroupModel = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+
+            availableGroupModel.CanSeeComments = let;
+
+            SetAvialableGroupToAlbum(albumId, availableGroupModel, unitOfWork);
+        }
+
+        public void LetGroupViewPhotos(int userId, int groupId, int albumId, bool let, IUnitOfWork unitOfWork)
+        {
+            AvailableGroupModel availableGroupModel = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+
+            availableGroupModel.CanSeePhotos = let;
+
+            SetAvialableGroupToAlbum(albumId, availableGroupModel, unitOfWork);
+        }
+
+        private void SetAvialableGroupToAlbum(int albumId, AvailableGroupModel availableGroupModel, IUnitOfWork unitOfWork)
+        {
+            if (availableGroupModel.Id == 0)
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AlbumModel album = GetAlbum(albumId, unitOfWork);
 
-                availableGroup.CanSeePhotos = let;
-
-                unitOfWork.AvailableGroups.Update(availableGroup);
-                unitOfWork.SaveChanges();
+                album.AvailableGroups.Add(availableGroupModel);
             }
+            else
+            {
+                unitOfWork.AvailableGroups.Update(availableGroupModel);
+            }
+
+            unitOfWork.SaveChanges();
         }
 
         public void LetGroupAddPhoto(int userId, int groupId, int albumId, bool let)
@@ -150,11 +154,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanAddPhotos = let;
+                availableGroupView.CanAddPhotos = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }
@@ -164,11 +168,11 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             //todo: add try-catch
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AvailableGroupModel availableGroup = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
+                AvailableGroupModel availableGroupView = GetAvailableGroup(userId, groupId, albumId, unitOfWork);
 
-                availableGroup.CanSeeLikes = let;
+                availableGroupView.CanSeeLikes = let;
 
-                unitOfWork.AvailableGroups.Update(availableGroup);
+                unitOfWork.AvailableGroups.Update(availableGroupView);
                 unitOfWork.SaveChanges();
             }
         }

@@ -32,7 +32,6 @@ Bingally.AdminPage.initializeViewModel = function (initData) {
 				});
 			});
 		};
-
 	}
 	
 	$('#invite-form').on('submit', function (e) {

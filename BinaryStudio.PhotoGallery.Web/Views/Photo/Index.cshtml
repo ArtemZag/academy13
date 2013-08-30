@@ -1,49 +1,69 @@
 ﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.Extensions
 
 @{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_MainLayout.cshtml";
+	ViewBag.Title = "Photo page | Bingally";
+	Layout = "~/Views/Shared/_MainLayout.cshtml";
 }
 
 @Styles.Render("~/Content/photo-page.css")
 
 <div id="leftSideMenu" data-bind="event: { mouseout: HideLeftSideMenu }">
-    <div>
-        <span data-bind="text: (PhotoIndex()+1)"></span>/
-        <span data-bind="text: NumberOfPhotos"></span>
-    </div>  
-    
-    <ul> 
-        <li>item1</li>
-        <li>item2</li>
-        <li>item3</li>
-    </ul>
-    
-    
-    <div data-bind="click: DeletePhoto">Delete photo</div>
-    <div data-bind="click: MovePhoto">Move photo</div>
+	<div>
+		<span data-bind="text: (PhotoIndex() + 1)"></span>/
+		<span data-bind="text: NumberOfPhotos"></span>
+	</div>
+
+	<p data-bind="text: Description"></p>
+
+
+
+	<a class="btn btn-danger" data-toggle="modal" href="#deletePopup">Delete photo</a>
+	<div class="btn-group">
+		<button class="btn moveToBtn" data-toggle="dropdown">Move photo</button>
+		<button class="btn dropdown-toggle moveToBtn" data-toggle="dropdown">
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu">
+			<li></li>
+		</ul>
+	</div>
+	@* <button id="moveToBtn" class="btn" data-bind="click: MovePhoto">Move photo</button>*@
 </div>
-<div id="leftSideMenuButton" data-bind="event: { mouseover: ShowLeftSideMenu }"><div>...</div></div>
+
+<div id="deletePopup" class="modal hide fade in" style="display: none;">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">×</a>
+		<h4>Delete confirmation</h4>
+	</div>
+	<div class="modal-body">
+		<p>Are you sure you want to delete this photo?</p>
+	</div>
+	<div class="modal-footer">
+		<a href="#" class="btn btn-danger" data-bind="click: DeletePhoto">Delete</a>
+		<a href="#" class="btn" data-dismiss="modal">Close</a>
+	</div>
+</div>
+
+<div id="leftSideMenuButton" data-bind="event: { mouseover: ShowLeftSideMenu }">
+	<div>...</div>
+</div>
 
 <div id="photoSegment">
 
-    <div id="prevPhotoButton" data-bind="click: ShowPrevPhoto">
-        <img id="prevPhotoButtonArrow" src="../../Content/images/2.png" width="85%" /></div>
-    <div id="photo">
-        <input id="hiddenPhotoID" type="hidden" value="@ViewBag.PhotoID"/>
-        <img id="mainPhoto" alt="" data-bind="attr: { src: src }, click: ShowNextPhoto" />
-        
-        <div id="cosialNetworkSync">
-            <div id="facebookSyncButton" data-bind="click: fbSync">f</div>
-            <div id="vkSyncButton">vk</div>
-            <div id="twetterSyncButton">t</div>
-        </div>
-        <div id="photoLike" data-bind="click: IncrementPhotoLike">
-            <img src="~/Content/images/photo-page/unlike-icon.png" data-bind="attr: { src: PhotoLikeIcon }"/>
-            <span data-bind="text: PhotoLikes().length"></span>
-        </div>
+	<div id="prevPhotoButton" data-bind="click: ShowPrevPhoto">
+		<img id="prevPhotoButtonArrow" src="../../Content/images/2.png" width="85%" />
+	</div>
+	<div id="photo">
+		<input id="hiddenPhotoID" type="hidden" value="@ViewBag.PhotoID"/>
+		<img id="mainPhoto" alt="" data-bind="attr: { src: src }, click: ShowNextPhoto" />
 
-    </div>
+		<div id="photoLike" data-bind="click: IncrementPhotoLike">
+			<img src="/Content/images/photo-page/unlike-icon.png" />
+			<span data-bind="text: PhotoLikes().length"></span>
+		</div>
+
+	</div>
 
 
 </div>
@@ -51,87 +71,39 @@
 
 
 <div id="actionSegment">
-    <div id="commentBlock">
-        
-        <div id="addComment">
+	<div id="commentBlock">
+		<div id="addComment">
+			<textarea id="newCommentInputFild" data-bind="value: newComment" placeholder="Input your comment"></textarea>
 
+			<input type="button" id="newCommentAddButton" data-bind="click: AddComment" value="Add" class="btn btn-success" />
 
-                <input id="newCommentInputFild" data-bind="value: newComment" placeholder="Input your comment" />
+		</div>
 
-                <div id="newCommentAddButton" data-bind="click: AddComment">
-                    <span>Add</span>
-                </div>
+		<div data-bind="foreach: comms">
+			<div class="comment">
+				<div class="commentInfo">
+					<div class="userPhoto">
+						<img data-bind="attr: { src: src }" alt="userFace" width="100%" height="100%" />
+					</div>
+					<div class="userInfo">
+						<div class="userName" data-bind="text: GetUserName">
+						</div>
+						<div class="dateOfCreating" data-bind="text: dateOfCreating">
+						</div>
 
-
-        </div>
-
-        <div data-bind="foreach: comms">
-            <div class="comment">
-                <div class="commentInfo">
-                    <div class="userPhoto">
-                        <img src="" alt="userFace" width="100%" height="100%" />
-                    </div>
-                    <div class="userInfo">
-                        <div class="userName" data-bind="text: GetUserName">
-                        </div>
-                        <div class="dateOfCreating" data-bind="text: dateOfCreating">
-                        </div>
-
-                    </div>
-
-                    <div class="rating" data-bind="text: rating"></div>
-                </div>
-                <div class="commentText" data-bind="text: text">
-                </div>
-                <div class="commentFooter">Reply</div>
-            </div>
-            <hr/>
-        </div>
-        @*need to fix, but it is idea*@
-        <hr @*data-bind="if: ($root.comms().length-1) != $index"*@/>
-
-
-    </div>
-
-
-    <div id="activityBlock">
-        
-        @*       <span>Fresh photos from friends</span>
-        <div id="friendPhotos">
-
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/0.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/1.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/2.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/3.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/4.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/5.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/6.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/7.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/8.jpg"/>
-            <img class="tag-photos" src="~/data/Photos/7/3/thumbnail/9.jpg"/>
-
-
-        </div>*@
-
-        <span>Photos by tags</span>
-        <div id="tagPhotos" data-bind="foreach: PhotosByTags">
-            <div class="tagPhoto">
-                <a href="" data-bind="attr: { href: linkAway }">
-                    <img src="" data-bind="attr: { src: src }"/>
-                </a>
-            </div>
-
-
-
-        </div>
-
-
-
-    </div>
-
-
+					</div>
+				</div>
+				<div class="commentText" data-bind="text: text">
+				</div>
+			</div>
+			<hr />
+		</div>
+		@*need to fix, but it is idea*@
+		<hr @*data-bind="if: ($root.comms().length-1) != $index"*@/>
+		<div id="anchor"></div>
+	</div>
 
 </div>
 
-<script src="~/Scripts/Photo/photo.js"></script>
 <script src="~/Scripts/Photo/photoViewModel.js"></script>
+<div id="albumApiUrl" data-url="@Html.RouteUrl("AlbumApi", "GetAllAlbums")"></div>

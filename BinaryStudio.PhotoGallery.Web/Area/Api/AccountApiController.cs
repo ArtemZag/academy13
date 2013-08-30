@@ -111,6 +111,12 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             }
         }
 
+        [POST("remind")]
+        public HttpResponseMessage RemindPassword([FromBody] RemindPassViewModel viewModel)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         [POST("invite")]
         public HttpResponseMessage SendInvite([FromBody] InviteUserViewModel viewModel)
         {

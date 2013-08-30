@@ -96,7 +96,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 {
                     _directoryWrapper.CreateDirectory(pathToDestAlbum);
                 }
-
+                
                 foreach (int photoId in viewModel.PhotosId)
                 {
                     PhotoModel photoModel = _photoService.GetPhoto(User.Id, photoId);
@@ -153,6 +153,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 // Create collage for album
                 _collageProcessor.CreateCollage(User.Id, albumId);
+                //todo: we dont use it
+                //_collageProcessor.CreateCollage(User.Id,tempAlbumId);
             }
             catch (Exception ex)
             {
@@ -215,6 +217,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                             IsAccepted = false,
                             Error = "This file contains no image data"
                         });
+                        continue;
                     }
 
                     // Is it really image file format ?
@@ -262,7 +265,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                     }
 
                     // Create thumbnails for photo
-                    _photoProcessor.CreateThumbnails(User.Id, albumId, photoModel.Id, photoModel.Format);
+                //todo: we dont use this thumbnails
+                    //_photoProcessor.CreateThumbnails(User.Id, albumId, photoModel.Id, photoModel.Format);
 
                     uploadFileInfos.Add(new UploadResultViewModel
                     {
@@ -273,7 +277,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 }
 
                 // Create collage for album 'Temporary'
-                _collageProcessor.CreateCollage(User.Id, albumId);
+                //todo: we dont use this collages and this executes 'n' times, when n is number of photos
+                //_collageProcessor.CreateCollage(User.Id, albumId);
             }
             catch (Exception ex)
             {

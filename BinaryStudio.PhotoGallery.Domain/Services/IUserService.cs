@@ -45,7 +45,23 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="invite">Hash-code for activation</param>
         void ActivateUser(string userEmail, string userPassword, string invite);
 
+        /// <summary>
+        ///     Adds User to system group "DeletedUsers"
+        /// </summary>
+        /// <param name="userId"></param>
         void DeleteUser(int userId);
+
+        /// <summary>
+        ///     Adds User to system group "BlockedUsers"
+        /// </summary>
+        /// <param name="userId"></param>
+        void BlockUser(int userId);
+
+        /// <summary>
+        ///     Removes User from system group "BlockedUsers"
+        /// </summary>
+        /// <param name="userId"></param>
+        void UnblockUser(int userId);
 
         bool IsUserValid(string userEmail, string userPassword);
 
@@ -68,5 +84,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         void MakeUserGod(int godId, int slaveId);
 
         void UserRestorePasswordChangePass(string userEmail, string userPassword);
+
+
+        bool IsUserBlocked(int userId);
+
+        /// <summary>
+        ///     Checks if user have social network account and it is valid for him
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        int GetUserBySocialAccount(string providerName, string id);
     }
 }
