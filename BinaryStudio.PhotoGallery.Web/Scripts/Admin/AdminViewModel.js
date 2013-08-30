@@ -11,7 +11,7 @@
     
     var mediator = options.mediator;
 
-    mediator.subscribe("admin:deleteUser", function (data) {
-        self.userList.remove(data.element);
+    mediator.subscribe("admin:deleteUser", function(element) {
+        self.userList.remove(element);
     });
 }

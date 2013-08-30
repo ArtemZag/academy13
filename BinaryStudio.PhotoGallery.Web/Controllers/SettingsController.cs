@@ -59,8 +59,6 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
 
             _userService.Update(user);
 
-            var isUserBlocked = 
-
             return View("Index", user.ToUserViewModel());
         }
 

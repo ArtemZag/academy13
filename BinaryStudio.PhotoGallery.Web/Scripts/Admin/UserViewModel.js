@@ -26,12 +26,13 @@
 
     };
 
-    self.deleteAction = function () {
+    self.deleteAction = function (element) {
+        
         $.ajax({
             type: 'DELETE',
             url: '/api/user/' + userId
         });
-        mediator.publish("admin:deleteUser", {element: element});
+        mediator.publish("admin:deleteUser", element);
     };
 
     self.resetPassword = function() {
