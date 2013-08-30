@@ -269,7 +269,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Events\GlobalEventsHandler.cs" />
-    <Compile Include="Hubs\ICustomPrincipalInHub.cs" />
     <Compile Include="Hubs\NotificationTitles.cs" />
     <Compile Include="Hubs\NotificationsHub.cs" />
     <Compile Include="CustomStructure\UserInfoSerializeModel.cs" />
@@ -285,6 +284,7 @@
     <Compile Include="Registers\UsersMonitorRegistry.cs" />
     <Compile Include="Utils\ISearchModelConverter.cs" />
     <Compile Include="Utils\SearchModelConverter.cs" />
+    <Compile Include="ViewModels\Account\ChangePassViewModel.cs" />
     <Compile Include="ViewModels\Admin\InviteUserViewModel.cs" />
     <Compile Include="ViewModels\AlbumsViewModel.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
@@ -309,6 +309,7 @@
     <Content Include="Content\settings-page.css" />
     <Content Include="Content\images\camera.png" />
     <Content Include="Content\panel.css" />
+    <Content Include="Content\remindpass.css" />
     <Content Include="Content\spinner.css" />
     <Content Include="Content\style-libs\chosen-sprite.png" />
     <Content Include="Content\style-libs\pnotify.css" />
@@ -336,11 +337,17 @@
     <Content Include="Content\search.css" />
     <Content Include="Content\style-libs\chosen.css" />
     <Content Include="Content\verticalResizer.css" />
-    <Content Include="Scripts\Account\forgotPass.js" />
-    <Content Include="Scripts\Admin\AdminPage.js" />
+    <Content Include="Scripts\Account\changePass.js" />
+    <Content Include="Scripts\Account\changePass.validate.js" />
+    <Content Include="Scripts\Account\errors.js" />
+    <Content Include="Scripts\Account\remindPass.js" />
+    <Content Include="Scripts\Account\remindPass.validate.js" />
+    <Content Include="Scripts\Admin\AdminMain.js" />
     <Content Include="Scripts\Account\initVertResizer.js" />
     <Content Include="Scripts\Account\signup.validate.js" />
     <Content Include="Scripts\Account\signup.js" />
+    <Content Include="Scripts\Admin\AdminViewModel.js" />
+    <Content Include="Scripts\Admin\UserViewModel.js" />
     <Content Include="Scripts\Album\albumViewModel.js" />
     <Content Include="Scripts\chosen.jquery.js" />
     <Content Include="Scripts\chosen.jquery.min.js" />
@@ -448,7 +455,6 @@
     <Content Include="Scripts\Search\search.js" />
     <Content Include="Scripts\Upload\main.js" />
     <Content Include="Scripts\Upload\PhotoPreviewViewModel.js" />
-    <Content Include="Scripts\Admin\UserSlider.js" />
     <Content Include="Scripts\Upload\UploadViewModel.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -479,6 +485,7 @@
     <Content Include="Views\Shared\AccessDenied.cshtml" />
     <Content Include="Views\Gallery\Index.cshtml" />
     <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Account\ChangePass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -531,7 +538,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1940</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57370</IISUrl>
+          <IISUrl>http://localhost:57367</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

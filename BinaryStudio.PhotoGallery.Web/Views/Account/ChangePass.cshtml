@@ -1,0 +1,47 @@
+﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.Extensions
+@model BinaryStudio.PhotoGallery.Web.ViewModels.RemindPassViewModel
+
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewBag.Title = "Password Restore | Bingally";
+}
+
+@Styles.Render("~/Content/remindpass.css")
+
+<div id="chPassPanel" class="login-panel">
+    @Html.Image(Url.Content("~/Content/images/logo_big.png"))
+    <div class="well">          
+        <form  id="changePass" class="control-group form-horizontal pagination-centered">
+            <input type="email" id="Email" name="Email" class="input-block-level" maxlength="255" placeholder="E-mail address" value="@Model.Email" readonly=""/>
+            <input type="password" id="Password" name="Password" class="input-block-level" maxlength="20" placeholder="Password" />
+            <input type="password" name="ConfirmPassword" id="ConfirmPassword" class="input-block-level" maxlength="20" placeholder="Repeat password">
+            <input type="hidden" name="Salt" id="Salt" value="@Model.Salt"/>
+
+            <button id="changePass-button" type="submit" class="btn btn-success effeckt-button zoom-in">
+                <span class="effeckt-label">Change password</span>
+                <span class="effeckt-spinner effeckt-spinner-green"></span>
+            </button>
+        </form>
+        <div class="error-field"></div>
+    </div>
+</div>
+
+<div id="okPanel" class="login-panel" style="display:none;">
+    @Html.Image(Url.Content("~/Content/images/logo_big.png"))
+    <div class="well">
+        <div class="success">
+            <div class="message">You password have succesfully changed.</div>
+        </div>
+         <div class="error-field"></div>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/Account/changePass.js")
+@Scripts.Render("~/Scripts/Account/changePass.validate.js")
+
+<script type="text/javascript">
+    $(function() {
+        ChangePass_Init("/api/changepass/", "/api/login/");
+    });
+</script>

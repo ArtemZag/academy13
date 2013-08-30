@@ -14,6 +14,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 {
     internal class UserService : DbService, IUserService
     {
+
+        private const bool ADD_USER = true;
+        private const bool REMOVE_USER = false;
+
         private readonly IAlbumService _albumService;
         private readonly ICryptoProvider _cryptoProvider;
 
@@ -29,14 +33,19 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 var group = unitOfWork.Groups.Find(x => x.GroupName == "DeletedUsers");
-                return
-                    unitOfWork.Users.Filter(user => !user.IsAdmin && !user.Groups.Contains(group))
-                        .Include(g => g.Albums)
-                        .Include(g => g.Groups)
-                        .Include(g => g.AuthInfos)
+                var users =
+                    unitOfWork.Users
+                        .All()
+                        .Include(user => user.Albums)
+                        .Include(user => user.Groups)
+                        .Include(user => user.AuthInfos)
+                        .OrderBy(user => user.DateOfCreating)
+                        .ThenBy(user => user.Id)
                         .Skip(skipCount)
                         .Take(takeCount)
                         .ToList();
+
+                return users.Where(user => !user.IsAdmin && !user.Groups.Contains(group));
             }
         }
 
@@ -157,19 +166,59 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             }
         }
 
+        public string UserRestorePasswordAsk(UserModel mUser)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                mUser.RemindPasswordSalt = Randomizer.GetString(30);
+               
+                unitOfWork.Users.Update(mUser);
+                unitOfWork.SaveChanges();
+
+                return mUser.RemindPasswordSalt;
+            }
+        }
+
+        public void UserRestorePasswordChangePass(string userEmail, string userPassword)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                UserModel mUser = GetUser(userEmail, unitOfWork);
+                mUser.Salt = _cryptoProvider.GetNewSalt();
+
+                mUser.UserPassword = _cryptoProvider.CreateHashForPassword(userPassword, mUser.Salt);
+                mUser.RemindPasswordSalt = null;
+
+                unitOfWork.Users.Update(mUser);
+                unitOfWork.SaveChanges();
+            }
+        }
+
         public void DeleteUser(int userId)
         {
             Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "DeletedUsers";
-            AddUserToGroup(userId, expression);
+            UserActionForGroup(userId, expression, ADD_USER);
         }
 
         public void BlockUser(int userId)
         {
             Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "BlockedUsers";
-            AddUserToGroup(userId, expression);
+            UserActionForGroup(userId, expression, ADD_USER);
         }
 
-        private void AddUserToGroup(int userId, Expression<Func<GroupModel, bool>> expression)
+        public void UnblockUser(int userId)
+        {
+            Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "BlockedUsers";
+            UserActionForGroup(userId, expression, REMOVE_USER);
+        }
+
+        /// <summary>
+        /// Adds or Removes user from group
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="expression">group specific</param>
+        /// <param name="add">add [ADD_USER] or remove [REMOVE_USER] from group</param>
+        private void UserActionForGroup(int userId, Expression<Func<GroupModel, bool>> expression, bool add)
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
@@ -179,7 +228,15 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                     GroupModel group = unitOfWork.Groups.Find(expression);
 
-                    user.Groups.Add(@group);
+                    if (add)
+                    {
+                        user.Groups.Add(@group);
+                    }
+                    else
+                    {
+                        user.Groups.Remove(@group);
+                    }
+                    
                     unitOfWork.Users.Update(user);
 
                     unitOfWork.SaveChanges();
@@ -272,8 +329,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                return unitOfWork.Users.Find(userId).Groups.ToList().Find(group => group.GroupName == "BlockedUsers") !=
-                       null;
+                return unitOfWork
+                    .Users.Find(userId).Groups.ToList()
+                    .Find(group => group.GroupName == "BlockedUsers") != null;
             }
         }
 

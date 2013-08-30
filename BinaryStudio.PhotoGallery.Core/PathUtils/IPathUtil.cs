@@ -26,16 +26,12 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         /// </summary>
         string BuildThumbnailPath(int userId, int albumId, int photoId, string format, ImageSize size);
 
-        /// <summary>
-        ///     Pattern: ~data\photos\userId\albumId\collage.jpg
-        /// </summary>
-        string CreateCollagePath(int userId, int albumId);
-
         string GetCollage(int userId, int albumId);
 
-        string GetUserReference(string absolutePath);
-
-        string BuildCollagePath(int userId, int albumId);
+        /// <summary>
+        /// Pattern: ~data\photos\userId\albumId\[random].jpg
+        /// </summary>
+        string CreateCollagePath(int userId, int albumId);
 
         string BuildAbsoluteAvatarPath(int userId, ImageSize imageSize);
 

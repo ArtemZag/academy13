@@ -1,0 +1,31 @@
+﻿#loginPanel #forgotPass{
+	margin-left: 144px;
+}
+
+#passRecoveryPanel .well, #okPanel .well {
+	display: inline-block;
+}
+
+.backToLogin {
+	float: right;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	margin-right: 7px;
+}
+
+.login-panel form{
+	display: inline-block;
+}
+
+.success {	
+	background-color: gainsboro;
+	border-radius: 4px;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+.success .message {
+	padding: 6px 10px 6px 10px;
+	margin: 5px 2px 5px 2px;
+} 
+

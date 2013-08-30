@@ -65,6 +65,11 @@ namespace BinaryStudio.PhotoGallery.Models
         public string Salt { get; set; }
 
         /// <summary>
+        ///     A salt, which is used in password recovering procedure
+        /// </summary>
+        public string RemindPasswordSalt { get; set; }
+
+        /// <summary>
         ///     Says if user not activate his account yet
         /// </summary>
         public bool IsActivated { get; set; }

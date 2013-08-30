@@ -35,10 +35,3 @@
     opacity: 0.2;
     text-align: left;
 }
-
-.to_top .to_top_button .arrow {
-    font-family: tahoma;
-    font-size: 14px;
-    font-weight: bold;
-    vertical-align: middle;
-}

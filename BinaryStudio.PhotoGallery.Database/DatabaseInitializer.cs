@@ -153,7 +153,7 @@ namespace BinaryStudio.PhotoGallery.Database
             userSalt = cryptoProvider.GetNewSalt();
             user = new UserModel
             {
-                Email = "OlegBeloy@bingally.com",
+                Email = "BeloyOleg@yandex.ru",
                 FirstName = "Oleg",
                 LastName = "Beloy",
                 Department = "Academy",
@@ -192,10 +192,10 @@ namespace BinaryStudio.PhotoGallery.Database
 
             #endregion
 
-            #region DeletedUsers
+            #region DeletedUsers group
             var groupModel = new GroupModel()
             {
-                GroupName = "DeletedUsers",
+                GroupName = "Deleted users",
                 Description = "System group. Not for use",
                 OwnerId = -1,
                 Users = new Collection<UserModel>()
@@ -203,7 +203,7 @@ namespace BinaryStudio.PhotoGallery.Database
             systemGroupList.Add(groupModel);
             #endregion
 
-            #region BlockedUsers
+            #region BlockedUsers group
             groupModel = new GroupModel()
                 {
                     GroupName = "BlockedUsers",
@@ -211,6 +211,17 @@ namespace BinaryStudio.PhotoGallery.Database
                     OwnerId = -1,
                     Users = new Collection<UserModel>()
                 };
+            systemGroupList.Add(groupModel);
+            #endregion
+
+            #region Academy group
+            groupModel = new GroupModel()
+            {
+                GroupName = "Academy",
+                Description = "Binary Studio academy",
+                OwnerId = -1,
+                Users = new Collection<UserModel>()
+            };
             systemGroupList.Add(groupModel);
             #endregion
 
@@ -287,6 +298,11 @@ namespace BinaryStudio.PhotoGallery.Database
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 });
+
+                var currentGroup = unitOfWork.Groups.Find(x => x.GroupName.Equals("Academy group"));
+
+                maaak.Groups.Add(currentGroup);
+
                 unitOfWork.Users.Update(maaak);
                 unitOfWork.SaveChanges();
 
@@ -327,8 +343,6 @@ namespace BinaryStudio.PhotoGallery.Database
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 };
-
-                var currentGroup = unitOfWork.Groups.Find(x => x.OwnerId == 1);
 
                 golovinUser.Groups.Add(currentGroup);
                 golovinUser.Albums.Add(albumForGolovin);

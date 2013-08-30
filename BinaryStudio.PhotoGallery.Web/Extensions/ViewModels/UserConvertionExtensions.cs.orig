@@ -8,13 +8,6 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
     {
         public static UserViewModel ToUserViewModel(this UserModel model, bool isBlocked)
         {
-            var viewModel = model.ToUserViewModel();
-            viewModel.IsBlocked = isBlocked;
-            return viewModel;
-        }
-
-        public static UserViewModel ToUserViewModel(this UserModel model)
-        {
             var viewModel = new UserViewModel
             {
                 Id = model.Id,
@@ -23,28 +16,32 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
                 Email = model.Email,
                 Department = model.Department,
                 Birthday = model.Birthday,
-                IsActivated = model.IsActivated
+                IsActivated = model.IsActivated,
+                IsBlocked = isBlocked
             };
             viewModel.PhotoUrl = viewModel.PathUtil.BuildAvatarPath(model.Id, ImageSize.Medium);
             return viewModel;
         }
-
         public static UserViewModel ToNoneUserViewModel(this UserModel model)
         {
             var viewModel = new UserViewModel
             {
                 FirstName = "None",
+<<<<<<< HEAD
+                LastName = "None",
+=======
                 LastName = "",
+                IsAdmin = false,
+>>>>>>> origin/Development
                 AlbumsCount = 0,
                 PhotoCount = 0
             };
             viewModel.PhotoUrl = viewModel.PathUtil.BuildAvatarPath(model.Id, ImageSize.Medium);
             return viewModel;
         }
-
         public static UserViewModel ToUserViewModel(this UserModel model, int photoCount, int albumCount)
         {
-            var viewModel = model.ToUserViewModel();
+            var viewModel = model.ToUserViewModel(false);
             viewModel.AlbumsCount = albumCount;
             viewModel.PhotoCount = photoCount;
             return viewModel;
