@@ -10,6 +10,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
     {
         private readonly List<string> _systemGroupList = new List<string>
         {
+            "DeletedUsers",
             "BlockedUsers"
         };
 

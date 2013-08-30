@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
@@ -26,8 +28,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
+                var group = unitOfWork.Groups.Find(x => x.GroupName == "DeletedUsers");
                 return
-                    unitOfWork.Users.All()
+                    unitOfWork.Users.Filter(user => !user.IsAdmin && !user.Groups.Contains(group))
                         .Include(g => g.Albums)
                         .Include(g => g.Groups)
                         .Include(g => g.AuthInfos)
@@ -156,17 +159,34 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         public void DeleteUser(int userId)
         {
+            Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "DeletedUsers";
+            AddUserToGroup(userId, expression);
+        }
+
+        public void BlockUser(int userId)
+        {
+            Expression<Func<GroupModel, bool>> expression = x => x.GroupName == "BlockedUsers";
+            AddUserToGroup(userId, expression);
+        }
+
+        private void AddUserToGroup(int userId, Expression<Func<GroupModel, bool>> expression)
+        {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 try
                 {
                     UserModel user = GetUser(userId, unitOfWork);
-                    unitOfWork.Users.Delete(user);
+
+                    GroupModel group = unitOfWork.Groups.Find(expression);
+
+                    user.Groups.Add(@group);
+                    unitOfWork.Users.Update(user);
 
                     unitOfWork.SaveChanges();
                 }
                 catch (UserNotFoundException)
                 {
+                    throw;
                 }
             }
         }
@@ -265,7 +285,8 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                                                                            authInfo.AuthProvider == providerName);
                 if (auth == null)
                 {
-                    throw new UserNotFoundException(string.Format("There is some misstake in {0} authentication", providerName));
+                    throw new UserNotFoundException(string.Format("There is some misstake in {0} authentication",
+                        providerName));
                 }
                 return auth.UserId;
             }
