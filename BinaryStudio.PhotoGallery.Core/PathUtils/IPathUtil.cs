@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
@@ -42,7 +43,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         string BuildAbsoluteThumbailPath(int userId, int albumId, int photoId, string format, ImageSize size);
 
-        IEnumerable<string> BuildAbsoluteThumbnailsPaths(int userId, int albumId, ImageSize size);
+        IEnumerable<string> BuildAbsoluteThumbnailsPaths(int userId, int albumId, IEnumerable<PhotoModel> models, ImageSize size);
 
         string BuildAbsoluteCollagePath(int userId, int albumId);
 

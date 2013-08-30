@@ -33,7 +33,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         ///     Returns specified interval of photos (sorted by date) from specified album.
         /// </summary>
         IEnumerable<PhotoModel> GetPhotos(int userId, int albumId, int skipCount, int takeCount);
-
+        IEnumerable<PhotoModel> GetAllPhotos(int userId, int albumId);
         /// <summary>
         ///     Returns specified interval of users photos.
         /// </summary>

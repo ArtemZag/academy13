@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -8,6 +9,8 @@ using System.Web.Helpers;
 using System.Web.Http;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
@@ -21,10 +24,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
     public class PhotoApiController : BaseApiController
     {
         private readonly IPhotoService _photoService;
-
-        public PhotoApiController(IPhotoService photoService)
+        private readonly ICollageProcessor _collageProcessor;
+        public PhotoApiController(IPhotoService photoService, ICollageProcessor collageProcessor)
         {
             _photoService = photoService;
+            _collageProcessor = collageProcessor;
         }
 
         [GET("?{albumId:int}&{skip:int}&{take:int}")]
@@ -179,6 +183,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             try
             {
                 _photoService.DeletePhoto(User.Id, photoId);
+                PhotoModel model = _photoService.GetPhoto(User.Id, photoId);
+                int albumId = model.AlbumId;
+
+                IEnumerable<PhotoModel> photos = _photoService.GetPhotos(User.Id, albumId, 0, 1000);
+                _collageProcessor.CreateCollage(User.Id, albumId, photos);
             }
             catch (NoEnoughPrivilegesException ex)
             {

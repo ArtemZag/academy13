@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using BinaryStudio.PhotoGallery.Core.PhotoUtils;
+using BinaryStudio.PhotoGallery.Models;
 
 namespace BinaryStudio.PhotoGallery.Core.PathUtils
 {
@@ -24,7 +25,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         private const string CUSTOM_COLLAGE_PATH = @"~/Content/images/no_collage.png";
         private const string SUFFIX_AVATAR_FILENAME = "Avatar";
         private const string AVATAR_FILE_FORMAT = "jpg";
-
+        private readonly IEnumerable<string> photoFormats= new[] { "*.bmp", "*.ico", "*.gif", "*.jpeg", "*.jpg", "*.jfif", "*.png", "*.tif", "*.tiff", "*.wmf", "*.emf"};
         /// <summary>
         ///     Pattern: ~data\photos\userId\albumId
         /// </summary>
@@ -132,12 +133,34 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         {
             return HostingEnvironment.MapPath(BuildThumbnailPath(userId, albumId, photoId, format, size));
         }
+
+        private bool modelExists(IEnumerable<PhotoModel> models, int photoId)
+        {
+            return models.Any(model => model.Id == photoId);
+        }
+
         
-        public IEnumerable<string> BuildAbsoluteThumbnailsPaths(int userId, int albumId, ImageSize size)
+        private IEnumerable<string> GetOnlyImages(string path)
+        {
+            var photoPaths = new List<string>();
+
+            foreach (var photoFormat in photoFormats)
+                photoPaths.AddRange(Directory.GetFiles(path, photoFormat));
+
+            return photoPaths;
+        }
+
+        public IEnumerable<string> BuildAbsoluteThumbnailsPaths(int userId, int albumId,IEnumerable<PhotoModel> models,ImageSize size)
         {
             string thumbnailsDirectoryPath = BuildAbsoluteThumbnailsDirPath(userId, albumId, size);
+            return Randomizer.GetEnumerator(GetOnlyImages(thumbnailsDirectoryPath).Where((s) =>
+                {
+                    int photoId;
+                    if (int.TryParse(Path.GetFileNameWithoutExtension(s), out photoId))
+                        return modelExists(models, photoId);
 
-            return Directory.EnumerateFiles(thumbnailsDirectoryPath);
+                    return false;
+                })).ToList();
         }
 
         public string BuildAbsoluteCollagePath(int userId, int albumId)
