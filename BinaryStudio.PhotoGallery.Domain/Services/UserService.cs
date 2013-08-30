@@ -28,8 +28,9 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
+                var group = unitOfWork.Groups.Find(x => x.GroupName == "DeletedUsers");
                 return
-                    unitOfWork.Users.All()
+                    unitOfWork.Users.Filter(user => !user.IsAdmin && !user.Groups.Contains(group))
                         .Include(g => g.Albums)
                         .Include(g => g.Groups)
                         .Include(g => g.AuthInfos)
