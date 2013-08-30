@@ -65,21 +65,6 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
-        /// <summary>
-        ///     Pattern: ~data\photos\userId\albumId\collage.jpg
-        /// </summary>
-        public string BuildCollagePath(int userId, int albumId)
-        {
-            string collagePath = BuildAbsoluteCollagePath(userId, albumId);
-
-            if (File.Exists(collagePath))
-            {
-                return BuildRealCollagePath(userId, albumId);
-            }
-
-            return VirtualPathUtility.ToAbsolute(CUSTOM_COLLAGE_PATH);
-        }
-
         private string BuildRealCollagePath(int userId, int albumId)
         {
             var builder = new StringBuilder(BuildAlbumPath(userId, albumId));
@@ -153,7 +138,7 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
         public IEnumerable<string> BuildAbsoluteThumbnailsPaths(int userId, int albumId,IEnumerable<PhotoModel> models,ImageSize size)
         {
             string thumbnailsDirectoryPath = BuildAbsoluteThumbnailsDirPath(userId, albumId, size);
-            return Randomizer.GetEnumerator(GetOnlyImages(thumbnailsDirectoryPath).Where((s) =>
+            return Randomizer.GetEnumerator(GetOnlyImages(thumbnailsDirectoryPath).Where(s =>
                 {
                     int photoId;
                     if (int.TryParse(Path.GetFileNameWithoutExtension(s), out photoId))
