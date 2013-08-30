@@ -6,19 +6,37 @@
     ViewBag.Title = "Remind Password | Bingally";
 }
 
+@Styles.Render("~/Content/remindpass.css")
+
 <div id="passRecoveryPanel" class="login-panel" style="display:none;">
     @Html.Image(Url.Content("~/Content/images/logo_big.png"))
     <div class="well">
         <h4>Remind password</h4>
-        <form action="/api/remind/" method="post" class="control-group form-horizontal pagination-centered">
+        <form id="recoveryForm" class="control-group form-horizontal pagination-centered">
             <input id="Email" name="Email" type="email" class="input-block-level" maxlength="255" placeholder="E-mail address" />
-            <button id="sendRecovery" type="submit" class="btn btn-primary effeckt-button zoom-in">
+            <button id="sendRecovery" class="btn btn-primary effeckt-button zoom-in">
                 <span class="effeckt-label">Send password recovery Email</span>
                 <span class="effeckt-spinner effeckt-spinner-blue"></span>
             </button>
-            <a id="backToLogin" class="btn btn-link">Back to the login page</a>
+            <a class="backToLogin btn btn-link">Back to the login page</a>
         </form>
 
         <div class="error-field"></div>
     </div>
 </div>
+
+<div id="okPanel" class="login-panel" style="display:none;">
+    @Html.Image(Url.Content("~/Content/images/logo_big.png"))
+    <div class="well">
+        <div class="success">
+            <div class="message">Password recovery email have been sent to your email</div>
+        </div>
+        <a class="backToLogin btn btn-link">Back to the login page</a>
+    </div>
+</div>
+
+@Scripts.Render("~/Scripts/Account/remindPass.js")
+
+<script type="text/javascript">
+    RemindPass_Init("/api/remind/");
+</script>

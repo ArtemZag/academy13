@@ -324,7 +324,7 @@
     <Content Include="Content\style-libs\chosen.css" />
     <Content Include="Content\verticalResizer.css" />
     <Content Include="Scripts\Account\changePass.js" />
-    <Content Include="Scripts\Account\forgotPass.js" />
+    <Content Include="Scripts\Account\remindPass.js" />
     <Content Include="Scripts\Admin\AdminPage.js" />
     <Content Include="Scripts\Account\initVertResizer.js" />
     <Content Include="Scripts\Account\signup.validate.js" />

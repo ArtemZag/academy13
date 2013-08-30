@@ -181,11 +181,11 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         }
 
         [POST("changepass")]
-        public HttpResponseMessage ChangePass(RemindPassViewModel remindPassViewModel)
+        public HttpResponseMessage ChangePass(SignupViewModel signupView)
         {
             try
             {
-                _userService.UserRestorePasswordChangePass(remindPassViewModel.Email, remindPassViewModel.Password);
+                _userService.UserRestorePasswordChangePass(signupView.Email, signupView.Password);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception e)

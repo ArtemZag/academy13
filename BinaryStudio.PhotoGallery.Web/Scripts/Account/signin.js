@@ -73,6 +73,23 @@
         });
     }
     
+    $("#forgotPass").click(function () {
+        $(".error-field .alert").remove();
+        Bingally.animation($("#loginPanel"), "move",
+            {
+                direction: 'top',
+                method: 'hide',
+                animTime: 500
+            });
+        $("#passRecoveryPanel").removeAttr("style");
+        Bingally.animation($("#passRecoveryPanel"), "move",
+            {
+                direction: 'top',
+                method: 'show',
+                animTime: 600
+            });
+    });
+    
     function clearErrorMessages() {
         $('.error-field').html('');
     }
