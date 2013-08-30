@@ -22,6 +22,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
         private readonly IAlbumService _albumService;
         private readonly IPathUtil _pathUtil;
         private readonly IUserService _userService;
+
         public AlbumApiController(IAlbumService albumService, IPathUtil pathUtil, IUserService userService)
         {
             _albumService = albumService;

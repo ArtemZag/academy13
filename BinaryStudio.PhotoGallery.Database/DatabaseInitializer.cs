@@ -195,7 +195,7 @@ namespace BinaryStudio.PhotoGallery.Database
             #region DeletedUsers
             var groupModel = new GroupModel()
             {
-                GroupName = "DeletedUsers",
+                GroupName = "Academy group",
                 Description = "System group. Not for use",
                 OwnerId = -1,
                 Users = new Collection<UserModel>()
@@ -287,6 +287,11 @@ namespace BinaryStudio.PhotoGallery.Database
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 });
+
+                var currentGroup = unitOfWork.Groups.Find(x => x.GroupName.Equals("Academy group"));
+
+                maaak.Groups.Add(currentGroup);
+
                 unitOfWork.Users.Update(maaak);
                 unitOfWork.SaveChanges();
 
@@ -327,8 +332,6 @@ namespace BinaryStudio.PhotoGallery.Database
                     AvailableGroups = new Collection<AvailableGroupModel>(),
                     Photos = new Collection<PhotoModel>()
                 };
-
-                var currentGroup = unitOfWork.Groups.Find(x => x.OwnerId == 1);
 
                 golovinUser.Groups.Add(currentGroup);
                 golovinUser.Albums.Add(albumForGolovin);

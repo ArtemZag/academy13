@@ -12,6 +12,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         public ActionResult Index(int albumId)
 		{
 		    ViewBag.AlbumId = albumId;
+		    ViewBag.User = User;
 
             return View("Index");
         }
