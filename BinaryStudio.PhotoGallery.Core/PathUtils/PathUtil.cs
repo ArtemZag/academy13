@@ -188,12 +188,15 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
 
         public string GetCollage(int userId, int albumId)
         {
-            string path =
-                GetOnlyImages(Path.Combine(BuildAbsoluteAlbumPath(userId, albumId), COLLAGES_DIRECTORY_NAME))
-                    .FirstOrDefault();
-            if (path != null)
-                return GetUserReference(path);
-
+            string collagesDirName = Path.Combine(BuildAbsoluteAlbumPath(userId, albumId), COLLAGES_DIRECTORY_NAME);
+            if (File.Exists(collagesDirName))
+            {
+                string path =
+                    GetOnlyImages(collagesDirName)
+                        .FirstOrDefault();
+                if (path != null)
+                    return GetUserReference(path);
+            }
             return VirtualPathUtility.ToAbsolute(CUSTOM_COLLAGE_PATH);
         }
 
