@@ -224,5 +224,20 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
+
+		[POST("description")]
+		public HttpResponseMessage ChangeDescription([FromBody] PhotoDescriptionViewModel photoDescription)
+		{
+			try
+			{
+				_photoService.ChangeDescription(photoDescription.PhotoId,photoDescription.Description);
+
+				return Request.CreateResponse(HttpStatusCode.OK);
+			}
+			catch (Exception ex)
+			{
+				return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+			}
+		}
     }
 }

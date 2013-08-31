@@ -11,6 +11,8 @@ namespace BinaryStudio.PhotoGallery.Web.ViewModels.Photo
         public int PhotoId { get; set; }
         public int AlbumId { get; set; }
 	    public IEnumerable<PhotoTagModel> Tags { get; set; }
+	    public string Description { get; set; }
+	    public int OwnerId { get; set; }
 
         public static PhotoModel ToModel(int albumId, int userId, string realFileFormat)
         {
