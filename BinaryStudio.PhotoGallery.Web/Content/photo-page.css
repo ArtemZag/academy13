@@ -313,3 +313,22 @@
 #editable {
 	margin-right: 15px;
 }
+
+#description {
+	left: 30%;
+	position: relative;
+	margin-top: 50px;
+	background-color: rgb(220, 214, 214);
+	padding: 10px;
+	width: 40%;
+	height: 100px;
+	word-wrap: break-word;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-webkit-box-shadow: 0 0 15px rgba(0,0,0,0.65);
+	-moz-box-shadow: 0 0 15px rgba(0,0,0,0.65);
+    -ms-box-shadow: 0 0 15px rgba(0,0,0,0.65);
+    -o-box-shadow: 0 0 15px rgba(0,0,0,0.65);
+	box-shadow: 0 0 15px rgba(0,0,0,0.65);
+}

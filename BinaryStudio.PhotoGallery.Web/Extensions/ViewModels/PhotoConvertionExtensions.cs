@@ -52,7 +52,9 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
             var viewModel = new PhotoViewModel
             {
                 AlbumId = photoModel.AlbumModelId,
-                PhotoId = photoModel.Id
+                PhotoId = photoModel.Id,
+				Description = photoModel.Description,
+				OwnerId = photoModel.OwnerId
             };
 
             viewModel.PhotoSource = 

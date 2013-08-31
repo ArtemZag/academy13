@@ -337,5 +337,16 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                 .ToList();
         }
 
+		public void ChangeDescription(int photoId, string description)
+		{
+			using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+			{
+				PhotoModel photo = unitOfWork.Photos.Find(g => g.Id == photoId);
+
+				photo.Description = description;
+
+				unitOfWork.SaveChanges();
+			}
+		}
     }
 }
