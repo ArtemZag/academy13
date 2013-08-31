@@ -20,11 +20,19 @@
     margin-right: 10px;
 }
 
-.avatar > img {
+.avatar > a > img {
     width: 136px;
     border: 1px solid;
     border-bottom: 0px;
     border-radius: 4px 4px 0px 0px;
+}
+
+.full-name {
+    display: block;
+}
+
+.email {
+    display: block;
 }
 
 .avatar > .status {
@@ -35,7 +43,16 @@
     border-top: 0px;
 }
 
-.status-online .status {
+.status-activated .status {
+    color: greenyellow;
+    background: darkcyan;
+}
+
+.status-activated > .avatar > img {
+    border-color: greenyellow;
+}
+
+/*.status-online .status {
     color: greenyellow;
     background: darkcyan;
 }
@@ -45,13 +62,13 @@
 }
 
 .status-offline .status {
-    color: red;
+    color: red!important;
     background: bisque;
 }
 
 .status-offline > .avatar > img {
     color: red;
-}
+}*/
 
 .status-unactivated .status {
     color: orange;
@@ -76,9 +93,6 @@
     height: 125px;
 }
 
-.user > .actions {
-}
-
 .description .edit-info {
     width: 18px;
     height: 18px;
@@ -86,20 +100,21 @@
 }
 
 #actions-panel {
-	width: 20%;
-    position: fixed;
-    background-color: black;
+    min-width: 160px;
+	width: 18%;
+    position: absolute;
+    background-color: antiquewhite;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
     top: 50px;
-	right: 10px;
-	height: 250px;
-    margin: 0px;
+	right: 8px;
+	height: 175px;
     margin-top: 10px;
-	padding: 0px;
+	padding: 8px;
 }
 
-#actions-panel > .action {
-    
+#actions-panel #invite-btn {
+    margin-top: 10px;
+    float: right;
 }

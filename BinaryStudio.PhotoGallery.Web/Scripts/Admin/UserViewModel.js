@@ -10,6 +10,12 @@
     self.email = ko.observable(options.email);
     self.department = ko.observable(options.department);
 
+    self.mailtoEmail = ko.computed({
+        read: function() {
+            return "mailto:" + self.email();
+        }
+    });
+
     self.isOnline = ko.observable(options.isOnline || false);
     self.isActivated = ko.observable(options.isActivated || false);
     self.isBlocked = ko.observable(options.isBlocked || false);
@@ -19,28 +25,39 @@
     self.profileUrl = ko.observable(options.profileUrl);
 
     self.editAction = function(element) {
-        
+        // TODO modal editor
     };
 
-    self.blockAction = function() {
-
+    self.blockAction = function () {
+        if (self.isBlocked()) {
+            $.post('/api/admin/unblock', { '': userId })
+                .done(function () {
+                    self.isBlocked(false);
+                });
+        } else {
+            $.post('/api/admin/block', { '': userId })
+                .done(function() {
+                    self.isBlocked(true);
+                });
+        }
     };
 
     self.deleteAction = function (element) {
         // TODO modal dialog
         $.ajax({
             type: 'DELETE',
-            url: '/api/user/' + userId
-        });
-        mediator.publish("admin:deleteUser", element);
-    };
-
-    self.resetPassword = function() {
-
+            url: '/api/admin/delete/' + userId
+        }).done(function() {
+                mediator.publish('admin:deleteUser', element);
+            });
     };
 
     self.resetInvitation = function() {
-
+        $.post('/api/invite', { Email: self.email(), FirstName: self.firstName(), Second: self.lastName() })
+            .done(function() {
+                console.log("Invite successfully sended");
+                // TODO modal popup
+            });
     };
 
     self.fullName = ko.computed({
@@ -56,11 +73,7 @@
             } else if (!self.isActivated()) {
                 return "status-unactivated";
             } else {
-                if (self.isOnline()) {
-                    return "status-online";
-                } else {
-                    return "status-offline";
-                }
+                return "status-activated";
             }
         }
     });
@@ -72,11 +85,7 @@
             } else if (!self.isActivated()) {
                 return "Unactivated";
             } else {
-                if (self.isOnline()) {
-                    return "Online";
-                } else {
-                    return "Offline";
-                }
+                return "Activated";
             }
         }
     });
@@ -87,16 +96,6 @@
                 return "Unblock";
             } else {
                 return "Block";
-            }
-        }
-    });
-
-    self.invitationAndPasswordText = ko.computed({
-        read: function () {
-            if (self.isActivated() && !self.isBlocked()) {
-                return "Reset password";
-            } else {
-                return "Send invitation";
             }
         }
     });
