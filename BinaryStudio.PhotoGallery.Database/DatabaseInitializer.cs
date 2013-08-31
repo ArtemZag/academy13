@@ -224,6 +224,15 @@ namespace BinaryStudio.PhotoGallery.Database
                 Users = new Collection<UserModel>()
             };
             groupList.Add(groupModel);
+
+            groupModel = new GroupModel()
+            {
+                GroupName = ".NET",
+                Description = ".NET department",
+                OwnerId = -1,
+                Users = new Collection<UserModel>()
+            };
+            groupList.Add(groupModel);
             #endregion
 
 
@@ -281,7 +290,7 @@ namespace BinaryStudio.PhotoGallery.Database
                 UserModel maaak = unitOfWork.Users.Find(x => x.LastName == "Towstonog");
                 maaak.Albums.Add(new AlbumModel
                 {
-                    Name = "First album",
+                    Name = "Binary studio photos",
                     Description = "Default album by DBinit",
                     IsDeleted = false,
                     Permissions = (int)AlbumModel.PermissionsMask.PublicAlbum,
@@ -290,23 +299,25 @@ namespace BinaryStudio.PhotoGallery.Database
                     Photos = new Collection<PhotoModel>()
                 });
 
-                var academyGroup = unitOfWork.Groups.Find(x => x.GroupName.Equals("Academy"));
+                var groupToAdd = unitOfWork.Groups.Find(x => x.GroupName.Equals("Academy"));
+                maaak.Groups.Add(groupToAdd);
 
-                maaak.Groups.Add(academyGroup);
+                groupToAdd = unitOfWork.Groups.Find(x => x.GroupName.Equals(".NET"));
+                maaak.Groups.Add(groupToAdd);
 
                 unitOfWork.Users.Update(maaak);
                 unitOfWork.SaveChanges();
 
                 #endregion
 
-                #region adding photos and group to album with name "First album"
+                #region adding photos and group to album with name "Binary studio photos"
 
-                AlbumModel albumModel = unitOfWork.Albums.Find(album => album.Name == "First album");
+                AlbumModel albumModel = unitOfWork.Albums.Find(album => album.Name == "Binary studio photos");
 
                 var avialableGroup = new AvailableGroupModel
                 {
                     AlbumId = albumModel.Id,
-                    GroupId = academyGroup.Id,
+                    GroupId = groupToAdd.Id,
                     CanAddComments = true,
                     CanAddPhotos = true,
                     CanSeeComments = true,
@@ -324,6 +335,12 @@ namespace BinaryStudio.PhotoGallery.Database
 
                 var golovinUser = unitOfWork.Users.Find(x => x.LastName == "Golovin");
 
+                groupToAdd = unitOfWork.Groups.Find(x => x.GroupName.Equals("Academy"));
+                golovinUser.Groups.Add(groupToAdd);
+
+                groupToAdd = unitOfWork.Groups.Find(x => x.GroupName.Equals(".NET"));
+                golovinUser.Groups.Add(groupToAdd);
+
                 var albumForGolovin = new AlbumModel
                 {
                     Name = "Anton album",
@@ -335,7 +352,6 @@ namespace BinaryStudio.PhotoGallery.Database
                     Photos = new Collection<PhotoModel>()
                 };
 
-                golovinUser.Groups.Add(academyGroup);
                 golovinUser.Albums.Add(albumForGolovin);
 
                 unitOfWork.SaveChanges();
@@ -397,11 +413,15 @@ namespace BinaryStudio.PhotoGallery.Database
                     {
                         new PhotoTagModel
                         {
-                            TagName = "tag"
+                            TagName = "academy"
                         },
                         new PhotoTagModel
                         {
-                            TagName = "check"
+                            TagName = ".NET"
+                        },
+                        new PhotoTagModel
+                        {
+                            TagName = "ASP.NET"
                         }
                     };
 
