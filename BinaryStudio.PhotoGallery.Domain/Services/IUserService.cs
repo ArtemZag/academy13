@@ -95,5 +95,13 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="id"></param>
         /// <returns></returns>
         int GetUserBySocialAccount(string providerName, string id);
+
+        void UpdateUserAuthInfo(int userId, AuthInfoModel authInfoModel);
+
+        AuthInfoModel GetAuthInfoForUser(int userId, string providerName);
+
+        void AddAuthInfoForUser(int userId, string providerName);
+
+        void SetAuthInfoForUser(int userId, string providerName, string providerId);
     }
 }

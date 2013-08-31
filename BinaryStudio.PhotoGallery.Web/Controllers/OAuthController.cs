@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Authentication;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 using AttributeRouting;
+using AttributeRouting.Helpers;
 using AttributeRouting.Web.Mvc;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
 using BinaryStudio.PhotoGallery.Web.CustomStructure;
@@ -20,8 +23,24 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     public class OAuthController : BaseController
     {
         private const string ProviderNameKey = "providerName";
+        private const string RegOauth = "oauth";
         private readonly AuthorizationRoot _authorizationRoot;
         private readonly IUserService _userService;
+
+
+        private string ProviderName
+        {
+            get { return (string)Session[ProviderNameKey]; }
+            set { Session[ProviderNameKey] = value; }
+        }
+
+        private bool SetOauth
+        {
+            get { return (bool)Session[RegOauth]; }
+            set { Session[RegOauth] = value; }
+        }
+
+
 
         public OAuthController(IUserService userService)
         {
@@ -29,11 +48,7 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
             _userService = userService;
         }
 
-        private string ProviderName
-        {
-            get { return (string) Session[ProviderNameKey]; }
-            set { Session[ProviderNameKey] = value; }
-        }
+        
 
 
         [GET("callback")]
@@ -41,37 +56,56 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             UserInfo info = GetClient().GetUserInfo(Request.QueryString);
 
-            int userId = _userService.GetUserBySocialAccount(ProviderName, info.Id);
-
-            UserModel userModel = _userService.GetUser(userId);
-
-            var serializer = new JavaScriptSerializer();
-            var serializeModel = new UserInfoSerializeModel
+            if (SetOauth.HasNoValue())
             {
-                Id = userModel.Id,
-                Email = userModel.Email,
-                IsAdmin = userModel.IsAdmin
-            };
-
-            string serializedUserData = serializer.Serialize(serializeModel);
-
-            var authTicket = new FormsAuthenticationTicket(
-                1,
-                userModel.Id.ToString(),
-                DateTime.Now,
-                DateTime.Now.AddDays(30),
-                true,
-                serializedUserData
-                );
-
-            string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-
-            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-
-            System.Web.HttpContext.Current.Response.Cookies.Add(cookie);
+                SetOauth = false;
+            }
+            if (SetOauth)
+            {
+                _userService.SetAuthInfoForUser(User.Id, info.ProviderName, info.Id);
+                SetOauth = false;
+            }
+            try
+            {
+                var userId = _userService.GetUserBySocialAccount(info.ProviderName, info.Id);
 
 
-            return RedirectToAction("Index", "Home");
+                UserModel userModel = _userService.GetUser(userId);
+
+                var serializer = new JavaScriptSerializer();
+                var serializeModel = new UserInfoSerializeModel
+                {
+                    Id = userModel.Id,
+                    Email = userModel.Email,
+                    IsAdmin = userModel.IsAdmin
+                };
+
+                string serializedUserData = serializer.Serialize(serializeModel);
+
+                var authTicket = new FormsAuthenticationTicket(
+                    1,
+                    userModel.Id.ToString(),
+                    DateTime.Now,
+                    DateTime.Now.AddDays(30),
+                    true,
+                    serializedUserData
+                    );
+
+                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+
+                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+
+                System.Web.HttpContext.Current.Response.Cookies.Add(cookie);
+
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         /// <summary>
@@ -87,6 +121,20 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         private IClient GetClient()
         {
             return _authorizationRoot.Clients.First(c => c.Name.ToLower() == ProviderName);
+        }
+
+
+        /// <summary>
+        ///     Redirect to login url of selected provider.
+        /// </summary>
+        [GET("setaccount/{providerName}")]
+        public RedirectResult SetAccount([FromUri]string providerName)
+        {
+            ProviderName = providerName;
+            SetOauth = true;
+            //_userService.AddAuthInfoForUser(User.Id, ProviderName);
+
+            return new RedirectResult(GetClient().GetLoginLinkUri());
         }
     }
 }

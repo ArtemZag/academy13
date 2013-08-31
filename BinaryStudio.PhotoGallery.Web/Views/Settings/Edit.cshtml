@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using BinaryStudio.PhotoGallery.Web.Extensions
 @model BinaryStudio.PhotoGallery.Web.ViewModels.User.UserViewModel
 
 @{
@@ -34,6 +35,12 @@
             </div>
         </div>
     }
+        <div class="span3 social">
+        @Html.ImageLink("~/Content/images/vkontakte_logo.png", Url.Action("setaccount", "OAuth", new { providerName = "VK" }))
+        @Html.ImageLink("~/Content/images/facebook_logo.png", Url.Action("setaccount", "OAuth", new { providerName = "Facebook" }))
+        @Html.ImageLink("~/Content/images/twitter_logo.png", Url.Action("setaccount", "OAuth", new { providerName = "Twitter" }))
+        @Html.ImageLink("~/Content/images/github_logo.png", Url.Action("setaccount", "OAuth", new { providerName = "Github" }))
+    </div>
 </div>
 
 @Scripts.Render("~/bundles/scripts/opentip")

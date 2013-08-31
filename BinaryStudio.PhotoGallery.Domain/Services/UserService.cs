@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Authentication;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
@@ -171,7 +173,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 mUser.RemindPasswordSalt = Randomizer.GetString(30);
-               
+
                 unitOfWork.Users.Update(mUser);
                 unitOfWork.SaveChanges();
 
@@ -236,7 +238,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     {
                         user.Groups.Remove(@group);
                     }
-                    
+
                     unitOfWork.Users.Update(user);
 
                     unitOfWork.SaveChanges();
@@ -347,6 +349,84 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                         providerName));
                 }
                 return auth.UserId;
+            }
+        }
+
+        public void UpdateUserAuthInfo(int userId, AuthInfoModel authInfoModel)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                try
+                {
+                    UserModel user = GetUser(userId);
+                    if (user.AuthInfos == null)
+                    {
+                        user.AuthInfos = new Collection<AuthInfoModel>();
+                    }
+                    else
+                    {
+                        user.AuthInfos.Add(authInfoModel);
+                    }
+                    unitOfWork.Users.Update(user);
+                    unitOfWork.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw new AuthenticationException(
+                        string.Format("AuthInfoModel for user with id={0} does not available", userId));
+                }
+            }
+        }
+
+        public AuthInfoModel GetAuthInfoForUser(int userId, string providerName)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                try
+                {
+                    return
+                        unitOfWork.AuthInfos.Find(
+                            auth => auth.UserId == userId && auth.AuthProvider == providerName);
+                }
+                catch (Exception)
+                {
+                    throw new AuthenticationException(
+                        string.Format("AuthInfoModel for user with id={0} does not available", userId));
+                }
+            }
+        }
+
+        public void AddAuthInfoForUser(int userId, string providerName)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                try
+                {
+                    unitOfWork.AuthInfos.Add(userId, providerName);
+                    unitOfWork.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw new AuthenticationException(
+                        string.Format("AuthInfoModel for user with id={0} does not available", userId));
+                }
+            }
+        }
+
+        public void SetAuthInfoForUser(int userId, string providerName, string providerId)
+        {
+            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+            {
+                try
+                {
+                    unitOfWork.AuthInfos.Add(userId, providerName, providerId);
+                    unitOfWork.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw new AuthenticationException(
+                        string.Format("AuthInfoModel for user with id={0} does not available", userId));
+                }
             }
         }
     }
