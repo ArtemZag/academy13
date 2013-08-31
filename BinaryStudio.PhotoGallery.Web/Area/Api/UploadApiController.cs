@@ -127,7 +127,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                             continue;
                         }
 
-                        photoModel.AlbumId = albumId;
+                        photoModel.AlbumModelId = albumId;
 
                         _photoService.UpdatePhoto(photoModel);
 

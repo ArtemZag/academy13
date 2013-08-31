@@ -62,7 +62,8 @@ namespace BinaryStudio.PhotoGallery.Database
         }
 
         /// <summary>
-        /// Finds first item with primary keys
+        /// Finds first
+        ///  item with primary keys
         /// </summary>
         public virtual TItem Find(params object[] keys)
         {

@@ -12,9 +12,12 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
             var userInfo = new UserInfoViewModel
             {
                 OwnerFirstName = user.FirstName,
-                OwnerLastName = user.LastName,
+                OwnerLastName = user.LastName
             };
+
             userInfo.OwnerPhotoSource = userInfo.PathUtil.BuildAvatarPath(user.Id, ImageSize.Small);
+            userInfo.OwnerViewUrl = userInfo.UrlUtil.BuildUserViewUrl(user.Id);
+
             var d = photoComment.DateOfCreating;
             var photoCommentViewModel = new PhotoCommentViewModel
             {
@@ -48,15 +51,15 @@ namespace BinaryStudio.PhotoGallery.Web.Extensions.ViewModels
         {
             var viewModel = new PhotoViewModel
             {
-                AlbumId = photoModel.AlbumId,
+                AlbumId = photoModel.AlbumModelId,
                 PhotoId = photoModel.Id
             };
 
             viewModel.PhotoSource = 
-                viewModel.PathUtil.BuildOriginalPhotoPath(photoModel.OwnerId, photoModel.AlbumId, photoModel.Id, photoModel.Format);
+                viewModel.PathUtil.BuildOriginalPhotoPath(photoModel.OwnerId, photoModel.AlbumModelId, photoModel.Id, photoModel.Format);
 
             // todo owner
-            viewModel.PhotoThumbSource = viewModel.PathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumId,
+            viewModel.PhotoThumbSource = viewModel.PathUtil.BuildThumbnailPath(photoModel.OwnerId, photoModel.AlbumModelId,
                 photoModel.Id, photoModel.Format, ImageSize.Medium);
 
             viewModel.PhotoViewPageUrl = viewModel.UrlUtil.BuildPhotoViewUrl(photoModel.Id);

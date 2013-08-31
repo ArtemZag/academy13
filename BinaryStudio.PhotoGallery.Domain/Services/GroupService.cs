@@ -14,12 +14,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             "BlockedUsers"
         };
 
-        private readonly ISecureService secureService;
+        private readonly ISecureService _secureService;
 
         public GroupService(IUnitOfWorkFactory workFactory, ISecureService secureService)
             : base(workFactory)
         {
-            this.secureService = secureService;
+            _secureService = secureService;
         }
 
         public void SetAlbumGroups(int userId, int albumId, IEnumerable<AvailableGroupModel> groups)
@@ -28,10 +28,10 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 foreach (AvailableGroupModel availableGroupModel in groups)
                 {
-                    secureService.LetGroupViewPhotos(userId, availableGroupModel.GroupId, albumId,
+                    _secureService.LetGroupViewPhotos(userId, availableGroupModel.GroupId, albumId,
                         availableGroupModel.CanSeePhotos, unitOfWork);
 
-                    secureService.LetGroupViewComments(userId, availableGroupModel.GroupId, albumId,
+                    _secureService.LetGroupViewComments(userId, availableGroupModel.GroupId, albumId,
                         availableGroupModel.CanSeeComments, unitOfWork);
                 }
             }
@@ -202,7 +202,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                     if (IsGroupSystem(group))
                     {
-                        throw new GroupAlreadyExistException(group.GroupName);
+                        throw new GroupNotFoundException(string.Format("Can't delete system group with id={0}", groupId));
                     }
 
                     if (group.OwnerId == ownerId || owner.IsAdmin)

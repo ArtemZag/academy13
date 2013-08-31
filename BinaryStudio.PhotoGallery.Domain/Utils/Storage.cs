@@ -24,7 +24,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
 
         public string GetOriginalPhotoPath(PhotoModel photo, IUnitOfWork unitOfWork)
         {
-            AlbumModel album = unitOfWork.Albums.Find(photo.AlbumId);
+            AlbumModel album = unitOfWork.Albums.Find(photo.AlbumModelId);
             UserModel user = unitOfWork.Users.Find(album.OwnerId);
 
             return pathUtil.BuildAbsoluteOriginalPhotoPath(user.Id, album.Id, photo.Id, photo.Format);
@@ -32,7 +32,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Utils
 
         public IEnumerable<string> GetThumnailsPaths(PhotoModel photo, IUnitOfWork unitOfWork)
         {
-            AlbumModel album = unitOfWork.Albums.Find(photo.AlbumId);
+            AlbumModel album = unitOfWork.Albums.Find(photo.AlbumModelId);
             UserModel user = unitOfWork.Users.Find(album.OwnerId);
 
             var result = new List<string>

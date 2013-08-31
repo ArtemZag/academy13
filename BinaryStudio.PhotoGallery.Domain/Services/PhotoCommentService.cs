@@ -21,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var albumId = unitOfWork.Photos.Find(photoId).AlbumId;
+                var albumId = unitOfWork.Photos.Find(photoId).AlbumModelId;
 
                 if (secureService.CanUserViewComments(userId, albumId))
                 {
@@ -39,7 +39,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (var unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                var albumId = unitOfWork.Photos.Find(newPhotoCommentModel.PhotoId).AlbumId;
+                var albumId = unitOfWork.Photos.Find(newPhotoCommentModel.PhotoId).AlbumModelId;
 
                 if (secureService.CanUserAddComment(userId, albumId))
                 {
