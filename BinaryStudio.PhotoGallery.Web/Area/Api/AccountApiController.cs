@@ -96,9 +96,15 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
             {
                 _userService.ActivateUser(viewModel.Email, viewModel.Password, viewModel.Invite);
 
+                FormsAuthentication.SignOut();
+
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (UserAlreadyExistException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (UserNotFoundException ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }

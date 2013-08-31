@@ -73,11 +73,7 @@
             } else if (!self.isActivated()) {
                 return "status-unactivated";
             } else {
-                if (self.isOnline()) {
-                    return "status-online";
-                } else {
-                    return "status-offline";
-                }
+                return "status-activated";
             }
         }
     });
@@ -89,11 +85,7 @@
             } else if (!self.isActivated()) {
                 return "Unactivated";
             } else {
-                if (self.isOnline()) {
-                    return "Online";
-                } else {
-                    return "Offline";
-                }
+                return "Activated";
             }
         }
     });

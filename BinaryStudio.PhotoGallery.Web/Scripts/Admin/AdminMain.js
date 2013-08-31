@@ -7,9 +7,7 @@
 
     $.get('api/user/all', { skip: 0, take: userTakeCount })
         .done(function (data) {
-//            console.log(data);
             $.map(data, function (user) {
-                console.log(user.ProfileUrl);
                 avm.userList.push(new UserViewModel({
                     id: user.Id,
                     firstName: user.FirstName,
@@ -27,4 +25,9 @@
         });
 
     ko.applyBindings(avm);
+
+    $('#invite-btn').on('click', function () {
+        var inviteForm = $('#invite-form');
+        $.post('api/admin/invite', inviteForm.serialize());
+    });
 });

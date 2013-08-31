@@ -46,7 +46,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 string activationLink = "http://localhost:57367/registration/" + activateCode;
 
                 string text = string.Format(
-                    Resources.Email_InviteMessage,
+                    "Dear, {0} {1}!\n\nYou have been invited to the great photogallery " +
+                    "project of Binary Studio! For the end of registration, please click on this link:\n{2}",
                     viewModel.FirstName,
                     viewModel.LastName,
                     activationLink);
@@ -55,10 +56,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
-            catch (UserAlreadyExistException ex)
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
-            }
+            
             catch (Exception ex)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);

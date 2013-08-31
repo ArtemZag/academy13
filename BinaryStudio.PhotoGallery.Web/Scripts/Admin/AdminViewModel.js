@@ -14,4 +14,9 @@
     mediator.subscribe("admin:deleteUser", function(element) {
         self.userList.remove(element);
     });
+
+    self.inviteUser = function (data) {
+        console.log(data);
+//        $.post('api/admin/invite', {});
+    };
 }

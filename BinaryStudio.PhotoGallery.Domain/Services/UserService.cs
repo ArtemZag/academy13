@@ -109,33 +109,45 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             if (IsUserExist(userEmail))
             {
-                throw new UserAlreadyExistException(userEmail);
-            }
-
-            var userModel = new UserModel
-            {
-                Email = userEmail,
-                FirstName = userFirstName,
-                LastName = userLastName,
-                IsAdmin = false,
-                IsActivated = false,
+                var userModel = GetUser(userEmail);
                 // Here is our HASH for activating link
-                Salt = Randomizer.GetString(16),
-                // Empty password field is not good 
-                UserPassword =
-                    _cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), _cryptoProvider.GetNewSalt())
-            };
+                userModel.Salt = Randomizer.GetString(16);
 
-            using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
-            {
-                unitOfWork.Users.Add(userModel);
-                unitOfWork.SaveChanges();
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                {
+                    unitOfWork.Users.Update(userModel);
+                    unitOfWork.SaveChanges();
+                }
 
-                int userId = unitOfWork.Users.Find(user => user.Email == userEmail).Id;
-                _albumService.CreateSystemAlbums(userId);
+                return userModel.Salt;
             }
+            else
+            {
+                var userModel = new UserModel
+                {
+                    Email = userEmail,
+                    FirstName = userFirstName,
+                    LastName = userLastName,
+                    IsAdmin = false,
+                    IsActivated = false,
+                    // Here is our HASH for activating link
+                    Salt = Randomizer.GetString(16),
+                    // Empty password field is not good 
+                    UserPassword =
+                        _cryptoProvider.CreateHashForPassword(Randomizer.GetString(16), _cryptoProvider.GetNewSalt())
+                };
 
-            return userModel.Salt;
+                using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
+                {
+                    unitOfWork.Users.Add(userModel);
+                    unitOfWork.SaveChanges();
+
+                    int userId = unitOfWork.Users.Find(user => user.Email == userEmail).Id;
+                    _albumService.CreateSystemAlbums(userId);
+                }
+
+                return userModel.Salt;
+            }
         }
 
         public void ActivateUser(string userEmail, string userPassword, string invite)
@@ -275,7 +287,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 IUserRepository userRepository = unitOfWork.Users;
 
-                return userRepository.Contains(model => model.Email == userEmail && model.IsActivated);
+                return userRepository.Contains(model => model.Email == userEmail);
             }
         }
 
