@@ -238,6 +238,7 @@
         };
         img.src = photo.PhotoSource;
         model.src(img.src);
+	    model.Description(photo.Description);
 
         // todo: needs fixing
         window.history.pushState("", "", "/photo/" + model.PhotoId());
@@ -333,6 +334,29 @@
 	    	PhotoId : model.PhotoId(),
 	    	Tags: allTags
 	    };
-    	$.post($('#postAlbumInfoUrl').data('url'), photoTags );
+    	$.post($('#AddTagsUrl').data('url'), photoTags);
     });
+	
+	$('#description').keyup(function (e) { check_charcount(e); });
+	$('#description').keydown(function (e) { check_charcount(e); });
+
+    function check_charcount(e) {
+    	if (e.which != 8 && $('#description').text().length > 200) {
+    		e.preventDefault();
+    	}
+    }
+	
+    $(document).on('blur', '#description', function () {
+    	var description = $('#description').text();
+	    var data = {
+	    	PhotoId: model.PhotoId(),
+	    	Description: description
+	    };
+	    $.post($('#updateDescriptionUrl').data('url'), data);
+    });
+	
+    if ($('#hiddenUserID').val() != model.OwnerID) {
+    	$('#editable').removeAttr("contenteditable");
+    	$('#description').removeAttr("contenteditable");
+    }
 });

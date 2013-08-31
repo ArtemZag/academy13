@@ -1,8 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using AttributeRouting;
 using AttributeRouting.Web.Mvc;
 using BinaryStudio.PhotoGallery.Core;
 using BinaryStudio.PhotoGallery.Core.SocialNetworkUtils.Facebook;
+using BinaryStudio.PhotoGallery.Domain.Exceptions;
+using BinaryStudio.PhotoGallery.Domain.Services;
 
 namespace BinaryStudio.PhotoGallery.Web.Controllers
 {
@@ -10,6 +13,13 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
     [RoutePrefix("photo")]
     public class PhotoController : BaseController
     {
+		private readonly IPhotoService _photoService;
+
+		public PhotoController(IPhotoService photoService)
+        {
+            _photoService = photoService;
+        }
+
         [POST("facebook/{photoId:int}")]
         public ActionResult FbSync(int photoId)
         {
@@ -23,8 +33,18 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         [GET("{photoId:int}")]
         public ActionResult Index(int photoId)
         {
-            ViewBag.PhotoID = photoId;
-            return View();
+	        try
+	        {
+				// This way we can know about privileges of the User
+		        _photoService.GetPhoto(User.Id, photoId);
+		        ViewBag.PhotoID = photoId;
+		        ViewBag.UserID = User.Id;
+		        return View();
+	        }
+			catch (NoEnoughPrivilegesException )
+	        {
+				return RedirectToAction("accessdenied", "Error");
+	        }
         }
     }
 }

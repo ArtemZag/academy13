@@ -105,5 +105,12 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         /// <param name="photoId">Current photo ID</param>
         /// <param name="albumId">Destination album ID</param>
         void MovePhotoToAlbum(int userId, int photoId, int albumId);
+
+	    /// <summary>
+	    /// Changed description of the photo
+	    /// </summary>
+	    /// <param name="photoId">Current photo ID</param>
+		/// <param name="description">New description</param>
+	    void ChangeDescription(int photoId, string description);
     }
 }
