@@ -43,7 +43,7 @@
 	</div>
 	<div class="modal-footer">
 		<a href="#" class="btn btn-danger" data-bind="click: DeletePhoto">Delete</a>
-		<a href="#" class="btn" data-dismiss="modal">Close</a>
+		<a href="#" id="close-model-button" class="btn" data-dismiss="modal">Close</a>
 	</div>
 </div>
 
@@ -66,7 +66,7 @@
 		</div>
 
 	</div>
-	<div id="description" contenteditable="true" data-bind="text: Description"></div>
+
 	<input id="hiddenUserID" type="hidden" value="@ViewBag.UserID"/>
 </div>
 

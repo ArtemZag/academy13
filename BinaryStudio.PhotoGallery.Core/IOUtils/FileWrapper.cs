@@ -18,5 +18,10 @@ namespace BinaryStudio.PhotoGallery.Core.IOUtils
         {
             File.Move(sourceFileName, destFileName);
         }
+
+        public void Copy(string source, string destination)
+        {
+            File.Copy(source,destination);
+        }
     }
 }

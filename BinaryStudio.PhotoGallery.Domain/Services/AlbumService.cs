@@ -136,7 +136,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             {
                 AlbumModel album = unitOfWork.Albums.Find(albumId);
 
-                return album.Photos.Count;
+                return album.Photos.Count(x => !x.IsDeleted);
             }
         }
 

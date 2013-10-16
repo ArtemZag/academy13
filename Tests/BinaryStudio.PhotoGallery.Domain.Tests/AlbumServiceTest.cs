@@ -26,7 +26,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var workFactory = new TestUnitOfWorkFactory();
 
 //            _albumService = new AlbumService(workFactory);
-            userService = new UserService(workFactory, cryptoProvidrer, albumService);
+            userService = new UserService(workFactory, cryptoProvidrer, albumService, null, null, null);
         }
 
         [Test]

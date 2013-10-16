@@ -17,8 +17,9 @@
     <div class="well">          
         <form class="control-group form-horizontal pagination-centered" autocomplete="off">
             @Html.TextBoxFor(model => model.Email, new {@class = "input-block-level", @placeholder = "E-mail address", @value = Model.Email, @readonly = "true"})
-            @Html.TextBoxFor(model => model.Password, new {@class = "input-block-level", @placeholder = "Password"})
-            @Html.TextBoxFor(model => model.ConfirmPassword, new {@class = "input-block-level", @placeholder = "Repeat Password"})
+            @Html.TextBoxFor(model => model.Password, new {@class = "input-block-level", @placeholder = "Password", type="password"})
+            @Html.TextBoxFor(model => model.ConfirmPassword, new {@class = "input-block-level", @placeholder = "Repeat Password", type="password"})
+            @Html.HiddenFor(x => x.Invite)
             <button id="signup-button" type="submit" class="btn btn-success effeckt-button zoom-in">
                 <span class="effeckt-label">Sign up</span>
                 <span class="effeckt-spinner effeckt-spinner-green"></span>

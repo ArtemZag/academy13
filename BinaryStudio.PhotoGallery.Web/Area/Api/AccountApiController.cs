@@ -9,8 +9,6 @@ using System.Web.Security;
 using AttributeRouting;
 using AttributeRouting.Web.Http;
 using BinaryStudio.PhotoGallery.Core.EmailUtils;
-using BinaryStudio.PhotoGallery.Core.PathUtils;
-using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Domain.Exceptions;
 using BinaryStudio.PhotoGallery.Domain.Services;
 using BinaryStudio.PhotoGallery.Models;
@@ -127,7 +125,8 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 var activateCode = _userService.CreateUser(viewModel.Email, viewModel.FirstName, viewModel.LastName);
 
                 // TODO replace hard link
-                string activationLink = "http://localhost:57367/registration/" + activateCode;
+                var domain = HttpContext.Current.Request.Url.Authority;
+                string activationLink = string.Format("http://{0}/registration/" + activateCode, domain);
 
                 string text = string.Format(
                     Resources.Email_InviteMessage,
@@ -137,7 +136,9 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                 _emailSender.Send(host, fromEmail, fromPass, toEmail, mailSubject, text);
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                var response = Request.CreateResponse(HttpStatusCode.Moved);
+                response.Headers.Location = new Uri(string.Format("http://{0}/", domain));
+                return response;
             }
             catch (UserAlreadyExistException ex)
             {
@@ -160,7 +161,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
                 string fromPass = ConfigurationManager.AppSettings["NotificationPassword"];
                 string mailSubject = Resources.Email_RemindPassSubject;
                 var emailHash = _userService.UserRestorePasswordAsk(mUser);
-                string remindLink = string.Format("<a href='http://{0}/remind/{1}/{2}'>http://{0}/remind/{1}/{2}</a>", 
+                string remindLink = string.Format("<a href='http://{0}/remind/{1}/{2}'>http://{0}/remind/{1}/{2}</a>",
                     HttpContext.Current.Request.Url.Authority, mUser.Id, emailHash);
                 string text = string.Format( //todo Shall refactor by using some template, but have no time
                     "<p>Dear {0} {1}!\n\n<p>You or someone else asked to recover password procedure.</p> " +

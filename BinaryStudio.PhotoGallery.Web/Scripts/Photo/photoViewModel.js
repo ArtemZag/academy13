@@ -122,7 +122,9 @@
             $.ajax({
                 url: '/api/photo/' + model.PhotoId(),
                 type: 'DELETE',
-                success: function (data) {
+                success: function() {
+                    $('#close-model-button').click();
+                    self.ShowNextPhoto();
                 },
                 error: function (data) {
                 }
@@ -144,7 +146,7 @@
 
             actionSegmentId.css({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" })
                 .animate({ "-webkit-transform-origin": "30% 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(300px) rotateY(-30deg)" }, 450);
-            leftSideMenuId.css("-webkit-transform", "translateX(300px)").animate("-webkit-transform", "translateX(0px)", 500);
+            leftSideMenuId.css("-webkit-transform", "translateX(300px)").animate({"-webkit-transform" : "translateX(0px)"}, 500);
             leftSideMenuButtonId.css("background-color", "transparent");
         };
 
@@ -158,7 +160,7 @@
 
                 actionSegmentId.css({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" })
 			        .animate({ "-webkit-transform-origin": "30px 50%", "-webkit-transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "transition": "all 500ms cubic-bezier(0.77, 0, 0.175, 1)", "-webkit-transform": "translate(0px) rotateY(0deg)" }, 500);
-                leftSideMenuId.css("-webkit-transform", "translateX(-300px)").animate("-webkit-transform", "translateX(0px)", 500);
+                leftSideMenuId.css("-webkit-transform", "translateX(-300px)").animate({ "-webkit-transform": "translateX(0px)" }, 500);
                 leftSideMenuButtonId.css("background-color", "#e7e7e7");
             }
         };

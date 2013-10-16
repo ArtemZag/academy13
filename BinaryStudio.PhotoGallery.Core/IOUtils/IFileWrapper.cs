@@ -5,5 +5,6 @@
         void Delete(string path);
         bool Exists(string path);
         void Move(string sourceFileName, string destFileName);
+        void Copy(string source, string destination);
     }
 }

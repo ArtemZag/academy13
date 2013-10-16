@@ -237,7 +237,7 @@ namespace BinaryStudio.PhotoGallery.Web.Area.Api
 
                     string format = _fileHelper.GetRealFileFormat(fileData.LocalFileName);
 
-                    var photoModel = _photoService.AddPhoto(PhotoViewModel.ToModel(User.Id, albumId, format));
+                    var photoModel = _photoService.AddPhoto(PhotoViewModel.ToModel(albumId, User.Id, format));
 
                     string destFileName = string.Format("{0}\\{1}.{2}", pathToTempAlbum, photoModel.Id, format);
 

@@ -21,7 +21,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Tests
             var albumService = container.Resolve<IAlbumService>(); // mock? 
             var unitOfWorkFactory = new TestUnitOfWorkFactory();
 
-            userService = new UserService(unitOfWorkFactory, cryptoProvider, albumService);
+            userService = new UserService(unitOfWorkFactory, cryptoProvider, albumService, null, null,null);
         }
 
         [Test]

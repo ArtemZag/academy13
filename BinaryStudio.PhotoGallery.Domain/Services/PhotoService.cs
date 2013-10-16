@@ -47,7 +47,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
         {
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
-                AlbumModel album = GetAlbum(photoModel.OwnerId, photoModel.OwnerId, unitOfWork);
+                AlbumModel album = GetAlbum(photoModel.OwnerId, photoModel.AlbumModelId, unitOfWork);
 
                 album.Photos.Add(photoModel);
 

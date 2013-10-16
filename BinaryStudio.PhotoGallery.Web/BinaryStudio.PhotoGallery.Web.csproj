@@ -489,6 +489,7 @@
     <Content Include="Views\Gallery\Index.cshtml" />
     <Content Include="Views\Error\Error.cshtml" />
     <Content Include="Views\Account\ChangePass.cshtml" />
+    <Content Include="Views\Admin\Invite.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -521,6 +522,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

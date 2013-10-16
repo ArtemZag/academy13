@@ -252,6 +252,11 @@ namespace BinaryStudio.PhotoGallery.Core.PathUtils
             return builder.ToString();
         }
 
+        public string BuildAbsoluteUserPath(int userId)
+        {
+            return HostingEnvironment.MapPath(BuildUserPath(userId));
+        }
+
         public string BuildAbsolutePhotoDirectoryPath()
         {
             return HostingEnvironment.MapPath(BuildPhotoDirectoryPath());

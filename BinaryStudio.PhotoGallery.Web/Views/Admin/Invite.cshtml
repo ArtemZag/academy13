@@ -1,0 +1,26 @@
+﻿@using BinaryStudio.PhotoGallery.Web.Extensions
+@model BinaryStudio.PhotoGallery.Web.ViewModels.Admin.InviteUserViewModel
+
+@{
+    ViewBag.Title = "Send invite";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<div class="container">
+    <form method="POST" action="@Html.RouteUrl("AccountApi", "SendInvite")">
+        <div>
+            @Html.LabelFor(x => x.FirstName, "First Name")
+            @Html.TextBoxFor(x => x.FirstName)
+        </div>
+        <div>
+            @Html.LabelFor(x => x.LastName, "Last Name")
+            @Html.TextBoxFor(x => x.LastName)
+        </div>
+        <div>
+            @Html.LabelFor(x => x.Email, "Email")
+            @Html.TextBoxFor(x => x.Email, new {type="email"})
+        </div>
+        
+        <input type="submit" class="btn btn-success"/>
+    </form>
+</div>

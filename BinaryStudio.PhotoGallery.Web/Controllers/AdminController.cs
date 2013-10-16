@@ -14,5 +14,11 @@ namespace BinaryStudio.PhotoGallery.Web.Controllers
         {
             return View();
         }
+
+        [GET("invite")]
+        public ActionResult Invite()
+        {
+            return View();
+        }
     }
 }

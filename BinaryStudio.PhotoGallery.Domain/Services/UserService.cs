@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using BinaryStudio.PhotoGallery.Core;
+using BinaryStudio.PhotoGallery.Core.IOUtils;
+using BinaryStudio.PhotoGallery.Core.PathUtils;
+using BinaryStudio.PhotoGallery.Core.PhotoUtils;
 using BinaryStudio.PhotoGallery.Core.UserUtils;
 using BinaryStudio.PhotoGallery.Database;
 using BinaryStudio.PhotoGallery.Database.ModelInterfaces;
@@ -20,12 +24,18 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
         private readonly IAlbumService _albumService;
         private readonly ICryptoProvider _cryptoProvider;
+        private readonly IPathUtil _pathUtil;
+        private readonly IFileWrapper _fileWrapper;
+        private readonly IPhotoProcessor _photoProcessor;
 
-        public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider, IAlbumService albumService)
+        public UserService(IUnitOfWorkFactory workFactory, ICryptoProvider cryptoProvider, IAlbumService albumService, IPathUtil pathUtil, IFileWrapper fileWrapper, IPhotoProcessor photoProcessor)
             : base(workFactory)
         {
             _cryptoProvider = cryptoProvider;
             _albumService = albumService;
+            _pathUtil = pathUtil;
+            _fileWrapper = fileWrapper;
+            _photoProcessor = photoProcessor;
         }
 
         public IEnumerable<UserModel> GetAllUsers(int skipCount, int takeCount)
@@ -133,7 +143,14 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
 
                 int userId = unitOfWork.Users.Find(user => user.Email == userEmail).Id;
                 _albumService.CreateSystemAlbums(userId);
+                var userPath = _pathUtil.BuildAbsoluteUserPath(userId);
+                var noAvatarPath = _pathUtil.BuildAbsoluteAvatarPath(userId, ImageSize.Original);
+                Directory.CreateDirectory(userPath);
+                _fileWrapper.Copy(noAvatarPath, userPath + "/OriginalAvatar.jpg");
+                _photoProcessor.CreateAvatarThumbnails(userId);
             }
+
+
 
             return userModel.Salt;
         }
@@ -171,7 +188,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
             using (IUnitOfWork unitOfWork = WorkFactory.GetUnitOfWork())
             {
                 mUser.RemindPasswordSalt = Randomizer.GetString(30);
-               
+
                 unitOfWork.Users.Update(mUser);
                 unitOfWork.SaveChanges();
 
@@ -236,7 +253,7 @@ namespace BinaryStudio.PhotoGallery.Domain.Services
                     {
                         user.Groups.Remove(@group);
                     }
-                    
+
                     unitOfWork.Users.Update(user);
 
                     unitOfWork.SaveChanges();
